@@ -1,0 +1,1 @@
+﻿package {		import flash.display.Sprite;		/**	 * @author Aymeric	 */	public class ClasseDocument extends Sprite {				public function ClasseDocument():void {					}	}}
