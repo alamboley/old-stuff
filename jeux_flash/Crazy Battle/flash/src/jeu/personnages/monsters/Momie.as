@@ -1,0 +1,1 @@
+package jeu.personnages.monsters {		import flash.display.Sprite;		/**	 * @author Aymeric	 */	public class Momie extends Sprite {				private const vie : int=50;		private const force : int=10;		private const vitesse:int=10;		public function Momie():void {					}	}}
