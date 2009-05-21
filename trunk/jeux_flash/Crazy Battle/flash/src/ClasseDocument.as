@@ -1,1 +1,1 @@
-﻿package {		import flash.display.Sprite;		/**	 * @author Aymeric	 */	public class ClasseDocument extends Sprite {				public function ClasseDocument():void {					}	}}
+﻿package {		import flash.display.Sprite;		import ChargementGlobal;		/**	 * @author Aymeric	 */	public class ClasseDocument extends Sprite {				public function ClasseDocument():void {						var monChargementGlobal : ChargementGlobal = new ChargementGlobal();			addChild(monChargementGlobal);		}	}}
