@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "traitement_liste.h"
 
 int main(void) {
 	puts("Hello World !");
