@@ -1,10 +1,10 @@
 /*
  ============================================================================
  Name        : Algorithmes_Genetiques.c
- Author      : Aymeric
+ Author      : Aymeric & Anne
  Version     :
  Copyright   : 
- Description : Hello World in C, Ansi-style
+ Description : Algorithme Génétique
  ============================================================================
  */
 
@@ -12,6 +12,6 @@
 #include <stdlib.h>
 
 int main(void) {
-	puts("Hello World !"); /* prints Hello World ! */
+	puts("Hello World !");
 	return EXIT_SUCCESS;
 }
