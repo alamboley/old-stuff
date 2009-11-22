@@ -1,192 +1,379 @@
-﻿/*
-VERSION: 3.12
-DATE: 2/9/2009
-ACTIONSCRIPT VERSION: 3.0 (AS2 version is available)
-UPDATES & DOCUMENTATION AT: http://blog.greensock.com/overwritemanager/
-DESCRIPTION:
-	OverwriteManager is included in all TweenLite/TweenMax downloads and allows you to control how tweens with 
-	overlapping properties are handled. Without OverwriteManager, tweens of the same object are always completely overwritten 
-	unless you set overwrite:0 (previously overwrite:false which still works by the way).
-		
-		TweenLite.to(mc, 1, {x:100, y:200});
-		TweenLite.to(mc, 1, {alpha:0.5, delay:2}); //Without OverwriteManager, this tween immediately overwrites the previous one
-		
-	So even though there are no overlapping properties in the previous example, the 2nd tween would overwrite the first. 
-	The primary reason for this has to do with speed and file size. But if you're willing to sacrifice	a little speed and file size, 
-	OverwriteManager can work with the tweening classes to automatically sense when there are overlapping properties and then only 
-	overwrite the individual properties in the other tween(s). Don't worry, you'd probably never notice even a slight speed decrease 
-	unless hundreds of tweens are beginning simultaneously with overlapping properties.
-		
-	I kept OverwriteManager as a separate, optional class primarily because of file size concerns. I know, you're probably thinking 
-	"what the heck? It's like 1Kb! What's the big deal?". Well, there are thousands of developers using TweenLite because of its
-	extremely small footprint and blistering speed. Even 1Kb would represent a 33% increase in file size, and some developers have no 
-	use for the capabilities of this class. 
+﻿/**
+ * VERSION: 6.0
+ * DATE: 10/1/2009
+ * AS3 (AS2 is also available)
+ * UPDATES AND DOCUMENTATION AT: http://blog.greensock.com/overwritemanager/
+ **/
+package com.greensock {
+	import com.greensock.core.*;
 	
-	So OverwriteManager is an optional enhancement to TweenLite, but it is automatically included with TweenMax
-	without any additional steps required on your part. That also means that if you use TweenMax anywhere in your project, 
-	OverwriteManager will automatically get initted and will therefore affect TweenLite, making its
-	default mode "AUTO" instead of "ALL". 
-	
-
-USAGE:
-	OverwriteManager has three modes: NONE, ALL, and AUTO. By default, it uses AUTO. Here's what they do:
-		
-		- NONE (0): No tweens are overwritten. This is the fastest mode, but you need to be careful not to create any tweens with
-					overlapping properties, otherwise they'll conflict with each other.
-						
-		- ALL (1): Similar to the default behavior of TweenLite/TweenMax where all tweens of the same object are completely
-				   overwritten immediately when the tween is created. 
-						
-						TweenLite.to(mc, 1, {x:100, y:200});
-						TweenLite.to(mc, 1, {x:300, delay:2}); //immediately overwrites the previous tween
-							
-		- AUTO (2): Searches for and overwrites only individual overlapping properties in tweens that are running at the time the tween begins. 
-						
-						TweenLite.to(mc, 1, {x:100, y:200});
-						TweenLite.to(mc, 1, {x:300}); //only overwrites the "x" property in the previous tween
-							
-		- CONCURRENT (3): Overwrites all tweens of the same object that are active at the time the tween begins.
-						
-						TweenLite.to(mc, 1, {x:100, y:200});
-						TweenLite.to(mc, 1, {x:300, delay:2}); //does NOT overwrite the previous tween because the first tween will have finished by the time this one begins.
-		
-		
-	To add OverwriteManager's capabilities to TweenLite, you must init() the class once (typically on the first frame of your file) like so:
-			
-		OverwriteManager.init();
-		
-	You do NOT need to add this line if you're using TweenMax because it automatically does it internally.
-	
-
-EXAMPLES: 
-
-	To start OverwriteManager in AUTO mode (the default) and then do a simple TweenLite tween, simply do:
-		
-		import gs.*;
-		
-		OverwriteManager.init();
-		TweenLite.to(mc, 2, {x:"300"});
-		
-	You can also define overwrite behavior in individual tweens, like so:
-	
-		import gs.*;
-		
-		OverwriteManager.init();
-		TweenLite.to(mc, 2, {x:"300", y:"100"});
-		TweenLite.to(mc, 1, {alpha:0.5, overwrite:1}); //or simply the constant OverwriteManager.ALL
-		TweenLite.to(mc, 3, {x:200, rotation:30, overwrite:2}); //or simply the constant OverwriteManager.AUTO
-		
-	But normally, you'll just control the overwriting directly through the OverwriteManager with its mode property, like this:
-		
-		import gs.*;
-		
-		OverwriteManager.init(OverwriteManager.ALL);
-		
-		//-OR-//
-		
-		OverwriteManager.init();
-		OverwriteManager.mode = OverwriteManager.ALL;
-		
-	The mode can be changed anytime.
-	
-
-NOTES:
-	- This class adds about 1Kb to your SWF.
-
-AUTHOR: Jack Doyle, jack@greensock.com
-Copyright 2009, GreenSock. All rights reserved. This work is subject to the terms in http://www.greensock.com/terms_of_use.html or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
-*/
-
-package gs {
 	import flash.errors.*;
 	import flash.utils.*;
-	
-	import gs.utils.tween.*;
-	
+/**
+ * OverwriteManager resolves conflicts between tweens and controls if (and how) existing tweens of the same
+ * target are overwritten. Think of it as a referee or traffic cop for tweens. For example, let's say you have
+ * a button with <code>ROLL_OVER</code> and <code>ROLL_OUT</code> handlers that tween an object's alpha and the user rolls their mouse
+ * over/out/over/out quickly. Most likely, you'd want each new tween to overwrite the other immediately so
+ * that you don't end up with multiple tweens vying for control of the alpha property. That describes
+ * the <code>ALL_IMMEDIATE</code> mode which is the default mode of TweenLite when it is not used in conjunction with
+ * TweenMax, TimelineLite, or TimelineMax. This keeps things small and fast. However, it isn't ideal for 
+ * setting up sequences because as soon as you create subsequent tweens of the same target in the sequence, 
+ * the previous one gets overwritten. And what if you have a tween that is controling 3 properties and 
+ * then you create another tween that only controls one of those properties? You may want the first tween 
+ * to continue tweening the other 2 (non-overlapping) properties. This describes the <code>AUTO</code> mode which is 
+ * the default whenever TweenMax, TimelineLite, or TimelineMax is used in your swf. OverwriteManager
+ * offers quite a few other modes to choose from in fact:
+ * 
+ * <ul>
+ * 		<li><b> NONE (0):</b> 
+ * 					<ol>
+ * 						<li><b>When:</b> Never</li>
+ * 						<li><b>Finds:</b> Nothing</li>
+ * 						<li><b>Kills:</b> Nothing</li>
+ * 						<li><b>Performance:</b> Excellent</li>
+ * 						<li><b>Good for:</b> When you know that your tweens won't conflict and you want maximum speed.</li>
+ * 					</ol>
+ * 		</li>
+ * 				
+ * 		<li><b> ALL_IMMEDIATE (1):</b> 
+ * 					<ol>
+ * 						<li><b>When:</b> Immediately when the tween is created.</li>
+ * 						<li><b>Finds:</b> All tweens of the same target (regardless of timing or overlapping properties).</li>
+ * 						<li><b>Kills:</b> Every tween found</li>
+ * 						<li><b>Performance:</b> Excellent</li>
+ * 						<li><b>Good for:</b> When you want the tween to take priority over all other tweens of the 
+ * 											 same target, like on button rollovers/rollouts. However, this mode is 
+ * 											 bad for setting up sequences.</li>
+ * 					</ol>
+ * 					This is the default mode for TweenLite unless TweenMax, TimelineLite, 
+ * 					or TimelineMax are used in the SWF (in which case <code>AUTO</code> is the default mode).
+ * 		</li>
+ * 					
+ * 		<li><b> AUTO (2):</b> 
+ * 					<ol>
+ * 						<li><b>When:</b> The first time the tween renders (you can <code>invalidate()</code> a tween to force it 
+ * 										 to re-init and run its overwriting routine again next time it renders)</li>
+ * 						<li><b>Finds:</b> Only tweens of the same target that are active (running). Tweens that haven't started yet are immune.</li>
+ * 						<li><b>Kills:</b> Only individual overlapping tweening properties. If all tweening properties 
+ * 										  have been overwritten, the entire tween will be killed as well.</li>
+ * 						<li><b>Performance:</b> Very good when there aren't many overlapping tweens; fair when there are.</li>
+ * 						<li><b>Good for:</b> Virtually all situations. This mode does the best job overall of handling 
+ * 											 overwriting in an intuitive way and is excellent for sequencing. </li>
+ * 					</ol>
+ * 					This is the default mode when TweenMax, TimelineLite, or TimelineMax is used in your swf (those classes
+ * 					automatically init() OverwriteManager in <code>AUTO</code> mode unless you have already initted OverwriteManager manually).
+ * 		</li>
+ * 					
+ * 		<li><b> CONCURRENT (3):</b> 
+ * 					<ol>
+ * 						<li><b>When:</b> The first time the tween renders (you can <code>invalidate()</code> a tween to force it 
+ * 										 to re-init and run its overwriting routine again next time it renders)</li>
+ * 						<li><b>Finds:</b> Only tweens of the same target that are active (running). Tweens that haven't started yet are immune.</li>
+ * 						<li><b>Kills:</b> Every tween found</li>
+ * 						<li><b>Performance:</b> Very good</li>
+ * 						<li><b>Good for:</b> When you want the target object to only be controled by one tween at a time. Good
+ * 											 for sequencing although AUTO mode is typically better because it will only kill
+ * 											 individual overlapping properties instead of entire tweens.</li>
+ * 					</ol>
+ * 		</li>
+ * 				
+ * 		<li><b> ALL_ONSTART (4):</b> 
+ * 					<ol>
+ * 						<li><b>When:</b> The first time the tween renders (you can <code>invalidate()</code> a tween to force it 
+ * 										 to re-init and run its overwriting routine again next time it renders)</li>
+ * 						<li><b>Finds:</b> All tweens of the same target (regardless of timing or overlapping properties).</li>
+ * 						<li><b>Kills:</b> Every tween found</li>
+ * 						<li><b>Performance:</b> Very good</li>
+ * 						<li><b>Good for:</b> When you want a tween to take priority and wipe out all other tweens of the 
+ * 											 same target even if they start later. This mode is rarely used.</li>
+ * 					</ol>
+ * 		</li>
+ * 
+ * 		<li><b> PREEXISTING (5):</b> 
+ * 					<ol>
+ * 						<li><b>When:</b> The first time the tween renders (you can <code>invalidate()</code> a tween to force it 
+ * 										 to re-init and run its overwriting routine again next time it renders)</li>
+ * 						<li><b>Finds:</b> Only the tweens of the same target that were created before this tween was created 
+ * 										  (regardless of timing or overlapping properties). Virtually identical to <code>ALL_IMMEDIATE</code>
+ * 										  except that <code>PREEXISTING</code> doesn't run its overwriting routines until it renders for the
+ * 										  first time, meaning that if it has a delay, other tweens won't be overwritten until the delay expires.</li>
+ * 						<li><b>Kills:</b> Every tween found</li>
+ * 						<li><b>Performance:</b> Very good</li>
+ * 						<li><b>Good for:</b> When the order in which your code runs plays a critical role, like when tweens
+ * 											 that you create later should always take precidence over previously created ones
+ * 											 regardless of when they're scheduled to run. If <code>ALL_IMMEDIATE</code> is great except
+ * 											 that you want to wait on overwriting until the tween begins, <code>PREEXISTING</code> is perfect.</li>
+ * 					</ol>
+ * 		</li>
+ * 	</ul>
+ * 
+ * With the exception of <code>ALL_IMMEDIATE</code> (which performs overwriting immediatly when the tween is created), 
+ * all overwriting occurs when a tween renders for the first time. So if your tween has a delay of 1 second,
+ * it will not overwrite any tweens until that point. <br /><br />
+ * 
+ * You can define a default overwriting mode for all tweens using the <code>OverwriteManager.init()</code> method, like:<br /><br /><code>
+ * 
+ * 		OverwriteManager.init(OverwriteManager.AUTO);<br /><br /></code>
+ * 
+ * If you want to override the default mode in a particular tween, just use the <code>overwrite</code> special 
+ * property. You can use the static constant or the corresponding number. The following two lines produce 
+ * the same results:<br /><br /><code>
+ * 
+ * 		TweenMax.to(mc, 1, {x:100, overwrite:OverwriteManager.PREXISTING});<br />
+ * 		TweenMax.to(mc, 1, {x:100, overwrite:5});<br /><br /></code>
+ * 
+ * OverwriteManager is a separate, optional class for TweenLite primarily because of file size concerns. 
+ * Without initting OverwriteManager, TweenLite can only recognize modes 0 and 1 (<code>NONE</code> and <code>ALL_IMMEDIATE</code>). 
+ * However, TweenMax, TimelineLite, and TimelineMax automatically init() OverwriteManager in <code>AUTO</code> mode 
+ * unless you have already initted OverwriteManager manually. You do not need to take any additional steps
+ * to use AUTO mode if you're using any of those classes somewhere in your project. Keep in mind too that setting 
+ * the default OverwriteManager mode will affect TweenLite and TweenMax tweens.<br /><br />
+ * 		
+ * 
+ * <b>EXAMPLES:</b><br /><br /> 
+ * 
+ * 	To start OverwriteManager in <code>AUTO</code> mode (the default) and then do a simple TweenLite tween, simply do:<br /><br /><code>
+ * 		
+ * 		import com.greensock.OverwriteManager;<br />
+ * 		import com.greensock.TweenLite;<br /><br />
+ * 		
+ * 		OverwriteManager.init(OverwriteManager.AUTO);<br />
+ * 		TweenLite.to(mc, 2, {x:300});<br /><br /></code>
+ * 		
+ * 	You can also define overwrite behavior in individual tweens, like so:<br /><br /><code>
+ * 	
+ * 		import com.greensock.OverwriteManager;<br />
+ * 		import com.greensock.TweenLite;<br /><br />
+ * 		
+ * 		OverwriteManager.init(2);<br />
+ * 		TweenLite.to(mc, 2, {x:"300", y:"100"});<br />
+ * 		TweenLite.to(mc, 1, {alpha:0.5, overwrite:1}); //or use the constant OverwriteManager.ALL_IMMEDIATE<br />
+ * 		TweenLite.to(mc, 3, {x:200, rotation:30, overwrite:2}); //or use the constant OverwriteManager.AUTO<br /><br /></code>
+ * 		
+ * 		
+ * 	OverwriteManager's mode can be changed anytime after init() is called, like.<br /><br /><code>
+ * 		
+ * 		OverwriteManager.mode = OverwriteManager.CONCURRENT;<br /><br /></code>
+ * 
+ * <b>Copyright 2009, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
+ * 
+ * @author Jack Doyle, jack@greensock.com
+ */	 
 	public class OverwriteManager {
-		public static const version:Number = 3.12;
-		public static const NONE:int = 0;
-		public static const ALL:int = 1;
-		public static const AUTO:int = 2;
-		public static const CONCURRENT:int = 3;
+		/** @private **/
+		public static const version:Number = 6.0;
+		/** Won't overwrite any other tweens **/
+		public static const NONE:int 			= 0;
+		/** Overwrites all existing tweens of the same target immediately when the tween is created **/
+		public static const ALL_IMMEDIATE:int 	= 1;
+		/** Only overwrites individual overlapping tweening properties in other tweens of the same target. TweenMax, TimelineLite, and TimelineMax automatically init() OverwriteManager in this mode if you haven't already called OverwriteManager.init(). **/
+		public static const AUTO:int 			= 2;
+		/** Overwrites tweens of the same target that are active when the tween renders for the first time. **/ 
+		public static const CONCURRENT:int 		= 3;
+		/** Overwrites all tweens of the same target (regardless of overlapping properties or timing) when the tween renders for the first time as opposed to ALL_IMMEDIATE which performs overwriting immediately when the tween is created. **/
+		public static const ALL_ONSTART:int 	= 4;
+		/** Overwrites tweens of the same target that existed before this tween regardless of their start/end time or active state or overlapping properties. **/
+		public static const PREEXISTING:int 	= 5;
+		/** The default overwrite mode for all TweenLite and TweenMax instances **/
 		public static var mode:int;
+		/** @private **/
 		public static var enabled:Boolean;
 		
-		public static function init($mode:int=2):int {
-			if (TweenLite.version < 10.09) {
-				trace("TweenLite warning: Your TweenLite class needs to be updated to work with OverwriteManager (or you may need to clear your ASO files). Please download and install the latest version from http://www.tweenlite.com.");
+		/** 
+		 * Initializes OverwriteManager and sets the default management mode. Options include: 
+		 * <ul>
+		 * 		<li><b> NONE (0):</b> 
+		 * 					<ol>
+		 * 						<li><b>When:</b> Never</li>
+		 * 						<li><b>Finds:</b> Nothing</li>
+		 * 						<li><b>Kills:</b> Nothing</li>
+		 * 						<li><b>Performance:</b> Excellent</li>
+		 * 						<li><b>Good for:</b> When you know that your tweens won't conflict and you want maximum speed.</li>
+		 * 					</ol>
+		 * 		</li>
+		 * 				
+		 * 		<li><b> ALL_IMMEDIATE (1):</b> 
+		 * 					<ol>
+		 * 						<li><b>When:</b> Immediately when the tween is created.</li>
+		 * 						<li><b>Finds:</b> All tweens of the same target (regardless of timing or overlapping properties).</li>
+		 * 						<li><b>Kills:</b> Every tween found</li>
+		 * 						<li><b>Performance:</b> Excellent</li>
+		 * 						<li><b>Good for:</b> When you want the tween to take priority over all other tweens of the 
+		 * 											 same target, like on button rollovers/rollouts. However, this mode is 
+		 * 											 bad for setting up sequences.</li>
+		 * 					</ol>
+		 * 					This is the default mode for TweenLite unless TweenMax, TimelineLite, 
+		 * 					or TimelineMax are used in the SWF (in which case <code>AUTO</code> is the default mode).
+		 * 		</li>
+		 * 					
+		 * 		<li><b> AUTO (2):</b> 
+		 * 					<ol>
+		 * 						<li><b>When:</b> The first time the tween renders (you can <code>invalidate()</code> a tween to force it 
+		 * 										 to re-init and run its overwriting routine again next time it renders)</li>
+		 * 						<li><b>Finds:</b> Only tweens of the same target that are active (running). Tweens that haven't started yet are immune.</li>
+		 * 						<li><b>Kills:</b> Only individual overlapping tweening properties. If all tweening properties 
+		 * 										  have been overwritten, the entire tween will be killed as well.</li>
+		 * 						<li><b>Performance:</b> Very good when there aren't many overlapping tweens; fair when there are.</li>
+		 * 						<li><b>Good for:</b> Virtually all situations. This mode does the best job overall of handling 
+		 * 											 overwriting in an intuitive way and is excellent for sequencing. </li>
+		 * 					</ol>
+		 * 					This is the default mode when TweenMax, TimelineLite, or TimelineMax is used in your swf (those classes
+		 * 					automatically init() OverwriteManager in <code>AUTO</code> mode unless you have already initted OverwriteManager manually).
+		 * 		</li>
+		 * 					
+		 * 		<li><b> CONCURRENT (3):</b> 
+		 * 					<ol>
+		 * 						<li><b>When:</b> The first time the tween renders (you can <code>invalidate()</code> a tween to force it 
+		 * 										 to re-init and run its overwriting routine again next time it renders)</li>
+		 * 						<li><b>Finds:</b> Only tweens of the same target that are active (running). Tweens that haven't started yet are immune.</li>
+		 * 						<li><b>Kills:</b> Every tween found</li>
+		 * 						<li><b>Performance:</b> Very good</li>
+		 * 						<li><b>Good for:</b> When you want the target object to only be controled by one tween at a time. Good
+		 * 											 for sequencing although AUTO mode is typically better because it will only kill
+		 * 											 individual overlapping properties instead of entire tweens.</li>
+		 * 					</ol>
+		 * 		</li>
+		 * 				
+		 * 		<li><b> ALL_ONSTART (4):</b> 
+		 * 					<ol>
+		 * 						<li><b>When:</b> The first time the tween renders (you can <code>invalidate()</code> a tween to force it 
+		 * 										 to re-init and run its overwriting routine again next time it renders)</li>
+		 * 						<li><b>Finds:</b> All tweens of the same target (regardless of timing or overlapping properties).</li>
+		 * 						<li><b>Kills:</b> Every tween found</li>
+		 * 						<li><b>Performance:</b> Very good</li>
+		 * 						<li><b>Good for:</b> When you want a tween to take priority and wipe out all other tweens of the 
+		 * 											 same target even if they start later. This mode is rarely used.</li>
+		 * 					</ol>
+		 * 		</li>
+		 * 
+		 * 		<li><b> PREEXISTING (5):</b> 
+		 * 					<ol>
+		 * 						<li><b>When:</b> The first time the tween renders (you can <code>invalidate()</code> a tween to force it 
+		 * 										 to re-init and run its overwriting routine again next time it renders)</li>
+		 * 						<li><b>Finds:</b> Only the tweens of the same target that were created before this tween was created 
+		 * 										  (regardless of timing or overlapping properties). Virtually identical to <code>ALL_IMMEDIATE</code>
+		 * 										  except that <code>PREEXISTING</code> doesn't run its overwriting routines until it renders for the
+		 * 										  first time, meaning that if it has a delay, other tweens won't be overwritten until the delay expires.</li>
+		 * 						<li><b>Kills:</b> Every tween found</li>
+		 * 						<li><b>Performance:</b> Very good</li>
+		 * 						<li><b>Good for:</b> When the order in which your code runs plays a critical role, like when tweens
+		 * 											 that you create later should always take precidence over previously created ones
+		 * 											 regardless of when they're scheduled to run. If <code>ALL_IMMEDIATE</code> is great except
+		 * 											 that you want to wait on overwriting until the tween begins, <code>PREEXISTING</code> is perfect.</li>
+		 * 					</ol>
+		 * 		</li>
+		 * 	</ul>
+		 * 
+		 * @param defaultMode The default mode that OverwriteManager should use.
+		 **/
+		public static function init(defaultMode:int=2):int {
+			if (TweenLite.version < 11.099994) {
+				throw new Error("Warning: Your TweenLite class needs to be updated to work with OverwriteManager (or you may need to clear your ASO files). Please download and install the latest version from http://www.tweenlite.com.");
 			}
 			TweenLite.overwriteManager = OverwriteManager;
-			mode = $mode;
+			mode = defaultMode;
 			enabled = true;
 			return mode;
 		}
 		
-		public static function manageOverwrites($tween:TweenLite, $targetTweens:Array):void {
-			var vars:Object = $tween.vars;
-			var m:int = (vars.overwrite == undefined) ? mode : int(vars.overwrite);
-			if (m < 2 || $targetTweens == null) {
-				return;
+		/** 
+		 * @private 
+		 * @return Boolean value indicating whether or not properties may have changed on the target when overwriting occurred. For example, when a motionBlur (plugin) is disabled, it swaps out a BitmapData for the target and may alter the alpha. We need to know this in order to determine whether or not the new tween should be re-initted() with the changed properties. 
+		 **/
+		public static function manageOverwrites(tween:TweenLite, props:Object, targetTweens:Array, mode:uint):Boolean {
+			var i:int, changed:Boolean, curTween:TweenLite;
+			if (mode >= 4) {
+				var l:uint = targetTweens.length;
+				for (i = 0; i < l; i++) {
+					curTween = targetTweens[i];
+					if (curTween != tween) {
+						if (curTween.setEnabled(false, false)) {
+							changed = true;
+						}
+					} else if (mode == 5) {
+						break;
+					}
+				}
+				return changed;
+			}
+			var startTime:Number = tween.startTime, overlaps:Array = [], cousins:Array = [], cCount:uint = 0, oCount:uint = 0;
+			i = targetTweens.length;
+			while (i--) {
+				curTween = targetTweens[i];
+				if (curTween == tween || curTween.gc) {
+					//ignore
+				} else if (curTween.timeline != tween.timeline) {
+					if (!getGlobalPaused(curTween)) {
+						cousins[cCount++] = curTween;
+					}
+				} else if (curTween.startTime <= startTime && curTween.startTime + curTween.totalDuration > startTime && !getGlobalPaused(curTween)) {
+					overlaps[oCount++] = curTween;
+				}
 			}
 			
-			var startTime:Number = $tween.startTime, a:Array = [], i:int, tween:TweenLite, index:int = -1;
-			for (i = $targetTweens.length - 1; i > -1; i--) {
-				tween = $targetTweens[i];
-				if (tween == $tween) {
-					index = i;
-				} else if (i < index && tween.startTime <= startTime && tween.startTime + (tween.duration * 1000 / tween.combinedTimeScale) > startTime) {
-					a[a.length] = tween;
+			if (cCount != 0) { //tweens that are nested in other timelines may have various offsets and timeScales so we need to translate them to a global/root one to see how they compare.
+				var combinedTimeScale:Number = tween.cachedTimeScale, combinedStartTime:Number = startTime, cousin:TweenCore, cousinStartTime:Number, timeline:SimpleTimeline;
+				timeline = tween.timeline;
+				while (timeline) {
+					combinedTimeScale *= timeline.cachedTimeScale;
+					combinedStartTime += timeline.startTime;
+					timeline = timeline.timeline;
 				}
-			}
-			if (a.length == 0 || $tween.tweens.length == 0) {
-				return;
-			}
-			if (m == AUTO) {
-				var tweens:Array = $tween.tweens, v:Object = {}, j:int, ti:TweenInfo, overwriteProps:Array;
-				for (i = tweens.length - 1; i > -1; i--) {
-					ti = tweens[i];
-					if (ti.isPlugin) { //is a plugin with multiple overwritable properties
-						if (ti.name == "_MULTIPLE_") {
-							overwriteProps = ti.target.overwriteProps;
-							for (j = overwriteProps.length - 1; j > -1; j--) {
-								v[overwriteProps[j]] = true;
-							}
-						} else {
-							v[ti.name] = true;
-						}
-						v[ti.target.propName] = true;
-					} else {
-						v[ti.name] = true;
+				startTime = combinedTimeScale * combinedStartTime;
+				i = cCount;
+				while (i--) {
+					cousin = cousins[i];
+					combinedTimeScale = cousin.cachedTimeScale;
+					combinedStartTime = cousin.startTime;
+					timeline = cousin.timeline;
+					while (timeline) {
+						combinedTimeScale *= timeline.cachedTimeScale;
+						combinedStartTime += timeline.startTime;
+						timeline = timeline.timeline;
+					}
+					cousinStartTime = combinedTimeScale * combinedStartTime;
+					if (cousinStartTime <= startTime && (cousinStartTime + (cousin.totalDuration * combinedTimeScale) > startTime || cousin.cachedDuration == 0)) {
+						overlaps[oCount++] = cousin;
 					}
 				}
-				
-				for (i = a.length - 1; i > -1; i--) {
-					killVars(v, a[i].exposedVars, a[i].tweens);
+			}
+			
+			if (oCount == 0) {
+				return changed;
+			}
+			
+			i = oCount;
+			if (mode == 2) {
+				while (i--) {
+					curTween = overlaps[i];
+					if (curTween.killVars(props)) {
+						changed = true;
+					}
+					if (curTween.cachedPT1 == null && curTween.initted) {
+						curTween.setEnabled(false, false); //if all property tweens have been overwritten, kill the tween.
+					}
 				}
+			
 			} else {
-				for (i = a.length - 1; i > -1; i--) {
-					a[i].enabled = false; //flags for garbage collection
+				while (i--) {
+					if (TweenLite(overlaps[i]).setEnabled(false, false)) { //flags for garbage collection
+						changed = true;
+					}
 				}
 			}
+			return changed;
 		}
 		
-		public static function killVars($killVars:Object, $vars:Object, $tweens:Array):void {
-			var i:int, p:String, ti:TweenInfo;
-			for (i = $tweens.length - 1; i > -1; i--) {
-				ti = $tweens[i];
-				if (ti.name in $killVars) {
-					$tweens.splice(i, 1);
-				} else if (ti.isPlugin && ti.name == "_MULTIPLE_") { //is a plugin with multiple overwritable properties
-					ti.target.killProps($killVars);
-					if (ti.target.overwriteProps.length == 0) {
-						$tweens.splice(i, 1);
-					}
+		/** @private **/
+		public static function getGlobalPaused(tween:TweenCore):Boolean {
+			while (tween) {
+				if (tween.cachedPaused) {
+					return true;
 				}
+				tween = tween.timeline;
 			}
-			for (p in $killVars) {
-				delete $vars[p];
-			}
+			return false;
 		}
-
+		
 	}
 }

@@ -1,39 +1,41 @@
 ﻿/**
  * 
  * This is the client code that needs to be implemented into a 
- * Flash, AIR or FLEX application to collect debug information 
+ * Flash, FLEX or AIR application to collect debug information 
  * in De MonsterDebugger. 
  * 
  * Be aware that any traces made to De MonsterDebugger may 
- * be viewed by others. De Monster Debugger is intended to be 
- * used to debug unpublished Flash, AIR of FLEX applications in
- * the environment that they will be used in as a final product. 
+ * be viewed by others. De MonsterDebugger is intended to be 
+ * used to debug Flash, FLEX or AIR applications in a protective
+ * environment that they will not be used in the final launch. 
  * Please make sure that you do not send any debug material to
  * the debugger from a live running application. 
  * 
  * Use at your own risk.
  * 
- * @author		Ferdi Koomen
+ * @author		Ferdi Koomen, Joost Harts
  * @company 	De Monsters
  * @link 		http://www.deMonsterDebugger.com
- * @version 	2.03
+ * @version 	2.5.1 (stable)
  * 
- * 
+ *
+ * Special thanks to Arjan van Wijk and Thijs Broerse from MediaMonks.nl
+ *
  * 
  * Copyright 2009, De Monsters
  * 
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
  * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
  */
 
@@ -41,7 +43,9 @@
 package nl.demonsters.debugger
 {
 	
+	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.events.AsyncErrorEvent;
 	import flash.events.SecurityErrorEvent;
@@ -52,7 +56,6 @@ package nl.demonsters.debugger
 	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
 	import flash.utils.Timer;
-	import flash.utils.getTimer;
 	import flash.utils.describeType;
 	import flash.system.System;
 	
@@ -77,19 +80,23 @@ package nl.demonsters.debugger
 		// The allow domain for the local connection
 		// * = Allow communication with all domains
 		private const ALLOWED_DOMAIN			:String = "*";
-		
-		
+
+
 		// Error colors
 		public static const COLOR_NORMAL		:uint = 0x111111;
 		public static const COLOR_ERROR			:uint = 0xFF0000;
 		public static const COLOR_WARNING		:uint = 0xFF3300;
-		
+
 
 		// Commands
 		private const COMMAND_HELLO				:String = "HELLO";
+		private const COMMAND_HELLO_RESPONSE	:String = "HELLO_RESPONSE";
 		private const COMMAND_ROOT				:String = "ROOT";
+		private const COMMAND_BASE				:String = "BASE";
 		private const COMMAND_TRACE				:String = "TRACE";
+		private const COMMAND_INSPECT			:String = "INSPECT";
 		private const COMMAND_GET_OBJECT		:String = "GET_OBJECT";
+		private const COMMAND_GET_DISPLAYOBJECT	:String = "GET_DISPLAYOBJECT";
 		private const COMMAND_GET_PROPERTIES	:String = "GET_PROPERTIES";
 		private const COMMAND_GET_FUNCTIONS		:String = "GET_FUNCTIONS";
 		private const COMMAND_SET_PROPERTY		:String = "SET_PROPERTY";
@@ -98,6 +105,7 @@ package nl.demonsters.debugger
 		private const COMMAND_HIDE_HIGHLIGHT	:String = "HIDE_HIGHLIGHT";
 		private const COMMAND_CLEAR_TRACES		:String = "CLEAR_TRACES";
 		private const COMMAND_MONITOR			:String = "MONITOR";
+		private const COMMAND_SNAPSHOT			:String = "SNAPSHOT";
 		private const COMMAND_NOTFOUND			:String = "NOTFOUND";
 		
 		
@@ -120,7 +128,6 @@ package nl.demonsters.debugger
 		private const TYPE_FUNCTION				:String = "Function";
 		private const TYPE_BYTEARRAY			:String = "ByteArray";	
 		private const TYPE_WARNING				:String = "Warning";
-		private const TYPE_DISPLAYOBJECT		:String = "DisplayObject";
 		
 		
 		// Access types
@@ -149,36 +156,57 @@ package nl.demonsters.debugger
 		private const ICON_FUNCTION				:String = "iconFunction";
 		
 		
-		// Highlight color and border thickness
-		private const HIGHLIGHT_COLOR			:uint = 0xFFFF00;
-		private const HIGHLIGHT_BORDER			:int = 4;
+		// Highlight color and border
+		protected const HIGHLIGHT_COLOR			:uint = 0xFFFF00;
+		protected const HIGHLIGHT_BORDER		:int = 4;
 		
 		
 		// Max local connection package size
-		private const MAX_PACKAGE_BYTES			:int = 40000;
+		// Max buffer size
+		protected const MAX_PACKAGE_BYTES		:int = 40000;
+		protected const MAX_BUFFER_SIZE			:int = 500;
 		
 		
 		// Version
-		private const VERSION:Number = 2.03;
+		protected const VERSION					:Number = 2.51;
+		
+		
+		// FPS interval timer
+		protected const FPS_UPDATE				:int = 500;
 		
 		
 		// The root of the application
-		private var root:Object = null;
+		protected var root:Object = null;
 		
 		
 		// Highlight display object
-		private var highlight:Sprite = null;
+		protected var highlight:Sprite = null;
+		
+		
+		// Message buffer
+		protected var buffer:Array = new Array();
 		
 		
 		// Timer for the monitor
-		private var monitor:Timer;
-		private var monitorTime:uint;
-		private var monitorFrames:uint;
-		private var monitorSprite:Sprite;
-		
-		
+		protected var monitor:Timer;
+		protected var monitorTime:Number;
+		protected var monitorStart:Number;
+		protected var monitorFrames:uint;
+		protected var monitorSprite:Sprite;
+
+				
 		// Enabled / disabled
-		public var _enabled:Boolean = true;
+		protected var isEnabled:Boolean = true;
+		protected var isConnected:Boolean = false;
+		
+		
+		// Debugger for the debugger ;-)
+		//
+		// var debugger:MonsterDebugger = new MonsterDebugger(this);
+		// debugger.logger = function(...args):void {
+		//     trace(args);
+		// };
+		public var logger:Function;
 		
 		
 		/**
@@ -196,25 +224,26 @@ package nl.demonsters.debugger
 			
 				// Setup line out
 				lineOut = new LocalConnection();
-				lineOut.addEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler);
-				lineOut.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
-				lineOut.addEventListener(StatusEvent.STATUS, statusHandler);
+				lineOut.addEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler, false, 0, true);
+				lineOut.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler, false, 0, true);
+				lineOut.addEventListener(StatusEvent.STATUS, statusHandler, false, 0, true);
 				
 				// Setup line in
 				lineIn = new LocalConnection();
-				lineIn.addEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler);
-				lineIn.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
-				lineIn.addEventListener(StatusEvent.STATUS, statusHandler);
+				lineIn.addEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler, false, 0, true);
+				lineIn.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler, false, 0, true);
+				lineIn.addEventListener(StatusEvent.STATUS, statusHandler, false, 0, true);
 				lineIn.allowDomain(ALLOWED_DOMAIN);
 				lineIn.client = this;
 				
 				// Setup the fps and memory listeners
-				monitorTime = getTimer();
+				monitorTime = new Date().time;
+				monitorStart = new Date().time;
 				monitorFrames = 0;
 				monitorSprite = new Sprite();
-				monitorSprite.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
-				monitor = new Timer(500);
-				monitor.addEventListener(TimerEvent.TIMER, monitorHandler);
+				monitorSprite.addEventListener(Event.ENTER_FRAME, enterFrameHandler, false, 0, true);
+				monitor = new Timer(FPS_UPDATE);
+				monitor.addEventListener(TimerEvent.TIMER, monitorHandler, false, 0, true);
 				monitor.start();
 				
 				try {
@@ -227,10 +256,8 @@ package nl.demonsters.debugger
 			
 			// Save the root
 			// Send the first message
-			if (target != MonsterDebugger.singletonCheck) {
-				instance.root = target;
-				instance.send({text:COMMAND_HELLO, version:VERSION});
-			}
+			instance.root = target;
+			instance.send({text:COMMAND_HELLO, version:VERSION});
 		}
 		
 		
@@ -240,7 +267,7 @@ package nl.demonsters.debugger
 		 */
 		public function onReceivedData(data:ByteArray):void
 		{
-			if (enabled)
+			if (isEnabled)
 			{
 				//Variables for the commands
 				var object:*;
@@ -258,15 +285,26 @@ package nl.demonsters.debugger
 				{
 					// Save the domain
 					case COMMAND_HELLO:
-						send({text:COMMAND_HELLO, version:VERSION});
+						isConnected = true;
+						send({text:COMMAND_HELLO, version:VERSION});				
 					break;
 					
+					// Send the buffer
+					case COMMAND_HELLO_RESPONSE:
+						isConnected = true;
+						sendBuffer();
+					break;
+
 					// Get the base of the application
 					case COMMAND_ROOT:
 						object = getObject("", 0);
 						if (object != null) {
 							xml = XML(parseObject(object, "", command["functions"], 1, 2));
 							send({text:COMMAND_ROOT, xml:xml});
+							if (isDisplayObject(object)) {
+								xml = XML(parseDisplayObject(object, "", command["functions"], 1, 2));
+								send({text:COMMAND_BASE, xml:xml});
+							}
 						}
 					break;
 					
@@ -276,6 +314,17 @@ package nl.demonsters.debugger
 						if (object != null) {
 							xml = XML(parseObject(object, command["target"], command["functions"], 1, 2));
 							send({text:COMMAND_GET_OBJECT, xml:xml});
+						}
+					break;
+					
+					// Return the parsed object
+					case COMMAND_GET_DISPLAYOBJECT:
+						object = getObject(command["target"], 0);
+						if (object != null) {
+							if (isDisplayObject(object)) {
+								xml = XML(parseDisplayObject(object, command["target"], command["functions"], 1, 2));
+								send({text:COMMAND_GET_DISPLAYOBJECT, xml:xml});
+							}
 						}
 					break;
 					
@@ -304,7 +353,7 @@ package nl.demonsters.debugger
 							try {
 								object[command["name"]] = command["value"];
 								send({text:COMMAND_SET_PROPERTY, value:object[command["name"]]});
-							} catch (error1:Error) {
+							} catch (error:Error) {
 								send({text:COMMAND_NOTFOUND, target:command["target"]});
 								break;
 							}
@@ -331,7 +380,7 @@ package nl.demonsters.debugger
 							try {
 								highlight.parent.removeChild(highlight);
 								highlight = null;
-							} catch(error2:Error) {
+							} catch(error:Error) {
 								//
 							}
 						}
@@ -349,7 +398,7 @@ package nl.demonsters.debugger
 							highlight.mouseEnabled = false;
 							try {
 								object["parent"].addChild(highlight);
-							} catch(error3:Error) {
+							} catch(error:Error) {
 								highlight = null;
 							}
 						}
@@ -361,7 +410,7 @@ package nl.demonsters.debugger
 							try {
 								highlight.parent.removeChild(highlight);
 								highlight = null;
-							} catch(error4:Error) {
+							} catch(error:Error) {
 								//
 							}
 						}
@@ -375,9 +424,9 @@ package nl.demonsters.debugger
 		 * The actual send function
 		 * @param data: The raw uncompressed data to send
 		 */
-		private function send(data:Object):void
+		protected function send(data:Object):void
 		{
-			if (enabled)
+			if (isEnabled)
 			{
 				// Compress the data
 				var item:ByteArray = new ByteArray();
@@ -442,6 +491,115 @@ package nl.demonsters.debugger
 		
 		
 		/**
+		 * Send data to the buffer
+		 * @param data: The raw uncompressed data to send
+		 */
+		protected function sendToBuffer(obj:Object):void
+		{
+			buffer.push(obj);
+			if (buffer.length > MAX_BUFFER_SIZE) buffer.shift();
+		}
+		
+		
+		/**
+		 * Send the buffer to the flex app
+		 */
+		protected function sendBuffer():void
+		{
+			if (buffer.length > 0) {
+				while (buffer.length != 0) {
+					send(buffer.shift());
+				}
+			}
+		}
+
+
+		/**
+		 * Set another target in the or window
+		 * @param target: The target to display in the or
+		 */
+		public static function inspect(target:Object):void
+		{
+			// Check if the debugger has been enabled
+			if (instance != null && target != null)
+			{
+				// Set the new root
+				instance.root = target;
+				
+				// Parse the new target
+				// Send the new XML
+				var object:* = instance.getObject("", 0);
+				if (object != null) {
+					var xml:XML = XML(instance.parseObject(object, "", false, 1, 2));
+					var obj:Object = {text:instance.COMMAND_INSPECT, xml:xml};
+					if (instance.isConnected) {
+						instance.send(obj);
+					} else {
+						instance.sendToBuffer(obj);
+					}
+					if (instance.isDisplayObject(object)) {
+						xml = XML(instance.parseDisplayObject(object, "", false, 1, 2));
+						obj = {text:instance.COMMAND_BASE, xml:xml};
+						if (instance.isConnected) {
+							instance.send(obj);
+						} else {
+							instance.sendToBuffer(obj);
+						}
+					}
+				}
+			}
+		}
+		
+		
+		/**
+		 * Static snapshot function
+		 * @param target: The target from where the snapshot is called
+		 * @param object: The object to snapshot
+		 * @param color: The color in the interface
+		 */
+		public static function snapshot(target:DisplayObject, color:uint = 0x111111):void
+		{
+			if (instance == null) instance = new MonsterDebugger(null);
+			if (MonsterDebugger.enabled) instance.snapshotInternal(target, color);
+		}
+		
+		
+		/**
+		 * Private snapshot function
+		 * @param target: The target from where the snapshot is called
+		 * @param object: The object to snapshot
+		 * @param color: The color in the interface
+		 */
+		protected function snapshotInternal(target:DisplayObject, color:uint = 0x111111):void
+		{
+			if (isEnabled)
+			{
+				// Create the bitmapdata
+				var bitmapData:BitmapData = new BitmapData(target.width, target.height);
+				bitmapData.draw(target);
+				
+				// Write the bitmap in the bytearray
+				var bytes:ByteArray = bitmapData.getPixels(new Rectangle(0, 0, target.width, target.height));
+				
+				// Get memory
+				var memory:uint = System.totalMemory;
+				
+				//Create a send object
+				var obj:Object = {text:COMMAND_SNAPSHOT, date:new Date(), target:String(target), bytes:bytes, width:target.width, height:target.height, color:color, memory:memory};
+				if (isConnected) {
+					send(obj);
+				} else {
+					sendToBuffer(obj);
+				}
+
+				// Clear the data
+				bitmapData.dispose();
+				bytes = null;
+			}
+		}
+		
+		
+		/**
 		 * Static trace function
 		 * @param target: The target from where the trace is called
 		 * @param object: The object to trace
@@ -451,7 +609,7 @@ package nl.demonsters.debugger
 		 */
 		public static function trace(target:Object, object:*, color:uint = 0x111111, functions:Boolean = false, depth:int = 4):void
 		{
-			if (instance == null) instance = new MonsterDebugger(MonsterDebugger.singletonCheck);
+			if (instance == null) instance = new MonsterDebugger(target);
 			if (MonsterDebugger.enabled) instance.traceInternal(target, object, color, functions, depth);
 		}
 		
@@ -464,15 +622,23 @@ package nl.demonsters.debugger
 		 * @parem functions: Include or exclude the functions
 		 * @param depth: The maximum depth of the trace
 		 */
-		private function traceInternal(target:Object, object:*, color:uint = 0x111111, functions:Boolean = false, depth:int = 4):void
+		protected function traceInternal(target:Object, object:*, color:uint = 0x111111, functions:Boolean = false, depth:int = 4):void
 		{
-			if (enabled)
+			if (isEnabled)
 			{
 				// Get the object information
 				var xml:XML = XML(parseObject(object, "", functions, 1, depth));
 				
+				// Get memory
+				var memory:uint = System.totalMemory;
+				
 				//Create a send object
-				send({text:COMMAND_TRACE, date:new Date(), target:String(target), xml:xml, color:color});
+				var obj:Object = {text:COMMAND_TRACE, date:new Date(), target:String(target), xml:xml, color:color, memory:memory};
+				if (isConnected) {
+					send(obj);
+				} else {
+					sendToBuffer(obj);
+				}
 			}
 		}
 		
@@ -483,7 +649,7 @@ package nl.demonsters.debugger
 		 */
 		public static function clearTraces():void
 		{
-			if (instance == null) instance = new MonsterDebugger(MonsterDebugger.singletonCheck);
+			if (instance == null) instance = new MonsterDebugger(null);
 			if (MonsterDebugger.enabled) instance.clearTracesInternal();
 		}
 		
@@ -492,12 +658,16 @@ package nl.demonsters.debugger
 		 * Private clear traces function
 		 * This clears the traces in the application
 		 */
-		private function clearTracesInternal():void
+		protected function clearTracesInternal():void
 		{
-			if (enabled)
-			{
-				//Create a send object
-				send({text:COMMAND_CLEAR_TRACES});
+			//Create a send object
+			if (isEnabled) {
+				var obj:Object = {text:COMMAND_CLEAR_TRACES};
+				if (isConnected) {
+					send(obj);
+				} else {
+					sendToBuffer(obj);
+				}
 			}
 		}
 		
@@ -506,26 +676,9 @@ package nl.demonsters.debugger
 		 * Check if an object is drawable displayobject
 		 * @param object: The object to check
 		 */
-		private function isDisplayObject(object:*):Boolean
+		protected function isDisplayObject(object:*):Boolean
 		{
-			// The return value
-			var drawable:Boolean = false;
-			
-			try {
-				// Get the descriptor
-				var description:XML = describeType(object);
-				for (var i:int = 0; i < description.extendsClass.length(); i++) {
-					if (parseType(description.extendsClass[i].@type) == TYPE_DISPLAYOBJECT){
-						drawable = true;
-						break;
-					}
-				}
-			} catch(error:Error) {
-				// Do nothing
-			}
-			
-			// Return the flag
-			return drawable;
+			return (object is DisplayObject || object is DisplayObjectContainer);
 		}
 		
 		
@@ -534,7 +687,7 @@ package nl.demonsters.debugger
 		 * @param target: A point seperated path to the object
 		 * @param parent: Number of parents 
 		 */
-		private function getObject(target:String = "", parent:int = 0):*
+		protected function getObject(target:String = "", parent:int = 0):*
 		{
 			// Object to return
 			var object:* = instance.root;
@@ -554,9 +707,13 @@ package nl.demonsters.debugger
 						try
 						{
 							// Check if we should call the XML children function()
+							// Or the getChildAt function
 							// If not: Just update the path to the object
 							if (splitted[i] == "children()") {
 								object = object.children();
+							} else if (splitted[i].indexOf("getChildAt(") == 0) {
+								var index:Number = splitted[i].substring(11, splitted[i].indexOf(")", 11));
+								object = DisplayObjectContainer(object).getChildAt(index);
 							} else {
 								object = object[splitted[i]];
 							}
@@ -564,7 +721,12 @@ package nl.demonsters.debugger
 						catch (error:ReferenceError)
 						{
 							// The object is not found
-							send({text:COMMAND_NOTFOUND, target:target});
+							var obj:Object = {text:COMMAND_NOTFOUND, target:target};
+							if (isConnected) {
+								send(obj);
+							} else {
+								sendToBuffer(obj);
+							}
 							break;
 						}
 					}
@@ -575,13 +737,13 @@ package nl.demonsters.debugger
 			return object;
 		}
 		
-		
+
 		/**
 		 * Get the functions of an object
 		 * @param object: The object to parse
 		 * @param target: A point seperated path to the object
 		 */
-		private function getFunctions(object:*, target:String = ""):String
+		protected function getFunctions(object:*, target:String = ""):String
 		{
 			// The return string
 			var xml:String = "";
@@ -705,7 +867,12 @@ package nl.demonsters.debugger
 				msg += createNode("root");
 				msg += createNode("node", {icon:ICON_WARNING, type:TYPE_WARNING, label:"Not found", name:"Not found"}, true);
 				msg += createNode("/root");
-				send({text:COMMAND_NOTFOUND, target:target, xml:XML(msg)});
+				var obj:Object = {text:COMMAND_NOTFOUND, target:target, xml:XML(msg)};
+				if (isConnected) {
+					send(obj);
+				} else {
+					sendToBuffer(obj);
+				}
 			}
 			
 			// Create a closing node
@@ -724,7 +891,7 @@ package nl.demonsters.debugger
 		 * @param currentDepth: The current trace depth
 		 * @param maxDepth:: The maximum trace depth
 		 */
-		private function parseObject(object:*, target:String = "", functions:Boolean = false, currentDepth:int = 1, maxDepth:int = 4):String
+		protected function parseObject(object:*, target:String = "", functions:Boolean = false, currentDepth:int = 1, maxDepth:int = 4):String
 		{
 			// Variables needed in the loops
 			var xml:String = "";
@@ -787,12 +954,19 @@ package nl.demonsters.debugger
 							permission:		PERMISSION_READONLY
 						}, true);
 						
+						// Get and sort the properties
+						var keys:Array = new Array();
+						for (var key:* in object) {
+							keys.push(key);
+						}
+						keys.sort();
+						
 						// Loop through the array
-						for (i = 0; i < object["length"]; i++)
+						for (i = 0; i < keys.length; i++)
 						{
 							// Save the type
-							childType = parseType(describeType(object[i]).@name);
-							childTarget = target + "." + String(i);
+							childType = parseType(describeType(object[keys[i]]).@name);
+							childTarget = target + "." + String(keys[i]);
 							
 							// Check if we can create a single string or a new node
 							if (childType == TYPE_STRING || childType == TYPE_BOOLEAN || childType == TYPE_NUMBER || childType == TYPE_INT || childType == TYPE_UINT || childType == TYPE_FUNCTION)
@@ -803,19 +977,19 @@ package nl.demonsters.debugger
 								// Check if the string is a XML string
 								if (childType == TYPE_STRING) {
 									try {
-										isXMLString = new XML(object[i]);
+										isXMLString = new XML(object[keys[i]]);
 										if (!isXMLString.hasSimpleContent() && isXMLString.children().length() > 0) isXML = true;
-									} catch(error1:TypeError) {}
+									} catch(error:TypeError) {}
 								}
 								
 								try {
 									if (!isXML) {
 										xml += createNode("node", {
 											icon:			ICON_VARIABLE,
-											label:			"[" + i + "] (" + childType + ") = " + printObject(object[i], childType), 
-											name:			"[" + i + "]",
+											label:			"[" + keys[i] + "] (" + childType + ") = " + printObject(object[keys[i]], childType), 
+											name:			"[" + keys[i] + "]",
 											type:			childType, 
-											value:			printObject(object[i], childType), 
+											value:			printObject(object[keys[i]], childType), 
 											target:			childTarget,
 											access:			ACCESS_VARIABLE,
 											permission:		PERMISSION_READWRITE
@@ -823,8 +997,8 @@ package nl.demonsters.debugger
 									} else {
 										xml += createNode("node", {
 											icon:			ICON_VARIABLE,
-											label:			"[" + i + "] (" + childType + ")", 
-											name:			"[" + i + "]",
+											label:			"[" + keys[i] + "] (" + childType + ")", 
+											name:			"[" + keys[i] + "]",
 											type:			childType, 
 											value:			"", 
 											target:			childTarget,
@@ -834,14 +1008,14 @@ package nl.demonsters.debugger
 										xml += parseXML(isXMLString, childTarget + "." + "cildren()", currentDepth, maxDepth);
 										xml += createNode("/node");
 									}
-								} catch(error2:Error) {}
+								} catch(error:Error) {}
 							}
 							else
 							{
 								xml += createNode("node", {
 									icon:			ICON_VARIABLE,
-									label:			"[" + i + "] (" + childType + ")", 
-									name:			"[" + i + "]",
+									label:			"[" + keys[i] + "] (" + childType + ")", 
+									name:			"[" + keys[i] + "]",
 									type:			childType, 
 									value:			"",
 									target:			childTarget,
@@ -851,9 +1025,9 @@ package nl.demonsters.debugger
 								try 
 								{
 									// Try to parse the object
-									xml += parseObject(object[i], childTarget, functions, currentDepth + 1, maxDepth);
+									xml += parseObject(object[keys[i]], childTarget, functions, currentDepth + 1, maxDepth);
 								} 
-								catch(error3:Error)
+								catch(error:Error)
 								{
 									// If this fails add a warning message for the user
 									xml += createNode("node", {icon:ICON_WARNING, type:TYPE_WARNING, label:"Unreadable", name:"Unreadable"}, true);
@@ -897,7 +1071,7 @@ package nl.demonsters.debugger
 									try {
 										isXMLString = new XML(object[properties[i]]);
 										if (!isXMLString.hasSimpleContent() && isXMLString.children().length() > 0) isXML = true;
-									} catch(error4:TypeError) {}
+									} catch(error:TypeError) {}
 								}
 								
 								try {
@@ -926,7 +1100,7 @@ package nl.demonsters.debugger
 										xml += parseXML(isXMLString, childTarget + "." + "cildren()", currentDepth, maxDepth);
 										xml += createNode("/node");
 									}
-								} catch(error5:Error) {}
+								} catch(error:Error) {}
 							}
 							else
 							{
@@ -945,7 +1119,7 @@ package nl.demonsters.debugger
 									// Try to parse the object
 									xml += parseObject(object[properties[i]], childTarget, functions, currentDepth + 1, maxDepth);
 								} 
-								catch(error6:Error)
+								catch(error:Error)
 								{
 									// If this fails add a warning message for the user
 									xml += createNode("node", {icon:ICON_WARNING, type:TYPE_WARNING, label:"Unreadable", name:"Unreadable"}, true);
@@ -1011,7 +1185,7 @@ package nl.demonsters.debugger
 							try {
 								isXMLString = new XML(object);
 								if (!isXMLString.hasSimpleContent() && isXMLString.children().length() > 0) isXML = true;
-							} catch(error7:TypeError) {}
+							} catch(error:TypeError) {}
 						}
 						
 						try {
@@ -1040,7 +1214,7 @@ package nl.demonsters.debugger
 								xml += parseXML(isXMLString, target + "." + "cildren()", currentDepth, maxDepth);
 								xml += createNode("/node");
 							}
-						} catch(error8:Error) {}
+						} catch(error:Error) {}
 					}
 					
 					
@@ -1164,7 +1338,7 @@ package nl.demonsters.debugger
 										try {
 											isXMLString = new XML(object[childName]);
 											if (!isXMLString.hasSimpleContent() && isXMLString.children().length() > 0) isXML = true;
-										} catch(error9:TypeError) {}
+										} catch(error:TypeError) {}
 									}
 									
 									try {
@@ -1193,7 +1367,7 @@ package nl.demonsters.debugger
 											xml += parseXML(isXMLString, childTarget + "." + "cildren()", currentDepth, maxDepth);
 											xml += createNode("/node");
 										}
-									} catch(error10:Error) {}
+									} catch(error:Error) {}
 								}
 								else
 								{
@@ -1211,7 +1385,7 @@ package nl.demonsters.debugger
 										// Try to parse the object
 										xml += parseObject(object[childName], childTarget, functions, currentDepth + 1, maxDepth);
 									} 
-									catch(error11:Error)
+									catch(error:Error)
 									{
 										// If this fails add a warning message for the user
 										xml += createNode("node", {icon:ICON_WARNING, type:TYPE_WARNING, label:"Unreadable", name:"Unreadable"}, true);
@@ -1260,14 +1434,19 @@ package nl.demonsters.debugger
 						if (currentDepth == 1) xml += createNode("/node");
 					}
 				} 
-				catch (error12:Error)
+				catch (error:Error)
 				{
 					// The object is not found
 					var msg:String = "";
 					msg += createNode("root");
 					msg += createNode("node", {icon:ICON_WARNING, type:TYPE_WARNING, label:"Not found", name:"Not found"}, true);
 					msg += createNode("/root");
-					send({text:COMMAND_NOTFOUND, target:target, xml:XML(msg)});
+					var obj:Object = {text:COMMAND_NOTFOUND, target:target, xml:XML(msg)};
+					if (isConnected) {
+						send(obj);
+					} else {
+						sendToBuffer(obj);
+					}
 				}
 				
 				// Create a closing node if needed
@@ -1276,6 +1455,115 @@ package nl.demonsters.debugger
 	
 			//Return the xml
 			return xml;
+		}
+
+
+		/**
+		 * Parse a display object
+		 * @param object: The object to parse
+		 * @param target: A point seperated path to the object
+		 * @param functions: Include or exclude functions
+		 * @param currentDepth: The current trace depth
+		 * @param maxDepth:: The maximum trace depth
+		 */
+		protected function parseDisplayObject(object:*, target:String = "", functions:Boolean = false, currentDepth:int = 1, maxDepth:int = 4):String
+		{
+			// Variables needed in the loops
+			var xml:String = "";
+			var childs:Array;
+			var child:DisplayObject;
+			var childType:String = "";
+			var childIcon:String = "";
+			var childName:String = "";
+			var childTarget:String = "";
+			var childChildren:String = "";
+			var i:int = 0;
+			
+			// Check if the max trace depth is reached
+			if (maxDepth == -1 || currentDepth <= maxDepth)
+			{
+				// Create the opening node if needed
+				if (currentDepth == 1) xml += createNode("root");
+				
+				try
+				{
+					// Add data description if needed
+					if (currentDepth == 1) {
+						var ojectName:String = DisplayObject(object).name;
+						if (ojectName == null || ojectName == "null") {
+							ojectName = "DisplayObject";
+						}
+						xml += createNode("node", {icon:ICON_ROOT, label:"(" + ojectName + ")", target:target});
+					}
+					
+					// Get the childs
+					childs = new Array();
+					for (i = 0; i < DisplayObjectContainer(object).numChildren; i++) {
+						childs.push(DisplayObjectContainer(object).getChildAt(i));
+					}
+					
+					// Loop through the array
+					for (i = 0; i < childs.length; i++)
+					{
+						// Save the child properties
+						child = childs[i];
+						childName = describeType(child).@name;
+						childType = parseType(childName);
+						childTarget = target + "." + "getChildAt(" + i + ")";
+						childIcon = child is DisplayObjectContainer ? ICON_ROOT : ICON_VARIABLE;
+						childChildren = child is DisplayObjectContainer ? String(DisplayObjectContainer(child).numChildren) : "";
+						
+						// Create the node
+						xml += createNode("node", {
+							icon: 			childIcon, 
+							label: 			child.name + " (" + childType + ") " + childChildren, 
+							name:			child.name, 
+							type:			childType, 
+							value:			printObject(child, childType),
+							target: 		childTarget,
+							access:			ACCESS_VARIABLE,
+							permission:		PERMISSION_READWRITE
+						});
+						
+						try 
+						{
+							// Try to parse the object
+							xml += parseDisplayObject(child, childTarget, functions, currentDepth + 1, maxDepth);
+						}
+						catch(error:Error)
+						{
+							// If this fails add a warning message for the user
+							xml += createNode("node", {icon:ICON_WARNING, type:TYPE_WARNING, label:"Unreadable", name:"Unreadable"}, true);
+						}
+						
+						xml += createNode("/node");
+					}
+					
+					// Create a closing node if needed
+					if (currentDepth == 1) xml += createNode("/node");
+				} 
+				catch (error:Error)
+				{
+					// The object is not found
+					var msg:String = "";
+					msg += createNode("root");
+					msg += createNode("node", {icon:ICON_WARNING, type:TYPE_WARNING, label:"Not found", name:"Not found"}, true);
+					msg += createNode("/root");
+					var obj:Object = {text:COMMAND_NOTFOUND, target:target, xml:XML(msg)};
+					if (isConnected) {
+						send(obj);
+					} else {
+						sendToBuffer(obj);
+					}
+				}
+				
+				// Create a closing node if needed
+				if (currentDepth == 1) xml += createNode("/root");
+			}
+	
+			//Return the xml
+			return xml;
+
 		}
 		
 		
@@ -1286,7 +1574,7 @@ package nl.demonsters.debugger
 		 * @param currentDepth: The current trace depth
 		 * @param maxDepth:: The maximum trace depth
 		 */
-		private function parseXML(node:*, target:String = "", currentDepth:int = 1, maxDepth:int = -1):String
+		protected function parseXML(node:*, target:String = "", currentDepth:int = 1, maxDepth:int = -1):String
 		{
 			// Create a return string
 			var xml:String = "";
@@ -1423,18 +1711,20 @@ package nl.demonsters.debugger
 		 * We could also use getDefinitionByName() but that can't parse "builtin.as$0::MethodClosure"
 		 * @param type: The string to parse
 		 */
-		private function parseType(type:String):String
+		protected function parseType(type:String):String
 		{
 			// The return string
 			var s:String = type;
 			
 			// Remove the package information if needed
+			// Magic number 2 = length of ::
 			if (type.lastIndexOf("::") != -1) {
 				s = type.substring(type.lastIndexOf("::") + 2, type.length);
 			}
 			
 			// Remove the items after the .
 			// Vector.<String> becomes Vector
+			// Magic number 1 = length of .
 			if (s.lastIndexOf(".") != -1) {
 				s = s.substring(0, s.lastIndexOf("."));
 			}
@@ -1456,7 +1746,7 @@ package nl.demonsters.debugger
 		 * @param object: The values of the node
 		 * @param close: Create a closing tag
 		 */
-		private function createNode(title:String, object:Object = null, close:Boolean = false):String
+		protected function createNode(title:String, object:Object = null, close:Boolean = false):String
 		{
 			// The string to store the node
 			var xml:String = "";
@@ -1467,7 +1757,7 @@ package nl.demonsters.debugger
 			//Loop through the values
 			if (object) {
 				for (var prop:* in object) {
-					xml += " " + prop + "='" + object[prop] + "'";
+					xml += " " + prop + "=\"" + object[prop] + "\"";
 				}
 			}
 			
@@ -1488,7 +1778,7 @@ package nl.demonsters.debugger
 		 * @param object: The object to parse
 		 * @param type: The object type
 		 */
-		private function printObject(object:*, type:String):String
+		protected function printObject(object:*, type:String):String
 		{
 			// Create a return string
 			var s:String = "";
@@ -1516,9 +1806,9 @@ package nl.demonsters.debugger
 		 * Send the current FPS
 		 * @param event: Basic event
 		 */
-		private function enterFrameHandler(event:Event):void
+		protected function enterFrameHandler(event:Event):void
 		{
-			if (enabled) {
+			if (isEnabled) {
             	monitorFrames++;
 			}
 		}
@@ -1528,23 +1818,28 @@ package nl.demonsters.debugger
 		 * Send the current memory consumption
 		 * @param event: Basic timer event
 		 */
-		private function monitorHandler(event:TimerEvent):void
+		protected function monitorHandler(event:TimerEvent):void
 		{
-			if (enabled)
+			if (isEnabled)
 			{
 				// Get the total Flash Player memory consumption
 				// Note: This includes all Flash Player instances
 				var memory:uint = System.totalMemory;
 				
 				// Calculate the frames pro second
-				var now:uint = getTimer();
-				var delta:uint = now - monitorTime;
-				var fps:uint = monitorFrames / delta * 1000;
+				var now:Number = new Date().time;
+				var delta:Number = now - monitorTime;
+				var fps:uint = monitorFrames / delta * 1000; // Miliseconds to seconds
 				monitorFrames = 0;
 				monitorTime = now;
 				
 				// Send the data
-				send({text:COMMAND_MONITOR, memory:memory, fps:fps, time:now, date:new Date()});
+				var obj:Object = {text:COMMAND_MONITOR, memory:memory, fps:fps, time:now, start:monitorStart};
+				if (isConnected) {
+					send(obj);
+				} else {
+					sendToBuffer(obj);
+				}
 			}
 		}
 		
@@ -1553,35 +1848,30 @@ package nl.demonsters.debugger
 		 * Converts regular characters to HTML characters
 		 * @param s: The string to convert
 		 */
-		private function htmlEscape(s:String):String
+		protected function htmlEscape(s:String):String
 		{
 			if (s) {
-				// Remove single quotes
-				while(s.indexOf("\'") != -1) {
-					s = s.replace("\'", "&apos;");
+				
+				// Remove html elements
+				if (s.indexOf("&") != -1) {
+					s = s.split("&").join("&amp;");
 				}
-				// Remove double quotes
-				while(s.indexOf("\"") != -1) {
-					s = s.replace("\"", "&quot;");
+				if (s.indexOf("<") != -1) {
+					s = s.split("<").join("&lt;");
 				}
+				if (s.indexOf(">") != -1) {
+					s = s.split(">").join("&gt;");
+				}
+				if (s.indexOf("\'") != -1) {
+					s = s.split("\'").join("&apos;");
+				}
+				if (s.indexOf("\"") != -1) {
+					s = s.split("\"").join("&quot;");
+				}
+				
+				// Return the xml
                 var xml:XML = <a>{s}</a>;
-                return xml.toXMLString().replace(/(^<a>)|(<\/a>$)/g, "");
-			} else {
-				return "";
-			}
-		}
-			
-		
-		/**
-		 * Converts HTML characters to regular characters
-		 * @param s: The string to convert
-		 */
-		private function htmlUnescape(s:String):String
-		{
-			if (s) {
-				var xml:XML = <a/>;
-                xml.replace(0, s);
-                return String(xml);
+				return xml.toXMLString().replace(/(^<a>)|(<\/a>$)|(^<a\/>$)/g, "");
 			} else {
 				return "";
 			}
@@ -1594,29 +1884,31 @@ package nl.demonsters.debugger
 		public static function get enabled():Boolean
 		{
 			if (instance == null) instance = new MonsterDebugger(null);
-			return instance._enabled;
+			return instance.isEnabled;
 		}
 		public static function set enabled(value:Boolean):void
 		{
 			if (instance == null) instance = new MonsterDebugger(null);
-			instance._enabled = value;
+			instance.isEnabled = value;
 		}
 		
 		
 		/**
-		 * This function is used for the singleton check in the constructor
-		 * and is given as an argument in the trace and clearTrace function
+		 * Event handlers for localconnection
+		 * Disconnect on error
 		 */
-		private static function singletonCheck():void{}
+		private function asyncErrorHandler(event:AsyncErrorEvent):void {
+			isConnected = false;
+		}
+		private function securityErrorHandler(event:SecurityErrorEvent):void {
+			isConnected = false;
+		}
+		private function statusHandler(event:StatusEvent):void {
+			if (event.level == "error") {
+				isConnected = false;
+			}
+		}
 		
-		
-		/**
-		 * Event handlers
-		 * Can be used for debugging
-		 */
-		private function asyncErrorHandler(event:AsyncErrorEvent):void {}
-		private function securityErrorHandler(event:SecurityErrorEvent):void {}
-		private function statusHandler(event:StatusEvent):void {}
 	}
 	
 }
