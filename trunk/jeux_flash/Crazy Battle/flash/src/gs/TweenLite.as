@@ -1,552 +1,695 @@
-﻿/*
-VERSION: 10.092
-DATE: 3/31/2009
-ACTIONSCRIPT VERSION: 3.0 (AS2 version is also available)
-UPDATES & MORE DETAILED DOCUMENTATION AT: http://www.TweenLite.com
-DESCRIPTION:
-	TweenLite is an extremely lightweight, FAST, and flexible tweening engine that serves as the core of 
-	the GreenSock tweening platform. There are plenty of other tweening engines out there to choose from,
-	so here's why you might want to consider TweenLite:
+﻿/**
+ * VERSION: 11.101
+ * DATE: 10/22/2009
+ * AS3 (AS2 version is also available)
+ * UPDATES AND DOCUMENTATION AT: http://www.TweenLite.com
+ **/
+package com.greensock {
+	import com.greensock.core.*;
+	import com.greensock.plugins.*;
 	
-		- SPEED - I'm not aware of any popular tweening engine with a similar feature set that's as fast
-		  as TweenLite. See some speed comparisons yourself at http://blog.greensock.com/tweening-speed-test/
-		  
-		- Feature set - In addition to tweening ANY numeric property of ANY object, TweenLite can tween filters, 
-		  hex colors, volume, tint, and frames, and even do bezier tweening, plus LOTS more. TweenMax extends 
-		  TweenLite and adds even more capabilities like pause/resume, rounding, event listeners, and more. 
-		  Overwrite management is an important consideration for a tweening engine as well which is another 
-		  area where the GreenSock tweening platform shines. You have options for AUTO overwriting or you can
-		  manually define how each tween will handle overlapping tweens of the same object.
-		  
-		- Expandability - With its new plugin architecture, you can activate as many (or as few) features as your 
-		  project requires. Or write your own plugin if you need a feature that's unavailable. Minimize bloat, and
-		  maximize performance.
-		  
-		- Management features - TweenGroup makes it surprisingly simple to create complex sequences and groups
-		  of TweenLite/Max tweens that you can pause(), resume(), restart(), or reverse(). You can even tween a TweenGroup's 
-		  progress property to fastforward or rewind the entire group/sequence. 
-		  
-		- Ease of use - Designers and Developers alike rave about how intuitive the GreenSock tweening platform is.
-		
-		- Updates - Frequent updates and feature additions make the GreenSock tweening platform reliable and robust.
-		
-		- AS2 and AS3 - Most other engines are only developed for AS2 or AS3 but not both.
-	
-
-PARAMETERS:
-	1) $target : Object - Target object whose properties we're tweening
-	2) $duration : Number - Duration (in seconds) of the tween
-	3) $vars : Object - An object containing the end values of all the properties you'd like tweened (or if you're using 
-	         			TweenLite.from(), these variables would define the BEGINNING values). For example, to tween
-	         			myClip's alpha to 0.5 over the course of 1 second, you'd do: TweenLite.to(myClip, 1, {alpha:0.5}).
-	         			
-SPECIAL PROPERTIES (no plugins required):
-	Any of the following special properties can optionally be passed in through the $vars object (the third parameter):
-
-	delay : Number - Amount of delay before the tween should begin (in seconds).
-	
-	ease : Function - Use any standard easing equation to control the rate of change. For example, 
-					  gs.easing.Elastic.easeOut. The Default is Regular.easeOut.
-	
-	easeParams : Array - An Array of extra parameters to feed the easing equation. This can be useful when 
-						 using an ease like Elastic and want to control extra parameters like the amplitude and period.
-						 Most easing equations, however, don't require extra parameters so you won't need to pass in any easeParams.
-	
-	onStart : Function - If you'd like to call a function as soon as the tween begins, reference it here.
-	
-	onStartParams : Array - An Array of parameters to pass the onStart function.
-	
-	onUpdate : Function - If you'd like to call a function every time the property values are updated (on every frame during
-						  the course of the tween), reference it here.
-	
-	onUpdateParams : Array - An Array of parameters to pass the onUpdate function
-	
-	onComplete : Function - If you'd like to call a function when the tween has finished, reference it here. 
-	
-	onCompleteParams : Array - An Array of parameters to pass the onComplete function
-	
-	persist : Boolean - if true, the TweenLite instance will NOT automatically be removed by the garbage collector when it is complete.
-  					    However, it is still eligible to be overwritten by new tweens even if persist is true. By default, it is false.
-	
-	renderOnStart : Boolean - If you're using TweenLite.from() with a delay and want to prevent the tween from rendering until it
-							  actually begins, set this to true. By default, it's false which causes TweenLite.from() to render
-							  its values immediately, even before the delay has expired.
-	
-	overwrite : int - Controls how other tweens of the same object are handled when this tween is created. Here are the options:
-  					- 0 (NONE): No tweens are overwritten. This is the fastest mode, but you need to be careful not to create any 
-  								tweens with overlapping properties, otherwise they'll conflict with each other. 
-								
-					- 1 (ALL): (this is the default unless OverwriteManager.init() has been called) All tweens of the same object 
-							   are completely overwritten immediately when the tween is created. 
-							   		TweenLite.to(mc, 1, {x:100, y:200});
-									TweenLite.to(mc, 1, {x:300, delay:2, overwrite:1}); //immediately overwrites the previous tween
-									
-					- 2 (AUTO): (used by default if OverwriteManager.init() has been called) Searches for and overwrites only 
-								individual overlapping properties in tweens that are active when the tween begins. 
-									TweenLite.to(mc, 1, {x:100, y:200});
-									TweenLite.to(mc, 1, {x:300, overwrite:2}); //only overwrites the "x" property in the previous tween
-									
-					- 3 (CONCURRENT): Overwrites all tweens of the same object that are active when the tween begins.
-									  TweenLite.to(mc, 1, {x:100, y:200});
-									  TweenLite.to(mc, 1, {x:300, delay:2, overwrite:3}); //does NOT overwrite the previous tween because the first tween will have finished by the time this one begins.
-	
-
-PLUGINS:
-	There are many plugins that add capabilities through other special properties. Some examples are "tint", 
-	"volume", "frame", "frameLabel", "bezier", "blurFilter", "colorMatrixFilter", "hexColors", and many more.
-	Adding the capabilities is as simple as activating the plugin with a single line of code, like TintPlugin.activate();
-	Get information about all the plugins at http://blog.greensock.com/plugins/
-
-
-EXAMPLES: 
-	Tween the alpha to 50% (0.5) and move the x position of a MovieClip named "clip_mc" 
-	to 120 and fade the volume to 0 over the course of 1.5 seconds like so:
-	
-		import gs.*;
-		TweenLite.to(clip_mc, 1.5, {alpha:0.5, x:120, volume:0});
-	
-	If you want to get more advanced and tween the clip_mc MovieClip over 5 seconds, changing the alpha to 0.5, 
-	the x to 120 using the "Back.easeOut" easing function, delay starting the whole tween by 2 seconds, and then call
-	a function named "onFinishTween" when it has completed and pass a few parameters to that function (a value of
-	5 and a reference to the clip_mc), you'd do so like:
-		
-		import gs.*;
-		import gs.easing.*;
-		TweenLite.to(clip_mc, 5, {alpha:0.5, x:120, ease:Back.easeOut, delay:2, onComplete:onFinishTween, onCompleteParams:[5, clip_mc]});
-		function onFinishTween(argument1:Number, argument2:MovieClip):void {
-			trace("The tween has finished! argument1 = " + argument1 + ", and argument2 = " + argument2);
-		}
-	
-	If you have a MovieClip on the stage that is already in it's end position and you just want to animate it into 
-	place over 5 seconds (drop it into place by changing its y property to 100 pixels higher on the screen and 
-	dropping it from there), you could:
-		
-		import gs.*;
-		import gs.easing.*;
-		TweenLite.from(clip_mc, 5, {y:"-100", ease:Elastic.easeOut});		
-	
-
-NOTES:
-
-	- The base TweenLite class adds about 2.9kb to your Flash file, but if you activate the extra features
-	  that were available in versions prior to 10.0 (tint, removeTint, frame, endArray, visible, and autoAlpha), 
-	  it totals about 5k. You can easily activate those plugins by uncommenting out the associated lines of 
-	  code in the constructor.
-	  
-	- Passing values as Strings will make the tween relative to the current value. For example, if you do
-	  TweenLite.to(mc, 2, {x:"-20"}); it'll move the mc.x to the left 20 pixels which is the same as doing
-	  TweenLite.to(mc, 2, {x:mc.x - 20}); You could also cast it like: TweenLite.to(mc, 2, {x:String(myVariable)});
-	  
-	- You can change the TweenLite.defaultEase function if you prefer something other than Regular.easeOut.
-	
-	- Kill all tweens for a particular object anytime with the TweenLite.killTweensOf(myClip_mc); 
-	  function. If you want to have the tweens forced to completion, pass true as the second parameter, 
-	  like TweenLite.killTweensOf(myClip_mc, true);
-	  
-	- You can kill all delayedCalls to a particular function using TweenLite.killDelayedCallsTo(myFunction_func);
-	  This can be helpful if you want to preempt a call.
-	  
-	- Use the TweenLite.from() method to animate things into place. For example, if you have things set up on 
-	  the stage in the spot where they should end up, and you just want to animate them into place, you can 
-	  pass in the beginning x and/or y and/or alpha (or whatever properties you want).
-	  
-	- If you find this class useful, please consider joining Club GreenSock which not only contributes
-	  to ongoing development, but also gets you bonus classes (and other benefits) that are ONLY available 
-	  to members. Learn more at http://blog.greensock.com/club/
-	  
-	  
-CHANGE LOG:
-
-	10.091:
-		- Fixed bug that prevented timeScale tweens of TweenGroups 
-	10.09:
-		- Fixed bug with timeScale
-	10.06:
-		- Speed improvements
-		- Integrated a new gs.utils.tween.TweenInfo class
-		- Minor internal changes
-	10.0:
-		- Major update, shifting to a "plugin" architecture for handling special properties. 
-		- Added "remove" property to all filter tweens to accommodate removing the filter at the end of the tween
-		- Added "setSize" and "frameLabel" plugins
-		- Speed enhancements
-		- Fixed minor overwrite bugs
-	9.3:
-		- Added compatibility with TweenProxy and TweenProxy3D
-	9.291:
-		- Adjusted how the timeScale special property is handled internally. It should be more flexible and slightly faster now.
-	9.29:
-		- Minor speed enhancement
-	9.26:
-		- Speed improvement and slight file size decrease
-	9.25:
-		- Fixed bug with autoAlpha tweens working with TweenGroups when they're reversed.
-	9.22:
-		- Fixed bug with from() when used in a TweenGroup
-	9.12:
-		- Fixed but with TweenLiteVars, TweenFilterVars, and TweenMaxVars that caused "visible" to always get set at the end of a tween
-	9.1:
-		- In AUTO or CONCURRENT mode, OverwriteManager doesn't handle overwriting until the tween actually begins which allows for immediate pause()-ing or re-ordering in TweenGroup, etc.
-		- Re-architected some inner-workings to further optimize for speed and reduce file size
-	9.05:
-		- Fixed bug with killTweensOf()
-		- Fixed bug with from()
-		- Fixed bug with timeScale
-	9.0:
-		- Made compatible with the new TweenGroup class (see http://blog.greensock.com/tweengroup/ for details) which allows for sequencing and much more
-		- Added clear() method
-		- Added a "clear" parameter to the removeTween() method
-		- Exposed TweenLite.currentTime as well as several other variables for compatibility with TweenGroup
-	8.16:
-		- Fixed bug that prevented using another tween to gradually change the timeScale of a tween
-	8.15:
-		- Fixed bug that caused from() delays not to function since version 8.14
-	8.14:
-		- Fixed bug in managing overwrites
-	8.11:
-		- Added the ability to overwrite only individual overlapping properties with the new OverwriteManager class
-		- Added the killVars() method
-		- Fixed potential garbage collection issue
-	7.04:
-		- Speed optimizations
-	7.02:
-		- Added ability to tween the volume of any object that has a soundTransform property instead of just MoveiClips and SoundChannels. Now NetStream volumes can be tweened too.
-	7.01:
-		- Fixed delayedCall() error (removed onCompleteScope since it's not useful in AS3 anyway)
-	7.0:
-		- Added "persist" special property
-		- Added "removeTint" special property (please use this instead of tint:null)
-		- Added compatibility with TweenLiteVars utility class
-
-AUTHOR: Jack Doyle, jack@greensock.com
-Copyright 2009, GreenSock. All rights reserved. This work is subject to the terms in http://www.greensock.com/terms_of_use.html or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
-*/
-
-package gs {
 	import flash.display.*;
 	import flash.events.*;
 	import flash.utils.*;
-	
-	import gs.plugins.*;
-	import gs.utils.tween.*;
-
-	public class TweenLite {
-		public static const version:Number = 10.092;
-		public static var plugins:Object = {};
-		public static var killDelayedCallsTo:Function = TweenLite.killTweensOf;
-		public static var defaultEase:Function = TweenLite.easeOut;
-		public static var overwriteManager:Object; //makes it possible to integrate the gs.utils.tween.OverwriteManager for adding autoOverwrite capabilities
-		public static var currentTime:uint;
-		public static var masterList:Dictionary = new Dictionary(false); //Holds references to all our instances.
-		public static var timingSprite:Sprite = new Sprite(); //A reference to the sprite that we use to drive all our ENTER_FRAME events.
-		private static var _tlInitted:Boolean; //TweenLite class initted
-		private static var _timer:Timer = new Timer(2000);
-		protected static var _reservedProps:Object = {ease:1, delay:1, overwrite:1, onComplete:1, onCompleteParams:1, runBackwards:1, startAt:1, onUpdate:1, onUpdateParams:1, roundProps:1, onStart:1, onStartParams:1, persist:1, renderOnStart:1, proxiedEase:1, easeParams:1, yoyo:1, loop:1, onCompleteListener:1, onUpdateListener:1, onStartListener:1, orientToBezier:1, timeScale:1};
-	
-		public var duration:Number; //Duration (in seconds)
-		public var vars:Object; //Variables (holds things like alpha or y or whatever we're tweening)
-		public var delay:Number; //Delay (in seconds)
-		public var startTime:Number; //Start time
-		public var initTime:Number; //Time of initialization. Remember, we can build in delays so this property tells us when the frame action was born, not when it actually started doing anything.
-		public var tweens:Array; //Contains parsed data for each property that's being tweened (target, property, start, change, name, and isPlugin).
-		public var target:Object; //Target object 
-		public var active:Boolean; 
-		public var ease:Function;
-		public var initted:Boolean;
-		public var combinedTimeScale:Number; //even though TweenLite doesn't use this variable TweenMax does and it optimized things to store it here, particularly for TweenGroup
-		public var gc:Boolean; //flagged for garbage collection
-		public var started:Boolean;
-		public var exposedVars:Object; //Helps when using TweenLiteVars and TweenMaxVars utility classes because certain properties are only exposed via vars.exposedVars (for example, the "visible" property is Boolean, so we cannot normally check to see if it's undefined)
+/**
+ * 	TweenLite is an extremely fast, lightweight, and flexible tweening engine that serves as the foundation of 
+ * 	the GreenSock Tweening Platform. A TweenLite instance handles tweening one or more numeric properties of any
+ *  object over time, updating them on every frame. Sounds simple, but there's a wealth of capabilities and conveniences
+ *  at your fingertips with TweenLite. With plenty of other tweening engines to choose from, here's why you might 
+ *  want to consider TweenLite:
+ * 	<ul>
+ * 		<li><b> SPEED </b>- TweenLite has been highly optimized for maximum performance. See some speed comparisons yourself at 
+ * 			 <a href="http://blog.greensock.com/tweening-speed-test/">http://blog.greensock.com/tweening-speed-test/</a></li>
+ * 		  
+ * 		<li><b> Feature set </b>- In addition to tweening ANY numeric property of ANY object, TweenLite can tween filters, 
+ * 		  	 hex colors, volume, tint, frames, and even do bezier tweening, plus LOTS more. TweenMax extends 
+ * 		  	 TweenLite and adds even more capabilities like repeat, yoyo, repeatDelay, timeScale, event dispatching, on-the-fly 
+ * 			 destination value updates, rounding and more. Overwrite management is an important consideration in 
+ * 			 a tweening engine as well which is another area where the GreenSock Tweening Platform shines. 
+ * 			 You have options for AUTO overwriting or you can manually define how each tween will handle overlapping 
+ * 			 tweens of the same object.</li>
+ * 		  
+ * 		<li><b> Expandability </b>- With its plugin architecture, you can activate as many (or as few) features as your 
+ * 		  	 project requires. Write your own plugin to handle particular special properties in custom ways. Minimize bloat, and
+ * 		  	 maximize performance.</li>
+ * 		  
+ * 		<li><b> Sequencing, grouping, and management features </b>- TimelineLite and TimelineMax make it surprisingly 
+ * 			 simple to create complex sequences or groups of tweens that you can control as a whole. play(), pause(), restart(), 
+ * 			 or reverse(). You can even tween a timeline's <code>currentTime</code> or <code>currentProgress</code> property 
+ * 			 to fastforward or rewind the entire timeline. Add labels, gotoAndPlay(), change the timeline's timeScale, nest 
+ * 			 timelines within timelines, and lots more.</li>
+ * 		  
+ * 		<li><b> Ease of use </b>- Designers and Developers alike rave about how intuitive the platform is.</li>
+ * 		
+ * 		<li><b> Updates </b>- Frequent updates and feature additions make the GreenSock Tweening Platform reliable and robust.</li>
+ * 		
+ * 		<li><b> AS2 and AS3 </b>- Most other engines are only developed for AS2 or AS3 but not both.</li>
+ * 	</ul>
+ * 
+ * <hr />	
+ * <b>SPECIAL PROPERTIES (no plugins required):</b>
+ * <br /><br />
+ * 
+ * Any of the following special properties can optionally be passed in through the vars object (the third parameter):
+ * 
+ * <ul>
+ * 	<li><b> delay : Number</b>			Amount of delay in seconds (or frames for frames-based tweens) before the tween should begin.</li>
+ * 	
+ * 	<li><b> useFrames : Boolean</b>		If useFrames is set to true, the tweens's timing mode will be based on frames. 
+ * 										Otherwise, it will be based on seconds/time. NOTE: a tween's timing mode is 
+ * 										always determined by its parent timeline. </li>
+ * 	
+ * 	<li><b> ease : Function</b>			Use any standard easing equation to control the rate of change. For example, 
+ * 										<code>Elastic.easeOut</code>. The Default is Quad.easeOut.</li>
+ * 	
+ * 	<li><b> easeParams : Array</b>		An Array of extra parameters to feed the easing equation. This can be useful when 
+ * 										using an ease like <code>Elastic</code> and want to control extra parameters like the amplitude 
+ * 										and period.	Most easing equations, however, don't require extra parameters so you 
+ * 										won't need to pass in any easeParams.</li>
+ * 	
+ * 	<li><b> immediateRender : Boolean</b> Normally when you create a tween, it begins rendering on the very next frame (when 
+ * 										the Flash Player dispatches an ENTER_FRAME event) unless you specify a <code>delay</code>. This 
+ * 										allows you to insert tweens into timelines and perform other actions that may affect 
+ * 										its timing. However, if you prefer to force the tween to render immediately when it is 
+ * 										created, set <code>immediateRender</code> to true. Or to prevent a tween with a duration of zero from
+ * 										rendering immediately, set <code>immediateRender</code> to false.</li>
+ * 	
+ * 	<li><b> onStart : Function</b>		A function that should be called when the tween begins.</li>
+ * 	
+ * 	<li><b> onStartParams : Array</b>	An Array of parameters to pass the onStart function.</li>
+ * 	
+ * 	<li><b> onUpdate : Function</b>		A function that should be called every time the tween's time/position is updated 
+ * 										(on every frame while the timeline is active)</li>
+ * 	
+ * 	<li><b> onUpdateParams : Array</b>	An Array of parameters to pass the onUpdate function</li>
+ * 	
+ * 	<li><b> onComplete : Function</b>	A function that should be called when the tween has finished </li>
+ * 	
+ * 	<li><b> onCompleteParams : Array</b> An Array of parameters to pass the onComplete function</li>
+ * 	
+ * 	<li><b> onReverseComplete : Function</b> A function that should be called when the tween has reached its starting point again after having been reversed. </li>
+ * 	
+ * 	<li><b> onReverseCompleteParams : Array</b> An Array of parameters to pass the onReverseComplete function</li>
+ * 
+ *  <li><b> paused : Boolean</b>		If true, the tween will be paused initially.</li>
+ * 	
+ * 	<li><b> overwrite : int</b>			Controls how (and if) other tweens of the same target are overwritten by this tween. There are
+ * 										several modes to choose from, but only the first two are available in TweenLite unless 
+ * 										<code>OverwriteManager.init()</code> has been called (please see 
+ * 										<a href="http://blog.greensock.com/overwritemanager/">http://blog.greensock.com/overwritemanager/</a> 
+ * 										for details and a full explanation of the various modes):
+ * 										<ul>
+ * 			  								<li>NONE (0) (or false) </li>
+ * 											
+ * 											<li>ALL_IMMEDIATE (1) (or true) - this is the default mode in TweenLite</li>
+ * 													
+ * 											<li>AUTO (2) - this is the default mode if TweenMax, TimelineLite, or TimelineMax is used in the swf. (these classes automatically init() OverwriteManager if you haven't done so already)</li>
+ * 												
+ * 											<li>CONCURRENT (3) (requires OverwriteManager)</li>
+ * 												
+ * 											<li>ALL_ONSTART (4) (requires OverwriteManager)</li>
+ * 												
+ * 											<li>PREEXISTING (5) (requires OverwriteManager)</li>
+ * 
+ * 										</ul></li>
+ * 	</ul>		
+ * 
+ * <b>PLUGINS:</b><br /><br />
+ * 
+ * 	There are many plugins that add capabilities through other special properties. Some examples are "tint", 
+ * 	"volume", "frame", "frameLabel", "bezier", "blurFilter", "colorMatrixFilter", "hexColors", and many more.
+ * 	Adding the capabilities is as simple as activating the plugin with a single line of code, like 
+ * 	TweenPlugin.activate([TintPlugin]); Get information about all the plugins at 
+ *  <a href="http://www.TweenLite.com">http://www.TweenLite.com</a><br /><br />
+ * 
+ * <b>EXAMPLES:</b> <br /><br />
+ * 
+ * 	Please see <a href="http://www.tweenlite.com">http://www.tweenlite.com</a> for examples, tutorials, and interactive demos. <br /><br />
+ * 
+ * <b>NOTES / TIPS:</b><br /><br />
+ * <ul>
+ * 	<li> The base TweenLite class adds about 4.7kb to your compressed swf (if no plugins are activated)</li>
+ * 	  
+ * 	<li> Passing values as Strings will make the tween relative to the current value. For example, if you do
+ * 	  <code>TweenLite.to(mc, 2, {x:"-20"});</code> it'll move the mc.x to the left 20 pixels which is the same as doing
+ * 	  <code>TweenLite.to(mc, 2, {x:mc.x - 20});</code> You could also cast it like: <code>TweenLite.to(mc, 2, {x:String(myVariable)});</code></li>
+ * 	  
+ * 	<li> You can change the <code>TweenLite.defaultEase</code> function if you prefer something other than <code>Regular.easeOut</code>.</li>
+ * 	
+ * 	<li> Kill all tweens for a particular object anytime with the <code>TweenLite.killTweensOf(mc); </code></li>
+ * 	  
+ * 	<li> You can kill all delayedCalls to a particular function using <code>TweenLite.killDelayedCallsTo(myFunction);</code>
+ * 	  This can be helpful if you want to preempt a call.</li>
+ * 	  
+ * 	<li> Use the <code>TweenLite.from()</code> method to animate things into place. For example, if you have things set up on 
+ * 	  the stage in the spot where they should end up, and you just want to animate them into place, you can 
+ * 	  pass in the beginning x and/or y and/or alpha (or whatever properties you want).</li>
+ * 	  
+ * 	<li> If you find this class useful, please consider joining Club GreenSock which not only helps to sustain
+ * 	  ongoing development, but also gets you bonus plugins, classes and other benefits that are ONLY available 
+ * 	  to members. Learn more at <a href="http://blog.greensock.com/club/">http://blog.greensock.com/club/</a></li>
+ * </ul>
+ * 
+ * <b>Copyright 2009, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
+ * 
+ * @author Jack Doyle, jack@greensock.com
+ */	 
+	public class TweenLite extends TweenCore {
 		
-		protected var _hasPlugins:Boolean; //if there are TweenPlugins in the tweens Array, we set this to true - it helps speed things up in onComplete
-		protected var _hasUpdate:Boolean; //has onUpdate. Tracking this as a Boolean value is faster than checking this.vars.onUpdate == null.
-		
-		public function TweenLite($target:Object, $duration:Number, $vars:Object) {
-			if ($target == null) {
-				return
-			}
-			if (!_tlInitted) {
-				
-				TweenPlugin.activate([
-		
-		
-					//ACTIVATE (OR DEACTIVATE) PLUGINS HERE...
-					
-					TintPlugin,					//tweens tints
-					RemoveTintPlugin,			//allows you to remove a tint
-					FramePlugin,				//tweens MovieClip frames
-					AutoAlphaPlugin,			//tweens alpha and then toggles "visible" to false if/when alpha is zero
-					VisiblePlugin,				//tweens a target's "visible" property
-					VolumePlugin,				//tweens the volume of a MovieClip or SoundChannel or anything with a "soundTransform" property
-					EndArrayPlugin				//tweens numbers in an Array		
-					
-					
-					]);
-				
-				
-				currentTime = getTimer();
-				timingSprite.addEventListener(Event.ENTER_FRAME, updateAll, false, 0, true);
-				if (overwriteManager == null) {
-					overwriteManager = {mode:1, enabled:false};
-				}			
-				_timer.addEventListener("timer", killGarbage, false, 0, true);
-            	_timer.start();
-				_tlInitted = true;
-			}
-			this.vars = $vars;
-			this.duration = $duration || 0.001; //easing equations don't work when the duration is zero.
-			this.delay = $vars.delay || 0;
-			this.combinedTimeScale = $vars.timeScale || 1;
-			this.active = Boolean($duration == 0 && this.delay == 0);
-			this.target = $target;
-			if (typeof(this.vars.ease) != "function") {
-				this.vars.ease = defaultEase;
-			}
-			if (this.vars.easeParams != null) {
-				this.vars.proxiedEase = this.vars.ease;
-				this.vars.ease = easeProxy;
-			}
-			this.ease = this.vars.ease;
-			this.exposedVars = (this.vars.isTV == true) ? this.vars.exposedVars : this.vars; //for TweenLiteVars and TweenMaxVars (we need an object with enumerable properties)
-			this.tweens = [];
-			this.initTime = currentTime;
-			this.startTime = this.initTime + (this.delay * 1000);
+		/**
+		 * @private
+		 * Initializes the class, activates default plugins, and starts the root timelines. This should only 
+		 * be called internally. It is technically public only so that other classes in the GreenSock Tweening 
+		 * Platform can access it, but again, please avoid calling this method directly.
+		 */
+		public static function initClass():void {
 			
-			var mode:int = ($vars.overwrite == undefined || (!overwriteManager.enabled && $vars.overwrite > 1)) ? overwriteManager.mode : int($vars.overwrite);
-			if (!($target in masterList) || mode == 1) { 
-				masterList[$target] = [this];
-			} else {
-				masterList[$target].push(this);
-			}
 			
-			if ((this.vars.runBackwards == true && this.vars.renderOnStart != true) || this.active) {
-				initTweenVals();
-				if (this.active) { //Means duration is zero and delay is zero, so render it now, but add one to the startTime because this.duration is always forced to be at least 0.001 since easing equations can't handle zero.
-					render(this.startTime + 1);
-				} else {
-					render(this.startTime);
-				}
-				if (this.exposedVars.visible != null && this.vars.runBackwards == true && (this.target is DisplayObject)) {
-					this.target.visible = this.exposedVars.visible;
-				}
+			//ACTIVATE PLUGINS HERE...
+			/*
+			TweenPlugin.activate([
+							
+				AutoAlphaPlugin,			//tweens alpha and then toggles "visible" to false if/when alpha is zero
+				EndArrayPlugin,				//tweens numbers in an Array
+				FramePlugin,				//tweens MovieClip frames
+				RemoveTintPlugin,			//allows you to remove a tint
+				TintPlugin,					//tweens tints
+				VisiblePlugin,				//tweens a target's "visible" property
+				VolumePlugin,				//tweens the volume of a MovieClip or SoundChannel or anything with a "soundTransform" property
+				
+				BevelFilterPlugin,			//tweens BevelFilters
+				BezierPlugin,				//enables bezier tweening
+				BezierThroughPlugin,		//enables bezierThrough tweening
+				BlurFilterPlugin,			//tweens BlurFilters
+				ColorMatrixFilterPlugin,	//tweens ColorMatrixFilters (including hue, saturation, colorize, contrast, brightness, and threshold)
+				DropShadowFilterPlugin,		//tweens DropShadowFilters
+				GlowFilterPlugin,			//tweens GlowFilters
+				HexColorsPlugin,			//tweens hex colors
+				ShortRotationPlugin,		//tweens rotation values in the shortest direction
+				
+				ColorTransformPlugin,		//tweens advanced color properties like exposure, brightness, tintAmount, redOffset, redMultiplier, etc.
+				FrameLabelPlugin,			//tweens a MovieClip to particular label
+				QuaternionsPlugin,			//tweens 3D Quaternions
+				ScalePlugin,				//Tweens both the _xscale and _yscale properties
+				ScrollRectPlugin,			//tweens the scrollRect property of a DisplayObject
+				SetSizePlugin,				//tweens the width/height of components via setSize()
+				SetActualSizePlugin			//tweens the width/height of components via setActualSize()
+				TransformMatrixPlugin,		//Tweens the transform.matrix property of any DisplayObject
+					
+				//DynamicPropsPlugin,			//tweens to dynamic end values. You associate the property with a particular function that returns the target end value **Club GreenSock membership benefit**
+				//MotionBlurPlugin,			//applies a directional blur to a DisplayObject based on the velocity and angle of movement. **Club GreenSock membership benefit**
+				//Physics2DPlugin,			//allows you to apply basic physics in 2D space, like velocity, angle, gravity, friction, acceleration, and accelerationAngle. **Club GreenSock membership benefit**
+				//PhysicsPropsPlugin,			//allows you to apply basic physics to any property using forces like velocity, acceleration, and/or friction. **Club GreenSock membership benefit**
+				//TransformAroundCenterPlugin,//tweens the scale and/or rotation of DisplayObjects using the DisplayObject's center as the registration point **Club GreenSock membership benefit**
+				//TransformAroundPointPlugin,	//tweens the scale and/or rotation of DisplayObjects around a particular point (like a custom registration point) **Club GreenSock membership benefit**
+				
+				
+			{}]);
+			*/
+			
+			rootFrame = 0;
+			rootTimeline = new SimpleTimeline(null);
+			rootFramesTimeline = new SimpleTimeline(null);
+			rootTimeline.cachedStartTime = getTimer() * 0.001;
+			rootFramesTimeline.cachedStartTime = rootFrame;
+			rootTimeline.autoRemoveChildren = true;
+			rootFramesTimeline.autoRemoveChildren = true;
+			_shape.addEventListener(Event.ENTER_FRAME, updateAll, false, 0, true);
+			if (overwriteManager == null) {
+				overwriteManager = {mode:1, enabled:false};
 			}
 		}
 		
-		public function initTweenVals():void {
-			var p:String, i:int, plugin:*;
-			if (this.exposedVars.timeScale != undefined && this.target.hasOwnProperty("timeScale")) {
-				this.tweens[this.tweens.length] = new TweenInfo(this.target, "timeScale", this.target.timeScale, this.exposedVars.timeScale - this.target.timeScale, "timeScale", false); //[object, property, start, change, name, isPlugin]
+		/** @private **/
+		public static const version:Number = 11.101;
+		/** @private When plugins are activated, the class is added (named based on the special property) to this object so that we can quickly look it up in the initTweenVals() method.**/
+		public static var plugins:Object = {}; 
+		/** @private **/
+		public static var fastEaseLookup:Dictionary = new Dictionary(false);
+		/** @private For notifying plugins of significant events like when the tween finishes initializing, when it is disabled/enabled, and when it completes (some plugins need to take actions when those events occur) **/
+		public static var onPluginEvent:Function;
+		/** @private **/
+		public static var killDelayedCallsTo:Function = TweenLite.killTweensOf;
+		/** Provides an easy way to change the default easing equation.**/
+		public static var defaultEase:Function = TweenLite.easeOut; 
+		/** @private Makes it possible to integrate OverwriteManager for adding various overwriting capabilities. **/
+		public static var overwriteManager:Object; 
+		/** @private Gets updated on every frame. This syncs all the tweens and prevents drifting of the startTime that happens under heavy loads with most other engines.**/
+		public static var rootFrame:Number; 
+		/** @private All tweens get associated with a timeline. The rootTimeline is the default for all time-based tweens.**/
+		public static var rootTimeline:SimpleTimeline; 
+		/** @private All tweens get associated with a timeline. The rootFramesTimeline is the default for all frames-based tweens.**/
+		public static var rootFramesTimeline:SimpleTimeline;
+		/** @private Holds references to all our tween instances organized by target for quick lookups (for overwriting).**/
+		public static var masterList:Dictionary = new Dictionary(false); 
+		/** @private Drives all our ENTER_FRAME events.**/
+		private static var _shape:Shape = new Shape(); 
+		/** @private Lookup for all of the reserved "special property" keywords.**/
+		protected static var _reservedProps:Object = {ease:1, delay:1, overwrite:1, onComplete:1, onCompleteParams:1, useFrames:1, runBackwards:1, startAt:1, onUpdate:1, onUpdateParams:1, roundProps:1, onStart:1, onStartParams:1, onReverseComplete:1, onReverseCompleteParams:1, onRepeat:1, onRepeatParams:1, proxiedEase:1, easeParams:1, yoyo:1, onCompleteListener:1, onUpdateListener:1, onStartListener:1, onReverseCompleteListener:1, onRepeatListener:1, orientToBezier:1, timeScale:1, immediateRender:1, repeat:1, repeatDelay:1, timeline:1, data:1, paused:1};
+		
+		
+		/** Target object whose properties this tween affects. This can be ANY object, not just a DisplayObject. **/
+		public var target:Object; 
+		/** @private Lookup object for PropTween objects. For example, if this tween is handling the "x" and "y" properties of the target, the propTweenLookup object will have an "x" and "y" property, each pointing to the associated PropTween object. This can be very helpful for speeding up overwriting. This is a public variable, but should almost never be used directly. **/
+		public var propTweenLookup:Object; 
+		/** @private result of _ease(this.currentTime, 0, 1, this.duration). Usually between 0 and 1, but not always (like with Elastic.easeOut, it could shoot past 1 or 0). **/
+		public var ratio:Number = 0;
+		/** @private First PropTween instance - all of which are stored in a linked list for speed. Traverse them using nextNode and prevNode. Typically you should NOT use this property (it is made public for speed and file size purposes). **/
+		public var cachedPT1:PropTween; 
+		
+		/** @private Easing method to use which determines how the values animate over time. Examples are Elastic.easeOut and Strong.easeIn. Many are found in the fl.motion.easing package or com.greensock.easing. **/
+		protected var _ease:Function;
+		/** @private 0 = NONE, 1 = ALL, 2 = AUTO 3 = CONCURRENT, 4 = ALL_AFTER **/
+		protected var _overwrite:uint;
+		/** @private When other tweens overwrite properties in this tween, the properties get added to this object. Remember, sometimes properties are overwritten BEFORE the tween inits, like when two tweens start at the same time, the later one overwrites the previous one. **/
+		protected var _overwrittenProps:Object; 
+		/** @private If this tween has any TweenPlugins, we set this to true - it helps speed things up in onComplete **/
+		protected var _hasPlugins:Boolean; 
+		/** @private If this tween has any TweenPlugins that need to be notified of a change in the "enabled" status, this will be true. (speeds things up in the enabled setter) **/
+		protected var _notifyPluginsOfEnabled:Boolean;
+		
+		
+		/**
+		 * Constructor
+		 *  
+		 * @param target Target object whose properties this tween affects. This can be ANY object, not just a DisplayObject. 
+		 * @param duration Duration in seconds (or in frames if the tween's timing mode is frames-based)
+		 * @param vars An object containing the end values of the properties you're tweening. For example, to tween to x=100, y=100, you could pass {x:100, y:100}. It can also contain special properties like "onComplete", "ease", "delay", etc.
+		 */
+		public function TweenLite(target:Object, duration:Number, vars:Object) {
+			super(duration, vars);
+			this.target = target;
+			if (this.target is TweenCore && "timeScale" in this.vars) { //if timeScale is in the vars object and the target is a TweenCore, this tween's timeScale must be adjusted (in TweenCore's constructor, it was set to whatever the vars.timeScale was)
+				this.cachedTimeScale = 1;
 			}
-			for (p in this.exposedVars) {
-				if (p in _reservedProps) { 
-					//ignore
-					
-				} else if (p in plugins) {
-					plugin = new plugins[p]();
-					if (plugin.onInitTween(this.target, this.exposedVars[p], this) == false) {
-						this.tweens[this.tweens.length] = new TweenInfo(this.target, p, this.target[p], (typeof(this.exposedVars[p]) == "number") ? this.exposedVars[p] - this.target[p] : Number(this.exposedVars[p]), p, false); //[object, property, start, change, name, isPlugin]
-					} else {
-						this.tweens[this.tweens.length] = new TweenInfo(plugin, "changeFactor", 0, 1, (plugin.overwriteProps.length == 1) ? plugin.overwriteProps[0] : "_MULTIPLE_", true); //[object, property, start, change, name, isPlugin]
-						_hasPlugins = true;
+			propTweenLookup = {};
+			_ease = defaultEase; //temporarily - we'll check the vars object for an ease property in the init() method. We set it to the default initially for speed purposes.
+			
+			//handle overwriting (if necessary) on tweens of the same object and add the tween to the Dictionary for future reference
+			_overwrite = (!("overwrite" in vars) || (!overwriteManager.enabled && vars.overwrite > 1)) ? overwriteManager.mode : int(vars.overwrite);
+			var a:Array = masterList[target];
+			if (!a) {
+				masterList[target] = [this];
+			} else { 
+				if (_overwrite == 1) { //overwrite all other existing tweens of the same object (ALL mode)
+					for each (var sibling:TweenLite in a) {
+						if (!sibling.gc) {
+							sibling.setEnabled(false, false);
+						}
 					}
+					masterList[target] = [this];
+				} else {
+					a[a.length] = this;
+				}
+			}
+			
+			if (this.active || this.vars.immediateRender) {
+				renderTime(0, false, true);
+			}
+		}
+		
+		/**
+		 * @private
+		 * Initializes the property tweens, determining their start values and amount of change. 
+		 * Also triggers overwriting if necessary and sets the _hasUpdate variable.
+		 */
+		protected function init():void {
+			var p:String, i:int, plugin:*, prioritize:Boolean, siblings:Array;
+			if (typeof(this.vars.ease) == "function") {
+				_ease = this.vars.ease;
+			}
+			if (this.vars.easeParams) {
+				this.vars.proxiedEase = _ease;
+				_ease = easeProxy;
+			}
+			this.cachedPT1 = null;
+			this.propTweenLookup = {};
+			for (p in this.vars) {
+				if (p in _reservedProps && !(p == "timeScale" && this.target is TweenCore)) { 
+					//ignore
+				} else if (p in plugins && (plugin = new (plugins[p] as Class)()).onInitTween(this.target, this.vars[p], this)) {
+					this.cachedPT1 = new PropTween(plugin, 
+												    "changeFactor", 
+												    0, 
+												    1, 
+												    (plugin.overwriteProps.length == 1) ? plugin.overwriteProps[0] : "_MULTIPLE_",
+												    true,
+												    this.cachedPT1);
+					
+					if (this.cachedPT1.name == "_MULTIPLE_") {
+						i = plugin.overwriteProps.length;
+						while (i--) {
+							this.propTweenLookup[plugin.overwriteProps[i]] = this.cachedPT1;
+						}
+					} else {
+						this.propTweenLookup[this.cachedPT1.name] = this.cachedPT1;
+					}
+					if (plugin.priority) {
+						this.cachedPT1.priority = plugin.priority;
+						prioritize = true;
+					}
+					if (plugin.onDisable || plugin.onEnable) {
+						_notifyPluginsOfEnabled = true;
+					}
+					_hasPlugins = true;
 					
 				} else {
-					this.tweens[this.tweens.length] = new TweenInfo(this.target, p, this.target[p], (typeof(this.exposedVars[p]) == "number") ? this.exposedVars[p] - this.target[p] : Number(this.exposedVars[p]), p, false); //[object, property, start, change, name, isPlugin]
+					this.cachedPT1 = new PropTween(this.target, 
+												    p, 
+												    Number(this.target[p]), 
+												    (typeof(this.vars[p]) == "number") ? Number(this.vars[p]) - this.target[p] : Number(this.vars[p]),
+												    p,
+												    false,
+												    this.cachedPT1);
+					this.propTweenLookup[p] = this.cachedPT1;
+				}
+				
+			}
+			if (prioritize) {
+				onPluginEvent("onInit", this); //reorders the linked list in order of priority. Uses a static TweenPlugin method in order to minimize file size in TweenLite
+			}
+			if (this.vars.runBackwards) {
+				var pt:PropTween = this.cachedPT1;
+				while (pt) {
+					pt.start += pt.change;
+					pt.change = -pt.change;
+					pt = pt.nextNode;
 				}
 			}
-			if (this.vars.runBackwards == true) {
-				var ti:TweenInfo;
-				for (i = this.tweens.length - 1; i > -1; i--) {
-					ti = this.tweens[i];
-					ti.start += ti.change;
-					ti.change = -ti.change;
+			_hasUpdate = Boolean(this.vars.onUpdate != null);
+			if (_overwrittenProps) { //another tween may have tried to overwrite properties of this tween before init() was called (like if two tweens start at the same time, the one created second will run first)
+				killVars(_overwrittenProps);
+				if (this.cachedPT1 == null) { //if all tweening properties have been overwritten, kill the tween.
+					this.setEnabled(false, false);
 				}
 			}
-			if (this.vars.onUpdate != null) {
-				_hasUpdate = true;
-			}
-			if (TweenLite.overwriteManager.enabled && this.target in masterList) {
-				overwriteManager.manageOverwrites(this, masterList[this.target]);
+			if (_overwrite > 1 && this.cachedPT1 && (siblings = masterList[this.target]) && siblings.length > 1) {
+				if (overwriteManager.manageOverwrites(this, this.propTweenLookup, siblings, _overwrite)) {
+					//one of the plugins had activeDisable set to true, so properties may have changed when it was disabled meaning we need to re-init()
+					init();
+				}
 			}
 			this.initted = true;
 		}
 		
-		public function activate():void {
-			this.started = this.active = true;
-			if (!this.initted) {
-				initTweenVals();
+		/** @private **/
+		override public function renderTime(time:Number, suppressEvents:Boolean=false, force:Boolean=false):void {
+			var isComplete:Boolean, prevTime:Number = this.cachedTime;
+			this.active = true; //so that if the user renders a tween (as opposed to the timeline rendering it), the timeline is forced to re-render and align it with the proper time/frame on the next rendering cycle. Maybe the tween already finished but the user manually re-renders it as halfway done.
+			if (time >= this.cachedDuration) {
+				this.cachedTotalTime = this.cachedTime = this.cachedDuration;
+				this.ratio = 1;
+				isComplete = true;
+				if (this.cachedDuration == 0) { //zero-duration tweens are tricky because we must discern the momentum/direction of time in order to determine whether the starting values should be rendered or the ending values. If the "playhead" of its timeline goes past the zero-duration tween in the forward direction or lands directly on it, the end values should be rendered, but if the timeline's "playhead" moves past it in the backward direction (from a postitive time to a negative time), the starting values must be rendered.
+					if ((time == 0 || _rawPrevTime < 0) && _rawPrevTime != time) {
+						force = true;
+					}		
+					_rawPrevTime = time;
+				}
+				
+			} else if (time <= 0) {
+				this.cachedTotalTime = this.cachedTime = this.ratio = 0;
+				if (time < 0) {
+					this.active = false;
+					if (this.cachedDuration == 0) { //zero-duration tweens are tricky because we must discern the momentum/direction of time in order to determine whether the starting values should be rendered or the ending values. If the "playhead" of its timeline goes past the zero-duration tween in the forward direction or lands directly on it, the end values should be rendered, but if the timeline's "playhead" moves past it in the backward direction (from a postitive time to a negative time), the starting values must be rendered.
+						if (_rawPrevTime > 0) {
+							force = true;
+							isComplete = true;
+						}
+						_rawPrevTime = time;
+					}
+				}
+				if (this.cachedReversed && prevTime != 0) {
+					isComplete = true;
+				}
+				
+			} else {
+				this.cachedTotalTime = this.cachedTime = time;
+				this.ratio = _ease(time, 0, 1, this.cachedDuration);
+			}			
+			
+			if (this.cachedTime == prevTime && !force) {
+				return;
+			} else if (!this.initted) {
+				init();
+				if (!isComplete && this.cachedTime) { //_ease is initially set to defaultEase, so now that init() has run, _ease is set properly and we need to recalculate the ratio. Overall this is faster than using conditional logic earlier in the method to avoid having to set ratio twice because we only init() once but renderTime() gets called VERY frequently.
+					this.ratio = _ease(this.cachedTime, 0, 1, this.cachedDuration);
+				}
 			}
-			if (this.vars.onStart != null) {
+			if (prevTime == 0 && this.vars.onStart && this.cachedTime != 0 && !suppressEvents) {
 				this.vars.onStart.apply(null, this.vars.onStartParams);
 			}
-			if (this.duration == 0.001) { //In the constructor, if the duration is zero, we shift it to 0.001 because the easing functions won't work otherwise. We need to offset the this.startTime to compensate too.
-				this.startTime -= 1;
+			
+			var pt:PropTween = this.cachedPT1;
+			while (pt) {
+				pt.target[pt.property] = pt.start + (this.ratio * pt.change);
+				pt = pt.nextNode;
 			}
-		}
-		
-		public function render($t:uint):void {
-			var time:Number = ($t - this.startTime) * 0.001, factor:Number, ti:TweenInfo, i:int;
-			if (time >= this.duration) {
-				time = this.duration;
-				factor = (this.ease == this.vars.ease || this.duration == 0.001) ? 1 : 0; //to accommodate TweenMax.reverse(). Without this, the last frame would render incorrectly
-			} else {
-				factor = this.ease(time, 0, 1, this.duration);			
-			}
-			for (i = this.tweens.length - 1; i > -1; i--) {
-				ti = this.tweens[i];
-				ti.target[ti.property] = ti.start + (factor * ti.change); 
-			}
-			if (_hasUpdate) {
+			if (_hasUpdate && !suppressEvents) {
 				this.vars.onUpdate.apply(null, this.vars.onUpdateParams);
 			}
-			if (time == this.duration) {
-				complete(true);
+			if (isComplete) {
+				if (_hasPlugins && this.cachedPT1) {
+					onPluginEvent("onComplete", this);
+				}
+				complete(true, suppressEvents);
 			}
 		}
 		
-		public function complete($skipRender:Boolean = false):void {
-			if (!$skipRender) {
-				if (!this.initted) {
-					initTweenVals();
-				}
-				this.startTime = currentTime - (this.duration * 1000) / this.combinedTimeScale;
-				render(currentTime); //Just to force the final render
-				return;
+		/**
+		 * Allows particular properties of the tween to be killed. For example, if a tween is affecting 
+		 * the "x", "y", and "alpha" properties and you want to kill just the "x" and "y" parts of the 
+		 * tween, you'd do <code>myTween.killVars({x:true, y:true});</code>
+		 * 
+		 * @param vars An object containing a corresponding property for each one that should be killed. The values don't really matter. For example, to kill the x and y property tweens, do <code>myTween.killVars({x:true, y:true});</code>
+		 * @param permanent If true, the properties specified in the vars object will be permanently disallowed in the tween. Typically the only time false might be used is while the tween is in the process of initting and a plugin needs to make sure tweens of a particular property (or set of properties) is killed. 
+		 * @return Boolean value indicating whether or not properties may have changed on the target when any of the vars were disabled. For example, when a motionBlur (plugin) is disabled, it swaps out a BitmapData for the target and may alter the alpha. We need to know this in order to determine whether or not a new tween that is overwriting this one should be re-initted() with the changed properties. 
+		 */
+		public function killVars(vars:Object, permanent:Boolean=true):Boolean {
+			if (_overwrittenProps == null) {
+				_overwrittenProps = {};
 			}
-			if (_hasPlugins) {
-				for (var i:int = this.tweens.length - 1; i > -1; i--) {
-					if (this.tweens[i].isPlugin && this.tweens[i].target.onComplete != null) { //function calls are expensive performance-wise, so don't call the plugin's onComplete() unless necessary. Most plugins don't require them.
-						this.tweens[i].target.onComplete();
+			var p:String, pt:PropTween, changed:Boolean;
+			for (p in vars) {
+				if (p in propTweenLookup) {
+					pt = propTweenLookup[p];
+					if (pt.isPlugin && pt.name == "_MULTIPLE_") {
+						pt.target.killProps(vars);
+						if (pt.target.overwriteProps.length == 0) {
+							pt.name = "";
+						}
+					}
+					if (pt.name != "_MULTIPLE_") {
+						//remove PropTween (do it inline to improve speed and keep file size low)
+						if (pt.nextNode) {
+							pt.nextNode.prevNode = pt.prevNode;
+						}
+						if (pt.prevNode) {
+							pt.prevNode.nextNode = pt.nextNode;
+						} else if (this.cachedPT1 == pt) {
+							this.cachedPT1 = pt.nextNode;
+						}
+						if (pt.isPlugin && pt.target.onDisable) {
+							pt.target.onDisable(); //some plugins need to be notified so they can perform cleanup tasks first
+							if (pt.target.activeDisable) {
+								changed = true;
+							}
+						}
+						delete propTweenLookup[p];
+					}
+				}
+				if (permanent) {
+					_overwrittenProps[p] = 1;
+				}
+			}
+			return changed;
+		}
+		
+		/** @inheritDoc **/
+		override public function invalidate():void {
+			if (_notifyPluginsOfEnabled && this.cachedPT1) {
+				onPluginEvent("onDisable", this);
+			}
+			this.cachedPT1 = null;
+			_overwrittenProps = null;
+			_hasUpdate = this.initted = this.active = _notifyPluginsOfEnabled = false;
+			this.propTweenLookup = {};
+		}
+		
+		/** @private **/	
+		override public function setEnabled(enabled:Boolean, ignoreTimeline:Boolean=false):Boolean {
+			if (enabled == this.gc) {
+				if (enabled) {
+					var a:Array = TweenLite.masterList[this.target];
+					if (!a) {
+						TweenLite.masterList[this.target] = [this];
+					} else {
+						a[a.length] = this;
+					}
+				}
+				super.setEnabled(enabled, ignoreTimeline);
+				if (_notifyPluginsOfEnabled && this.cachedPT1) {
+					return onPluginEvent(((enabled) ? "onEnable" : "onDisable"), this);
+				}
+			}
+			return false;
+		}
+		
+		
+//---- STATIC FUNCTIONS -----------------------------------------------------------------------------------
+		
+		/**
+		 * Static method for creating a TweenLite instance. This can be more intuitive for some developers 
+		 * and shields them from potential garbage collection issues that could arise when assigning a
+		 * tween instance to a variable that persists. The following lines of code produce exactly 
+		 * the same result: <br /><br /><code>
+		 * 
+		 * var myTween:TweenLite = new TweenLite(mc, 1, {x:100}); <br />
+		 * TweenLite.to(mc, 1, {x:100}); <br />
+		 * var myTween:TweenLite = TweenLite.to(mc, 1, {x:100});</code>
+		 * 
+		 * @param target Target object whose properties this tween affects. This can be ANY object, not just a DisplayObject. 
+		 * @param duration Duration in seconds (or in frames if the tween's timing mode is frames-based)
+		 * @param vars An object containing the end values of the properties you're tweening. For example, to tween to x=100, y=100, you could pass {x:100, y:100}. It can also contain special properties like "onComplete", "ease", "delay", etc.
+		 * @return TweenLite instance
+		 */
+		public static function to(target:Object, duration:Number, vars:Object):TweenLite {
+			return new TweenLite(target, duration, vars);
+		}
+		
+		/**
+		 * Static method for creating a TweenLite instance that tweens in the opposite direction
+		 * compared to a TweenLite.to() tween. In other words, you define the START values in the 
+		 * vars object instead of the end values, and the tween will use the current values as 
+		 * the end values. This can be very useful for animating things into place on the stage
+		 * because you can build them in their end positions and do some simple TweenLite.from()
+		 * calls to animate them into place. <b>NOTE:</b> By default, <code>immediateRender</code>
+		 * is <code>true</code> in from() tweens, meaning that they immediately render their starting state 
+		 * regardless of any delay that is specified. You can override this behavior by passing 
+		 * <code>immediateRender:false</code> in the <code>vars</code> object so that it will wait to 
+		 * render until the tween actually begins (often the desired behavior when inserting into timelines). 
+		 * To illustrate the default behavior, the following code will immediately set the <code>alpha</code> of <code>mc</code> 
+		 * to 0 and then wait 2 seconds before tweening the <code>alpha</code> back to 1 over the course 
+		 * of 1.5 seconds:<br /><br /><code>
+		 * 
+		 * TweenLite.from(mc, 1.5, {alpha:0, delay:2});</code>
+		 * 
+		 * @param target Target object whose properties this tween affects. This can be ANY object, not just a DisplayObject. 
+		 * @param duration Duration in seconds (or in frames if the tween's timing mode is frames-based)
+		 * @param vars An object containing the start values of the properties you're tweening. For example, to tween from x=100, y=100, you could pass {x:100, y:100}. It can also contain special properties like "onComplete", "ease", "delay", etc.
+		 * @return TweenLite instance
+		 */
+		public static function from(target:Object, duration:Number, vars:Object):TweenLite {
+			vars.runBackwards = true;
+			if (!("immediateRender" in vars)) {
+				vars.immediateRender = true;
+			}
+			return new TweenLite(target, duration, vars);
+		}
+		
+		/**
+		 * Provides a simple way to call a function after a set amount of time (or frames). You can
+		 * optionally pass any number of parameters to the function too. For example:<br /><br /><code>
+		 * 
+		 * TweenLite.delayedCall(1, myFunction, ["param1", 2]); <br />
+		 * function myFunction(param1:String, param2:Number):void { <br />
+		 *     trace("called myFunction and passed params: " + param1 + ", " + param2); <br />
+		 * } </code>
+		 * 
+		 * @param delay Delay in seconds (or frames if useFrames is true) before the function should be called
+		 * @param onComplete Function to call
+		 * @param onCompleteParams An Array of parameters to pass the function.
+		 * @param useFrames If the delay should be measured in frames instead of seconds, set useFrames to true (default is false)
+		 * @return TweenLite instance
+		 */
+		public static function delayedCall(delay:Number, onComplete:Function, onCompleteParams:Array=null, useFrames:Boolean=false):TweenLite {
+			return new TweenLite(onComplete, 0, {delay:delay, onComplete:onComplete, onCompleteParams:onCompleteParams, immediateRender:false, useFrames:useFrames, overwrite:0});
+		}
+		
+		/**
+		 * @private
+		 * Updates the rootTimeline and rootFramesTimeline and collects garbage every 60 frames.
+		 * 
+		 * @param e ENTER_FRAME Event
+		 */
+		 protected static function updateAll(e:Event = null):void {
+			rootTimeline.renderTime(((getTimer() * 0.001) - rootTimeline.cachedStartTime) * rootTimeline.cachedTimeScale, false, false);
+			rootFrame++;
+			rootFramesTimeline.renderTime((rootFrame - rootFramesTimeline.cachedStartTime) * rootFramesTimeline.cachedTimeScale, false, false);
+			
+			if (!(rootFrame % 60)) { //garbage collect every 60 frames...
+				var ml:Dictionary = masterList, tgt:Object, a:Array, i:int;
+				for (tgt in ml) {
+					a = ml[tgt];
+					i = a.length;
+					while (i--) {
+						if (TweenLite(a[i]).gc) {
+							a.splice(i, 1);
+						}
+					}
+					if (a.length == 0) {
+						delete ml[tgt];
 					}
 				}
 			}
-			if (this.vars.persist != true) {
-				this.enabled = false; //moved above the onComplete callback in case there's an error in the user's onComplete - this prevents constant errors
-			}
-			if (this.vars.onComplete != null) {
-				this.vars.onComplete.apply(null, this.vars.onCompleteParams);
-			}
-		}
-	
-		public function clear():void {
-			this.tweens = [];
-			this.vars = this.exposedVars = {ease:this.vars.ease}; //just to avoid potential errors if someone tries to set the progress on a reversed tween that has been killed (unlikely, I know);
-			_hasUpdate = false;
-		}
-		
-		public function killVars($vars:Object):void {
-			if (overwriteManager.enabled) {
-				overwriteManager.killVars($vars, this.exposedVars, this.tweens);
-			}
+			
 		}
 		
 		
-//---- STATIC FUNCTIONS -------------------------------------------------------------------------
-		
-		public static function to($target:Object, $duration:Number, $vars:Object):TweenLite {
-			return new TweenLite($target, $duration, $vars);
-		}
-		
-		public static function from($target:Object, $duration:Number, $vars:Object):TweenLite {
-			$vars.runBackwards = true;
-			return new TweenLite($target, $duration, $vars);
-		}
-		
-		public static function delayedCall($delay:Number, $onComplete:Function, $onCompleteParams:Array = null):TweenLite {
-			return new TweenLite($onComplete, 0, {delay:$delay, onComplete:$onComplete, onCompleteParams:$onCompleteParams, overwrite:0});
-		}
-		
-		public static function updateAll($e:Event = null):void {
-			var time:uint = currentTime = getTimer(), ml:Dictionary = masterList, a:Array, i:int, tween:TweenLite;
-			for each (a in ml) {
-				for (i = a.length - 1; i > -1; i--) {
-					tween = a[i];
-					if (tween.active) {
-						tween.render(time);
-					} else if (tween.gc) {
-						a.splice(i, 1);
-					} else if (time >= tween.startTime) {
-						tween.activate();
-						tween.render(time);
+		/**
+		 * Kills all the tweens of a particular object, optionally completing them first.
+		 * 
+		 * @param target Object whose tweens should be immediately killed
+		 * @param complete Indicates whether or not the tweens should be forced to completion before being killed.
+		 */
+		public static function killTweensOf(target:Object, complete:Boolean=false):void {
+			if (target in masterList) {
+				var a:Array = masterList[target];
+				var i:int = a.length;
+				while (i--) {
+					if (!TweenLite(a[i]).gc) {
+						if (complete) {
+							TweenLite(a[i]).complete(false, false);
+						} else {
+							TweenLite(a[i]).setEnabled(false, false);
+						}
 					}
 				}
+				delete masterList[target];
 			}
 		}
 		
-		public static function removeTween($tween:TweenLite, $clear:Boolean = true):void {
-			if ($tween != null) {
-				if ($clear) { 
-					$tween.clear();
-				}
-				$tween.enabled = false;
-			}
+		/**
+		 * @private
+		 * Default easing equation
+		 * 
+		 * @param t time
+		 * @param b start (must always be 0)
+		 * @param c change (must always be 1)
+		 * @param d duration
+		 * @return Eased value
+		 */
+		protected static function easeOut(t:Number, b:Number, c:Number, d:Number):Number {
+			return 1 - (t = 1 - (t / d)) * t;
 		}
-		
-		public static function killTweensOf($target:Object = null, $complete:Boolean = false):void {
-			if ($target != null && $target in masterList) {
-				var a:Array = masterList[$target], i:int, tween:TweenLite;
-				for (i = a.length - 1; i > -1; i--) {
-					tween = a[i];
-					if ($complete && !tween.gc) {
-						tween.complete(false);
-					}
-					tween.clear(); //prevents situations where a tween is killed but is still referenced elsewhere and put back in the render queue, like if a TweenLiteGroup is paused, then the tween is removed, then the group is unpaused.
-				}
-				delete masterList[$target];
-			}
-		}
-		
-		protected static function killGarbage($e:TimerEvent):void {
-			var ml:Dictionary = masterList, tgt:Object;
-			for (tgt in ml) {
-				if (ml[tgt].length == 0) {
-					delete ml[tgt];
-				}
-			}
-		}
-		
-		public static function easeOut($t:Number, $b:Number, $c:Number, $d:Number):Number {
-			return -$c * ($t /= $d) * ($t - 2) + $b;
-		}
-		
-		
-//---- PROXY FUNCTIONS ------------------------------------------------------------------------
-		
-		protected function easeProxy($t:Number, $b:Number, $c:Number, $d:Number):Number { //Just for when easeParams are passed in via the vars object.
+			
+		/**
+		 * @private
+		 * Only used for easing equations that accept extra parameters (like Elastic.easeOut and Back.easeOut).
+		 * Basically, it acts as a proxy. To utilize it, pass an Array of extra parameters via the vars object's
+		 * "easeParams" special property
+		 *  
+		 * @param t time
+		 * @param b start
+		 * @param c change
+		 * @param d duration
+		 * @return Eased value
+		 */
+		protected function easeProxy(t:Number, b:Number, c:Number, d:Number):Number { 
 			return this.vars.proxiedEase.apply(null, arguments.concat(this.vars.easeParams));
 		}
 		
 		
-//---- GETTERS / SETTERS -----------------------------------------------------------------------
-		
-		public function get enabled():Boolean {
-			return (this.gc) ? false : true;
-		}
-		
-		public function set enabled($b:Boolean):void {
-			if ($b) {
-				if (!(this.target in masterList)) {
-					masterList[this.target] = [this];
-				} else {
-					var a:Array = masterList[this.target], found:Boolean, i:int;
-					for (i = a.length - 1; i > -1; i--) {
-						if (a[i] == this) {
-							found = true;
-							break;
-						}
-					}
-					if (!found) {
-						a[a.length] = this;
-					}
-				}
-			}
-			this.gc = ($b) ? false : true;
-			if (this.gc) {
-				this.active = false;
-			} else {
-				this.active = this.started;
-			}
-		}
 	}
 	
 }

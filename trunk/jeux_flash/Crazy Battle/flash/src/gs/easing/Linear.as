@@ -1,5 +1,8 @@
-package gs.easing {
-	public class Linear {
+package com.greensock.easing {
+	
+	public class Linear extends FastEase {
+		public static const power:uint = 0;
+		
 		public static function easeNone (t:Number, b:Number, c:Number, d:Number):Number {
 			return c*t/d + b;
 		}

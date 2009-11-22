@@ -1,63 +1,70 @@
-/*
-VERSION: 1.0
-DATE: 1/8/2009
-ACTIONSCRIPT VERSION: 3.0 (AS2 version is also available)
-UPDATES & MORE DETAILED DOCUMENTATION AT: http://www.TweenMax.com
-DESCRIPTION:
-	Toggles the visibility at the end of a tween. For example, if you want to set visible to false
-	at the end of the tween, do TweenLite.to(mc, 1, {x:100, visible:false});
+﻿/**
+ * VERSION: 2.11
+ * DATE: 11/14/2009
+ * ACTIONSCRIPT VERSION: 3.0 
+ * UPDATES AND DOCUMENTATION AT: http://www.TweenMax.com
+ **/
+package com.greensock.plugins {
+	import com.greensock.*;
 	
-	The visible property is forced to true during the course of the tween.
-	
-USAGE:
-	import gs.*;
-	import gs.plugins.*;
-	TweenPlugin.activate([VisiblePlugin]); //only do this once in your SWF to activate the plugin (it is already activated in TweenLite and TweenMax by default)
-	
-	TweenLite.to(mc, 1, {x:100, visible:false});
-	
-	
-BYTES ADDED TO SWF: 244 (not including dependencies)
-
-AUTHOR: Jack Doyle, jack@greensock.com
-Copyright 2009, GreenSock. All rights reserved. This work is subject to the terms in http://www.greensock.com/terms_of_use.html or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
-*/
-
-package gs.plugins {
 	import flash.display.*;
-	import gs.*;
-	
+/**
+ * Toggles the visibility at the end of a tween. For example, if you want to set <code>visible</code> to false
+ * at the end of the tween, do:<br /><br /><code>
+ * 
+ * TweenLite.to(mc, 1, {x:100, visible:false});<br /><br /></code>
+ * 
+ * The <code>visible</code> property is forced to true during the course of the tween. <br /><br />
+ * 
+ * <b>USAGE:</b><br /><br />
+ * <code>
+ * 		import com.greensock.TweenLite; <br />
+ * 		import com.greensock.plugins.TweenPlugin; <br />
+ * 		import com.greensock.plugins.VisiblePlugin; <br />
+ * 		TweenPlugin.activate([VisiblePlugin]); //activation is permanent in the SWF, so this line only needs to be run once.<br /><br />
+ * 
+ * 		TweenLite.to(mc, 1, {x:100, visible:false}); <br /><br />
+ * </code>
+ * 
+ * <b>Copyright 2009, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
+ * 
+ * @author Jack Doyle, jack@greensock.com
+ */
 	public class VisiblePlugin extends TweenPlugin {
-		public static const VERSION:Number = 1.0;
+		/** @private **/
 		public static const API:Number = 1.0; //If the API/Framework for plugins changes in the future, this number helps determine compatibility
 		
+		/** @private **/
 		protected var _target:Object;
+		/** @private **/
 		protected var _tween:TweenLite;
+		/** @private **/
 		protected var _visible:Boolean;
+		/** @private **/
+		protected var _initVal:Boolean;
 		
+		/** @private **/
 		public function VisiblePlugin() {
 			super();
 			this.propName = "visible";
 			this.overwriteProps = ["visible"];
-			this.onComplete = onCompleteTween;
 		}
 		
-		override public function onInitTween($target:Object, $value:*, $tween:TweenLite):Boolean {
-			_target = $target;
-			_tween = $tween;
-			_visible = Boolean($value);
+		/** @private **/
+		override public function onInitTween(target:Object, value:*, tween:TweenLite):Boolean {
+			_target = target;
+			_tween = tween;
+			_initVal = _target.visible;
+			_visible = Boolean(value);
 			return true;
 		}
 		
-		public function onCompleteTween():void {
-			if (_tween.vars.runBackwards != true && _tween.ease == _tween.vars.ease) { //_tween.ease == _tween.vars.ease checks to make sure the tween wasn't reversed with a TweenGroup
+		/** @private **/
+		override public function set changeFactor(n:Number):void {
+			if (n == 1 && (_tween.cachedDuration == _tween.cachedTime || _tween.cachedTime == 0)) { //a changeFactor of 1 doesn't necessarily mean the tween is done - if the ease is Elastic.easeOut or Back.easeOut for example, they could hit 1 mid-tween. The reason we check to see if cachedTime is 0 is for from() tweens
 				_target.visible = _visible;
-			}
-		}
-		
-		override public function set changeFactor($n:Number):void {
-			if (_target.visible != true) {
-				_target.visible = true;
+			} else {
+				_target.visible = _initVal; //in case a completed tween is re-rendered at an earlier time.
 			}
 		}
 
