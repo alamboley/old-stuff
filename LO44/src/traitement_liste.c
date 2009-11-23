@@ -22,9 +22,9 @@ void afficherListe(liste l) {
 int estVide(liste l) {
 	
 	if (l==NULL) {
-		return 0;
-	} else {
 		return 1;
+	} else {
+		return 0;
 	}
 }
 
@@ -85,4 +85,88 @@ liste supprimerQueue(liste l) {
 		}
 	}
 	return l;	
+}
+
+int valeur_tete(liste l) {
+	return l->valeur;
+}
+
+liste reste(liste l) {
+	return l->suivant;
+}
+
+int contenir(liste l, int v) {
+	int b=0;
+	liste p=l;
+	while (!estVide(p) && b==0) {
+		if (valeur_tete(p)==v) {
+			b=1;
+		} else {
+			p=reste(p);
+		}
+	}
+	return b;
+}
+
+int nbrElementsListe(liste l) {
+	liste tmp=l;
+	int i=0;
+	while(!estVide(tmp)) {
+		i++;
+		tmp=reste(tmp);
+	}
+	return i;
+}
+
+liste triABulles(liste l) {
+	int inv=0;
+	liste p=l;
+	int temp;
+	liste f=NULL;
+	if(!estVide(p) && !estVide(reste(p))) {
+		do {
+			inv=0;
+			p=l;
+			while(reste(p)!=f) {
+				if (valeur_tete(p)>valeur_tete(reste(p))) {
+					temp=valeur_tete(p);
+					p->valeur=valeur_tete(reste(p));
+					reste(p)->valeur=temp;
+					inv=1;
+				}
+				p=p->suivant;
+			}
+			f=p;
+		} while(inv);
+	}
+	return f;
+}
+
+liste fusion2listes(liste l1, liste l2) {
+	liste l3=NULL;
+	l1=triABulles(l1);
+	l2=triABulles(l2);
+
+	while(!estVide(l1) && !estVide(l2)) {
+		if (valeur_tete(l1)<valeur_tete(l2)) {
+			l3=insererEnQueue(l3,valeur_tete(l1));
+			l1=reste(l1);
+		} else {
+			l3=insererEnQueue(l3,valeur_tete(l2));
+			l2=reste(l2);
+		}
+		if (estVide(l1)) {
+			while(!estVide(l2)) {
+				l3=insererEnQueue(l3, valeur_tete(l2));
+				l2=reste(l2);
+			}
+		}
+		if (estVide(l2)) {
+			while(!estVide(l1)) {
+				l3=insererEnQueue(l3, valeur_tete(l1));
+				l1=reste(l1);
+			}
+		}
+	}
+	return l3;
 }

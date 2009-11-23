@@ -29,5 +29,11 @@ liste insererEnTete(liste l, int v);
 liste insererEnQueue(liste l,int v);
 liste supprimerTete(liste l);
 liste supprimerQueue(liste l);
+int valeur_tete(liste l);
+liste reste(liste l);
+int contenir(liste l, int v);
+int nbrElementsListe(liste l);
+liste triABulles(liste l);
+liste fusion2listes(liste l1, liste l2);
 
 #endif /* TRAITEMENT_LISTE_H_ */
