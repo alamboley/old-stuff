@@ -10,9 +10,15 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "traitement_liste.h"
+#include "individu.h"
 
 int main(void) {
-	puts("Hello World !");
+
+	Individu i=initialiserIT();
+
+	afficherListe(i);
+
 	return EXIT_SUCCESS;
 }

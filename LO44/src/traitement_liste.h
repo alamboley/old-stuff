@@ -10,30 +10,26 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
-typedef struct elem { int valeur;
-			struct elem *suivant;
-			} element;
-typedef element *liste;
+#include "individu.h"
 
 //Variables :
 
-liste l;
+Individu l;
 int v;
 
 //Fonctions :
 
-void afficherListe(liste l);
-int estVide(liste l);
-liste insererEnTete(liste l, int v);
-liste insererEnQueue(liste l,int v);
-liste supprimerTete(liste l);
-liste supprimerQueue(liste l);
-int valeur_tete(liste l);
-liste reste(liste l);
-int contenir(liste l, int v);
-int nbrElementsListe(liste l);
-liste triABulles(liste l);
-liste fusion2listes(liste l1, liste l2);
+void afficherListe(Individu l);
+int estVide(Individu l);
+Individu insererEnTete(Individu l, Bit v);
+Individu insererEnQueue(Individu l,Bit v);
+Individu supprimerTete(Individu l);
+Individu supprimerQueue(Individu l);
+int valeur_tete(Individu l);
+Individu reste(Individu l);
+int contenir(Individu l, Bit v);
+int nbrElementsIndividu(Individu l);
+Individu triABulles(Individu l);
+Individu fusion2Individus(Individu l1, Individu l2);
 
-#endif /* TRAITEMENT_LISTE_H_ */
+#endif /* TRAITEMENT_Individu_H_ */
