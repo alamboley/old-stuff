@@ -8,10 +8,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "traitement_liste.h"
+#include "individu.h"
 
-void afficherListe(liste l) {
+void afficherListe(Individu l) {
 	
-	liste tmp;
+	Individu tmp;
 	tmp=l;
 	while(tmp!=NULL) {
 		printf("%d \n", tmp->valeur);
@@ -19,7 +20,7 @@ void afficherListe(liste l) {
 	}
 }
 
-int estVide(liste l) {
+int estVide(Individu l) {
 	
 	if (l==NULL) {
 		return 1;
@@ -28,18 +29,18 @@ int estVide(liste l) {
 	}
 }
 
-liste insererEnTete(liste l, int v) {
+Individu insererEnTete(Individu l, Bit v) {
 	
-	liste nouvel;
+	Individu nouvel;
 	nouvel = (element*)malloc(sizeof(element));
     (*nouvel).valeur = v;
     nouvel->suivant = l;
     return nouvel;
 }
 
-liste insererEnQueue(liste l,int v) {
+Individu insererEnQueue(Individu l,Bit v) {
 	
-	liste tmp,p;
+	Individu tmp,p;
 	tmp=(element*)malloc(sizeof(element));
 	tmp->valeur=v;
 	tmp->suivant=NULL;
@@ -56,9 +57,9 @@ liste insererEnQueue(liste l,int v) {
 	return l;	
 }
 
-liste supprimerTete(liste l) {
+Individu supprimerTete(Individu l) {
 	
-	liste tmp;
+	Individu tmp;
 	if (l==NULL) {
 		tmp=l;
 	} else {
@@ -68,14 +69,14 @@ liste supprimerTete(liste l) {
 	return tmp;	
 }
 
-liste supprimerQueue(liste l) {
+Individu supprimerQueue(Individu l) {
 	
 	if (l!=NULL) {
 		if (l->suivant==NULL) {
 			free(l);
 			l=NULL;
 		} else {
-			liste p=l;
+			Individu p=l;
 			
 			while(p->suivant->suivant!=NULL) {
 				p=p->suivant;
@@ -87,17 +88,17 @@ liste supprimerQueue(liste l) {
 	return l;	
 }
 
-int valeur_tete(liste l) {
+int valeur_tete(Individu l) {
 	return l->valeur;
 }
 
-liste reste(liste l) {
+Individu reste(Individu l) {
 	return l->suivant;
 }
 
-int contenir(liste l, int v) {
+int contenir(Individu l, Bit v) {
 	int b=0;
-	liste p=l;
+	Individu p=l;
 	while (!estVide(p) && b==0) {
 		if (valeur_tete(p)==v) {
 			b=1;
@@ -108,8 +109,8 @@ int contenir(liste l, int v) {
 	return b;
 }
 
-int nbrElementsListe(liste l) {
-	liste tmp=l;
+int nbrElementsIndividu(Individu l) {
+	Individu tmp=l;
 	int i=0;
 	while(!estVide(tmp)) {
 		i++;
@@ -118,11 +119,11 @@ int nbrElementsListe(liste l) {
 	return i;
 }
 
-liste triABulles(liste l) {
+Individu triABulles(Individu l) {
 	int inv=0;
-	liste p=l;
+	Individu p=l;
 	int temp;
-	liste f=NULL;
+	Individu f=NULL;
 	if(!estVide(p) && !estVide(reste(p))) {
 		do {
 			inv=0;
@@ -142,8 +143,8 @@ liste triABulles(liste l) {
 	return f;
 }
 
-liste fusion2listes(liste l1, liste l2) {
-	liste l3=NULL;
+Individu fusion2Individus(Individu l1, Individu l2) {
+	Individu l3=NULL;
 	l1=triABulles(l1);
 	l2=triABulles(l2);
 
