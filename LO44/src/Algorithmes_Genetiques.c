@@ -25,12 +25,15 @@ typedef struct Element { Bit valeur;
 typedef element *Individu;
 
 Individu initialiserIT();
+Individu initialiserRE(Individu indiv, int l);
 void afficherListe(Individu indiv);
 Individu insererEnQueue(Individu indiv, Bit v);
 
 int main(void) {
 	Individu indiv;
-	indiv=initialiserIT();
+	srand(time(NULL)); //On demarre un timer pour la fonction rand.
+	//indiv=initialiserIT();
+	indiv=initialiserRE(indiv, longIndiv);
 	afficherListe(indiv);
 	return EXIT_SUCCESS;
 }
@@ -39,10 +42,22 @@ Individu initialiserIT() {
 	int i;
 	Bit j;
 	Individu indiv;
-	srand(time(NULL)); //On demarre un timer pour la fonction rand.
+
 	for (i=0; i<longIndiv; i++) {
 		j=rand()%2;
 		indiv=insererEnQueue(indiv, j);
+	}
+	return indiv;
+}
+
+Individu initialiserRE(Individu indiv, int l) {
+	Bit j;
+	j=rand()%2;
+	if (l==1) {
+		indiv=insererEnQueue(indiv, j);
+	} else {
+		indiv=insererEnQueue(indiv, j);
+		indiv=initialiserRE(indiv, l-1);
 	}
 	return indiv;
 }
