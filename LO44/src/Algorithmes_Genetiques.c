@@ -8,6 +8,7 @@
  ============================================================================
  */
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -28,6 +29,7 @@ Individu initialiserIT();
 Individu initialiserRE(Individu indiv, int l);
 void afficherListe(Individu indiv);
 Individu insererEnQueue(Individu indiv, Bit v);
+int decoder(Individu indiv);
 
 int main(void) {
 	Individu indiv;
@@ -35,6 +37,10 @@ int main(void) {
 	//indiv=initialiserIT();
 	indiv=initialiserRE(indiv, longIndiv);
 	afficherListe(indiv);
+
+	int valeurIndiv;
+	valeurIndiv=decoder(indiv);
+	printf("L'individu vaut : %d \n", valeurIndiv);
 	return EXIT_SUCCESS;
 }
 
@@ -89,4 +95,17 @@ Individu insererEnQueue(Individu indiv, Bit v) {
 			p->suivant=tmp;
 	}
 	return indiv;
+}
+
+int decoder(Individu indiv) {
+	Individu tmp;
+	int i,v;
+	tmp=indiv;
+	i=longIndiv;
+	while(tmp!=NULL) {
+		v=v+pow(2,i)*tmp->valeur;
+		i--;
+		tmp=tmp->suivant;
+	}
+	return v;
 }
