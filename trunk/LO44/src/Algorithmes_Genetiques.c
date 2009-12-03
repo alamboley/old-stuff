@@ -4,7 +4,7 @@
  Author      : Aymeric & Anne
  Version     :
  Copyright   : 
- Description : Algorithme Génétique
+ Description : Algorithme Genetique
  ============================================================================
  */
 
@@ -39,7 +39,7 @@ Individu initialiserIT() {
 	int i, j;
 	Bit toto;
 	Individu indiv;
-	srand(time(NULL)); //On démarre un timer pour la fonction rand.
+	srand(time(NULL)); //On demarre un timer pour la fonction rand.
 	for (i=0; i<longIndiv; i++) {
 		j=rand()%2;
 		toto=j;
