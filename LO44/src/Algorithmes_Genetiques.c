@@ -36,14 +36,13 @@ int main(void) {
 }
 
 Individu initialiserIT() {
-	int i, j;
-	Bit toto;
+	int i;
+	Bit j;
 	Individu indiv;
 	srand(time(NULL)); //On demarre un timer pour la fonction rand.
 	for (i=0; i<longIndiv; i++) {
 		j=rand()%2;
-		toto=j;
-		insererEnQueue(indiv, toto);
+		indiv=insererEnQueue(indiv, j);
 	}
 	return indiv;
 }
@@ -53,17 +52,15 @@ void afficherListe(Individu indiv) {
 	Individu tmp;
 	tmp=indiv;
 	while(tmp!=NULL) {
-		printf("%c \n", tmp->valeur);
+		printf("%d \n", tmp->valeur);
 		tmp=tmp->suivant;
 	}
 }
 
 Individu insererEnQueue(Individu indiv, Bit v) {
 
-	printf("ma valeur : %c",v);
-
 	Individu tmp,p;
-	tmp=(element*)malloc(sizeof(element));
+	tmp=(Individu)malloc(sizeof(element));
 	tmp->valeur=v;
 	tmp->suivant=NULL;
 
