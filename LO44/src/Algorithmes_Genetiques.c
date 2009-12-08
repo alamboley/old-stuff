@@ -132,7 +132,7 @@ int decoder(Individu indiv) {
 	tmp=indiv;
 	i=longIndiv;
 	while(tmp!=NULL) {
-		v=v+pow(2,i)*tmp->valeur;
+		v=v+pow(2,i-1)*tmp->valeur;
 		i--;
 		tmp=tmp->suivant;
 	}
