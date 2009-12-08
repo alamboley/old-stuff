@@ -15,6 +15,7 @@
 /*#include "traitement_liste.h"
 #include "individu.h"*/
 
+#define TaillePop 20;
 #define longIndiv 8
 #define A -1
 #define B 1
@@ -26,6 +27,11 @@ typedef struct Element { Bit valeur;
 						} element;
 
 typedef element *Individu;
+
+typedef struct Pop { Individu valeur;
+					struct Pop *suivant;
+					} population;
+typedef population *Population;
 
 Individu initialiserIT();
 Individu initialiserRE(Individu indiv, int l);
@@ -154,7 +160,7 @@ void croiserIndividu(Individu indiv1, Individu indiv2) {
 }
 
 float qualiteF1(int v) {
-	printf("ma valeur %d \n", v);
+
 	float qualite, tmp1, tmp2, tmp3;
 	tmp1=pow(2,longIndiv);
 	tmp2=(B-A)+A;
