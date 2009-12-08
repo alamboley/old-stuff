@@ -142,6 +142,8 @@ int decoder(Individu indiv) {
 void croiserIndividu(Individu indiv1, Individu indiv2) {
 
    Individu indiv3, indiv4;
+   indiv3=(Individu)malloc(sizeof(element));
+   indiv4=(Individu)malloc(sizeof(element));
    int tmp, pCroise;
 
    indiv3=indiv1;
