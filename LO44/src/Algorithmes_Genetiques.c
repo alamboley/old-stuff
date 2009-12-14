@@ -12,8 +12,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-/*#include "traitement_liste.h"
-#include "individu.h"*/
 
 #define TaillePop 20;
 #define longIndiv 8
@@ -42,7 +40,9 @@ void croiserIndividu(Individu indiv1, Individu indiv2);
 float qualiteF1(int v);
 
 int main(void) {
-	Individu indiv1, indiv2;
+	srand(time(NULL)); //On demarre un timer pour la fonction rand.
+
+	Individu indiv1 = NULL, indiv2 = NULL;
 	int valeurIndiv1, valeurIndiv2;
 	float qualiteIndiv1, qualiteIndiv2;
 
@@ -74,9 +74,7 @@ int main(void) {
 Individu initialiserIT() {
 	int i;
 	Bit j;
-	Individu indiv;
-
-	srand(time(NULL)); //On demarre un timer pour la fonction rand.
+	Individu indiv = NULL;
 
 	for (i=0; i<longIndiv; i++) {
 		j=rand()%2;
@@ -88,6 +86,7 @@ Individu initialiserIT() {
 Individu initialiserRE(Individu indiv, int l) {
 	Bit j;
 	j=rand()%2;
+
 	if (l==1) {
 		indiv=insererEnQueue(indiv, j);
 	} else {
@@ -101,8 +100,9 @@ void afficherListe(Individu indiv) {
 
 	Individu tmp;
 	tmp=indiv;
+	int i = 0;
 	while(tmp!=NULL) {
-		printf("%d \n", tmp->valeur);
+		printf("%d at %d\n", tmp->valeur, i++);
 		tmp=tmp->suivant;
 	}
 }
@@ -117,22 +117,22 @@ Individu insererEnQueue(Individu indiv, Bit v) {
 	if (indiv==NULL) {
 		indiv=tmp;
 	} else {
-			p=indiv;
-			while (p->suivant!=NULL) {
-					p=p->suivant;
-			}
-			p->suivant=tmp;
+		p=indiv;
+		while (p->suivant!=NULL) {
+			p=p->suivant;
+		}
+		p->suivant=tmp;
 	}
 	return indiv;
 }
 
 int decoder(Individu indiv) {
 	Individu tmp;
-	int i,v;
+	int i,v=0;
 	tmp=indiv;
 	i=longIndiv;
 	while(tmp!=NULL) {
-		v=v+pow(2,i-1)*tmp->valeur;
+		v=v+(pow(2,i-1))*(tmp->valeur);
 		i--;
 		tmp=tmp->suivant;
 	}
@@ -142,8 +142,6 @@ int decoder(Individu indiv) {
 void croiserIndividu(Individu indiv1, Individu indiv2) {
 
    Individu indiv3, indiv4;
-   indiv3=(Individu)malloc(sizeof(element));
-   indiv4=(Individu)malloc(sizeof(element));
    int tmp, pCroise;
 
    indiv3=indiv1;
