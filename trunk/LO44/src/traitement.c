@@ -1,5 +1,5 @@
 /*
- * Auteurs : Aymeric Lamboley & Anne Lassabe
+ * Auteurs : Anne Lassabe & Aymeric Lamboley
  */
 
 #include <math.h>
@@ -13,11 +13,12 @@
 #include "algorithme.h"
 #include "traitement.h"
 
-//
-//Fonctions nécessaires à la manipulation des types de données et des fonctions du projet
-//
+/*
+Fonctions necessaires a la manipulation des types de donnees et des fonctions du projet (cf type.h)
+*/
 
-//Affichage de l'individu passé en paramètre (cf type.h)
+//Affichage de l'individu passe en parametre
+//Parametre : l'Individu "indiv" a afficher
 void afficherListe(Individu indiv)
 {
 
@@ -26,7 +27,7 @@ void afficherListe(Individu indiv)
 	int i = 1;
 	while (tmp!=NULL) {
 	    printf("%d", tmp->valeur);
-	    //On sépare chaque quartet par un espace pour une meilleure lisibilité
+	    //On separe chaque quartet par un espace pour une meilleure lisibilite
 	    if (i % 4 == 0) {
 	    	printf(" ");
 	    }
@@ -37,7 +38,8 @@ void afficherListe(Individu indiv)
 	printf("\n");
 }
 
-//Insertion d'une valeur à la fin d'un individu (cf type.h)
+//Insertion d'une valeur a la fin d'un individu
+//Parametres : Individu "indiv" a la fin duquel on insere le Bit "v"
 Individu insererEnQueue(Individu indiv, Bit v)
 {
 	Individu tmp, p;
@@ -57,7 +59,8 @@ Individu insererEnQueue(Individu indiv, Bit v)
 	return indiv;
 }
 
-//Fonction vérifiant si une population est vide ou pas (cf type.h)
+//Fonction verifiant si une population est vide ou pas
+//Parametre : Population "p"
 bool est_vide(Population p)
 {
 	if (p == NULL)
@@ -66,12 +69,15 @@ bool est_vide(Population p)
 		return false;
 }
 
+//Renvoie la Population privee de son premier individu
+//Parametre : Population "p" non tronquee
 Population reste(Population p)
 {
 	return p -> suivant;
 }
 
-//retourner la QUALITE du premier individu de la population
+//Retourne la QUALITE du premier individu de la population
+//Parametre : Population "p"
 float qualite_tete(Population p)
 {
 	return qualite(decoder(p->valeur));
@@ -82,7 +88,8 @@ Individu valeur_tete(Population p)
 	return p->valeur;
 }
 
-//Fusionne deux population en ajoutant à la fin de la première population la seconde
+//Fusionne deux populations
+//Parametres : Population "debut" a la fin de laquelle on ajoute la Population "fin"
 Population ajout_file(Population debut, Population fin)
 {
 	Population tmp = debut;
@@ -97,7 +104,8 @@ Population ajout_file(Population debut, Population fin)
 	return debut;
 }
 
-//Ajoute un individu à la fin de la population
+//Ajoute un individu a la population
+//Parametre : Population "p" a fin de laquelle on ajoute l'Individu "i"
 Population insererIndividu(Population p, Individu i)
 {
 	Population tmp, t;
@@ -117,7 +125,8 @@ Population insererIndividu(Population p, Individu i)
 	return p;
 }
 
-//Affiche la qualité de chaque individu de la population (fonction de test)
+//Affiche la qualite de chaque individu de la population (fonction de test)
+//Parametre : Population "p"
 void afficher_qualitePop(Population p)
 {
 
@@ -138,7 +147,8 @@ void afficher_qualitePop(Population p)
 
 }
 
-//Génère un nombre aléatoire compris entre deux valeurs passées en paramètre
+//Genere un nombre aleatoire compris entre deux valeurs passees en parametre
+//Parametres : les valeurs limites du nombre aleatoire (entiers)
 int nombreAleatoire(int valeurMini, int valeurMax) {
 	return (int) (valeurMini + ((float) rand() / RAND_MAX * (valeurMax - valeurMini + 1)));
 }

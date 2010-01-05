@@ -1,5 +1,5 @@
 /*
- * Auteurs : Aymeric Lamboley & Anne Lassabe
+ * Auteurs : Anne Lassabe & Aymeric Lamboley
  */
 
 #include <math.h>
@@ -17,17 +17,17 @@ int main(int argc, char* argv[])
 {
 	srand(time(NULL));
 	
-	//Affectation des valeurs par défaut aux paramètres du projet
+	//Affectation des valeurs par defaut aux parametres du projet
 	longIndiv = 8;
 	pCroise = 0.5;
-	taillePop = nombreAleatoire(20, 200);
+	taillePop = 20;//nombreAleatoire(20, 200);
 	tSelect = (float) nombreAleatoire(10, 90) / 100;
-	nGen = nombreAleatoire(20, 200);
+	nGen = 20;//nombreAleatoire(20, 200);
 	fonctionQualite = 1;
 	
-	//Si une fonction de qualité (f1, f2 ou f3) a été passée en argument,
-	//on affecte les valeurs correspondantes aux paramètres :
-	//taille d'un individu et fonction de qualité à utiliser
+	//Si une fonction de qualite (f1, f2 ou f3) a ete passee en argument,
+	//on affecte les valeurs correspondantes aux parametres :
+	//taille d'un individu et fonction de qualite a utiliser
 	if (argc == 2) {
 		if (strcmp("f2", argv[1]) == 0) {
 			fonctionQualite = 2;
@@ -38,20 +38,29 @@ int main(int argc, char* argv[])
 		}
 	}
 	
-	//Début du jeu d'essai
+	//Debut du jeu d'essai
 	Population maPop = NULL;
 	maPop = initialiserPop();
+	printf("Population avant croisement :\n");
+	afficher_qualitePop(maPop);
 
 	int i;
 	for (i = 0; i < nGen; i++) {
 		maPop = croiserPop(maPop);
+		printf("Génération n°%d : population croisée :\n", i+1);
+		afficher_qualitePop(maPop);
 		maPop = quicksort(maPop);
+		printf("Population triée :\n");
+		afficher_qualitePop(maPop);
 		maPop = selection(maPop);
+		printf("Population sélectionnée :\n");
+		afficher_qualitePop(maPop);
 	}
-
-	printf("Meilleur individu dans une population de %d après %d générations :\n", taillePop, nGen);
+	printf("Taux de selection : %f ; probabilite de croisement : %f\n", tSelect, pCroise);
+	printf("Meilleur individu dans une population de %d apres %d generations :\n", taillePop, nGen);
 	afficherListe(maPop->valeur);
-	printf("Sa qualité vaut %f\n", qualite_tete(maPop));
+	printf("Sa qualite vaut %f\n", qualite_tete(maPop));
+	
 	
 	//Fin du jeu d'essai
 	

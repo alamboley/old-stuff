@@ -1,5 +1,5 @@
 /*
- * Auteurs : Aymeric Lamboley & Anne Lassabe
+ * Auteurs : Anne Lassabe & Aymeric Lamboley
  */
 
 #ifndef ALGORITHME_H_
