@@ -1,5 +1,5 @@
 /*
- * Auteurs : Aymeric Lamboley & Anne Lassabe
+ * Auteurs : Anne Lassabe & Aymeric Lamboley
  */
 
 #ifndef TRAITEMENT_H_

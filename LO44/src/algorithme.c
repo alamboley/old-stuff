@@ -1,5 +1,5 @@
 /*
- * Auteurs : Aymeric Lamboley & Anne Lassabe
+ * Auteurs : Anne Lassabe & Aymeric Lamboley
  */
 
 #include <math.h>
@@ -13,11 +13,14 @@
 #include "algorithme.h"
 #include "traitement.h"
 
-//
-//Fonctions spécifiques au projet
-//
+/*
+Fonctions specifiques au projet
+*/
 
-//Initialise aléatoirement un individu de manière itérative
+
+//Manipulation des Individus (cf type.h)
+
+//Initialise aleatoirement un individu de maniere iterative
 Individu initialiserIT()
 {
 	int i;
@@ -31,17 +34,17 @@ Individu initialiserIT()
 	return indiv;
 }
 
-//Initialise aléatoirement un individu de manière récursive
-//Paramètres : individu à initialiser "indiv", longueur de l'individu "l"
+//Initialise aleatoirement un individu de maniere recursive
+//Parametres : individu a initialiser "indiv", longueur de l'individu "l"
 Individu initialiserRE(Individu indiv, int l)
 {
 	Bit j;
 	j = rand()%2;
 
-	//Cas trivial : l'individu est composé d'un seul bit
+	//Cas trivial : l'individu est compose d'un seul bit
 	if (l == 1) {
 		indiv = insererEnQueue(indiv, j);
-		//Cas général : l'individu est composé de plusieurs bits
+		//Cas general : l'individu est compose de plusieurs bits
 	} else {
 		indiv = insererEnQueue(indiv, j);
 		indiv = initialiserRE(indiv, l-1);
@@ -49,17 +52,17 @@ Individu initialiserRE(Individu indiv, int l)
 	return indiv;
 }
 
-//Convertit l'individu (liste de bits) en valeur décimale
-//Paramètre : l'individu "indiv" à convertir
+//Convertit l'individu (liste de bits) en valeur decimale
+//Parametre : l'individu "indiv" a convertir
 int decoder(Individu indiv)
 {
 	Individu tmp;
 	int i, v = 0;
-	//pointeur pour parcourir l'individu à décoder
+	//pointeur pour parcourir l'individu a decoder
 	tmp = indiv;
 	i = longIndiv;
 	while(tmp != NULL) {
-		//valeur décimale = somme des valeurs des bits * leur puissance
+		//valeur decimale = somme des valeurs des bits * leur puissance
 		//puissance maximale : "i" = longIndiv - 1
 		v = v+(pow(2,i-1))*(tmp->valeur);
 		i--;
@@ -68,8 +71,8 @@ int decoder(Individu indiv)
 	return v;
 }
 
-//Intervertit aléatoirement (selon une probabilité) les bits de deux individus
-//Paramètres : "indiv1" et "indiv2" les individus à croiser
+//Intervertit aleatoirement (selon une probabilite) les bits de deux individus
+//Parametres : "indiv1" et "indiv2" les individus a croiser
 void croiserIndividu(Individu indiv1, Individu indiv2)
 {
 	Individu indiv3, indiv4;
@@ -79,7 +82,7 @@ void croiserIndividu(Individu indiv1, Individu indiv2)
 	indiv4 = indiv2;
 
 	while (indiv3!=NULL) {
-	//pour chaque bit on échange les valeurs si la probabilité est respectée
+	//pour chaque bit on echange les valeurs si la probabilite est respectee
 		if ( (float)(rand()%101)/100 < pCroise ) {
 			tmp=indiv3->valeur;
 			indiv3->valeur=indiv4->valeur;
@@ -90,7 +93,8 @@ void croiserIndividu(Individu indiv1, Individu indiv2)
 	}
 }
 
-//Appelle la fonction de qualité spécifiée (ou non) en argument du main
+//Appelle la fonction de qualite specifiee (ou non) en argument du main
+//Parametre : la valeur decodee d'un individu
 float qualite(int v) {
 	switch (fonctionQualite) {
 		case 1:
@@ -107,39 +111,42 @@ float qualite(int v) {
 	return qualiteF1(v);
 }
 
-//Fonction de qualité par défaut
+//Fonction de qualite par defaut
+//Parametre : la valeur decodee d'un individu
 float qualiteF1(int v)
 {
 	int A = -1, B = 1;
 	float qualite, tmp;
-	tmp = (v/pow(2,longIndiv))*((B-A)+A);
+	tmp = ((v/pow(2,longIndiv))*(B-A))+A;
 	qualite = - pow(tmp,2);
 	return qualite;
 }
 
-//Variante de la fonction de qualité utilisant le logarithme néperien
+//Variante de la fonction de qualite utilisant le logarithme neperien
+//Parametre : la valeur decodee d'un individu
 float qualiteF2(int v)
 {
-	float A = 0.5, B = 5.0;
+	float A = 0.1, B = 5.0;
 	float qualite, tmp;
-	tmp = (v/pow(2,longIndiv))*((B-A)+A);
+	tmp = ((v/pow(2,longIndiv))*(B-A))+A;
 	qualite = - log(tmp);
 	return qualite;
 }
 
 //Autre variante utilisant la fonction cosinus
+//Parametre : la valeur decodee d'un individu
 float qualiteF3(int v)
 {
 	float qualite, tmp;
-	tmp = (v/pow(2,longIndiv))*((M_PI+M_PI)+ (-M_PI));
+	tmp = ((v/pow(2,longIndiv))*(M_PI+M_PI)) + (-M_PI);
 	qualite = - cos(tmp);
 	return qualite;
 }
 
 
-//Fonctions manipulant une population
+//Fonctions manipulant une Population (cf type.h)
 
-//Initilisation aléatoire d'une population
+//Initilisation aleatoire d'une population
 Population initialiserPop()
 {
 	int i;
@@ -147,27 +154,38 @@ Population initialiserPop()
 	Population newPop = NULL;
 
 	for (i = 0 ; i < taillePop ; i++) {
-		//On initialise le nombre d'individus nécessaires
+		//On initialise le nombre d'individus necessaires a une population
 		citoyen = initialiserIT();
-		//Puis on les ajoute à la nouvelle population
+		//Et on les ajoute a la nouvelle population
 		newPop = insererIndividu(newPop, citoyen);
 	}
 	return newPop;
 }
 
-//Tri rapide décroissant basé sur la qualité des individus d'une population
+//Tri rapide decroissant base sur la qualite des individus d'une population
+//Parametre : Population a trier
 Population quicksort(Population aTrier)
 {
+	//Cas trivial : s'il y a trop peu de valeurs a trier
 	if (est_vide(aTrier) || est_vide(reste(aTrier))) {
 		return aTrier;
+	//Cas general
 	} else {
+		//On separera les valeurs en deux listes :
+		//les valeurs plus petites que le pivot et les valeurs plus grandes
 		Population petits = NULL, grands = NULL;
 		Population gauche = NULL, droite = NULL;
+		
+		//Declaration des variables temporaires
 		float valeur;
+		//indivValeur = individu a comparer et deplacer dans la liste
+		//indivPivot = individu dont la qualite servira de comparaison
 		Individu indivValeur, indivPivot = valeur_tete(aTrier);
+		//La valeur pivot est la qualite de l'individu pivot, ici le premier de la liste
 		float pivot = qualite_tete(aTrier);
 
 		while (!est_vide(aTrier) && (reste(aTrier) != NULL)) {
+		//Tant qu'on a au moins deux individus a trier on compare leur qualite au pivot
 			valeur = qualite_tete(reste(aTrier));
 			indivValeur = valeur_tete(reste(aTrier));
 			if (valeur <= pivot) {
@@ -177,29 +195,38 @@ Population quicksort(Population aTrier)
 			}
 			aTrier = reste(aTrier);
 		}
-
+		
+		//Appel recursif de la fonction sur les listes ainsi formees
+		//c'est-a-dire les individus plus petits et plus grand que le pivot
 		gauche = quicksort(grands);
 		droite = quicksort(petits);
 
+		//Une fois les deux listes triees on les fusionne en inserant le pivot au milieu
 		gauche = insererIndividu(gauche, indivPivot);
-		ajout_file(gauche, droite); // On fusionne les 2 listes
+		ajout_file(gauche, droite);
 		return gauche;
 	}
 }
 
+//Selection des meilleurs individus de la population et
+//recopie de ces individus sur le reste de la liste
+//Parametre : Population "elite" dont on selectionne les meilleurs individus
 Population selection(Population elite)
 {
-	//Calcul du nombre d'individus à sélectionner
-	int nbIndiv = taillePop * tSelect;
+	//Calcul du nombre d'individus a selectionner
+	int nbIndiv = (int)ceil(taillePop * tSelect);
 	int i = 0;
 	Population resultat = NULL;
 	Population tmp = NULL;
+	//On recopie les individus a selectionner dans la liste de resultat
 	for(i = 0; i<nbIndiv; i++) {
 		Individu in = elite->valeur;
 		resultat = insererIndividu(resultat, in);
 		elite = elite->suivant;
 	}
 	tmp = resultat;
+	//Puis on parcourt la liste resultat pour recopier ses valeurs
+	//jusqu'a avoir la bonne taille de population
 	for(i = 0; i<(taillePop - nbIndiv); i++)
 	{
 		Individu in = tmp->valeur;
@@ -209,33 +236,50 @@ Population selection(Population elite)
 	return resultat;
 }
 
+int taillePopulation(Population population)
+{
+	int taille = 0;
+	while (population != NULL)
+	{
+		taille++;
+		population = population->suivant;
+	}
+	return taille;
+}
+
+//Cree une nouvelle population a partir de croisements d'individus
+//Parametre : Population dont on croise les individus aleatoirement
 Population croiserPop(Population parent)
 {
 	Population enfant = NULL;
 	int i, j;
+	//On cree deux nouveaux individus par croisement jusqu'a avoir une population de taille normale
 	for(i = 0; i < taillePop; i += 2) {
-		int choixPetit, choixGrand;
-		Individu petit = NULL, grand = NULL;
+		int choixUn, choixDeux;
+		Individu un = NULL, deux = NULL;
 		Population tmp = parent;
 
-		//choix aléatoire du premier individu
-		choixPetit = rand() % (taillePop - 1);
+		//choix aleatoire du premier individu
+		choixUn = rand() % (taillePop - 1);
 
-		//choix aléatoire du deuxième individu
-		choixGrand = nombreAleatoire(choixPetit, taillePop - 1);
+		//choix aleatoire du deuxieme individu
+		choixDeux = rand() % (taillePop - 1);
 
-		for (j = 0; j <= choixGrand; j++){
-			if (j == choixPetit) {
-				petit = tmp->valeur;
+		for (j = 0; j < taillePop; j++){
+			if (j == choixUn) {
+				un = tmp->valeur;
 			}
-			if (j == choixGrand) {
-				grand = tmp->valeur;
+			if (j == choixDeux) {
+				deux = tmp->valeur;
 			}
 			tmp = tmp->suivant;
 		}
-		croiserIndividu(petit, grand);
-		enfant = insererIndividu(enfant, petit);
-		enfant = insererIndividu(enfant, grand);
+		croiserIndividu(un, deux);
+		if (taillePopulation(enfant) < taillePop)
+			enfant = insererIndividu(enfant, un);
+
+		if (taillePopulation(enfant) < taillePop)
+			enfant = insererIndividu(enfant, deux);
 	}
 	return enfant;
 }
