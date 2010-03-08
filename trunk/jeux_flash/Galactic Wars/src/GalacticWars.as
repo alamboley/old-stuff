@@ -1,4 +1,5 @@
 package {
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -92,14 +93,22 @@ package {
 				conteneur.y -= vitesseY;
 			}
 			
-			//trace(conteneur.getChildByName("star" + 2).y);
-			//trace(conteneur.y);
 			// Mouvement perpétuel des étoiles :
-		/*	for (var i:uint = 0; i < MAX_STARS; i++) {
-				if (conteneur.getChildByName("star" + i).y + conteneur.y < 500) {
-					trace("ok");//conteneur.getChildByName("star" + i).y = conteneur.y;
-				}
-			}*/
+			for (var i:uint = 0; i < MAX_STARS; i++) {
+				conteneur.getChildByName("star" + i).x += 1;
+				limites(conteneur.getChildByName("star" + i));
+			}
+		}
+		
+		private function limites(etoile:DisplayObject):void {
+			
+			if (etoile.x < 0) {
+				etoile.x = 600;
+			}
+			
+			if (etoile.x > 600) {
+				etoile.x = 0;
+			}
 		}
 	}
 }
