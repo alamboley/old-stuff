@@ -33,15 +33,18 @@ package {
 			conteneur = new Sprite();
 			addChild(conteneur);
 			stage.focus = conteneur;
+			
 			var star:Star;
 			
 			for (var i:uint = 0; i < MAX_STARS; i++) {
 				star = new Star(Math.random() * 0xFFFFFF, Math.random());
 				star.name = "star" + i;
 				conteneur.addChild(star);
+				star.x = Math.random() * 600;
+				star.y = Math.random() * 500;
 			}
 		}
-		
+
 		private function toucheDown(k:KeyboardEvent):void {
 			
 			if (k.keyCode == Keyboard.LEFT) {
@@ -88,10 +91,13 @@ package {
 			if (bas) {
 				conteneur.y -= vitesseY;
 			}
+			
+			//trace(conteneur.getChildByName("star" + 2).y);
+			//trace(conteneur.y);
 			// Mouvement perpétuel des étoiles :
-			/*for (var i:uint = 0; i < MAX_STARS; i++) {
-				if (conteneur.getChildByName("star" + i).x < 0) {
-					conteneur.getChildByName("star" + i).x = 600;
+		/*	for (var i:uint = 0; i < MAX_STARS; i++) {
+				if (conteneur.getChildByName("star" + i).y + conteneur.y < 500) {
+					trace("ok");//conteneur.getChildByName("star" + i).y = conteneur.y;
 				}
 			}*/
 		}
