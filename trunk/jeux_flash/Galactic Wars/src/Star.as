@@ -6,13 +6,15 @@ package {
 	 */
 	public class Star extends Shape {
 		
+		public var vitesse:Number;
+		
 		public function Star(couleur:uint, opacite:Number) {
 			
 			this.graphics.beginFill(couleur, opacite);
 			this.graphics.drawCircle(Math.random()*600, Math.random()*500, 3);
 			this.graphics.endFill();
 			
-			var vitesse:Number = Math.random() * 10/10 + 0.5;
+			vitesse = Math.random() * 10/10 + 0.5;
 		}
 	}
 }
