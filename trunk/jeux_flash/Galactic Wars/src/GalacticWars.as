@@ -10,9 +10,10 @@ package {
 	 */
 	public class GalacticWars extends Sprite {
 		
-		private const MAX_STARS:uint = 80;
+		private const MAX_STARS:uint = 250;
 		
 		private var conteneur:Sprite;
+		private var vitesseEtoile:Array;
 		
 		private var gauche:Boolean = false;
 		private var droite:Boolean = false;
@@ -36,10 +37,12 @@ package {
 			stage.focus = conteneur;
 			
 			var star:Star;
+			vitesseEtoile = new Array();
 			
 			for (var i:uint = 0; i < MAX_STARS; i++) {
 				star = new Star(Math.random() * 0xFFFFFF, Math.random());
 				star.name = "star" + i;
+				vitesseEtoile.push(star.vitesse);
 				conteneur.addChild(star);
 				star.x = Math.random() * 600;
 				star.y = Math.random() * 500;
@@ -93,9 +96,10 @@ package {
 				conteneur.y -= vitesseY;
 			}
 			
-			// Mouvement perpétuel des étoiles :
+			// Mouvement perpétuel des étoiles(essayer vitesse aléatoire par étoile) :
 			for (var i:uint = 0; i < MAX_STARS; i++) {
-				conteneur.getChildByName("star" + i).x += 1;
+				conteneur.getChildByName("star" + i).x -= vitesseEtoile[i];
+				conteneur.getChildByName("star" + i).y += 0.3;
 				limites(conteneur.getChildByName("star" + i));
 			}
 		}
@@ -108,6 +112,14 @@ package {
 			
 			if (etoile.x > 600) {
 				etoile.x = 0;
+			}
+			
+			if (etoile.y < 0) {
+				etoile.y = 500;
+			}
+			
+			if (etoile.y > 500) {
+				etoile.y = 0;
 			}
 		}
 	}
