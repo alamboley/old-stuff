@@ -1,5 +1,4 @@
 package {
-	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -10,18 +9,16 @@ package {
 	 */
 	public class GalacticWars extends Sprite {
 		
-		private const MAX_STARS:uint = 50;
+		private const MAX_STARS:uint = 80;
 		
-		private var nbStars:uint = 0;
 		private var conteneur:Sprite;
-		
 		
 		private var gauche:Boolean = false;
 		private var droite:Boolean = false;
 		private var haut:Boolean = false;
 		private var bas:Boolean = false;
-		private var vitesseX:int = 3;
-		private var vitesseY:int = 3;
+		private var vitesseX:int = 15;
+		private var vitesseY:int = 15;
 
 		public function GalacticWars() {
 			
@@ -36,11 +33,12 @@ package {
 			conteneur = new Sprite();
 			addChild(conteneur);
 			stage.focus = conteneur;
+			var star:Star;
 			
 			for (var i:uint = 0; i < MAX_STARS; i++) {
-				var star:Shape = new Star(Math.random() * 0xFFFFFF, Math.random());
+				star = new Star(Math.random() * 0xFFFFFF, Math.random());
+				star.name = "star" + i;
 				conteneur.addChild(star);
-				nbStars++;
 			}
 		}
 		
@@ -90,6 +88,12 @@ package {
 			if (bas) {
 				conteneur.y -= vitesseY;
 			}
+			// Mouvement perpétuel des étoiles :
+			/*for (var i:uint = 0; i < MAX_STARS; i++) {
+				if (conteneur.getChildByName("star" + i).x < 0) {
+					conteneur.getChildByName("star" + i).x = 600;
+				}
+			}*/
 		}
 	}
 }
