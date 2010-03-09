@@ -43,7 +43,7 @@ package {
 				star = new Star(Math.random() * 0xFFFFFF, Math.random());
 				star.name = "star" + i;
 				vitesseEtoile.push(star.vitesse);
-				conteneur.addChild(star);
+				conteneur.addChildAt(star, i);
 				star.x = Math.random() * 600;
 				star.y = Math.random() * 500;
 			}
