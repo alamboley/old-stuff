@@ -1,4 +1,5 @@
 package {
+	import flash.filters.BlurFilter;
 	import flash.display.Shape;
 
 	/**
@@ -14,7 +15,9 @@ package {
 			this.graphics.drawCircle(0, 0, Math.random() * 4);
 			this.graphics.endFill();
 			
-			_vitesse = Math.random() * 1.1;
+			this.filters = [new BlurFilter()];
+			
+			_vitesse = Math.random() * 3;
 		}
 		
 		public function get vitesse():Number {
