@@ -1,5 +1,6 @@
 package {
 	import flash.display.DisplayObject;
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -12,6 +13,8 @@ package {
 		
 		private const MAX_STARS:uint = 250;
 		
+		private var vaisseau:MovieClip;
+		
 		private var conteneur:Sprite;
 		private var vitesseEtoile:Array;
 		
@@ -23,6 +26,11 @@ package {
 		private var vitesseY:int = 15;
 
 		public function GalacticWars() {
+			
+			vaisseau = new Vaisseau();
+			addChild(vaisseau);
+			vaisseau.x = stage.stageWidth/2;
+			vaisseau.y = stage.stageHeight/2;
 			
 			addStars();
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, toucheDown);
@@ -84,17 +92,42 @@ package {
 		private function deplacement(e:Event):void {
 			
 			if (gauche) {
-				conteneur.x += vitesseX;
+				//conteneur.x += vitesseX;
+				vaisseau.rotationZ -= 15;
+				if (vaisseau.rotationZ < -360) {
+					vaisseau.rotationZ = 0;
+				}
 			}
 			if (droite) {
-				conteneur.x -= vitesseX;
+				//conteneur.x -= vitesseX;
+				vaisseau.rotationZ += 15;
+				if (vaisseau.rotationZ > 360) {
+					vaisseau.rotationZ = 0;
+				}
 			}
+			
 			if (haut) {
-				conteneur.y += vitesseY;
+				//conteneur.y -= vitesseY;
+				/*if ((vaisseau.rotationZ > -90) &&(vaisseau.rotationZ < 90)) {
+					conteneur.y += vitesseY;
+				} else {
+					conteneur.y -= vitesseY;
+				}*/
+
+				conteneur.x += vitesseX * Math.cos(vaisseau.rotationZ * Math.PI / 180);
+				conteneur.y += vitesseY * Math.sin(vaisseau.rotationZ * Math.PI / 180);
+				trace(Math.sin(vaisseau.rotationZ));
 			}
+			
 			if (bas) {
-				conteneur.y -= vitesseY;
+				//conteneur.y += vitesseY;
+				if ((vaisseau.rotationZ > -90) &&(vaisseau.rotationZ < 90)) {
+					conteneur.y -= vitesseY;
+				} else {
+					conteneur.y += vitesseY;
+				}
 			}
+			
 			
 			// Mouvement perpétuel des étoiles(essayer vitesse aléatoire par étoile) :
 			for (var i:uint = 0; i < MAX_STARS; i++) {
