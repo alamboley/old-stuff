@@ -25,16 +25,16 @@ package {
 		public function GalacticWars() {
 			
 			addStars();
-			conteneur.addEventListener(KeyboardEvent.KEY_DOWN, toucheDown);
-			conteneur.addEventListener(KeyboardEvent.KEY_UP, toucheUP);
-			conteneur.addEventListener(Event.ENTER_FRAME, deplacement);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, toucheDown);
+			stage.addEventListener(KeyboardEvent.KEY_UP, toucheUP);
+			stage.addEventListener(Event.ENTER_FRAME, deplacement);
 		}
 		
 		private function addStars():void {
 			
 			conteneur = new Sprite();
 			addChild(conteneur);
-			stage.focus = conteneur;
+			//stage.focus = conteneur;
 			
 			var star:Star;
 			vitesseEtoile = new Array();
