@@ -99,27 +99,27 @@ package {
 			// Mouvement perpétuel des étoiles(essayer vitesse aléatoire par étoile) :
 			for (var i:uint = 0; i < MAX_STARS; i++) {
 				conteneur.getChildByName("star" + i).x -= vitesseEtoile[i];
-				conteneur.getChildByName("star" + i).y += 0.3;
+				conteneur.getChildByName("star" + i).y += 2;
 				limites(conteneur.getChildByName("star" + i));
 			}
 		}
 		
 		private function limites(etoile:DisplayObject):void {
 			
-			if (etoile.x < 0) {
-				etoile.x = 600;
+			if (etoile.x < -conteneur.x) {
+				etoile.x = -conteneur.x + 600;
 			}
 			
-			if (etoile.x > 600) {
-				etoile.x = 0;
+			if (etoile.x > 600 - conteneur.x) {
+				etoile.x = -conteneur.x;
 			}
 			
-			if (etoile.y < 0) {
-				etoile.y = 500;
+			if (etoile.y < -conteneur.y) {
+				etoile.y = -conteneur.y + 500;
 			}
 			
-			if (etoile.y > 500) {
-				etoile.y = 0;
+			if (etoile.y > 500 - conteneur.y) {
+				etoile.y = -conteneur.y;
 			}
 		}
 	}
