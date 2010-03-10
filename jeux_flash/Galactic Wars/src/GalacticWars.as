@@ -16,7 +16,8 @@ package {
 		private var vaisseau:MovieClip;
 		
 		private var conteneur:Sprite;
-		private var vitesseEtoile:Array;
+		private var vitesseEtoileX:Array;
+		private var vitesseEtoileY:Array;
 		
 		private var gauche:Boolean = false;
 		private var droite:Boolean = false;
@@ -42,15 +43,16 @@ package {
 			
 			conteneur = new Sprite();
 			addChild(conteneur);
-			//stage.focus = conteneur;
 			
 			var star:Star;
-			vitesseEtoile = new Array();
+			vitesseEtoileX = new Array();
+			vitesseEtoileY = new Array();
 			
 			for (var i:uint = 0; i < MAX_STARS; i++) {
 				star = new Star(Math.random() * 0xFFFFFF, Math.random());
 				star.name = "star" + i;
-				vitesseEtoile.push(star.vitesse);
+				vitesseEtoileX.push(star.vitesseX);
+				vitesseEtoileY.push(star.vitesseY);
 				conteneur.addChildAt(star, i);
 				star.x = Math.random() * 600;
 				star.y = Math.random() * 500;
@@ -116,11 +118,10 @@ package {
 				conteneur.y -= (vitesseY * Math.cos(vaisseau.rotationZ * Math.PI / 180));
 			}
 			
-			
-			// Mouvement perpétuel des étoiles(essayer vitesse aléatoire par étoile) :
+			// Mouvement perpétuel des étoiles
 			for (var i:uint = 0; i < MAX_STARS; i++) {
-				conteneur.getChildByName("star" + i).x -= vitesseEtoile[i];
-				conteneur.getChildByName("star" + i).y += 2;
+				conteneur.getChildByName("star" + i).x -= vitesseEtoileX[i];
+				conteneur.getChildByName("star" + i).y += vitesseEtoileY[i];
 				limites(conteneur.getChildByName("star" + i));
 			}
 		}

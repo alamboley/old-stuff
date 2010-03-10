@@ -1,13 +1,14 @@
 package {
-	import flash.filters.BlurFilter;
 	import flash.display.Shape;
+	import flash.filters.BlurFilter;
 
 	/**
 	 * @author Aymeric
 	 */
 	public class Star extends Shape {
 		
-		protected var _vitesse:Number;
+		protected var _vitesseX:Number;
+		protected var _vitesseY:Number;
 		
 		public function Star(couleur:uint, opacite:Number) {
 			
@@ -17,11 +18,16 @@ package {
 			
 			this.filters = [new BlurFilter()];
 			
-			_vitesse = Math.random() * 3;
+			_vitesseX = Math.random() * 3;
+			_vitesseY = Math.random() * 3;
 		}
 		
-		public function get vitesse():Number {
-			return _vitesse;
+		public function get vitesseX():Number {
+			return _vitesseX;
+		}
+		
+		public function get vitesseY():Number {
+			return _vitesseY;
 		}
 	}
 }
