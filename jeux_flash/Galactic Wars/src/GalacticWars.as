@@ -92,14 +92,12 @@ package {
 		private function deplacement(e:Event):void {
 			
 			if (gauche) {
-				//conteneur.x += vitesseX;
 				vaisseau.rotationZ -= 15;
 				if (vaisseau.rotationZ < -360) {
 					vaisseau.rotationZ = 0;
 				}
 			}
 			if (droite) {
-				//conteneur.x -= vitesseX;
 				vaisseau.rotationZ += 15;
 				if (vaisseau.rotationZ > 360) {
 					vaisseau.rotationZ = 0;
@@ -107,25 +105,15 @@ package {
 			}
 			
 			if (haut) {
-				//conteneur.y -= vitesseY;
-				/*if ((vaisseau.rotationZ > -90) &&(vaisseau.rotationZ < 90)) {
-					conteneur.y += vitesseY;
-				} else {
-					conteneur.y -= vitesseY;
-				}*/
 
-				conteneur.x += vitesseX * Math.cos(vaisseau.rotationZ * Math.PI / 180);
-				conteneur.y += vitesseY * Math.sin(vaisseau.rotationZ * Math.PI / 180);
-				trace(Math.sin(vaisseau.rotationZ));
+				conteneur.x -= (vitesseX * Math.sin(vaisseau.rotationZ * Math.PI / 180));
+				conteneur.y += (vitesseY * Math.cos(vaisseau.rotationZ * Math.PI / 180));
 			}
 			
 			if (bas) {
-				//conteneur.y += vitesseY;
-				if ((vaisseau.rotationZ > -90) &&(vaisseau.rotationZ < 90)) {
-					conteneur.y -= vitesseY;
-				} else {
-					conteneur.y += vitesseY;
-				}
+				
+				conteneur.x += (vitesseX * Math.sin(vaisseau.rotationZ * Math.PI / 180));
+				conteneur.y -= (vitesseY * Math.cos(vaisseau.rotationZ * Math.PI / 180));
 			}
 			
 			
@@ -140,18 +128,18 @@ package {
 		private function limites(etoile:DisplayObject):void {
 			
 			if (etoile.x < -conteneur.x) {
-				etoile.x = -conteneur.x + 600;
+				etoile.x = -conteneur.x + stage.stageWidth;
 			}
 			
-			if (etoile.x > 600 - conteneur.x) {
+			if (etoile.x > stage.stageWidth - conteneur.x) {
 				etoile.x = -conteneur.x;
 			}
 			
 			if (etoile.y < -conteneur.y) {
-				etoile.y = -conteneur.y + 500;
+				etoile.y = -conteneur.y + stage.stageHeight;
 			}
 			
-			if (etoile.y > 500 - conteneur.y) {
+			if (etoile.y > stage.stageHeight - conteneur.y) {
 				etoile.y = -conteneur.y;
 			}
 		}
