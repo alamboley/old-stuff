@@ -10,7 +10,8 @@ package {
 	 */
 	public class GalacticWars extends Sprite {
 		
-		private const MAX_STARS:uint = 250;
+		private const MAX_STARS:uint = 100;
+		private const MAX_ENEMIES:uint = 5;
 		
 		private var vaisseau:Starship;
 		
@@ -33,6 +34,7 @@ package {
 			vaisseau.y = stage.stageHeight/2;
 			
 			addStars();
+			addEnemies();
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, toucheDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, toucheUP);
 			stage.addEventListener(Event.ENTER_FRAME, deplacement);
@@ -55,6 +57,17 @@ package {
 				conteneur.addChildAt(star, i);
 				star.x = Math.random() * 600;
 				star.y = Math.random() * 500;
+			}
+		}
+		
+		private function addEnemies():void {
+			
+			var enemy:Enemy;
+			
+			for (var i:uint = 0; i < MAX_ENEMIES; i++) {
+				enemy = new Enemy(Math.random() * stage.stageWidth, Math.random() * stage.stageHeight, Math.random() * 360);
+				enemy.name = "enemy" + i;
+				conteneur.addChild(enemy);
 			}
 		}
 
