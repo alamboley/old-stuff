@@ -14,6 +14,7 @@ package {
 		private const MAX_ENEMIES:uint = 5;
 		
 		private var vaisseau:Starship;
+		private var shot:Shot;
 		
 		private var conteneur:Sprite;
 		private var vitesseEtoileX:Array;
@@ -65,7 +66,7 @@ package {
 			var enemy:Enemy;
 			
 			for (var i:uint = 0; i < MAX_ENEMIES; i++) {
-				enemy = new Enemy(Math.random() * stage.stageWidth, Math.random() * stage.stageHeight, Math.random() * 360);
+				enemy = new Enemy(Math.random() * stage.stageWidth, Math.random() * stage.stageHeight, Math.random() * 360, Math.round(Math.random()*4000)+500);
 				enemy.name = "enemy" + i;
 				conteneur.addChild(enemy);
 			}
@@ -84,6 +85,10 @@ package {
 			}
 			if (k.keyCode == Keyboard.DOWN) {
 				bas = true;
+			}
+			if (k.keyCode == Keyboard.SPACE) {
+				shot = new Shot(vaisseau.rotatePosition(), vaisseau.x, vaisseau.y);
+				addChild(shot);
 			}
 		}
 		
