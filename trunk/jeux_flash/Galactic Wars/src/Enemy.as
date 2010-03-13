@@ -37,5 +37,12 @@ package {
 			enemy.x += 7 * Math.sin(enemy.rotationZ * Math.PI / 180);
 			enemy.y -= 7 * Math.cos(enemy.rotationZ * Math.PI / 180);
 		}
+		
+		public function die():void {
+			myTimer.stop();
+			myTimer.removeEventListener(TimerEvent.TIMER, move);
+			enemy.removeEventListener(Event.ENTER_FRAME, loop);
+			removeChild(enemy);
+		}
 	}
 }

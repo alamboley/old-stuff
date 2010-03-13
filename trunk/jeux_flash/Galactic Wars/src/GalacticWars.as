@@ -14,9 +14,11 @@ package {
 		private const MAX_ENEMIES:uint = 5;
 		
 		private var vaisseau:Starship;
-		private var shot:Shot;
+		private var containerShot:Array;
 		
 		private var conteneur:Sprite;
+		
+		private var enemies:Array;
 		private var vitesseEtoileX:Array;
 		private var vitesseEtoileY:Array;
 		
@@ -33,6 +35,8 @@ package {
 			addChild(vaisseau);
 			vaisseau.x = stage.stageWidth/2;
 			vaisseau.y = stage.stageHeight/2;
+			
+			containerShot = new Array();
 			
 			addStars();
 			addEnemies();
@@ -64,11 +68,13 @@ package {
 		private function addEnemies():void {
 			
 			var enemy:Enemy;
+			enemies = new Array();
 			
 			for (var i:uint = 0; i < MAX_ENEMIES; i++) {
 				enemy = new Enemy(Math.random() * stage.stageWidth, Math.random() * stage.stageHeight, Math.random() * 360, Math.round(Math.random()*4000)+500);
 				enemy.name = "enemy" + i;
-				conteneur.addChild(enemy);
+				conteneur.addChild(enemy);;
+				enemies.push(enemy);
 			}
 		}
 
@@ -87,8 +93,9 @@ package {
 				bas = true;
 			}
 			if (k.keyCode == Keyboard.SPACE) {
-				shot = new Shot(vaisseau.rotatePosition(), vaisseau.x, vaisseau.y);
+				var shot:Shot = new Shot(vaisseau.rotatePosition(), vaisseau.x, vaisseau.y);
 				addChild(shot);
+				containerShot.push(shot);
 			}
 		}
 		
@@ -135,8 +142,19 @@ package {
 				conteneur.getChildByName("star" + i).y += vitesseEtoileY[i];
 				limites(conteneur.getChildByName("star" + i));
 			}
+			
+			for (var j:uint = 0; j < containerShot.length; j++) {
+				for (var k:uint = 0; k < enemies.length; k++) {
+					if ((containerShot[j] as Shot).hitTestObject(enemies[k] as Enemy)) {
+						var killed:Enemy = enemies[k] as Enemy;
+						killed.die();
+						enemies.splice(k, 1);
+						trace("killed");
+					}
+				}
+			}
 		}
-		
+
 		private function limites(etoile:DisplayObject):void {
 			
 			if (etoile.x < -conteneur.x) {
