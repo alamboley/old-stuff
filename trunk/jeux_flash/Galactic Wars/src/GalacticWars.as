@@ -28,6 +28,10 @@ package {
 		private var bas:Boolean = false;
 		private var vitesseX:int = 15;
 		private var vitesseY:int = 15;
+		
+		private var countDestroyed:uint = 0;
+		private var countShot:uint = 0;
+		private var countCollision:uint = 0;
 
 		public function GalacticWars() {
 			
@@ -71,7 +75,7 @@ package {
 			enemies = new Array();
 			
 			for (var i:uint = 0; i < MAX_ENEMIES; i++) {
-				enemy = new Enemy(Math.random() * stage.stageWidth, Math.random() * stage.stageHeight, Math.random() * 360, Math.round(Math.random()*4000)+500);
+				enemy = new Enemy(Math.random()*stage.stageWidth, Math.random()*stage.stageHeight, Math.random()*360, Math.round(Math.random()*4000)+500);
 				enemy.name = "enemy" + i;
 				conteneur.addChild(enemy);;
 				enemies.push(enemy);
@@ -137,6 +141,7 @@ package {
 			}
 			
 			perpetualMovement();
+			shotManagement();
 			collisionManagement();
 		}
 		
@@ -149,27 +154,56 @@ package {
 			}
 		}
 		
-		private function collisionManagement():void {
+		private function shotManagement():void {
 			
 			for (var j:uint = 0; j < containerShot.length; j++) {
 				for (var k:uint = 0; k < enemies.length; k++) {
 					if ((containerShot[j] as Shot).hitTestObject(enemies[k] as Enemy)) {
-						conteneur.removeChild(enemies[k] as Enemy);
+						//conteneur.removeChild(enemies[k] as Enemy);
 						//conteneur.removeChild(conteneur.getChildByName("enemy" + k)); identique mais bug, wtf ??
 						var killed:Enemy = enemies[k] as Enemy;
 						killed.die();
 						enemies.splice(k, 1);
-						trace("killed");
 						
 						removeChild(containerShot[j] as Shot);
 						var shotEnd:Shot = containerShot[j] as Shot;
 						shotEnd.die();
-					}
-					
-					/*if (vaisseau.hitTestObject(enemies[k] as Enemy)) {
-						trace("collision");
-					}*/
+						
+						countDestroyed++;
+						countShot++;
+						addScores();
+					}	
 				}
+			}
+		}
+		
+		private function collisionManagement():void {
+			
+			for (var i:uint = 0; i < enemies.length; i++) {
+				if (vaisseau.hitTestObject(enemies[i] as Enemy)) {
+					
+					var killed:Enemy = enemies[i] as Enemy;
+					killed.die();
+					enemies.splice(i, 1);
+					
+					countDestroyed++;
+					countCollision++;
+					addScores();
+				}
+					
+				/*for (var j:uint = 0; j < enemies.length; j++) {
+					if ((enemies[i] as Enemy).hitTestObject(enemies[j] as Enemy)) {
+						var dying1:Enemy = enemies[i] as Enemy;
+						dying1.die();
+						enemies.splice(i, 1);
+						
+						var dying2:Enemy = enemies[j] as Enemy;
+						dying2.die();
+						enemies.splice(j, 1);
+						
+						trace("crash");
+					}
+				}*/
 			}
 		}
 
@@ -190,6 +224,13 @@ package {
 			if (etoile.y > stage.stageHeight - conteneur.y) {
 				etoile.y = -conteneur.y;
 			}
+		}
+		
+		private function addScores():void {
+			
+			starshipDestroyed.text = String(countDestroyed + "/5");
+			byShot.text = String(countShot + "/5");
+			byCollision.text = String(countCollision + "/5");
 		}
 	}
 }
