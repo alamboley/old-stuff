@@ -7,8 +7,8 @@ package {
 	 */
 	public class Star extends Shape {
 		
-		protected var _vitesseX:Number;
-		protected var _vitesseY:Number;
+		private var _vitesseX:Number;
+		private var _vitesseY:Number;
 		
 		public function Star(couleur:uint, opacite:Number) {
 			

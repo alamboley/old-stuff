@@ -136,21 +136,39 @@ package {
 				conteneur.y -= (vitesseY * Math.cos(vaisseau.rotatePosition() * Math.PI / 180));
 			}
 			
-			// Mouvement perpétuel des étoiles
+			perpetualMovement();
+			collisionManagement();
+		}
+		
+		private function perpetualMovement():void {
+			
 			for (var i:uint = 0; i < MAX_STARS; i++) {
 				conteneur.getChildByName("star" + i).x -= vitesseEtoileX[i];
 				conteneur.getChildByName("star" + i).y += vitesseEtoileY[i];
 				limites(conteneur.getChildByName("star" + i));
 			}
+		}
+		
+		private function collisionManagement():void {
 			
 			for (var j:uint = 0; j < containerShot.length; j++) {
 				for (var k:uint = 0; k < enemies.length; k++) {
 					if ((containerShot[j] as Shot).hitTestObject(enemies[k] as Enemy)) {
+						conteneur.removeChild(enemies[k] as Enemy);
+						//conteneur.removeChild(conteneur.getChildByName("enemy" + k)); identique mais bug, wtf ??
 						var killed:Enemy = enemies[k] as Enemy;
 						killed.die();
 						enemies.splice(k, 1);
 						trace("killed");
+						
+						removeChild(containerShot[j] as Shot);
+						var shotEnd:Shot = containerShot[j] as Shot;
+						shotEnd.die();
 					}
+					
+					/*if (vaisseau.hitTestObject(enemies[k] as Enemy)) {
+						trace("collision");
+					}*/
 				}
 			}
 		}
