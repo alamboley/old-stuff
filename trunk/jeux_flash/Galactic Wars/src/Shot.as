@@ -27,6 +27,13 @@ package {
 			shot.addEventListener(Event.ENTER_FRAME, loop);
 		}
 		
+		public function die():void {
+			myTimer.stop();
+			shot.removeEventListener(Event.ENTER_FRAME, loop);
+			myTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, endShot);
+			removeChild(shot);
+		}
+		
 		private function endShot(t:TimerEvent):void {
 			myTimer.stop();
 			shot.removeEventListener(Event.ENTER_FRAME, loop);
