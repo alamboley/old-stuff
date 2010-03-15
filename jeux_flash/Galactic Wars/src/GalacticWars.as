@@ -222,7 +222,7 @@ package {
 			}
 			
 			if (etoile.y > stage.stageHeight - conteneur.y) {
-				etoile.y = -conteneur.y;
+				etoile.y =-conteneur.y;
 			}
 		}
 		
