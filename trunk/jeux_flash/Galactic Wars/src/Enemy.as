@@ -13,6 +13,7 @@ package {
 		
 		private var enemy:MovieClip;
 		private var myTimer:Timer;
+		private var statusTimer:Boolean = false;
 		
 		public function Enemy(posX:int, posY:int, rotate:int, time:int) {
 			
@@ -24,6 +25,7 @@ package {
 			
 			myTimer = new Timer(time, 0);
 			myTimer.start();
+			statusTimer = true;
 			
 			myTimer.addEventListener(TimerEvent.TIMER, move);
 			enemy.addEventListener(Event.ENTER_FRAME, loop);
@@ -42,21 +44,42 @@ package {
 		}
 
 		public function changeRotation(angle:int):void {
-			TweenLite.to(enemy, 0.2, {rotationZ:angle});
+			//if (angle > 360 + enemy.rotationZ) {
+			//TweenLite.to(enemy, 0.1, {rotationZ: angle});
+			enemy.rotationZ = angle;
+			//}
+			//TweenLite.to(enemy, 0.2, {rotationZ:angle});
 			myTimer.stop();
+			statusTimer = false;
 			//trace(angle);
 			//enemy.rotationZ = angle;
 		}
 		
+		public function goOnPoint(posX:int, posY:int):void {
+			
+			if (enemy.x < posX) {
+				enemy.rotationZ += 15;
+				trace("ok");
+			}
+
+			//enemy.rotationZ
+			//enemy.x = posX;
+			//enemy.y = posY;
+		}
+
 		public function startAgainTimer():void {
-			myTimer.start();
+			if (statusTimer == false) {
+				myTimer.start();
+				statusTimer = true;
+			}
 		}
 
 		public function die():void {
 			myTimer.stop();
+			statusTimer = false;
 			myTimer.removeEventListener(TimerEvent.TIMER, move);
 			enemy.removeEventListener(Event.ENTER_FRAME, loop);
-			TweenLite.to(enemy, 0.5, {alpha:0, onComplete:remove});
+			//TweenLite.to(enemy, 0.5, {alpha:0, onComplete:remove});
 		}
 		
 		private function remove():void {
