@@ -11,7 +11,7 @@ package {
 	public class GalacticWars extends Sprite {
 		
 		private const MAX_STARS:uint = 100;
-		private const MAX_ENEMIES:uint = 5;
+		private const MAX_ENEMIES:uint = 1;
 		
 		private var vaisseau:Starship;
 		private var containerShot:Array;
@@ -143,6 +143,7 @@ package {
 			perpetualMovement();
 			shotManagement();
 			collisionManagement();
+			calculatePosition();
 		}
 		
 		private function perpetualMovement():void {
@@ -206,6 +207,34 @@ package {
 				}*/
 			}
 		}
+		
+		private function calculatePosition():void {
+			
+			for (var i:uint = 0; i < enemies.length; i ++) {
+				var enemy:Enemy = enemies[i] as Enemy;
+				if ((Math.sqrt(Math.pow((-conteneur.x + stage.stage.width / 2 - enemy.posX()), 2)) < 225) 
+				&& (Math.sqrt(Math.pow((-conteneur.y + stage.stage.height / 2 - enemy.posY()), 2))) < 200) {
+					trace("ok");
+					/*if (Math.random() * 100 > 75) {
+						trace((-conteneur.x + enemy.posX()) / 2);
+						enemy.changeRotation(vaisseau.rotatePosition());
+						var shot:Shot = new Shot(enemy.rotatePosition(), enemy.posX(), enemy.posY());
+						conteneur.addChild(shot);
+					}	
+				} else {
+					enemy.startAgainTimer();
+				}*/
+				//if (((vaisseau.x + enemy.posX() - conteneur.x) / 2 < 300) && ((vaisseau.x + enemy.posX() - conteneur.x) / 2 > -300)) {
+					//trace((vaisseau.x + enemy.posX() - conteneur.x) / 2);
+					//trace(Math.sqrt(Math.pow(conteneu	.x + enemy.posX(), 2)));
+				//trace(-conteneur.x+stage.stageWidth/2 + " : " + enemy.posX());
+				//trace(Math.sqrt(Math.pow((-conteneur.x + stage.stage.width / 2 - enemy.posX()), 2)));
+				//trace(Math.sqrt(Math.pow((-conteneur.y + stage.stage.height / 2 - enemy.posY()), 2)));
+				} else {
+					trace("ae");
+				}
+			}
+		}
 
 		private function limites(etoile:DisplayObject):void {
 			
@@ -222,7 +251,7 @@ package {
 			}
 			
 			if (etoile.y > stage.stageHeight - conteneur.y) {
-				etoile.y =-conteneur.y;
+				etoile.y = -conteneur.y;
 			}
 		}
 		

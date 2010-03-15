@@ -29,6 +29,29 @@ package {
 			enemy.addEventListener(Event.ENTER_FRAME, loop);
 		}
 		
+		public function posX():int {
+			return enemy.x;
+		}
+		
+		public function posY():int {
+			return enemy.y;
+		}
+		
+		public function rotatePosition():int {
+			return enemy.rotationZ;
+		}
+
+		public function changeRotation(angle:int):void {
+			TweenLite.to(enemy, 0.2, {rotationZ:angle});
+			myTimer.stop();
+			//trace(angle);
+			//enemy.rotationZ = angle;
+		}
+		
+		public function startAgainTimer():void {
+			myTimer.start();
+		}
+
 		public function die():void {
 			myTimer.stop();
 			myTimer.removeEventListener(TimerEvent.TIMER, move);
@@ -41,7 +64,7 @@ package {
 		}
 
 		private function move(t:TimerEvent):void {
-			TweenLite.to(enemy, 0.5, {rotationZ : Math.round(Math.random() * 360)});
+			//TweenLite.to(enemy, 0.5, {rotationZ:Math.round(Math.random() * 360)});
 		}
 		
 		private function loop(e:Event):void {
