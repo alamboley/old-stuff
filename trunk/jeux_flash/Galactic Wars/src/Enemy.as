@@ -42,29 +42,12 @@ package {
 		public function rotatePosition():int {
 			return enemy.rotationZ;
 		}
-
-		public function changeRotation(angle:int):void {
-			//if (angle > 360 + enemy.rotationZ) {
-			//TweenLite.to(enemy, 0.1, {rotationZ: angle});
-			enemy.rotationZ = angle;
-			//}
-			//TweenLite.to(enemy, 0.2, {rotationZ:angle});
-			myTimer.stop();
-			statusTimer = false;
-			//trace(angle);
-			//enemy.rotationZ = angle;
-		}
 		
 		public function goOnPoint(posX:int, posY:int):void {
 			
-			if (enemy.x < posX) {
-				enemy.rotationZ += 15;
-				trace("ok");
-			}
-
-			//enemy.rotationZ
-			//enemy.x = posX;
-			//enemy.y = posY;
+			myTimer.stop();
+			statusTimer = false;
+			enemy.rotationZ = Math.atan2((posX - enemy.x), -(posY - enemy.y)) * 180 / Math.PI;
 		}
 
 		public function startAgainTimer():void {
@@ -79,7 +62,7 @@ package {
 			statusTimer = false;
 			myTimer.removeEventListener(TimerEvent.TIMER, move);
 			enemy.removeEventListener(Event.ENTER_FRAME, loop);
-			//TweenLite.to(enemy, 0.5, {alpha:0, onComplete:remove});
+			TweenLite.to(enemy, 0.5, {alpha:0, onComplete:remove});
 		}
 		
 		private function remove():void {
@@ -87,7 +70,7 @@ package {
 		}
 
 		private function move(t:TimerEvent):void {
-			//TweenLite.to(enemy, 0.5, {rotationZ:Math.round(Math.random() * 360)});
+			TweenLite.to(enemy, 0.5, {rotationZ:Math.round(Math.random() * 360)});
 		}
 		
 		private function loop(e:Event):void {

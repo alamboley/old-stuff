@@ -11,7 +11,7 @@ package {
 	public class GalacticWars extends Sprite {
 		
 		private const MAX_STARS:uint = 100;
-		private const MAX_ENEMIES:uint = 1;
+		private const MAX_ENEMIES:uint = 5;
 		
 		private var vaisseau:Starship;
 		private var containerShot:Array;
@@ -212,13 +212,11 @@ package {
 			
 			for (var i:uint = 0; i < enemies.length; i ++) {
 				var enemy:Enemy = enemies[i] as Enemy;
-				if ((Math.sqrt(Math.pow((-conteneur.x + stage.stage.width / 2 - enemy.posX()), 2)) < 225) 
-				&& (Math.sqrt(Math.pow((-conteneur.y + stage.stage.height / 2 - enemy.posY()), 2))) < 200) {
+				
+				if ((Math.sqrt(Math.pow((-conteneur.x + stage.stage.width / 2 - enemy.posX()), 2) + Math.pow((-conteneur.y + stage.stage.height / 2 - enemy.posY()), 2)) < 250)) {
 					
 					if (Math.random() * 100 > 75) {
-						//enemy.changeRotation(vaisseau.rotatePosition());
 						enemy.goOnPoint(-conteneur.x + stage.stage.width/2, -conteneur.y + stage.stage.height / 2);
-					
 						//var shot:Shot = new Shot(enemy.rotatePosition(), enemy.posX(), enemy.posY());
 						//conteneur.addChild(shot);
 					}	
