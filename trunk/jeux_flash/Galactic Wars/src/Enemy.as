@@ -43,11 +43,10 @@ package {
 			return enemy.rotationZ;
 		}
 		
-		public function goOnPoint(posX:int, posY:int):void {
-			
+		public function goOnPoint(starshipX:int, starshipY:int):void {
 			myTimer.stop();
 			statusTimer = false;
-			enemy.rotationZ = Math.atan2((posX - enemy.x), -(posY - enemy.y)) * 180 / Math.PI;
+			enemy.rotationZ = Math.atan2((starshipX - enemy.x), -(starshipY - enemy.y)) * 180 / Math.PI;
 		}
 
 		public function startAgainTimer():void {
