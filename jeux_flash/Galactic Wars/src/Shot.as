@@ -27,6 +27,7 @@ package {
 			shot.addEventListener(Event.ENTER_FRAME, loop);
 		}
 		
+		//If it hits an enemy :
 		public function die():void {
 			myTimer.stop();
 			shot.removeEventListener(Event.ENTER_FRAME, loop);
