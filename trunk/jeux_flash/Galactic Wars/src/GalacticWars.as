@@ -11,7 +11,7 @@ package {
 	public class GalacticWars extends Sprite {
 		
 		private const MAX_STARS:uint = 100;
-		private const MAX_ENEMIES:uint = 1;
+		private const MAX_ENEMIES:uint = 5;
 		
 		private var vaisseau:Starship;
 		private var containerShot:Array;
@@ -44,6 +44,7 @@ package {
 			
 			addStars();
 			addEnemies();
+			
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, toucheDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, toucheUP);
 			stage.addEventListener(Event.ENTER_FRAME, deplacement);
