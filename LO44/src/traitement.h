@@ -3,6 +3,7 @@
  */
 
 #ifndef TRAITEMENT_H_
+
 #define TRAITEMENT_H_
 
 void afficherListe(Individu individu);

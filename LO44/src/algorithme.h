@@ -3,6 +3,7 @@
  */
 
 #ifndef ALGORITHME_H_
+
 #define ALGORITHME_H_
 
 Individu initialiserIT();

@@ -39,6 +39,7 @@ int main(int argc, char* argv[])
 	}
 	
 	//Debut du jeu d'essai
+
 	Population maPop = NULL;
 	maPop = initialiserPop();
 	printf("Population avant croisement :\n");

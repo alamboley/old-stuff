@@ -170,6 +170,7 @@ Population quicksort(Population aTrier)
 	if (est_vide(aTrier) || est_vide(reste(aTrier))) {
 		return aTrier;
 	//Cas general
+
 	} else {
 		//On separera les valeurs en deux listes :
 		//les valeurs plus petites que le pivot et les valeurs plus grandes
