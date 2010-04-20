@@ -19,6 +19,7 @@ Fonctions necessaires a la manipulation des types de donnees et des fonctions du
 
 //Affichage de l'individu passe en parametre
 //Parametre : l'Individu "indiv" a afficher
+
 void afficherListe(Individu indiv)
 {
 

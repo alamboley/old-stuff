@@ -3,6 +3,7 @@
  */
 
 #ifndef TYPE_H_
+
 #define TYPE_H_
 
 //Parametres du projet :
