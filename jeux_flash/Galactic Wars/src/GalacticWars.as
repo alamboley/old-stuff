@@ -10,7 +10,7 @@ package {
 	 */
 	public class GalacticWars extends Sprite {
 		
-		private const MAX_STARS:uint = 100;
+		private const MAX_STARS:uint = 60;
 		private const MAX_ENEMIES:uint = 5;
 		
 		private var vaisseau:Starship;
@@ -44,6 +44,10 @@ package {
 			
 			addStars();
 			addEnemies();
+			
+			starshipDestroyed.text = String(countDestroyed + "/" + MAX_ENEMIES);
+			byShot.text = String(countShot + "/" + MAX_ENEMIES);
+			byCollision.text = String(countCollision + "/" + MAX_ENEMIES);
 			
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, toucheDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, toucheUP);
@@ -248,9 +252,9 @@ package {
 		
 		private function addScores():void {
 			
-			starshipDestroyed.text = String(countDestroyed + "/5");
-			byShot.text = String(countShot + "/5");
-			byCollision.text = String(countCollision + "/5");
+			starshipDestroyed.text = String(countDestroyed + "/" + MAX_ENEMIES);
+			byShot.text = String(countShot + "/" + MAX_ENEMIES);
+			byCollision.text = String(countCollision + "/" + MAX_ENEMIES);
 		}
 	}
 }
