@@ -13,6 +13,7 @@ package {
 		
 		private var enemy:MovieClip;
 		private var myTimer:Timer;
+		private var speed:int = 7;
 		private var statusTimer:Boolean = false;
 		
 		public function Enemy(posX:int, posY:int, rotate:int, time:int) {
@@ -46,6 +47,7 @@ package {
 		public function goOnPoint(starshipX:int, starshipY:int):void {
 			myTimer.stop();
 			statusTimer = false;
+			// Utilisation du théorème de Pythagore avec conversion en degré :
 			enemy.rotationZ = Math.atan2((starshipX - enemy.x), -(starshipY - enemy.y)) * 180 / Math.PI;
 		}
 
@@ -73,8 +75,8 @@ package {
 		}
 		
 		private function loop(e:Event):void {
-			enemy.x += 7 * Math.sin(enemy.rotationZ * Math.PI / 180);
-			enemy.y -= 7 * Math.cos(enemy.rotationZ * Math.PI / 180);
+			enemy.x += speed * Math.sin(enemy.rotationZ * Math.PI / 180);
+			enemy.y -= speed * Math.cos(enemy.rotationZ * Math.PI / 180);
 		}
 	}
 }
