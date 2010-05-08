@@ -11,7 +11,7 @@ package {
 	public class GalacticWars extends Sprite {
 		
 		private const MAX_STARS:uint = 60;
-		private const MAX_ENEMIES:uint = 5;
+		private const MAX_ENEMIES:uint = 2;
 		
 		private var vaisseau:Starship;
 		private var containerShot:Array;
@@ -134,7 +134,7 @@ package {
 			}
 			
 			if (haut) {
-
+				// Sin(0) = 0, Cos(0) = 1, conversion en radian
 				conteneur.x -= (vitesseX * Math.sin(vaisseau.rotatePosition() * Math.PI / 180));
 				conteneur.y += (vitesseY * Math.cos(vaisseau.rotatePosition() * Math.PI / 180));
 			}
@@ -166,7 +166,7 @@ package {
 				for (var k:uint = 0; k < enemies.length; k++) {
 					if ((containerShot[j] as Shot).hitTestObject(enemies[k] as Enemy)) {
 						//conteneur.removeChild(enemies[k] as Enemy);
-						//conteneur.removeChild(conteneur.getChildByName("enemy" + k)); identique mais bug, wtf ??
+						//conteneur.removeChild(conteneur.getChildByName("enemy" + k)); identique mais bug ??
 						var killed:Enemy = enemies[k] as Enemy;
 						killed.die();
 						enemies.splice(k, 1);
@@ -218,6 +218,7 @@ package {
 			for (var i:uint = 0; i < enemies.length; i ++) {
 				var enemy:Enemy = enemies[i] as Enemy;
 				
+				// Calcul de la distance entre 2 points
 				if ((Math.sqrt(Math.pow((-conteneur.x + stage.stage.width / 2 - enemy.posX()), 2) + Math.pow((-conteneur.y + stage.stage.height / 2 - enemy.posY()), 2)) < 250)) {
 					
 					if (Math.random() > 0.6) {
