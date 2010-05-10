@@ -11,6 +11,7 @@ package {
 		
 		private var shot:MovieClip;
 		private var myTimer:Timer;
+		private var speed:int = 20;
 		
 		public function Shot(rotate:int, posX:int, posY:int) {
 			
@@ -43,8 +44,8 @@ package {
 		}
 
 		private function loop(e:Event):void {
-			shot.x += 20 * Math.sin(shot.rotationZ * Math.PI / 180);
-			shot.y -= 20 * Math.cos(shot.rotationZ * Math.PI / 180);
+			shot.x += speed * Math.sin(shot.rotationZ * Math.PI / 180);
+			shot.y -= speed * Math.cos(shot.rotationZ * Math.PI / 180);
 		}
 	}
 }
