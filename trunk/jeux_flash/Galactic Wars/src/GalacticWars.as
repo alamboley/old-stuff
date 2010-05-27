@@ -11,7 +11,7 @@ package {
 	public class GalacticWars extends Sprite {
 		
 		private const MAX_STARS:uint = 60;
-		private const MAX_ENEMIES:uint = 2;
+		private const MAX_ENEMIES:uint = 4;
 		
 		private var vaisseau:Starship;
 		private var containerShot:Array;
