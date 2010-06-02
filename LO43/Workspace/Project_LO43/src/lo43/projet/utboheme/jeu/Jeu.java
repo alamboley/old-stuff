@@ -38,6 +38,7 @@ public class Jeu {
 		participants.add(new Joueur());
 		participants.add(new Joueur());
 		participants.add(new Joueur());
+		
 	}
 	
 	public int getTour() {
