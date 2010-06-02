@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="lo43.projet.utboheme.pion.ControleC"/>
+<fullyQualifiedTypeName name="lo43.projet.utboheme.pion.UV"/>
+<fullyQualifiedTypeName name="lo43.projet.utboheme.hexagone.TypeTerrain"/>
+<fullyQualifiedTypeName name="lo43.projet.utboheme.carte.GroupeCartes"/>
+<fullyQualifiedTypeName name="lo43.projet.utboheme.carte.GroupeCartesDev"/>
+<fullyQualifiedTypeName name="lo43.projet.utboheme.pion.Pion"/>
+<fullyQualifiedTypeName name="lo43.projet.utboheme.arbre.ArbreBinaire"/>
+<fullyQualifiedTypeName name="lo43.projet.utboheme.hexagone.Sommet"/>
+<fullyQualifiedTypeName name="lo43.projet.utboheme.hexagone.Arete"/>
+<fullyQualifiedTypeName name="lo43.projet.utboheme.carte.TypeCartes"/>
+<fullyQualifiedTypeName name="lo43.projet.utboheme.carte.SousTypeCartes"/>
+<fullyQualifiedTypeName name="lo43.projet.utboheme.hexagone.Hexagone"/>
+<fullyQualifiedTypeName name="lo43.projet.utboheme.hexagone.HexaRessource"/>
+<fullyQualifiedTypeName name="lo43.projet.utboheme.hexagone.HexaZoneTroc"/>
+<fullyQualifiedTypeName name="lo43.projet.utboheme.jeu.Joueur"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+</qualifiedTypeNameHistroy>
