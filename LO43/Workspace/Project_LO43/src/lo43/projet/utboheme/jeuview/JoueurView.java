@@ -46,26 +46,33 @@ public class JoueurView extends JPanel {
 	}
 	
 	private void dessiner(Graphics g, int numJoueur) {
-try {
+		
+		try {
 			
 			switch (numJoueur) {
 			case 0 :
 				this.img = ImageIO.read(new File(this.url));
 				g.drawImage(this.img, 0, 0, this);
+				g.setColor(this.color);
+				g.drawString(this.joueur.getNom(), 10, 60);
 				break;
 				
 			case 1 :
 				this.img = ImageIO.read(new File(this.url));
 				g.drawImage(this.img, 0, 0, this);
+				g.setColor(this.color);
+				g.drawString(this.joueur.getNom(), 10, 60);
 				break;
 			
 			case 2 :
 				this.img = ImageIO.read(new File(this.url));
 				g.drawImage(this.img, 0, 0, this);
+				g.setColor(this.color);
+				g.drawString(this.joueur.getNom(), 10, 60);
 				break;
 				
 			default:
-				System.out.println("Problème affichage perso");
+				System.out.println("Probleme affichage perso");
 				break;
 			}
 			
