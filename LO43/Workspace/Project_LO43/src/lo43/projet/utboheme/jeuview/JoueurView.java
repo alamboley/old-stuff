@@ -39,25 +39,29 @@ public class JoueurView extends JPanel {
 	
 	public void paintComponent(Graphics g) {
 		
-		try {
+		super.paintComponent(g);
+		dessiner(g, 0);
+		dessiner(g, 1);
+		dessiner(g, 2);
+	}
+	
+	private void dessiner(Graphics g, int numJoueur) {
+try {
 			
-			switch (this.joueur.getIdJoueur()) {
+			switch (numJoueur) {
 			case 0 :
 				this.img = ImageIO.read(new File(this.url));
 				g.drawImage(this.img, 10, 10, this);
-				System.out.println("Je suis 0");
 				break;
 				
 			case 1 :
 				this.img = ImageIO.read(new File(this.url));
 				g.drawImage(this.img, 10, 100, this);
-				System.out.println("Je suis 1");
 				break;
 			
 			case 2 :
 				this.img = ImageIO.read(new File(this.url));
-				g.drawImage(this.img, 300, 600, this);
-				System.out.println("Je suis 2");
+				g.drawImage(this.img, 200, 400, this);
 				break;
 				
 			default:
