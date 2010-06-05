@@ -31,15 +31,12 @@ public class Jeu {
 	}
 	
 	public Jeu(Plateau pp) {
+		this();
 		this.setTour(0);
 		this.setValeurDes(0);
 		this.setPlateau(pp);
-		this.setJoueurActif(null);
 		
 		this.participants = new ArrayList<Joueur>();
-		this.participants.add(new Joueur());
-		this.participants.add(new Joueur());
-		this.participants.add(new Joueur());
 		
 		this.reserve = new ArrayList<GroupeCartes>();
 		this.reserve.add(new GroupeCartes(19, TypeCartes.BIERE));
@@ -187,7 +184,7 @@ public class Jeu {
 	public static void main(String[] args) {
 		// TODO appeler le constructeur correctement avec les bons parametres (cartes)
 		
-		new JeuFrame(new Jeu(new Plateau(45))).setVisible(true);
+		new JeuFrame(new Jeu(new Plateau(40))).setVisible(true);
 
 	}
 
