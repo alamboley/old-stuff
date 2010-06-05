@@ -4,9 +4,9 @@ public class GroupeCartesDev extends GroupeCartes {
 	
 	private SousTypeCartes sousTypeCartes;
 	
-	public GroupeCartesDev(int nb, SousTypeCartes type) {
-		super(nb, TypeCartes.DEVELOPPEMENT);
-		this.sousTypeCartes = type;
+	public GroupeCartesDev(int nb, TypeCartes type, SousTypeCartes sstype) {
+		super(nb, type);
+		this.sousTypeCartes = sstype;
 	}
 
 	public SousTypeCartes getSousTypeCartes() {
