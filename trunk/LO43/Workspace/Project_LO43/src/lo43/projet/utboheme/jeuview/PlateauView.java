@@ -48,9 +48,17 @@ public class PlateauView extends Canvas{
 		for(HexagoneView hv : lHexaV) {
 			for(SommetView s : hv.getLSommetV()) {
 				s.selected(s.contains(mousePosition));
+				//on recupere le sommet correspondant pour l'utiliser dans le jeu
+				if (s.contains(mousePosition)) {
+					plateau.constructionUV(s.getSommet());
+				}
 			}
 			for(AreteView a : hv.getLAreteV()) {
 				a.selected(a.contains(mousePosition));
+				// on recupere l'arete correspondante pour l'utiliser dans le jeu
+				if(a.contains(mousePosition)) {
+					plateau.constructionCC(a.getArete());
+				}
 			}
 		}
 		this.update();
