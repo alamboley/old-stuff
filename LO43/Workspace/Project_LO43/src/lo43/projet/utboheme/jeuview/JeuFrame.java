@@ -7,11 +7,13 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import lo43.projet.utboheme.jeu.Jeu;
+import lo43.projet.utboheme.jeu.Joueur;
 
 @SuppressWarnings("serial")
 public class JeuFrame extends JFrame implements MouseListener{
@@ -25,8 +27,9 @@ public class JeuFrame extends JFrame implements MouseListener{
 		this.j = pj;
 		this.plat = new PlateauView(j.getPlateau());
 		this.setTitle("Les colons de l'UTboHème");
-		this.setSize(j.getPlateau().getWidth() + 300, j.getPlateau().getHeight() + 200);
+		this.setSize(j.getPlateau().getWidth() + 500, j.getPlateau().getHeight() + 500);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setBackground(Color.white);
 		this.setLocationRelativeTo(null);
 		this.setLayout(new BorderLayout());
 		
@@ -36,9 +39,9 @@ public class JeuFrame extends JFrame implements MouseListener{
 		
 		attribuerJoueur();
 		
-		this.getContentPane().add(jv.get(0), BorderLayout.NORTH);
-		this.getContentPane().add(jv.get(1), BorderLayout.SOUTH);
-		this.getContentPane().add(jv.get(2), BorderLayout.WEST);
+		this.getContentPane().add(jv.get(2), BorderLayout.NORTH);
+		this.getContentPane().add(jv.get(1), BorderLayout.WEST);
+		this.getContentPane().add(jv.get(0), BorderLayout.SOUTH);
 		this.getContentPane().add(new JLabel("Cartes"), BorderLayout.EAST);
 		this.getContentPane().add(map, BorderLayout.CENTER);
 	}
@@ -46,32 +49,21 @@ public class JeuFrame extends JFrame implements MouseListener{
 	private void attribuerJoueur() {
 		
 		jv = new ArrayList<JoueurView>();
+		ImageIcon imgJ1 = new ImageIcon("img/boy_1.png");
+		ImageIcon imgJ2 = new ImageIcon("img/girl_1.png");
+		ImageIcon imgJ3 = new ImageIcon("img/boy_3.png");
 		
-		String nom = JOptionPane.showInputDialog(null, "Nom du joueur 1 ?", null, JOptionPane.QUESTION_MESSAGE);
-		j.getParticipants().get(0).setNom(nom);
-		j.getParticipants().get(0).setIdJoueur(0);
-		jv.add(new JoueurView(j.getParticipants().get(0), Color.RED, "img/boy_1.png"));
+		String nom = (String) JOptionPane.showInputDialog(null, "Nom du joueur 1 ?", "Fiche d'inscription", JOptionPane.QUESTION_MESSAGE, imgJ1, null, null);
+		j.setParticipant(new Joueur(1, nom, Color.red));
+		jv.add(new JoueurView(j.getParticipants().get(0), j.getParticipants().get(0).getCouleur(), "img/boy_1.png"));
 		
+		nom = (String) JOptionPane.showInputDialog(null, "Nom du joueur 2 ?", "Fiche d'inscription", JOptionPane.QUESTION_MESSAGE, imgJ2, null, null);
+		j.setParticipant(new Joueur(2, nom, Color.blue));
+		jv.add(new JoueurView(j.getParticipants().get(1), j.getParticipants().get(1).getCouleur(), "img/girl_1.png"));
 		
-		nom = JOptionPane.showInputDialog(null, "Nom du joueur 2 ?", null, JOptionPane.QUESTION_MESSAGE);
-		j.getParticipants().get(1).setNom(nom);
-		j.getParticipants().get(1).setIdJoueur(1);
-		
-		jv.add(new JoueurView(j.getParticipants().get(1), Color.CYAN, "img/girl_1.png"));
-		
-		nom = JOptionPane.showInputDialog(null, "Nom du joueur 3 ?", null, JOptionPane.QUESTION_MESSAGE);
-		j.getParticipants().get(2).setNom(nom);
-		j.getParticipants().get(2).setIdJoueur(2);
-		
-		jv.add(new JoueurView(j.getParticipants().get(2), Color.BLUE, "img/boy_3.png"));
-	}
-
-	public Jeu getJ() {
-		return j;
-	}
-
-	public void setJ(Jeu pj) {
-		this.j = pj;
+		nom = (String) JOptionPane.showInputDialog(null, "Nom du joueur 3 ?", "Fiche d'inscription", JOptionPane.QUESTION_MESSAGE, imgJ3, null, null);
+		j.setParticipant(new Joueur(3, nom, new Color(0, 204, 0)));
+		jv.add(new JoueurView(j.getParticipants().get(2), j.getParticipants().get(2).getCouleur(), "img/boy_3.png"));
 	}
 	
 	public void mouseClicked(MouseEvent e) {
