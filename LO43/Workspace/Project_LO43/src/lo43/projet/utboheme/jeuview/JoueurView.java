@@ -56,7 +56,7 @@ try {
 				
 			case 1 :
 				this.img = ImageIO.read(new File(this.url));
-				g.drawImage(this.img, 10, 100, this);
+				g.drawImage(this.img, 100, 100, this);
 				break;
 			
 			case 2 :
