@@ -33,7 +33,7 @@ public class HexagoneView extends Polygon{
 		}
 		
 		for(Arete a : h.getAretes()) {
-			laV.add(new AreteView(a));
+			laV.add(new AreteView(a, 1));
 		}
 	}
 
