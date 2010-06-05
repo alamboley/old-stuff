@@ -39,8 +39,8 @@ public class JeuFrame extends JFrame implements MouseListener{
 		attribuerJoueur();
 		
 		this.getContentPane().add(jv.get(0), BorderLayout.NORTH);
-		this.getContentPane().add(jv.get(0), BorderLayout.SOUTH);
-		this.getContentPane().add(jv.get(0), BorderLayout.WEST);
+		this.getContentPane().add(jv.get(1), BorderLayout.SOUTH);
+		this.getContentPane().add(jv.get(2), BorderLayout.WEST);
 		this.getContentPane().add(new JLabel("Cartes"), BorderLayout.EAST);
 		this.getContentPane().add(map, BorderLayout.CENTER);
 	}
