@@ -56,7 +56,7 @@ public class HexagoneView extends Polygon{
 			g.setColor(new Color(128, 128, 128));
 		}
 		g.fillPolygon(this);
-		g.setColor(Color.orange);
+		g.setColor(Color.white);
 		g.drawPolygon(this);
 		
 		for(AreteView av : this.laretesV) {

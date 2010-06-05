@@ -17,7 +17,7 @@ public class AreteView extends Rectangle{
 	public AreteView(Arete pa, int ptaille) {
 		super();
 		this.arete = pa;
-		this.color = Color.orange;
+		this.color = Color.white;
 		this.setLocation((int)(((arete.getsDebut().getXSom() + arete.getsFin().getXSom())/2) - ptaille/2), (int)(((arete.getsDebut().getYSom() + arete.getsFin().getYSom())/2) - ptaille/2));
 		this.setSize(new Dimension(ptaille, ptaille));
 	}
