@@ -1,6 +1,7 @@
 package lo43.projet.utboheme.jeuview;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
@@ -20,19 +21,29 @@ public class JoueurView extends JPanel {
 	private Image img;
 	private String url;
 	
+	public JoueurView() {
+		
+		super();
+		this.setPreferredSize(new Dimension(100, 100));
+	}
+	
 	public JoueurView(Joueur j, Color col, String url) {
 		
+		super();
+		this.setPreferredSize(new Dimension(100, 100));
 		this.joueur = j;
 		this.color = col;
 		this.url = url;
+		System.out.println(System.getProperty("user.dir"));
 	}
 	
 	public void paintComponent(Graphics g) {
 		
-		g.fillRect(10, 10, 10, 10);
+		//g.fillRect(10, 10, 10, 10);
+		
 		
 		try {
-			this.img = ImageIO.read(new File(url));
+			this.img = ImageIO.read(new File(this.url));
 			g.drawImage(this.img, 0, 0, this);
 			
 			
