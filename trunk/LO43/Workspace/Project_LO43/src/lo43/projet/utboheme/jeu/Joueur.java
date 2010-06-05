@@ -256,8 +256,19 @@ public class Joueur {
 		return true;
 	}
 	 
+	//j'ai fait de la merde
 	public boolean troc(TypeCartes matiere, int symbole) {
-		
+		// TODO refaire la methode
+		for (GroupeCartes grpCartes : cartes) {
+			if (grpCartes.getTypeCartes() == matiere) {
+				if (grpCartes.getNombre() < symbole) {
+					return false;
+				} else {
+					grpCartes.remCartes(symbole);
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 	 
