@@ -51,17 +51,17 @@ try {
 			switch (numJoueur) {
 			case 0 :
 				this.img = ImageIO.read(new File(this.url));
-				g.drawImage(this.img, 10, 10, this);
+				g.drawImage(this.img, 0, 0, this);
 				break;
 				
 			case 1 :
 				this.img = ImageIO.read(new File(this.url));
-				g.drawImage(this.img, 100, 100, this);
+				g.drawImage(this.img, 0, 0, this);
 				break;
 			
 			case 2 :
 				this.img = ImageIO.read(new File(this.url));
-				g.drawImage(this.img, 200, 400, this);
+				g.drawImage(this.img, 0, 0, this);
 				break;
 				
 			default:
