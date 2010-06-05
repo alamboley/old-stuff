@@ -1,78 +1,77 @@
 package lo43.projet.utboheme.jeu;
 
+import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 import lo43.projet.utboheme.arbre.ArbreBinaire;
 import lo43.projet.utboheme.carte.GroupeCartes;
 import lo43.projet.utboheme.carte.GroupeCartesDev;
-import lo43.projet.utboheme.carte.SousTypeCartes;
 import lo43.projet.utboheme.carte.TypeCartes;
-import lo43.projet.utboheme.hexagone.Arete;
-import lo43.projet.utboheme.hexagone.Hexagone;
-import lo43.projet.utboheme.hexagone.Sommet;
+import lo43.projet.utboheme.pion.Pion;
+import lo43.projet.utboheme.pion.UV;
 
 public class Joueur {
 	
-	private int idJoueur;
+	private int ident;
 	private String nom;
-	private String couleur;
+	private Color couleur;
 	private byte nbPoints;
 	private boolean ancien;
 	private boolean cursus;
-	//petit test avec une hashmap si jamais
-	private HashMap<TypeCartes, GroupeCartes> cartesStock;
-	private ArrayList<GroupeCartes> cartes;
-	private ArrayList<GroupeCartesDev> cartesJouees;
-	private int nbUV;
-	private int nbUVStar;
-	private int nbCC;
-	private ArrayList<ArbreBinaire> chemins;
+
+	private List<GroupeCartes> lcartes;
+	private List<GroupeCartesDev> lcartesJouees;
+	private List<Pion> lcc;
+	private List<UV> luv;
+	private List<UV> luvstar;
+	private List<ArbreBinaire> chemins;
 	
 	public Joueur() {
-		idJoueur = 0;
-		nom = null;
-		couleur = null;
-		nbPoints = 0;
-		ancien = false;
-		cursus = false;
-		nbUV = 5;
-		nbUVStar = 4;
-		nbCC = 15;
-		cartesStock = new HashMap<TypeCartes, GroupeCartes>();
-		cartesStock.put(TypeCartes.BIERE, new GroupeCartes(0, TypeCartes.BIERE));
-		cartesStock.put(TypeCartes.CAFE, new GroupeCartes(0, TypeCartes.CAFE));
-		cartesStock.put(TypeCartes.NOURRITURE, new GroupeCartes(0, TypeCartes.NOURRITURE));
-		cartesStock.put(TypeCartes.SOMMEIL, new GroupeCartes(0, TypeCartes.SOMMEIL));
-		cartesStock.put(TypeCartes.SUPPORT, new GroupeCartes(0, TypeCartes.SUPPORT));
-		
-		cartes = new ArrayList<GroupeCartes>();
-		// Biere ---> indice 0
-		cartes.add(new GroupeCartes(0, TypeCartes.BIERE));
-		// Cafe ---> indice 1
-		cartes.add(new GroupeCartes(0, TypeCartes.CAFE));
-		// Nourriture ---> indice 2
-		cartes.add(new GroupeCartes(0, TypeCartes.NOURRITURE));
-		// Sommeil ---> indice 3
-		cartes.add(new GroupeCartes(0, TypeCartes.SOMMEIL));
-		// Support ---> indice 4
-		cartes.add(new GroupeCartes(0, TypeCartes.SUPPORT));
-		cartesJouees = new ArrayList<GroupeCartesDev>();
-		
+		this.ident = 0;
+		this.nom = null;
+		this.couleur = null;
+		this.nbPoints = 0;
+		this.ancien = false;
+		this.cursus = false;
+		this.lcartes = null;
+		this.lcartesJouees = null;
+		this.lcc = null;
+		this.luv = null;
+		this.luvstar = null;
+		this.chemins = null;
 	}
 	
-	public Joueur(int id) {
+	public Joueur(Integer pident, String pnom, Color pc) {
 		this();
-		idJoueur = id;
-	}
-	
-	 
-	public int getIdJoueur() {
-		return idJoueur;
+		this.ident = pident;
+		this.nom = pnom;
+		this.couleur = pc;
+		
+		this.lcartes = new ArrayList<GroupeCartes>();
+		this.lcartesJouees = new ArrayList<GroupeCartesDev>();
+		this.luvstar = new ArrayList<UV>();
+		this.luv = new ArrayList<UV>();
+		this.lcc = new ArrayList<Pion>();
+		
+		for(int i=0; i<4; i++) {
+			this.luvstar.add(new UV(this, 2, true));
+		}
+		for(int i=0; i<5; i++) {
+			this.luv.add(new UV(this, 1, false));
+		}
+		for(int i=0; i<15; i++) {
+			this.lcc.add(new Pion(this));
+		}
 	}
 
-	public void setIdJoueur(int idJoueur) {
-		this.idJoueur = idJoueur;
+	
+	public int getIdent() {
+		return ident;
+	}
+
+	public void setIdent(int ident) {
+		this.ident = ident;
 	}
 
 	public String getNom() {
@@ -83,12 +82,12 @@ public class Joueur {
 		this.nom = nom;
 	}
 
-	public String getCouleur() {
+	public Color getCouleur() {
 		return couleur;
 	}
 
-	public void setCouleur(String couleur) {
-		this.couleur = couleur;
+	public void setCouleur(Color c) {
+		this.couleur = c;
 	}
 
 	public byte getNbPoints() {
@@ -115,55 +114,58 @@ public class Joueur {
 		this.cursus = cursus;
 	}
 
-	public ArrayList<GroupeCartes> getCartes() {
-		return cartes;
+	public List<GroupeCartes> getCartes() {
+		return lcartes;
+	}
+	
+	public GroupeCartes getGroupeCartes(TypeCartes ptype) {
+		GroupeCartes resGroupeCartes = new GroupeCartes();
+		for(GroupeCartes gc : this.lcartes) {
+			if(gc.getTypeCartes() == ptype) {
+				resGroupeCartes = gc;
+				break;
+			}
+		}
+		return resGroupeCartes;
 	}
 
-	public void setCartes(ArrayList<GroupeCartes> cartes) {
-		this.cartes = cartes;
+	public void setCartes(List<GroupeCartes> pcartes) {
+		this.lcartes = pcartes;
 	}
 
-	public ArrayList<GroupeCartesDev> getCartesJouees() {
-		return cartesJouees;
+	public List<GroupeCartesDev> getCartesJouees() {
+		return lcartesJouees;
 	}
 
-	public void setCartesJouees(ArrayList<GroupeCartesDev> cartesJouees) {
-		this.cartesJouees = cartesJouees;
+	public void setCartesJouees(List<GroupeCartesDev> cartesJouees) {
+		this.lcartesJouees = cartesJouees;
 	}
 
 	public int getNbUV() {
-		return nbUV;
-	}
-
-	public void setNbUV(int nbUV) {
-		this.nbUV = nbUV;
+		return luv.size();
 	}
 
 	public int getNbUVStar() {
-		return nbUVStar;
-	}
-
-	public void setNbUVStar(int nbUVStar) {
-		this.nbUVStar = nbUVStar;
+		return luvstar.size();
 	}
 
 	public int getNbCC() {
-		return nbCC;
+		return lcc.size();
+	}
+	
+	public int getNbCartes(TypeCartes ptype) {
+		return (this.lcartes.isEmpty()) ? 0 : this.getGroupeCartes(ptype).getNombre();
 	}
 
-	public void setNbCC(int nbCC) {
-		this.nbCC = nbCC;
-	}
-
-	public ArrayList<ArbreBinaire> getChemins() {
+	public List<ArbreBinaire> getChemins() {
 		return chemins;
 	}
 
-	public void setChemins(ArrayList<ArbreBinaire> chemins) {
+	public void setChemins(List<ArbreBinaire> chemins) {
 		this.chemins = chemins;
 	}
 
-	public boolean construireUV(Sommet sommet, boolean etoile) {
+	/*public boolean construireUV(Sommet sommet, boolean etoile) {
 		//phase de fondation ?
 		if (nbUV > 3) {
 			nbUV--;
@@ -345,5 +347,5 @@ public class Joueur {
 	//n'aurait-elle pas sa place dans Jeu plutot ?
 	public boolean deplacerBinomeG(Hexagone HexaInit, Hexagone HexaDest) {
 		return false;
-	}
+	}*/
 }
