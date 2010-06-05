@@ -51,17 +51,17 @@ public class JeuFrame extends JFrame implements MouseListener{
 		String nom = JOptionPane.showInputDialog(null, "Nom du joueur 1 ?", null, JOptionPane.QUESTION_MESSAGE);
 		j.getParticipants().get(0).setNom(nom);
 		
-		jv.add(new JoueurView(j.getParticipants().get(0), Color.RED, "../src/boy_1.png"));
+		jv.add(new JoueurView(j.getParticipants().get(0), Color.RED, "img/boy_1.png"));
 		
 		nom = JOptionPane.showInputDialog(null, "Nom du joueur 2 ?", null, JOptionPane.QUESTION_MESSAGE);
 		j.getParticipants().get(1).setNom(nom);
 		
-		jv.add(new JoueurView(j.getParticipants().get(1), Color.CYAN, "../src/girl_1.png"));
+		jv.add(new JoueurView(j.getParticipants().get(1), Color.CYAN, "img/girl_1.png"));
 		
 		nom = JOptionPane.showInputDialog(null, "Nom du joueur 3 ?", null, JOptionPane.QUESTION_MESSAGE);
 		j.getParticipants().get(2).setNom(nom);
 		
-		jv.add(new JoueurView(j.getParticipants().get(2), Color.BLUE, "../src/boy_3.png"));
+		jv.add(new JoueurView(j.getParticipants().get(2), Color.BLUE, "img/boy_3.png"));
 	}
 
 	public Jeu getJ() {
