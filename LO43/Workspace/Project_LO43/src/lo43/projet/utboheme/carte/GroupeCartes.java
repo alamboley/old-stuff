@@ -6,9 +6,14 @@ public class GroupeCartes {
 	 
 	private TypeCartes typeCartes;
 	
+	public GroupeCartes() {
+		this.nombre = 0;
+		this.typeCartes = null;
+	}
+	
 	public GroupeCartes(int pnb, TypeCartes ptypeC) {
-		this.setNombre(pnb);
-		this.setTypeCartes(ptypeC);
+		this.nombre = pnb;
+		this.typeCartes = ptypeC;
 	}
 	 
 	public int getNombre() {
