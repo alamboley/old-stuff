@@ -27,7 +27,7 @@ public class JeuFrame extends JFrame implements MouseListener{
 		this.j = pj;
 		this.plat = new PlateauView(j.getPlateau());
 		this.setTitle("Les colons de l'UTboHème");
-		this.setSize(j.getPlateau().getLargPlat() + 300, j.getPlateau().getHautPlat() + 200);
+		this.setSize(j.getPlateau().getWidth() + 300, j.getPlateau().getHeight() + 200);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setLayout(new BorderLayout());
