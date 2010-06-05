@@ -26,7 +26,7 @@ public class PlateauView extends Canvas{
 		lHexaV = new ArrayList<HexagoneView>();
 		
 		this.setLocation(new Point(0,0));
-		this.setSize(new Dimension(p.getWidth(), p.getHeight()));
+		this.setSize(new Dimension(p.getLargPlat(), p.getHautPlat()));
 		for(Hexagone h : p.getHexagones()) {
 			lHexaV.add(new HexagoneView(h));
 		}
