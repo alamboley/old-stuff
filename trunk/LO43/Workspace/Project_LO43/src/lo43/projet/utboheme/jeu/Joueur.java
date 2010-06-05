@@ -20,6 +20,7 @@ public class Joueur {
 	private byte nbPoints;
 	private boolean ancien;
 	private boolean cursus;
+	//petit test avec une hashmap si jamais
 	private HashMap<TypeCartes, GroupeCartes> cartesStock;
 	private ArrayList<GroupeCartes> cartes;
 	private ArrayList<GroupeCartesDev> cartesJouees;
