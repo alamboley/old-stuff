@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import lo43.projet.utboheme.jeu.Jeu;
-import lo43.projet.utboheme.jeu.Joueur;
 
 @SuppressWarnings("serial")
 public class JeuFrame extends JFrame implements MouseListener{
