@@ -33,4 +33,8 @@ public class SommetView extends Rectangle{
 		this.color = (b) ? Color.red : Color.orange;
 	}
 	
+	public Sommet getSommet() {
+		return this.sommet;
+	}
+	
 }

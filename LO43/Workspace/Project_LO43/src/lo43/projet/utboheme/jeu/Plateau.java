@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import lo43.projet.utboheme.hexagone.Arete;
 import lo43.projet.utboheme.hexagone.HexaRessource;
 import lo43.projet.utboheme.hexagone.HexaZoneTroc;
 import lo43.projet.utboheme.hexagone.Hexagone;
 import lo43.projet.utboheme.hexagone.Jeton;
+import lo43.projet.utboheme.hexagone.Sommet;
 import lo43.projet.utboheme.hexagone.TypeTerrain;
 
 public class Plateau {
@@ -259,6 +261,16 @@ public class Plateau {
 			}
 		}
 		return lHexaZ;
+	}
+	
+	// TODO appeler la fonction correspondante dans Jeu avec le sommet en parametre
+	public boolean constructionUV (Sommet s) {
+		return false;
+	}
+	
+	// TODO appeler la fonction correspondante dans Jeu avec le sommet en parametre
+	public boolean constructionCC (Arete a) {
+		return false;
 	}
 
 }

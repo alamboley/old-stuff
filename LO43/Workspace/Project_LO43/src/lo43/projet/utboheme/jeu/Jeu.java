@@ -8,6 +8,8 @@ import lo43.projet.utboheme.carte.GroupeCartes;
 import lo43.projet.utboheme.carte.GroupeCartesDev;
 import lo43.projet.utboheme.carte.SousTypeCartes;
 import lo43.projet.utboheme.carte.TypeCartes;
+import lo43.projet.utboheme.hexagone.Arete;
+import lo43.projet.utboheme.hexagone.Sommet;
 import lo43.projet.utboheme.jeuview.JeuFrame;
 
 public class Jeu {
@@ -104,7 +106,7 @@ public class Jeu {
 		if(participants.size() < 4) {
 			participants.add(pj);
 		}else{
-			System.out.println("Le nombre maximun de participant est atteind : " + participants.size());
+			System.out.println("Le nombre maximun de participant est atteint : " + participants.size());
 		}
 	}
 	 
@@ -165,6 +167,16 @@ public class Jeu {
 	}
 	 
 	public boolean hasAncientPlusVieu(Joueur pj) {
+		return false;
+	}
+	
+	// TODO 
+	public boolean constructionUV (Sommet s) {
+		return false;
+	}
+	
+	// TODO 
+	public boolean constructionCC (Arete a) {
 		return false;
 	}
 
