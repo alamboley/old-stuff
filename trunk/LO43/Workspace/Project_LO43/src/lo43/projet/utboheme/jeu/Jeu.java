@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 import lo43.projet.utboheme.carte.GroupeCartes;
+import lo43.projet.utboheme.carte.GroupeCartesDev;
+import lo43.projet.utboheme.carte.SousTypeCartes;
 import lo43.projet.utboheme.carte.TypeCartes;
 import lo43.projet.utboheme.jeuview.JeuFrame;
 
@@ -26,19 +28,28 @@ public class Jeu {
 		this.setJoueurActif(null);
 	}
 	
-	public Jeu(Plateau pp, List<Joueur> plpa, List<GroupeCartes> plr) {
+	public Jeu(Plateau pp) {
 		this.setTour(0);
 		this.setValeurDes(0);
 		this.setPlateau(pp);
-		this.setParticipants(plpa);
-		this.setReserve(plr);
 		this.setJoueurActif(null);
 		
-		participants = new ArrayList<Joueur>();
-		participants.add(new Joueur());
-		participants.add(new Joueur());
-		participants.add(new Joueur());
+		this.participants = new ArrayList<Joueur>();
+		this.participants.add(new Joueur());
+		this.participants.add(new Joueur());
+		this.participants.add(new Joueur());
 		
+		this.reserve = new ArrayList<GroupeCartes>();
+		this.reserve.add(new GroupeCartes(19, TypeCartes.BIERE));
+		this.reserve.add(new GroupeCartes(19, TypeCartes.SOMMEIL));
+		this.reserve.add(new GroupeCartes(19, TypeCartes.CAFE));
+		this.reserve.add(new GroupeCartes(19, TypeCartes.SUPPORT));
+		this.reserve.add(new GroupeCartes(19, TypeCartes.NOURRITURE));
+		this.reserve.add(new GroupeCartesDev(2, TypeCartes.DEVELOPPEMENT, SousTypeCartes.CONSTRUCTIONCC));
+		this.reserve.add(new GroupeCartesDev(2, TypeCartes.DEVELOPPEMENT, SousTypeCartes.DECOUVERTE));
+		this.reserve.add(new GroupeCartesDev(2, TypeCartes.DEVELOPPEMENT, SousTypeCartes.MONOPOLE));
+		this.reserve.add(new GroupeCartesDev(5, TypeCartes.DEVELOPPEMENT, SousTypeCartes.POINTVICTOIRE));
+		this.reserve.add(new GroupeCartesDev(14, TypeCartes.DEVELOPPEMENT, SousTypeCartes.ANCIEN));
 	}
 	
 	public int getTour() {
@@ -163,7 +174,7 @@ public class Jeu {
 	public static void main(String[] args) {
 		// TODO appeler le constructeur correctement avec les bons parametres (cartes)
 		
-		new JeuFrame(new Jeu(new Plateau(45), null, null)).setVisible(true);
+		new JeuFrame(new Jeu(new Plateau(45))).setVisible(true);
 
 	}
 
