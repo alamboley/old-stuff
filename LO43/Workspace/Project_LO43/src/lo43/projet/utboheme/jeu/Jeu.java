@@ -161,7 +161,7 @@ public class Jeu {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		// TODO appeler le constructeur correctement avec les bons parametres (cartes)
 		
 		new JeuFrame(new Jeu(new Plateau(45), null, null)).setVisible(true);
 
