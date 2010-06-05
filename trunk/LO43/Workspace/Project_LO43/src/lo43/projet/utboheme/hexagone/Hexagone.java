@@ -6,14 +6,6 @@ import lo43.projet.utboheme.jeu.Joueur;
 
 public class Hexagone {
 	
-	/*extends JPanel pour manipulation graphique ?
-	
-	trace.addActionListener(this); ajout écouteur
-	
-	public void actionPerformed(ActionEvent e) {} choix de l'action
-	
-	*/
-	
 	private double xHex;
 	private double yHex;
 	private double size;
@@ -44,7 +36,6 @@ public class Hexagone {
 		this.typeTerr = ptypeT;
 		this.InitHexa();
 		System.out.println("Création d'un hexagone '" + this.typeTerr + "' a la position x: " + this.getXHex() + " et y: " + this.getYHex());
-		
 	}
 	
 	public void InitHexa(){
@@ -63,7 +54,7 @@ public class Hexagone {
 		final double g= this.getSize() * (Math.cos(Math.toRadians(30)));
 		
 		Sommet sommet1 = new Sommet((int)(this.getXHex()), (int)(this.getYHex() + this.getSize()));
-		this.sommets.add(sommet1);
+		this.sommets.add(new Sommet((int)(this.getXHex()), (int)(this.getYHex() + this.getSize())));
 		
 		Sommet sommet2 = new Sommet((int)(this.getXHex() + g), (int)(this.getYHex() + p));
 		this.sommets.add(sommet2);
