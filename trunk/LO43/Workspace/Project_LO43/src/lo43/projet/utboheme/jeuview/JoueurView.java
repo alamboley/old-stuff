@@ -20,7 +20,6 @@ public class JoueurView extends JPanel {
 	private Color color;
 	private Image img;
 	private String url;
-	private Graphics g;
 	
 	public JoueurView() {
 		
