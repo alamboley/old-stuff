@@ -1,6 +1,7 @@
 package lo43.projet.utboheme.jeu;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import lo43.projet.utboheme.arbre.ArbreBinaire;
 import lo43.projet.utboheme.carte.GroupeCartes;
@@ -19,6 +20,7 @@ public class Joueur {
 	private byte nbPoints;
 	private boolean ancien;
 	private boolean cursus;
+	private HashMap<TypeCartes, GroupeCartes> cartesStock;
 	private ArrayList<GroupeCartes> cartes;
 	private ArrayList<GroupeCartesDev> cartesJouees;
 	private int nbUV;
@@ -36,6 +38,13 @@ public class Joueur {
 		nbUV = 5;
 		nbUVStar = 4;
 		nbCC = 15;
+		cartesStock = new HashMap<TypeCartes, GroupeCartes>();
+		cartesStock.put(TypeCartes.BIERE, new GroupeCartes(0, TypeCartes.BIERE));
+		cartesStock.put(TypeCartes.CAFE, new GroupeCartes(0, TypeCartes.CAFE));
+		cartesStock.put(TypeCartes.NOURRITURE, new GroupeCartes(0, TypeCartes.NOURRITURE));
+		cartesStock.put(TypeCartes.SOMMEIL, new GroupeCartes(0, TypeCartes.SOMMEIL));
+		cartesStock.put(TypeCartes.SUPPORT, new GroupeCartes(0, TypeCartes.SUPPORT));
+		
 		cartes = new ArrayList<GroupeCartes>();
 		// Biere ---> indice 0
 		cartes.add(new GroupeCartes(0, TypeCartes.BIERE));
@@ -273,14 +282,24 @@ public class Joueur {
 	}
 	 
 	public GroupeCartes get_cartes(TypeCartes typeCarte) {
+		for (GroupeCartes grp : cartes) {
+			if (grp.getTypeCartes() == typeCarte) {
+				return grp;
+			}
+		}
 		return null;
 	}
 	 
-	public boolean decouverte(TypeCartes type1, TypeCartes type2) {
-		return false;
+	public void decouverte(TypeCartes type1, TypeCartes type2) {
+		//on ajoute les cartes voulues au stock du joueur warning : il faudra les enlever du stock du jeu
+		this.get_cartes(type1).addCartes(1);
+		this.get_cartes(type2).addCartes(1);
+		
 	}
 	 
-	public boolean monopole(TypeCartes typeRess) {
+	//TODO deplacer la methode monopole dans la classe jeu
+	public boolean monopole(TypeCartes typeRess, int nb) {
+		// dans cette classe on ne peut que 
 		return false;
 	}
 	 
@@ -297,6 +316,7 @@ public class Joueur {
 	 
 	}
 	 
+	// TODO definir une methode identique dans Jeu pour les manipulations des cartes de dvpt
 	public boolean jouerCartes(SousTypeCartes cartes) {
 		return false;
 	}
