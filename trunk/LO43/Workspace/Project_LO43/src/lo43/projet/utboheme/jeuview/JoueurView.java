@@ -20,6 +20,7 @@ public class JoueurView extends JPanel {
 	private Color color;
 	private Image img;
 	private String url;
+	private Graphics g;
 	
 	public JoueurView() {
 		
@@ -34,18 +35,69 @@ public class JoueurView extends JPanel {
 		this.joueur = j;
 		this.color = col;
 		this.url = url;
-		System.out.println(System.getProperty("user.dir"));
+		
+		System.out.println(this.joueur.getIdJoueur());
+		dessiner();
+	}
+	
+	private void dessiner() {
+		
+		/*try {
+			this.img = ImageIO.read(new File(this.url));
+			g.drawImage(this.img, 10, 10, this);
+			//this.g = null;
+			
+			switch (this.joueur.getIdJoueur()) {
+			case 0 :
+				this.g.drawImage(this.img, 10, 10, this);
+				System.out.println("Je suis 0");
+				break;
+				
+			case 1 :
+				this.g.drawImage(this.img, 10, 100, this);
+				System.out.println("Je suis 1");
+				break;
+			
+			case 2 :
+				this.g.drawImage(this.img, 300, 600, this);
+				System.out.println("Je suis 2");
+				break;
+				
+			default:
+				System.out.println("Problème affichage perso");
+				break;
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
 	}
 	
 	public void paintComponent(Graphics g) {
 		
-		//g.fillRect(10, 10, 10, 10);
-		
-		
 		try {
 			this.img = ImageIO.read(new File(this.url));
-			g.drawImage(this.img, 0, 0, this);
 			
+			switch (this.joueur.getIdJoueur()) {
+			case 0 :
+				g.drawImage(this.img, 10, 10, this);
+				System.out.println("Je suis 0");
+				break;
+				
+			case 1 :
+				g.drawImage(this.img, 10, 100, this);
+				System.out.println("Je suis 1");
+				break;
+			
+			case 2 :
+				g.drawImage(this.img, 300, 600, this);
+				System.out.println("Je suis 2");
+				break;
+				
+			default:
+				System.out.println("Problème affichage perso");
+				break;
+			}
 			
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import lo43.projet.utboheme.jeu.Jeu;
+import lo43.projet.utboheme.jeu.Joueur;
 
 @SuppressWarnings("serial")
 public class JeuFrame extends JFrame implements MouseListener{
@@ -46,20 +47,23 @@ public class JeuFrame extends JFrame implements MouseListener{
 	
 	private void attribuerJoueur() {
 		
-		jv = new ArrayList<JoueurView>(); 
+		jv = new ArrayList<JoueurView>();
 		
 		String nom = JOptionPane.showInputDialog(null, "Nom du joueur 1 ?", null, JOptionPane.QUESTION_MESSAGE);
 		j.getParticipants().get(0).setNom(nom);
-		
+		j.getParticipants().get(0).setIdJoueur(0);
 		jv.add(new JoueurView(j.getParticipants().get(0), Color.RED, "img/boy_1.png"));
+		
 		
 		nom = JOptionPane.showInputDialog(null, "Nom du joueur 2 ?", null, JOptionPane.QUESTION_MESSAGE);
 		j.getParticipants().get(1).setNom(nom);
+		j.getParticipants().get(1).setIdJoueur(1);
 		
 		jv.add(new JoueurView(j.getParticipants().get(1), Color.CYAN, "img/girl_1.png"));
 		
 		nom = JOptionPane.showInputDialog(null, "Nom du joueur 3 ?", null, JOptionPane.QUESTION_MESSAGE);
 		j.getParticipants().get(2).setNom(nom);
+		j.getParticipants().get(2).setIdJoueur(2);
 		
 		jv.add(new JoueurView(j.getParticipants().get(2), Color.BLUE, "img/boy_3.png"));
 	}
