@@ -33,8 +33,8 @@ public class PlateauView extends Canvas{
 	}
 	
 	public void paint(Graphics g) {
-		g.setColor(new Color(128, 255, 0));
-		g.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 40, 40);
+		g.setColor(new Color(255, 255, 204));
+		g.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 100, 100);
 		for(HexagoneView hv : this.lHexaV) {
 			hv.paint(g);
 		}
