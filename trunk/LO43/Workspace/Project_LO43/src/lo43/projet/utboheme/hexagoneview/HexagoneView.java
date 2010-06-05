@@ -17,68 +17,70 @@ import lo43.projet.utboheme.hexagone.TypeTerrain;
 @SuppressWarnings("serial")
 public class HexagoneView extends Polygon{
 	
-	private Hexagone h;
-	private List<SommetView> lsmtV;
-	private List<AreteView> laV;
+	private Hexagone hexa;
+	private List<SommetView> lsommetsV;
+	private List<AreteView> laretesV;
 	
 	public HexagoneView(Hexagone ph) {
 		super();
-		this.h = ph;
-		lsmtV = new ArrayList<SommetView>();
-		laV = new ArrayList<AreteView>();
+		this.hexa = ph;
+		lsommetsV = new ArrayList<SommetView>();
+		laretesV = new ArrayList<AreteView>();
 		
-		for(Sommet s : h.getSommets()) {
+		for(Sommet s : hexa.getSommets()) {
 			this.addPoint(s.getXSom(), s.getYSom());
-			lsmtV.add(new SommetView(s, (int)(h.getSize() / 4)));
+			lsommetsV.add(new SommetView(s, (int)(hexa.getSize() / 4)));
 		}
 		
-		for(Arete a : h.getAretes()) {
-			laV.add(new AreteView(a, 1));
+		for(Arete a : hexa.getAretes()) {
+			laretesV.add(new AreteView(a, (int)(hexa.getSize() / 4)));
 		}
 	}
 
 	public void paint(Graphics g) {
-		if(this.h.getTypeTerr() == TypeTerrain.BARS) {
+		if(this.hexa.getTypeTerr() == TypeTerrain.BARS) {
 			g.setColor(new Color(128, 0, 128));
-		}else if(this.h.getTypeTerr() == TypeTerrain.LIEUREPOS) {
+		}else if(this.hexa.getTypeTerr() == TypeTerrain.LIEUREPOS) {
 			g.setColor(new Color(128, 255, 255));
-		}else if(this.h.getTypeTerr() == TypeTerrain.FOURNISSEURCAFE) {
+		}else if(this.hexa.getTypeTerr() == TypeTerrain.FOURNISSEURCAFE) {
 			g.setColor(new Color(128, 64, 0));
-		}else if(this.h.getTypeTerr() == TypeTerrain.LIEUXCOURS) {
+		}else if(this.hexa.getTypeTerr() == TypeTerrain.LIEUXCOURS) {
 			g.setColor(new Color(255, 128, 64));
-		}else if(this.h.getTypeTerr() == TypeTerrain.RESTAURANT) {
+		}else if(this.hexa.getTypeTerr() == TypeTerrain.RESTAURANT) {
 			g.setColor(new Color(255, 180, 255));
-		}else if(this.h.getTypeTerr() == TypeTerrain.ZONETROC) {
+		}else if(this.hexa.getTypeTerr() == TypeTerrain.ZONETROC) {
 			g.setColor(new Color(192, 192, 192));
-		}else if(this.h.getTypeTerr() == TypeTerrain.DESERT) {
+		}else if(this.hexa.getTypeTerr() == TypeTerrain.DESERT) {
 			g.setColor(new Color(255, 255, 128));
-		}else if(this.h.getTypeTerr() == TypeTerrain.REMPART) {
+		}else if(this.hexa.getTypeTerr() == TypeTerrain.REMPART) {
 			g.setColor(new Color(128, 128, 128));
 		}
 		g.fillPolygon(this);
+		g.setColor(Color.orange);
+		g.drawPolygon(this);
 		
-		for(AreteView av : this.laV) {
+		for(AreteView av : this.laretesV) {
 			av.paint(g);
 		}
 		
-		for(SommetView sv : this.lsmtV) {
+		for(SommetView sv : this.lsommetsV) {
 			sv.paint(g);
 		}
 		
-		if(this.h.getClass() == HexaRessource.class) {
-			HexaRessource hr = (HexaRessource) h;
+		if(this.hexa.getClass() == HexaRessource.class) {
+			HexaRessource hr = (HexaRessource) hexa;
 			new JetonView(hr.getJeton(), (int)hr.getXHex(), (int)hr.getYHex(), (int)hr.getSize() / 2).paint(g);
 		}
 		
-		if(h.isBinomeG()) {
+		if(hexa.isBinomeG()) {
 			g.setColor(Color.black);
-			g.fillOval((int)(h.getXHex() + h.getSize() / 8), (int)(h.getYHex() - h.getSize() / 3), (int)(h.getSize() / 2), (int)(h.getSize() / 2));
-			g.fillRoundRect((int)(h.getXHex() + h.getSize() / 8), (int)(h.getYHex() + h.getSize() / 8), (int)(h.getSize() / 2), (int)(h.getSize() / 2),  (int)(h.getSize() / 8), (int)(h.getSize() / 8));
+			g.fillOval((int)(hexa.getXHex() + hexa.getSize() / 8), (int)(hexa.getYHex() - hexa.getSize()/5), (int)(hexa.getSize() / 3), (int)(hexa.getSize() / 3));
+			g.fillRoundRect((int)(hexa.getXHex() + hexa.getSize() / 8), (int)(hexa.getYHex() + hexa.getSize() / 8), (int)(hexa.getSize() / 3), (int)(hexa.getSize() / 3),  (int)(hexa.getSize() / 8), (int)(hexa.getSize() / 8));
 		}
 		
 		
-		if(this.h.getClass() == HexaZoneTroc.class) {
-			HexaZoneTroc hz = (HexaZoneTroc) h;
+		if(this.hexa.getClass() == HexaZoneTroc.class) {
+			HexaZoneTroc hz = (HexaZoneTroc) hexa;
 			if(hz.getTypeRessource() == TypeTerrain.BARS) {
 				g.setColor(new Color(128, 0, 128));
 			}else if(hz.getTypeRessource() == TypeTerrain.LIEUREPOS) {
@@ -99,28 +101,28 @@ public class HexagoneView extends Polygon{
 		
 	}
 
-	public Hexagone getH() {
-		return h;
+	public Hexagone getHexa() {
+		return hexa;
 	}
 
-	public void setH(Hexagone ph) {
-		this.h = ph;
+	public void setHexa(Hexagone ph) {
+		this.hexa = ph;
 	}
 
-	public List<SommetView> getLsmtV() {
-		return lsmtV;
+	public List<SommetView> getLSommetV() {
+		return lsommetsV;
 	}
 
-	public void setLsmtV(List<SommetView> plsmtV) {
-		this.lsmtV = plsmtV;
+	public void setLSommetV(List<SommetView> plsmtV) {
+		this.lsommetsV = plsmtV;
 	}
 
-	public List<AreteView> getLaV() {
-		return laV;
+	public List<AreteView> getLAreteV() {
+		return laretesV;
 	}
 
-	public void setLaV(List<AreteView> plaV) {
-		this.laV = plaV;
+	public void setLAreteV(List<AreteView> plaV) {
+		this.laretesV = plaV;
 	}
 	
 }

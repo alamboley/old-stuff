@@ -11,35 +11,35 @@ import lo43.projet.utboheme.hexagone.Arete;
 @SuppressWarnings("serial")
 public class AreteView extends Rectangle{
 	
-	private Arete a;
-	private Color c;
+	private Arete arete;
+	private Color color;
 	
 	public AreteView(Arete pa, int ptaille) {
 		super();
-		this.a = pa;
-		this.c = Color.orange;
-		this.setLocation((int)(((a.getsDebut().getXSom() + a.getsFin().getXSom())/2) - ptaille/2), (int)(((a.getsDebut().getYSom() + a.getsFin().getYSom())/2) - ptaille/2));
+		this.arete = pa;
+		this.color = Color.orange;
+		this.setLocation((int)(((arete.getsDebut().getXSom() + arete.getsFin().getXSom())/2) - ptaille/2), (int)(((arete.getsDebut().getYSom() + arete.getsFin().getYSom())/2) - ptaille/2));
 		this.setSize(new Dimension(ptaille, ptaille));
 	}
 
 	public void paint(Graphics g){
-		g.setColor(this.c);
-		if(a.hasCC()) {
+		g.setColor(this.color);
+		if(arete.hasCC()) {
 			g.setColor(Color.blue);
 		}
 		g.fillRect((int)this.getX(), (int)this.getY(), (int)this.getWidth(), (int)this.getHeight());
 	}
 	
 	public void selected(boolean b) {
-		this.c = (b) ? Color.red : Color.orange;
+		this.color = (b) ? Color.red : Color.orange;
 	}
 	
-	public Arete getA() {
-		return a;
+	public Arete getArete() {
+		return arete;
 	}
 
-	public void setA(Arete a) {
-		this.a = a;
+	public void setArete(Arete a) {
+		this.arete = a;
 	}
 
 }
