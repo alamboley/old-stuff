@@ -4,6 +4,11 @@ public class GroupeCartesDev extends GroupeCartes {
 	
 	private SousTypeCartes sousTypeCartes;
 	
+	public GroupeCartesDev() {
+		super();
+		this.sousTypeCartes = null;
+	}
+	
 	public GroupeCartesDev(int nb, TypeCartes type, SousTypeCartes sstype) {
 		super(nb, type);
 		this.sousTypeCartes = sstype;
