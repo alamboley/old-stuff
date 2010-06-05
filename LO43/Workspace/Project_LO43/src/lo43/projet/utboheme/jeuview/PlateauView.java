@@ -17,17 +17,17 @@ import lo43.projet.utboheme.jeu.Plateau;
 @SuppressWarnings("serial")
 public class PlateauView extends Canvas{
 
-	private Plateau p;
+	private Plateau plateau;
 	private List<HexagoneView> lHexaV;
 	
 	public PlateauView(Plateau pp) {
 		super();
-		this.p = pp;
-		lHexaV = new ArrayList<HexagoneView>();
+		this.plateau = pp;
+		this.lHexaV = new ArrayList<HexagoneView>();
 		
 		this.setLocation(new Point(0,0));
-		this.setSize(new Dimension(p.getLargPlat(), p.getHautPlat()));
-		for(Hexagone h : p.getHexagones()) {
+		this.setSize(new Dimension(plateau.getWidth(), plateau.getHeight()));
+		for(Hexagone h : plateau.getHexagones()) {
 			lHexaV.add(new HexagoneView(h));
 		}
 	}
@@ -46,25 +46,22 @@ public class PlateauView extends Canvas{
 	
 	public void clicked(Point mousePosition) {
 		for(HexagoneView hv : lHexaV) {
-			for(SommetView s : hv.getLsmtV()) {
-				if(s.contains(mousePosition)) {
-					s.selected(s.contains(mousePosition));
-					break;
-				}
+			for(SommetView s : hv.getLSommetV()) {
+				s.selected(s.contains(mousePosition));
 			}
-			for(AreteView a : hv.getLaV()) {
+			for(AreteView a : hv.getLAreteV()) {
 				a.selected(a.contains(mousePosition));
 			}
 		}
 		this.update();
 	}
 	
-	public Plateau getP() {
-		return p;
+	public Plateau getPlateau() {
+		return plateau;
 	}
 
 	public void setP(Plateau p) {
-		this.p = p;
+		this.plateau = p;
 	}
 
 }
