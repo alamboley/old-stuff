@@ -18,7 +18,7 @@ public class SommetView extends Rectangle{
 		this.sommet = ps;
 		this.setLocation(sommet.getXSom() - ptaille/2, sommet.getYSom() - ptaille/2);
 		this.setSize(ptaille, ptaille);
-		this.color = Color.orange;
+		this.color = Color.white;
 	}
 	
 	public void paint(Graphics g){
