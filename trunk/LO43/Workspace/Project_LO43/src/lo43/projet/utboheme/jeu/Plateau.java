@@ -139,6 +139,17 @@ public class Plateau {
 		hexagones.add(new Hexagone(2, 6, this.getSizeHexa(), false, TypeTerrain.REMPART));
 		hexagones.add(new Hexagone(1, 4, this.getSizeHexa(), false, TypeTerrain.REMPART));
 		
+		// Remparts
+		/*hexagones.add(new Hexagone(1, 1, this.getSizeHexa(), false, TypeTerrain.REMPART));
+		hexagones.add(new Hexagone(2, 0, this.getSizeHexa(), false, TypeTerrain.REMPART));
+		hexagones.add(new Hexagone(4, 0, this.getSizeHexa(), false, TypeTerrain.REMPART));
+		hexagones.add(new Hexagone(5, 2, this.getSizeHexa(), false, TypeTerrain.REMPART));
+		hexagones.add(new Hexagone(5, 4, this.getSizeHexa(), false, TypeTerrain.REMPART));
+		hexagones.add(new Hexagone(4, 6, this.getSizeHexa(), false, TypeTerrain.REMPART));
+		hexagones.add(new Hexagone(2, 6, this.getSizeHexa(), false, TypeTerrain.REMPART));
+		hexagones.add(new Hexagone(1, 5, this.getSizeHexa(), false, TypeTerrain.REMPART));
+		hexagones.add(new Hexagone(0, 3, this.getSizeHexa(), false, TypeTerrain.REMPART));*/
+		
 	}
 	
 	public int getSizeHexa() {
@@ -163,12 +174,12 @@ public class Plateau {
 		this.hexagones.add(ph);
 	}
 	
-	public int getLargPlat() {
+	public int getWidth() {
 		return 8 * this.getSizeHexa() * 2;
 	}
 	
-	public int getHautPlat() {
-		return 7 * (int)(this.getSizeHexa() * 2);
+	public int getHeight() {
+		return 7 * this.getSizeHexa() * 2;
 	}
 	
 	public List<Hexagone> melanger(List<Hexagone> listeD){
