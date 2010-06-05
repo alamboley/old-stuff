@@ -294,13 +294,14 @@ public class Joueur {
 		//on ajoute les cartes voulues au stock du joueur warning : il faudra les enlever du stock du jeu
 		this.get_cartes(type1).addCartes(1);
 		this.get_cartes(type2).addCartes(1);
-		
+		this.set_cartesJouees(SousTypeCartes.DECOUVERTE, 1);
 	}
 	 
 	//TODO deplacer la methode monopole dans la classe jeu
-	public boolean monopole(TypeCartes typeRess, int nb) {
-		// dans cette classe on ne peut que 
-		return false;
+	public void monopole(TypeCartes typeRess, int nb) {
+		// dans cette classe on ne peut que retirer des cartes du stock du joueur
+		this.get_cartes(typeRess).addCartes(nb);
+		this.set_cartesJouees(SousTypeCartes.MONOPOLE, 1);
 	}
 	 
 	public boolean volerCarte(Joueur joueur) {
@@ -309,26 +310,38 @@ public class Joueur {
 	 
 	 
 	public GroupeCartesDev get_cartesJouees(SousTypeCartes typeCarte) {
+		for (GroupeCartesDev dev : cartesJouees) {
+			if (dev.getSousTypeCartes() == typeCarte) {
+				return dev;
+			}
+		}
 		return null;
 	}
 	 
-	public void set_cartesJouees(TypeCartes typeCarte, int nb) {
-	 
+	public void set_cartesJouees(SousTypeCartes typeCarte, int nb) {
+		for (GroupeCartesDev dev : cartesJouees) {
+			if (dev.getSousTypeCartes() == typeCarte) {
+				dev.addCartes(nb);
+			}
+		}
 	}
 	 
 	// TODO definir une methode identique dans Jeu pour les manipulations des cartes de dvpt
 	public boolean jouerCartes(SousTypeCartes cartes) {
 		return false;
 	}
-	 
+	
+	//What is it ?
 	public int get_pions(int typePion) {
 		return 0;
 	}
 	 
+	//What is it ?
 	public boolean acheterCartes() {
 		return false;
 	}
-	 
+	
+	//n'aurait-elle pas sa place dans Jeu plutot ?
 	public boolean deplacerBinomeG(Hexagone HexaInit, Hexagone HexaDest) {
 		return false;
 	}
