@@ -155,7 +155,8 @@ public class Jeu {
 		this.setValeurDes(des1 + des2);
 	}
 
-	public boolean distribuerRess(int pvaldes){
+	public boolean distribuerRess(){
+		
 		return false;
 	}
 	
