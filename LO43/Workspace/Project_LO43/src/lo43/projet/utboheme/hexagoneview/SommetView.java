@@ -24,7 +24,7 @@ public class SommetView extends Rectangle{
 	public void paint(Graphics g){
 		g.setColor(this.color);
 		if(sommet.hasUV()) {
-			g.setColor(Color.blue);
+			g.setColor(sommet.getUv().getProprietaire().getCouleur());
 		}
 		g.fillOval((int)this.getX(), (int)this.getY(), (int)this.getWidth(), (int)this.getHeight());
 	}

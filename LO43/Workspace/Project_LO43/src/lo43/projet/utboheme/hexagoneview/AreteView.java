@@ -25,7 +25,7 @@ public class AreteView extends Rectangle{
 	public void paint(Graphics g){
 		g.setColor(this.color);
 		if(arete.hasCC()) {
-			g.setColor(Color.blue);
+			g.setColor(arete.getControleC().getProprietaire().getCouleur());
 		}
 		g.fillRect((int)this.getX(), (int)this.getY(), (int)this.getWidth(), (int)this.getHeight());
 	}
