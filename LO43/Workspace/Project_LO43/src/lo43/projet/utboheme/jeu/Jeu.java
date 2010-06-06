@@ -167,22 +167,18 @@ public class Jeu {
 		return false;
 	}
 	
-	// TODO 
+	// TODO construction uv
 	public boolean constructionUV (Sommet s) {
 		return false;
 	}
 	
-	// TODO 
+	// TODO construction controle continue
 	public boolean constructionCC (Arete a) {
 		return false;
 	}
-
-
-	/**
-	 * @param args
-	 */
+	
+	
 	public static void main(String[] args) {
-		// TODO appeler le constructeur correctement avec les bons parametres (cartes)
 		
 		new JeuFrame(new Jeu(new Plateau(40))).setVisible(true);
 

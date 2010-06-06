@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 
 import lo43.projet.utboheme.carte.TypeCartes;
 import lo43.projet.utboheme.jeu.Joueur;
-import lo43.projet.utboheme.pion.Pion;
 
 @SuppressWarnings("serial")
 
@@ -47,7 +46,6 @@ public class JoueurView extends JPanel {
 		try {
 			this.img = ImageIO.read(new File(this.url));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		// Joueur 1
