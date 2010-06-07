@@ -30,10 +30,6 @@ public class AreteView extends Rectangle{
 		g.fillRect((int)this.getX(), (int)this.getY(), (int)this.getWidth(), (int)this.getHeight());
 	}
 	
-	public void selected(boolean b) {
-		this.color = (b) ? Color.red : Color.orange;
-	}
-	
 	public Arete getArete() {
 		return arete;
 	}

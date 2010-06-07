@@ -44,22 +44,30 @@ public class PlateauView extends Canvas{
 		paint(this.getGraphics());
 	}
 	
-	public void clicked(Point mousePosition) {
+	public void clicked(Point mousePosition, JoueurView jv) {
+		boolean hasSommet = false;
+		boolean hasArete = false;
+		
 		for(HexagoneView hv : lHexaV) {
 			for(SommetView s : hv.getLSommetV()) {
-				s.selected(s.contains(mousePosition));
 				//on recupere le sommet correspondant pour l'utiliser dans le jeu
 				if (s.contains(mousePosition)) {
-					plateau.constructionUV(s.getSommet());
+					s.getSommet().setUv(jv.getJoueur().getLuv().get(0));
+					hasSommet = true;
 				}
 			}
 			for(AreteView a : hv.getLAreteV()) {
-				a.selected(a.contains(mousePosition));
 				// on recupere l'arete correspondante pour l'utiliser dans le jeu
 				if(a.contains(mousePosition)) {
-					plateau.constructionCC(a.getArete());
+					a.getArete().setControleC(jv.getJoueur().getLcc().get(0));
+					hasArete = true;
 				}
 			}
+		}
+		if(hasSommet){
+			jv.getJoueur().getLuv().remove(0);
+		}else if(hasArete){
+			jv.getJoueur().getLcc().remove(0);
 		}
 		this.update();
 	}

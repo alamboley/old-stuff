@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import lo43.projet.utboheme.carte.TypeCartes;
 import lo43.projet.utboheme.hexagone.Arete;
 import lo43.projet.utboheme.hexagone.HexaRessource;
 import lo43.projet.utboheme.hexagone.HexaZoneTroc;
@@ -37,11 +38,12 @@ public class Plateau {
 		List<Jeton> lJetons = new ArrayList<Jeton>();
 		int typeTroc;
 		TypeTerrain typeRess;
+		TypeCartes typeCar;
 		int numJeton = 2;
 		
 		for(int i=0; i<9; i++) {
 			typeTroc = (i < 5) ? 2 : 3;
-			lHexaZoneT.add(new HexaZoneTroc(0, 0, this.getSizeHexa(), false, TypeTerrain.ZONETROC, typeTroc, TypeTerrain.random()));
+			lHexaZoneT.add(new HexaZoneTroc(0, 0, this.getSizeHexa(), false, TypeTerrain.ZONETROC, typeTroc, TypeCartes.random()));
 			
 		}
 		lHexaZoneT = melanger(lHexaZoneT);
@@ -59,7 +61,8 @@ public class Plateau {
 		
 		for(int i=0; i<18; i++) {
 			typeRess = (i < 4) ? TypeTerrain.BARS : (i >= 4 && i < 7) ? TypeTerrain.LIEUREPOS : (i >= 7 && i < 11) ? TypeTerrain.FOURNISSEURCAFE : (i >= 11 && i < 15) ? TypeTerrain.LIEUXCOURS : TypeTerrain.RESTAURANT;
-			lHexaRess.add(new HexaRessource(0, 0, this.getSizeHexa(), false, typeRess, null));
+			typeCar = (i < 4) ? TypeCartes.BIERE : (i >= 4 && i < 7) ? TypeCartes.SOMMEIL : (i >= 7 && i < 11) ? TypeCartes.CAFE : (i >= 11 && i < 15) ? TypeCartes.SUPPORT : TypeCartes.NOURRITURE;
+			lHexaRess.add(new HexaRessource(0, 0, this.getSizeHexa(), false, typeRess, typeCar, null));
 		}
 		lHexaRess = melangerRess(lHexaRess);
 		
@@ -250,6 +253,16 @@ public class Plateau {
 			}
 		}
 		return lHexaZ;
+	}
+	
+	public List<HexaRessource> getHexaRessWithUv(int pnum) {
+		List<HexaRessource> lHexaWithUv = new ArrayList<HexaRessource>();
+		for(HexaRessource h : this.getHexaByNum(pnum)) {
+			if(!h.getSommetsUV().isEmpty()) {
+				lHexaWithUv.add(h);
+			}
+		}
+		return lHexaWithUv;
 	}
 	
 	// TODO appeler la fonction correspondante dans Jeu avec le sommet en parametre

@@ -7,6 +7,7 @@ import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.List;
 
+import lo43.projet.utboheme.carte.TypeCartes;
 import lo43.projet.utboheme.hexagone.Arete;
 import lo43.projet.utboheme.hexagone.HexaRessource;
 import lo43.projet.utboheme.hexagone.HexaZoneTroc;
@@ -81,15 +82,15 @@ public class HexagoneView extends Polygon{
 		
 		if(this.hexa.getClass() == HexaZoneTroc.class) {
 			HexaZoneTroc hz = (HexaZoneTroc) hexa;
-			if(hz.getTypeRessource() == TypeTerrain.BARS) {
+			if(hz.getTypeCarte() == TypeCartes.BIERE) {
 				g.setColor(new Color(128, 0, 128));
-			}else if(hz.getTypeRessource() == TypeTerrain.LIEUREPOS) {
+			}else if(hz.getTypeCarte() == TypeCartes.SOMMEIL) {
 				g.setColor(new Color(128, 255, 255));
-			}else if(hz.getTypeRessource() == TypeTerrain.FOURNISSEURCAFE) {
+			}else if(hz.getTypeCarte() == TypeCartes.CAFE) {
 				g.setColor(new Color(128, 64, 0));
-			}else if(hz.getTypeRessource() == TypeTerrain.LIEUXCOURS) {
+			}else if(hz.getTypeCarte() == TypeCartes.SUPPORT) {
 				g.setColor(new Color(255, 128, 64));
-			}else if(hz.getTypeRessource() == TypeTerrain.RESTAURANT) {
+			}else if(hz.getTypeCarte() == TypeCartes.NOURRITURE) {
 				g.setColor(new Color(255, 180, 255));
 			}
 			int tailleNum = (int)(hz.getSize() / 3);
