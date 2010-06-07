@@ -19,7 +19,6 @@ public class Jeu {
 	private Plateau plateau;
 	private List<Joueur> participants;
 	private List<GroupeCartes> reserve;
-	private Joueur joueurActif;
 	
 	public Jeu(){
 		this.setTour(0);
@@ -27,7 +26,6 @@ public class Jeu {
 		this.setPlateau(null);
 		this.setParticipants(null);
 		this.setReserve(null);
-		this.setJoueurActif(null);
 	}
 	
 	public Jeu(Plateau pp) {
@@ -90,14 +88,6 @@ public class Jeu {
 	public void setReserve(List<GroupeCartes> plr) {
 		this.reserve = plr;
 	}
-
-	public Joueur getJoueurActif() {
-		return joueurActif;
-	}
-
-	public void setJoueurActif(Joueur pja) {
-		this.joueurActif = pja;
-	}
 	 
 	public void setParticipant(Joueur pj) {
 		if(participants.size() < 4) {
@@ -108,40 +98,65 @@ public class Jeu {
 	}
 	 
 	public GroupeCartes getGroupeCarte(TypeCartes ptypeC) {
+		GroupeCartes newGroupCart = new GroupeCartes(0, ptypeC);
 		for(GroupeCartes gc : reserve) {
 			if(gc.getTypeCartes() == ptypeC) {
-				return gc;
+				newGroupCart = gc;
 			}
 		}
-		return null;
+		return newGroupCart;
 	}
 	
-	public void setGroupeCarte(TypeCartes ptypeC, int pnb) {
+	public List<GroupeCartes> getCartesRess() {
+		List<GroupeCartes> lgcRess = new ArrayList<GroupeCartes>();
+		for (GroupeCartes g : this.reserve) {
+			if(g.getTypeCartes() != TypeCartes.DEVELOPPEMENT) {
+				lgcRess.add(g);
+			}
+		}
+		return lgcRess;
+	}
+	
+	public List<GroupeCartes> getCartesDev() {
+		List<GroupeCartes> lgcDev = new ArrayList<GroupeCartes>();
+		for(GroupeCartes g : this.reserve) {
+			if(g.getTypeCartes() == TypeCartes.DEVELOPPEMENT) {
+				lgcDev.add(g);
+			}
+		}
+		return lgcDev;
+	}
+	
+	public int nbCartesDev() {
+		int res = 0;
+		for(GroupeCartes g : this.getCartesDev()) {
+			res += g.getNombre();
+		}
+		return res;
+	}
+	
+	public GroupeCartes getGroupeCartesDev() {
+		return new GroupeCartes(this.nbCartesDev(), TypeCartes.DEVELOPPEMENT);
+	}
+	
+	public void AugmGroupeCarte(TypeCartes ptypeC, int pnb) {
 		this.getGroupeCarte(ptypeC).addCartes(pnb);
 	}
 	
-	public GroupeCartes getGroupeCarte(TypeCartes ptypeC, int pnb) {
-		int nb;
-		if(this.getGroupeCarte(ptypeC).getNombre() > 0) {
-			if(this.getGroupeCarte(ptypeC).getNombre() >= pnb) {
-				nb = pnb;
-			}else{
-				nb = this.getGroupeCarte(ptypeC).getNombre();
-			}
-			return new GroupeCartes(nb, ptypeC);
-		}
-		System.out.println("La reserve de cartes " + ptypeC + " est vide" );
-		return null;
+	public void DimGroupeCarte(TypeCartes ptypeC, int pnb) {
+		this.getGroupeCarte(ptypeC).remCartes(pnb);
+		if(getGroupeCarte(ptypeC).getNombre() < 0) 
+			this.getGroupeCarte(ptypeC).setNombre(0);
 	}
 	 
 	public void finirTour() {
 		// si on a pas atteint le dernier joueur on passe au suivant, sinon on revient au premier
-		if (tour < participants.size())
-			joueurActif = participants.get(++tour);
-		else {
-			tour = 0;
-			joueurActif = participants.get(tour);
-		}
+		int index = this.participants.indexOf(getJoueurActif());
+		
+		index++;
+		this.getJoueurActif().setActif(false);
+		index = (index >= 3) ? 0 : index;
+		this.participants.get(index).setActif(true);
 	}
 	 
 	public void phaseFondation() {
@@ -152,6 +167,17 @@ public class Jeu {
 		int des1 = 1 + new Random().nextInt(6);
 		int des2 = 1 + new Random().nextInt(6);
 		this.setValeurDes(des1 + des2);
+	}
+	
+	public Joueur getJoueurActif() {
+		Joueur jactif = new Joueur();
+		for(Joueur j: this.participants) {
+			if (j.isActif()) {
+				jactif = j;
+				break;
+			}
+		}
+		return jactif;
 	}
 
 	public boolean distribuerRess(){

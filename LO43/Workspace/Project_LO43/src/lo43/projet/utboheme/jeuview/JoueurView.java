@@ -7,11 +7,15 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.security.acl.Group;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import lo43.projet.utboheme.carte.GroupeCartes;
 import lo43.projet.utboheme.carte.TypeCartes;
+import lo43.projet.utboheme.carteview.GroupeCartesView;
 import lo43.projet.utboheme.jeu.Joueur;
 
 @SuppressWarnings("serial")
@@ -22,6 +26,16 @@ public class JoueurView extends JPanel {
 	private Color color;
 	private Image img;
 	private String url;
+	private Image imgActif;
+	private List<GroupeCartesView> lCarteV;
+	
+	public JoueurView() {
+		this.joueur = null;
+		this.color = null;
+		this.img = null;
+		this.url = null;
+		lCarteV = null;
+	}
 	
 	
 	public JoueurView(Joueur j, Color col, String url) {
@@ -29,10 +43,10 @@ public class JoueurView extends JPanel {
 		this.joueur = j;
 		this.color = col;
 		this.url = url;
-		if (joueur.getIdent() == 1 || joueur.getIdent() == 3) {
-			this.setPreferredSize(new Dimension(800, 120));
-		}else {
-			this.setPreferredSize(new Dimension(170, 800));
+		this.setPreferredSize(new Dimension(170, 120));
+		
+		for(GroupeCartes g : joueur.getLcartes()) {
+			lCarteV.add(new GroupeCartesView(g));
 		}
 	}
 	
@@ -48,6 +62,13 @@ public class JoueurView extends JPanel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			this.imgActif = ImageIO.read(new File("img/de-icone.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		// Joueur 1
 		if(joueur.getIdent() == 1) {
 			g.setColor(new Color(255, 102, 153));
@@ -65,22 +86,25 @@ public class JoueurView extends JPanel {
 			g.setFont(fontNom);
 			g.drawString(this.joueur.getNom(), 120, 110);
 			g.setFont(fontRess);
-			g.drawRoundRect(230, 40, 65, 70, 10, 10);
-			g.drawRoundRect(310, 40, 455, 70, 10, 10);
-			g.drawString("Points", 240, 90);
-			g.drawString("Bars", 320, 90);
-			g.drawString("Lieux Repos", 380, 90);
-			g.drawString("Cafés", 490, 90);
-			g.drawString("Support Cours", 550, 90);
-			g.drawString("Restaurants", 670, 90);
+			g.drawRoundRect(230, 50, 65, 60, 10, 10);
+			g.drawRoundRect(310, 50, 455, 60, 10, 10);
+			g.drawString("Points", 240, 100);
+			g.drawString("Bars", 320, 100);
+			g.drawString("Lieux Repos", 380, 100);
+			g.drawString("Cafés", 490, 100);
+			g.drawString("Support Cours", 550, 100);
+			g.drawString("Restaurants", 670, 100);
 			g.setColor(Color.black);
 			g.setFont(fontNum);
-			g.drawString(String.valueOf(joueur.getNbPoints()), 255, 65);
-			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.BIERE)), 330, 65);
-			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.SOMMEIL)), 420, 65);
-			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.CAFE)), 500, 65);
-			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.SUPPORT)), 600, 65);
-			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.NOURRITURE)), 700, 65);
+			g.drawString(String.valueOf(joueur.getNbPoints()), 255, 75);
+			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.BIERE)), 330, 75);
+			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.SOMMEIL)), 420, 75);
+			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.CAFE)), 500, 75);
+			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.SUPPORT)), 600, 75);
+			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.NOURRITURE)), 700, 75);
+			if(joueur.isActif()) {
+				g.drawImage(imgActif, 90, 30, this);
+			}
 		
 		// Joueur 2
 		}else if(joueur.getIdent() == 2) {
@@ -99,23 +123,26 @@ public class JoueurView extends JPanel {
 			g.setFont(fontNom);
 			g.drawString(this.joueur.getNom(), 40, 70);
 			g.setFont(fontRess);
-			g.drawRoundRect(10, 80, 130, 50, 10, 10);
-			g.drawRoundRect(10, 140, 130, 300, 10, 10);
-			g.drawString("Points", 20, 120);
-			g.drawString("Bars", 20, 190);
-			g.drawString("Lieux Repos", 20, 250);
-			g.drawString("Cafés", 20, 310);
-			g.drawString("Support Cours", 20, 370);
-			g.drawString("Restaurants", 20, 430);
+			g.drawRoundRect(10, 100, 130, 50, 10, 10);
+			g.drawRoundRect(10, 160, 130, 300, 10, 10);
+			g.drawString("Points", 20, 140);
+			g.drawString("Bars", 20, 210);
+			g.drawString("Lieux Repos", 20, 270);
+			g.drawString("Cafés", 20, 330);
+			g.drawString("Support Cours", 20, 390);
+			g.drawString("Restaurants", 20, 450);
 			g.setColor(Color.black);
 			g.setFont(fontNum);
-			g.drawString(String.valueOf(joueur.getNbPoints()), 60, 100);
-			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.BIERE)), 60, 170);
-			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.SOMMEIL)), 60, 230);
-			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.CAFE)), 60, 290);
-			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.SUPPORT)), 60, 350);
-			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.NOURRITURE)), 60, 410);
-		
+			g.drawString(String.valueOf(joueur.getNbPoints()), 60, 120);
+			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.BIERE)), 60, 190);
+			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.SOMMEIL)), 60, 250);
+			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.CAFE)), 60, 310);
+			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.SUPPORT)), 60, 370);
+			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.NOURRITURE)), 60, 430);
+			if(joueur.isActif()) {
+				g.drawImage(imgActif, 2, 4, this);
+			}
+			
 		// Joueur 3
 		}else if(joueur.getIdent() == 3) {
 			g.setColor(new Color(153, 255, 153));
@@ -149,6 +176,9 @@ public class JoueurView extends JPanel {
 			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.CAFE)), 500, 60);
 			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.SUPPORT)), 600, 60);
 			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.NOURRITURE)), 700, 60);
+			if(joueur.isActif()) {
+				g.drawImage(imgActif, 85, 2, this);
+			}
 		}		
 	}
 

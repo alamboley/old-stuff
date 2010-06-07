@@ -1,22 +1,23 @@
 package lo43.projet.utboheme.hexagone;
 
+import lo43.projet.utboheme.carte.TypeCartes;
+
 public class HexaZoneTroc extends Hexagone {
 	
 	private int typeTroc;
-	 
-	private TypeTerrain typeRessource;
+	private TypeCartes typeC;
 	
 	public HexaZoneTroc() {
 		super();
 		this.typeTroc = 0;
-		this.typeRessource = null;
+		this.typeC = null;
 		System.out.println("Création d'une zone de troc avec constructeur par défaut");
 	}
 	
-	public HexaZoneTroc(int pindX, int pindY, int psize, boolean pbinome, TypeTerrain ptypeT, int ptype, TypeTerrain typeR) {
+	public HexaZoneTroc(int pindX, int pindY, int psize, boolean pbinome, TypeTerrain ptypeT, int ptype, TypeCartes ptypeC) {
 		super(pindX, pindY, psize, pbinome, ptypeT);
 		this.typeTroc = ptype;
-		this.typeRessource = typeR;
+		this.typeC = ptypeC;
 		System.out.println("Création d'une zone de troc '" + this.getTypeTerr() + "' avec constructeur par recopie");
 	}
 
@@ -28,12 +29,12 @@ public class HexaZoneTroc extends Hexagone {
 		this.typeTroc = typeTroc;
 	}
 
-	public TypeTerrain getTypeRessource() {
-		return typeRessource;
+	public TypeCartes getTypeCarte() {
+		return typeC;
 	}
 
-	public void setTypeRessource(TypeTerrain typeRessource) {
-		this.typeRessource = typeRessource;
+	public void setTypeCarte(TypeCartes ptypeC) {
+		this.typeC = ptypeC;
 	}
 	 
 	

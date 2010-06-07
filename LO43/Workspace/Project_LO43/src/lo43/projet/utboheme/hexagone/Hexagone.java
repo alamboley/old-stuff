@@ -192,59 +192,8 @@ public class Hexagone {
 		return sommets;
 	}
 
-	public void setSommets(List<Sommet> psommets) {
-		if(psommets.size() <= 6) {
-			this.sommets = psommets;
-		}else{
-			System.out.println("La liste de sommets passŽe en paramŽtre dŽpasse 6 sommets !");
-		}
-	}
-	
-	public void setSommet(Sommet s) {
-		if(this.sommets.size() < 6) {
-			this.sommets.add(s);
-		}else{
-			System.out.println("La liste des sommets de l'hexagone ciblŽ est complŽte !");
-		}
-	}
-
 	public List<Arete> getAretes() {
 		return aretes;
 	}
 
-	public void setAretes(List<Arete> paretes) {
-		if(paretes.size() <= 6) {
-			this.aretes = paretes;
-		}else {
-			System.out.println("La liste des aretes passŽe en paramŽtre dŽpasse 6 aretes !");
-		}
-	}
-	
-	public void setArete(Arete a) {
-		if(this.aretes.size() < 6) {
-			this.aretes.add(a);
-		}else {
-			System.out.println("La liste des aretes de l'hexagone ciblŽ est complŽte !");
-		}
-	}
-
-	public List<Hexagone> getVoisins() {
-		return voisins;
-	}
-
-	public void setVoisins(List<Hexagone> pvoisins) {
-		if(pvoisins.size() <= 6) {
-			this.voisins = pvoisins;
-		}else{
-			System.out.println("La liste des hexagones voisins passŽe en paramŽtre dŽpasse 6 hexagones !");
-		}
-	}
-	
-	public void setVoisin(Hexagone h) {
-		if(this.voisins.size() < 6) {
-			this.voisins.add(h);
-		}else{
-			System.out.println("La liste des hexagones voisins de l'hexagone ciblŽ est complŽte !");
-		}
-	}
 }

@@ -19,6 +19,7 @@ public class Joueur {
 	private byte nbPoints;
 	private boolean ancien;
 	private boolean cursus;
+	private boolean actif;
 
 	private List<GroupeCartes> lcartes;
 	private List<GroupeCartesDev> lcartesJouees;
@@ -34,6 +35,7 @@ public class Joueur {
 		this.nbPoints = 0;
 		this.ancien = false;
 		this.cursus = false;
+		this.actif = false;
 		this.lcartes = null;
 		this.lcartesJouees = null;
 		this.lcc = null;
@@ -114,6 +116,15 @@ public class Joueur {
 		this.cursus = cursus;
 	}
 
+	
+	public boolean isActif() {
+		return actif;
+	}
+
+	public void setActif(boolean actif) {
+		this.actif = actif;
+	}
+
 	public List<GroupeCartes> getCartes() {
 		return lcartes;
 	}
@@ -132,6 +143,10 @@ public class Joueur {
 	public void setCartes(List<GroupeCartes> pcartes) {
 		this.lcartes = pcartes;
 	}
+	
+	public void setGroupeCartes(GroupeCartes pgc) {
+		this.lcartes.add(pgc);
+	}
 
 	public List<GroupeCartesDev> getCartesJouees() {
 		return lcartesJouees;
@@ -139,6 +154,24 @@ public class Joueur {
 
 	public void setCartesJouees(List<GroupeCartesDev> cartesJouees) {
 		this.lcartesJouees = cartesJouees;
+	}
+	
+	
+
+	public List<GroupeCartes> getLcartes() {
+		return lcartes;
+	}
+
+	public List<Pion> getLcc() {
+		return lcc;
+	}
+
+	public List<UV> getLuv() {
+		return luv;
+	}
+
+	public List<UV> getLuvstar() {
+		return luvstar;
 	}
 
 	public int getNbUV() {
