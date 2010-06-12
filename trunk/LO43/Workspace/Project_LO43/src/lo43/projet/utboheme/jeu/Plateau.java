@@ -13,22 +13,39 @@ import lo43.projet.utboheme.hexagone.Jeton;
 import lo43.projet.utboheme.hexagone.Sommet;
 import lo43.projet.utboheme.hexagone.TypeTerrain;
 
+/**
+ * Classe représentant le plateau du jeu
+ * 	- possède une taille
+ *  - possède une liste d'hexagones
+ * @author alexandreaugen
+ *
+ */
 public class Plateau {
 	
 	private int sizeHexa;
 	private List<Hexagone> hexagones;
 	
+	/**
+	 * Constructeur par défaut
+	 */
 	public Plateau() {
-		this.setSizeHexa(0);
-		this.setHexagones(null);
+		this.sizeHexa = 0;
+		this.hexagones = null;
 	}
 		
+	/**
+	 * Constructeur paramétré
+	 * @param psize
+	 */
 	public Plateau(int psize) {
-		this.setSizeHexa(psize);
+		this.sizeHexa = psize;
 		
 		this.InitHexa();
 	}
 	
+	/**
+	 * Méthode permettant d'initialiser la liste des hexagones 
+	 */
 	public void InitHexa() {
 		
 		this.hexagones = new ArrayList<Hexagone>();
@@ -41,13 +58,16 @@ public class Plateau {
 		TypeCartes typeCar;
 		int numJeton = 2;
 		
+		//Hexagone de zone de troc
 		for(int i=0; i<9; i++) {
 			typeTroc = (i < 5) ? 2 : 3;
 			lHexaZoneT.add(new HexaZoneTroc(0, 0, this.getSizeHexa(), false, TypeTerrain.ZONETROC, typeTroc, TypeCartes.random()));
 			
 		}
+		//On mélange la liste
 		lHexaZoneT = melanger(lHexaZoneT);
 		
+		//Création des Jetons
 		lJetons.add(new Jeton(numJeton));
 		for(int i=0; i<9; i++) {
 			numJeton++;
@@ -57,16 +77,19 @@ public class Plateau {
 			}
 		}
 		lJetons.add(new Jeton(++numJeton));
+		//On mélange la liste
 		lJetons = melangerJeton(lJetons);
 		
+		//Hexagone de ressource
 		for(int i=0; i<18; i++) {
 			typeRess = (i < 4) ? TypeTerrain.BARS : (i >= 4 && i < 7) ? TypeTerrain.LIEUREPOS : (i >= 7 && i < 11) ? TypeTerrain.FOURNISSEURCAFE : (i >= 11 && i < 15) ? TypeTerrain.LIEUXCOURS : TypeTerrain.RESTAURANT;
 			typeCar = (i < 4) ? TypeCartes.BIERE : (i >= 4 && i < 7) ? TypeCartes.SOMMEIL : (i >= 7 && i < 11) ? TypeCartes.CAFE : (i >= 11 && i < 15) ? TypeCartes.SUPPORT : TypeCartes.NOURRITURE;
 			lHexaRess.add(new HexaRessource(0, 0, this.getSizeHexa(), false, typeRess, typeCar, null));
 		}
+		//On mélange la liste
 		lHexaRess = melangerRess(lHexaRess);
 		
-		// 1
+		//Selon le dessin de positionnement : ligne 1
 		hexagones.add(lHexaRess.get(0).setPosition(3, 2).setJeton(lJetons.get(0)));
 		lHexaRess.remove(0); lJetons.remove(0);
 		hexagones.add(lHexaRess.get(0).setPosition(3, 3).setJeton(lJetons.get(0)));
@@ -77,7 +100,7 @@ public class Plateau {
 		hexagones.add(lHexaRess.get(0).setPosition(5, 6).setJeton(lJetons.get(0)));
 		lHexaRess.remove(0); lJetons.remove(0);
 		
-		// 2 : droite
+		//Selon le dessin de positionnement : ligne 2 droite
 		hexagones.add(lHexaRess.get(0).setPosition(4, 2).setJeton(lJetons.get(0)));
 		lHexaRess.remove(0); lJetons.remove(0);
 		hexagones.add(lHexaRess.get(0).setPosition(4, 3).setJeton(lJetons.get(0)));
@@ -87,7 +110,7 @@ public class Plateau {
 		hexagones.add(lHexaRess.get(0).setPosition(5, 5).setJeton(lJetons.get(0)));
 		lHexaRess.remove(0); lJetons.remove(0);
 		
-		// 2 : gauche
+		//Selon le dessin de positionnement : ligne 2 : gauche
 		hexagones.add(lHexaRess.get(0).setPosition(2, 3).setJeton(lJetons.get(0)));
 		lHexaRess.remove(0); lJetons.remove(0);
 		hexagones.add(lHexaRess.get(0).setPosition(3, 4).setJeton(lJetons.get(0)));
@@ -97,7 +120,7 @@ public class Plateau {
 		hexagones.add(lHexaRess.get(0).setPosition(4, 6).setJeton(lJetons.get(0)));
 		lHexaRess.remove(0); lJetons.remove(0);
 		
-		// 3 : droite 
+		//Selon le dessin de positionnement : ligne 3 : droite 
 		hexagones.add(lHexaRess.get(0).setPosition(5, 2).setJeton(lJetons.get(0)));
 		lHexaRess.remove(0); lJetons.remove(0);
 		hexagones.add(lHexaRess.get(0).setPosition(5, 3).setJeton(lJetons.get(0)));
@@ -105,7 +128,7 @@ public class Plateau {
 		hexagones.add(lHexaRess.get(0).setPosition(6, 4).setJeton(lJetons.get(0)));
 		lHexaRess.remove(0); lJetons.remove(0);
 		
-		// 3 : gauche 
+		//Selon le dessin de positionnement : ligne 3 : gauche 
 		hexagones.add(lHexaRess.get(0).setPosition(2, 4).setJeton(lJetons.get(0)));
 		lHexaRess.remove(0); lJetons.remove(0);
 		hexagones.add(lHexaRess.get(0).setPosition(2, 5).setJeton(lJetons.get(0)));
@@ -113,7 +136,7 @@ public class Plateau {
 		hexagones.add(lHexaRess.get(0).setPosition(3, 6).setJeton(lJetons.get(0)));
 		lHexaRess.remove(0); lJetons.remove(0);
 		
-		// Zones de troc
+		//Selon le dessin de positionnement : Zones de troc
 		hexagones.add(lHexaZoneT.get(0).setPosition(2, 1));
 		lHexaZoneT.remove(0);
 		hexagones.add(lHexaZoneT.get(0).setPosition(4, 1));
@@ -133,7 +156,7 @@ public class Plateau {
 		hexagones.add(lHexaZoneT.get(0).setPosition(1, 3));
 		lHexaZoneT.remove(0);
 		
-		// Remparts
+		//Selon le dessin de positionnement : Remparts
 		hexagones.add(new Hexagone(2, 2, this.getSizeHexa(), false, TypeTerrain.REMPART));
 		hexagones.add(new Hexagone(3, 1, this.getSizeHexa(), false, TypeTerrain.REMPART));
 		hexagones.add(new Hexagone(5, 1, this.getSizeHexa(), false, TypeTerrain.REMPART));
@@ -146,54 +169,83 @@ public class Plateau {
 		
 	}
 	
+	/**
+	 * Renvoi la taille d'un hexagone
+	 * @return
+	 * 	- un entier
+	 */
 	public int getSizeHexa() {
 		return sizeHexa;
 	}
 
-	public void setSizeHexa(int psize) {
-		this.sizeHexa = psize;
-	}
-
+	/**
+	 * Renvoi la liste des hexagones du plateau
+	 * @return
+	 *	- une liste d'hexagone
+	 */
 	public List<Hexagone> getHexagones() {
 		return this.hexagones;
 	}
-
-	public void setHexagones(List<Hexagone> lh) {
-		for(Hexagone h : lh) {
-			this.setHexagone(h);
-		}
-	}
 	
-	public void setHexagone(Hexagone ph) {
-		this.hexagones.add(ph);
-	}
-	
+	/**
+	 * Renvoi la largeur du plateau
+	 * @return
+	 * 	- un entier
+	 */
 	public int getWidth() {
 		return 15 * this.getSizeHexa();
 	}
 	
+	/**
+	 * Renvoi la longeur du plateau
+	 * @return
+	 * 	- un entier
+	 */
 	public int getHeight() {
 		return 13 * this.getSizeHexa();
 	}
 	
+	/**
+	 * Méthode pour mélanger une liste d'hexagones
+	 * @param listeD
+	 * @return
+	 * 	- une liste d'hexagones
+	 */
 	public List<Hexagone> melanger(List<Hexagone> listeD){
 		List<Hexagone> ListeR = new ArrayList<Hexagone>(listeD);
 		Collections.shuffle(ListeR);
 		return ListeR;
 	}
 	
+	/**
+	 * Méthode pour mélanger une liste de jetons
+	 * @param listeD
+	 * @return
+	 * 	- une liste de jetons
+	 */
 	public List<Jeton> melangerJeton(List<Jeton> listeD){
 		List<Jeton> ListeR = new ArrayList<Jeton>(listeD);
 		Collections.shuffle(ListeR);
 		return ListeR;
 	}
 	
+	/**
+	 * Méthode pour mélanger une liste d'hexagones de ressource
+	 * @param listeD
+	 * @return
+	 * 	- une liste d'hexagones de ressource
+	 */
 	public List<HexaRessource> melangerRess(List<HexaRessource> listeD){
 		List<HexaRessource> ListeR = new ArrayList<HexaRessource>(listeD);
 		Collections.shuffle(ListeR);
 		return ListeR;
 	}
 	 
+	/**
+	 * Méthode qui renvoi l'hexagone qui possède le binome glandeur
+	 * @return
+	 * 	- un hexagone
+	 */
 	public Hexagone getHexaBinomeG() {
 		Hexagone hexRes = new Hexagone();
 		for (Hexagone h : this.getHexagones()) {
@@ -205,6 +257,11 @@ public class Plateau {
 		return hexRes;
 	}
 	
+	/**
+	 * Méthode qui renvoi la liste des hexagones classiques
+	 * @return
+	 * 	- une liste d'hexagone
+	 */
 	public List<Hexagone> getHexaClass() {
 		List<Hexagone> lHexa = new ArrayList<Hexagone>();
 		for(Hexagone h : this.getHexagones()) {
@@ -215,6 +272,11 @@ public class Plateau {
 		return lHexa;
 	}
 	
+	/**
+	 * Méthode qui renvoi la liste des hexagones de ressource
+	 * @return
+	 * 	- une liste d'hexagone de ressource
+	 */
 	public List<HexaRessource> getHexaRess() {
 		List<HexaRessource> lHexaR = new ArrayList<HexaRessource>();
 		for(Hexagone h : this.getHexagones()) {
@@ -225,6 +287,11 @@ public class Plateau {
 		return lHexaR;
 	}
 	
+	/**
+	 * Méthode qui renvoi la liste des hexagones de zone de troc
+	 * @return
+	 * 	- une liste d'hexagone de zone de troc
+	 */
 	public List<HexaZoneTroc> getHexZoneT() {
 		List<HexaZoneTroc> lHexaZ = new ArrayList<HexaZoneTroc>();
 		for(Hexagone h : this.getHexagones()) {
@@ -235,6 +302,12 @@ public class Plateau {
 		return lHexaZ;
 	}
 	 
+	/**
+	 * Méthode qui renvoi une liste d'hexagone de ressource selon le nombre du jeton associé et le nombre passé en paramétre
+	 * @param pnum
+	 * @return
+	 * 	- une liste d'hexagone de ressource
+	 */
 	public List<HexaRessource> getHexaByNum(int pnum) {
 		List<HexaRessource> lHexaR = new ArrayList<HexaRessource>();
 		for(HexaRessource h : this.getHexaRess()) {
@@ -245,6 +318,12 @@ public class Plateau {
 		return lHexaR;
 	}
 	 
+	/**
+	 * Méthode qui renvoi une liste d'hexagones de zone de troc selon le UV du joueur passé en paramétre présent sur les hexagones
+	 * @param pjoueur
+	 * @return
+	 * 	- une liste d'hexagone de zone de troc
+	 */
 	public List<HexaZoneTroc> getZoneTroc(Joueur pjoueur) {
 		List<HexaZoneTroc> lHexaZ = new ArrayList<HexaZoneTroc>();
 		for(HexaZoneTroc h : this.getHexZoneT()) {
@@ -255,6 +334,11 @@ public class Plateau {
 		return lHexaZ;
 	}
 	
+	/**
+	 * Méthode qui renvoi une liste d'hexagones de ressource qui possédent une UV selon le numéro passé en paramétre
+	 * @param pnum
+	 * @return
+	 */
 	public List<HexaRessource> getHexaRessWithUv(int pnum) {
 		List<HexaRessource> lHexaWithUv = new ArrayList<HexaRessource>();
 		for(HexaRessource h : this.getHexaByNum(pnum)) {

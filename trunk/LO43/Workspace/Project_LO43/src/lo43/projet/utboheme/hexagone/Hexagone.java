@@ -4,6 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import lo43.projet.utboheme.jeu.Joueur;
 
+/**
+ * Classe représentant un hexagone
+ *  - possède une coordonnée x
+ *  - possède une coordonnée y
+ *  - possède une taille
+ *  - possède un boolean pour savoir s'il a le binome glandeur
+ *  - possède un type de terrain
+ *  - possède la liste de ces sommets
+ *  - possède la liste de ces arêtes
+ *  - possède la liste de ces voisins adjacent
+ * @author alexandreaugen
+ *
+ */
 public class Hexagone {
 	
 	private double xHex;
@@ -17,6 +30,9 @@ public class Hexagone {
 	private List<Arete> aretes;
 	private List<Hexagone> voisins;
 	
+	/**
+	 * Constructeur par défaut
+	 */
 	public Hexagone() {
 		this.xHex = 0;
 		this.yHex = 0;
@@ -27,7 +43,15 @@ public class Hexagone {
 		this.aretes = null;
 		this.voisins = null;
 	}
-	
+
+	/**
+	 * Constructeur paramétré
+	 * @param pindX
+	 * @param pindY
+	 * @param psize
+	 * @param pbinome
+	 * @param ptypeT
+	 */
 	public Hexagone(int pindX, int pindY, int psize, boolean pbinome, TypeTerrain ptypeT) {
 		this.xHex = pindX;
 		this.yHex = pindY;
@@ -38,6 +62,9 @@ public class Hexagone {
 		System.out.println("Création d'un hexagone '" + this.typeTerr + "' a la position x: " + this.getXHex() + " et y: " + this.getYHex());
 	}
 	
+	/**
+	 * Méthode permettant d'initialiser l'hexagone, ces sommets et ces arêtes
+	 */
 	public void InitHexa(){
 		this.sommets = new ArrayList<Sommet>();
 		this.aretes = new ArrayList<Arete>();
@@ -89,7 +116,11 @@ public class Hexagone {
 		this.aretes.add(arete6);
 	}
 	
-
+	/**
+	 * Méthode permettant de renvoyer les sommets de l'hexagone qui possède une UV 
+	 * @return
+	 * 	- une liste de sommets
+	 */
 	public List<Sommet> getSommetsUV() {
 		List<Sommet> luv = new ArrayList<Sommet>();
 		for(Sommet s : sommets){
@@ -100,6 +131,11 @@ public class Hexagone {
 		return luv;
 	}
 	 
+	/**
+	 * Méthode permettant de renvoyer les arêtes de l'hexagone qui possède un contrôle continu
+	 * @return
+	 * 	- une liste d'arêtes
+	 */
 	public List<Arete> getAretesCC() {
 		List<Arete> lcc = new ArrayList<Arete>();
 		for (Arete a : aretes){
@@ -110,6 +146,11 @@ public class Hexagone {
 		return lcc;
 	}
 	
+	/**
+	 * Méthode permettant de renvoyer les propriétaires des UVs présentent sur les sommets de l'hexagone
+	 * @return
+	 * 	_ une liste de joueur
+	 */
 	public List<Joueur> getSommetUVProprio() {
 		List<Joueur> lj = new ArrayList<Joueur>();
 		List<Sommet> luv = new ArrayList<Sommet>();
@@ -120,6 +161,12 @@ public class Hexagone {
 		return lj;
 	}
 	
+	/**
+	 * Méthode permettant de récupérer les sommets adjacents au sommet passé en paramétre
+	 * @param s
+	 * @return
+	 *  - une liste de sommets
+	 */
 	public List<Sommet> getSommetAdjacent(Sommet s) {
 		List<Sommet> ls = new ArrayList<Sommet>();
 		for(Arete a: aretes) {
@@ -141,6 +188,13 @@ public class Hexagone {
 		return ls;
 	}
 	
+	/**
+	 * Méthode permettant de positionner un hexagone selon ces attributs x et y
+	 * @param pxHex
+	 * @param pyHex
+	 * @return
+	 * 	- un hexagone
+	 */
 	public Hexagone setPosition(int pxHex, int pyHex) {
 		this.setXHex(pxHex);
 		this.setYHex(pyHex);
@@ -148,50 +202,96 @@ public class Hexagone {
 		return this;
 	}
 
+	/**
+	 * Renvoi la position x de l'hexagone
+	 * @return
+	 *  - un double
+	 */
 	public double getXHex() {
 		return xHex;
 	}
 
+	/**
+	 * Attribut le paramétre à la position x
+	 * @param pxHex
+	 */
 	public void setXHex(double pxHex) {
 		this.xHex = pxHex;
 	}
-
+	
+	/**
+	 * Renvoi la position y de l'hexagone
+	 * @return
+	 * 	- un double
+	 */
 	public double getYHex() {
 		return yHex;
 	}
 
+	/**
+	 * Attribut le paramétre à la position y
+	 * @param pyHex
+	 */
 	public void setYHex(double pyHex) {
 		this.yHex = pyHex;
 	}
 	
+	/**
+	 * Renvoi la taille de l'hexagone 
+	 * @return
+	 * 	- un double
+	 */
 	public double getSize() {
 		return this.size;
 	}
-
+	
+	/**
+	 * Attribut le paramétre à la taille de l'hexagone
+	 * @param psize
+	 */
 	public void setSize(double psize) {
 		this.size = psize;
 	}
 
+	/**
+	 * Test si l'hexagone possède le binome glandeur
+	 * @return
+	 * 	- un boolean
+	 */
 	public boolean isBinomeG() {
 		return binomeG;
 	}
 
+	/**
+	 * Attribut le binome glandeur à l'hexagone
+	 * @param pbinomeg
+	 */
 	public void setBinomeG(boolean pbinomeg) {
 		this.binomeG = pbinomeg;
 	}
 
+	/**
+	 * Renvoi le type de terrain de l'hexagone
+	 * @return
+	 */
 	public TypeTerrain getTypeTerr() {
 		return typeTerr;
 	}
-
-	public void setTypeTerr(TypeTerrain ptypeT) {
-		this.typeTerr = ptypeT;
-	}
 	 
+	/**
+	 * Renvoi la liste des sommets de l'hexagone
+	 * @return
+	 * 	- une liste de sommets
+	 */
 	public List<Sommet> getSommets() {
 		return sommets;
 	}
 
+	/**
+	 * Renvoi la liste des arêtes de l'hexagone
+	 * @return
+	 * 	- une liste d'arêtes
+	 */
 	public List<Arete> getAretes() {
 		return aretes;
 	}

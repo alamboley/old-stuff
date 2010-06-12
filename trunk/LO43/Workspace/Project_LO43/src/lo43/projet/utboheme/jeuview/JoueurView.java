@@ -14,8 +14,18 @@ import javax.swing.JPanel;
 import lo43.projet.utboheme.carte.TypeCartes;
 import lo43.projet.utboheme.jeu.Joueur;
 
+/**
+ * Classe représentant graphiquement un joueur
+ * Hérite de JPanel
+ * 	- possède un attribut de type joueur pour savoir le joueur à représenter
+ *  - possède une couleur
+ *  - possède une image
+ *  - possède une url pour l'image
+ *  - possède une image pour savoir s'il est le joueur actif
+ * @author alexandreaugen
+ *
+ */
 @SuppressWarnings("serial")
-
 public class JoueurView extends JPanel {
 
 	private Joueur joueur;
@@ -24,6 +34,9 @@ public class JoueurView extends JPanel {
 	private String url;
 	private Image imgActif;
 	
+	/**
+	 * Constructeur par défaut
+	 */
 	public JoueurView() {
 		this.joueur = null;
 		this.color = null;
@@ -31,7 +44,12 @@ public class JoueurView extends JPanel {
 		this.url = null;
 	}
 	
-	
+	/**
+	 * Constructeur paramétré
+	 * @param j
+	 * @param col
+	 * @param url
+	 */
 	public JoueurView(Joueur j, Color col, String url) {
 		super();
 		this.joueur = j;
@@ -41,13 +59,18 @@ public class JoueurView extends JPanel {
 		
 	}
 	
+	/**
+	 * Méthode pour peindre le composant
+	 */
 	public void paintComponent(Graphics g) {
 		
+		//Définition de font
 		Font fontPion = new Font("Comics", Font.ITALIC, 9);
 		Font fontRess = new Font("Comics", Font.BOLD, 14);
 		Font fontNum = new Font("Comics", Font.PLAIN, 18);
 		Font fontNom = new Font("Comics", Font.PLAIN, 12);
 		
+		// Lecture des images
 		try {
 			this.img = ImageIO.read(new File(this.url));
 		} catch (IOException e) {
@@ -173,13 +196,13 @@ public class JoueurView extends JPanel {
 		}		
 	}
 
+	/**
+	 * Renvoi le joueur associé à la représentation graphique 
+	 * @return
+	 * 	- un joueur
+	 */
 	public Joueur getJoueur() {
 		return joueur;
 	}
-
-	public void setJoueur(Joueur joueur) {
-		this.joueur = joueur;
-	}
-	
 	
 }

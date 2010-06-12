@@ -2,8 +2,11 @@ package lo43.projet.utboheme.carte;
 
 import java.util.Random;
 
-import lo43.projet.utboheme.hexagone.TypeTerrain;
-
+/**
+ * Classe d'énumération des types de carte lié à la classe GroupeCartes
+ * @author alexandreaugen
+ *
+ */
 public enum TypeCartes {
 	
 	BIERE,
@@ -15,8 +18,9 @@ public enum TypeCartes {
 	
 
 	/**
-	 * type de carte aléatoire parmis les cartes de ressource
+	 * Méthode qui permet de tirer un type de cartes aléatoirement dans la liste des énumérations
 	 * @return
+	 * 	- un type de carte
 	 */
 	public static TypeCartes random() {
 	    int pick = new Random().nextInt(TypeCartes.values().length-1);
