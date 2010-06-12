@@ -218,11 +218,33 @@ public class JeuFrame extends JFrame {
 		reserveV.add(new GroupeCartesView(j.getGroupeCartesDev()));
 	}
 	
+	private JoueurView getViewJoueurActif() {
+		JoueurView jView = new JoueurView();
+		for(JoueurView jouer : joueurV) {
+			if(jouer.getJoueur() == j.getJoueurActif()) {
+				jView = jouer;
+				break;
+			}
+		}
+		return jView;
+	}
+	
+	private void updateJoueurs() {
+		for(JoueurView jv : joueurV) {
+			jv.repaint();
+		}	
+	}
+	
+	private void updateReserve() {
+		this.containerJeu.repaint();
+	}
+	
 	private class MapListener implements MouseListener {
 
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
 			plat.clicked(e.getPoint(), getViewJoueurActif());
+			updateJoueurs();
 		}
 	
 
@@ -255,9 +277,12 @@ public class JeuFrame extends JFrame {
 			valeurDes.setText("" + j.getValeurDes());
 			for(HexaRessource h : j.getPlateau().getHexaRessWithUv(j.getValeurDes())) {
 				for(Joueur jo : h.getSommetUVProprio()) {
-					// Ajouter une methode d'ajout et de soustraction dans joeur comme dans Jeu
+					j.DimGroupeCarte(h.getTypeCartes(),1);
+					jo.setGroupeCarte(h.getTypeCartes(), 1);
 				}
 			}
+			updateJoueurs();
+			updateReserve();
 		}
 	}
 	
@@ -293,22 +318,9 @@ public class JeuFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			j.finirTour();
-			for(JoueurView jv : joueurV) {
-				jv.repaint();
-			}			
+			updateJoueurs();		
 		}
 		
-	}
-	
-	private JoueurView getViewJoueurActif() {
-		JoueurView jView = new JoueurView();
-		for(JoueurView jouer : joueurV) {
-			if(jouer.getJoueur() == j.getJoueurActif()) {
-				jView = jouer;
-				break;
-			}
-		}
-		return jView;
 	}
 
 }

@@ -66,6 +66,7 @@ public class PlateauView extends Canvas{
 		}
 		if(hasSommet){
 			jv.getJoueur().getLuv().remove(0);
+			jv.getJoueur().addNbPoints(1);
 		}else if(hasArete){
 			jv.getJoueur().getLcc().remove(0);
 		}

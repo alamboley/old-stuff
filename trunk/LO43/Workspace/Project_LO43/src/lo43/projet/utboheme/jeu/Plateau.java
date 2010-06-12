@@ -51,7 +51,7 @@ public class Plateau {
 		lJetons.add(new Jeton(numJeton));
 		for(int i=0; i<9; i++) {
 			numJeton++;
-			if(i != 7) {
+			if(i != 4) {
 				lJetons.add(new Jeton(numJeton));
 				lJetons.add(new Jeton(numJeton));
 			}
