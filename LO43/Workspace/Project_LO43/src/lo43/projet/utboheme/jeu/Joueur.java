@@ -16,7 +16,7 @@ public class Joueur {
 	private int ident;
 	private String nom;
 	private Color couleur;
-	private byte nbPoints;
+	private int nbPoints;
 	private boolean ancien;
 	private boolean cursus;
 	private boolean actif;
@@ -51,6 +51,12 @@ public class Joueur {
 		this.couleur = pc;
 		
 		this.lcartes = new ArrayList<GroupeCartes>();
+		lcartes.add(new GroupeCartes(0, TypeCartes.BIERE));
+		lcartes.add(new GroupeCartes(0, TypeCartes.SOMMEIL));
+		lcartes.add(new GroupeCartes(0, TypeCartes.CAFE));
+		lcartes.add(new GroupeCartes(0, TypeCartes.SUPPORT));
+		lcartes.add(new GroupeCartes(0, TypeCartes.NOURRITURE));
+
 		this.lcartesJouees = new ArrayList<GroupeCartesDev>();
 		this.luvstar = new ArrayList<UV>();
 		this.luv = new ArrayList<UV>();
@@ -92,12 +98,16 @@ public class Joueur {
 		this.couleur = c;
 	}
 
-	public byte getNbPoints() {
+	public int getNbPoints() {
 		return nbPoints;
 	}
 
-	public void setNbPoints(byte nbPoints) {
-		this.nbPoints = nbPoints;
+	public void setNbPoints(int nb) {
+		this.nbPoints = nb;
+	}
+	
+	public void addNbPoints(int nb) {
+		this.nbPoints += nb;
 	}
 
 	public boolean isAncien() {
@@ -139,6 +149,10 @@ public class Joueur {
 		}
 		return resGroupeCartes;
 	}
+	
+	public void setGroupeCarte(TypeCartes ptype, int nbCartes) {
+		this.getGroupeCartes(ptype).addCartes(nbCartes);
+	}
 
 	public void setCartes(List<GroupeCartes> pcartes) {
 		this.lcartes = pcartes;
@@ -154,12 +168,6 @@ public class Joueur {
 
 	public void setCartesJouees(List<GroupeCartesDev> cartesJouees) {
 		this.lcartesJouees = cartesJouees;
-	}
-	
-	
-
-	public List<GroupeCartes> getLcartes() {
-		return lcartes;
 	}
 
 	public List<Pion> getLcc() {
@@ -187,7 +195,7 @@ public class Joueur {
 	}
 	
 	public int getNbCartes(TypeCartes ptype) {
-		return (this.lcartes.isEmpty()) ? 0 : this.getGroupeCartes(ptype).getNombre();
+		return this.getGroupeCartes(ptype).getNombre();
 	}
 
 	public List<ArbreBinaire> getChemins() {

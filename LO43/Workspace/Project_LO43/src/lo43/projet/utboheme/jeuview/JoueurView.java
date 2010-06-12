@@ -7,15 +7,11 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.security.acl.Group;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import lo43.projet.utboheme.carte.GroupeCartes;
 import lo43.projet.utboheme.carte.TypeCartes;
-import lo43.projet.utboheme.carteview.GroupeCartesView;
 import lo43.projet.utboheme.jeu.Joueur;
 
 @SuppressWarnings("serial")
@@ -27,14 +23,12 @@ public class JoueurView extends JPanel {
 	private Image img;
 	private String url;
 	private Image imgActif;
-	private List<GroupeCartesView> lCarteV;
 	
 	public JoueurView() {
 		this.joueur = null;
 		this.color = null;
 		this.img = null;
 		this.url = null;
-		lCarteV = null;
 	}
 	
 	
@@ -45,9 +39,6 @@ public class JoueurView extends JPanel {
 		this.url = url;
 		this.setPreferredSize(new Dimension(170, 120));
 		
-		for(GroupeCartes g : joueur.getLcartes()) {
-			lCarteV.add(new GroupeCartesView(g));
-		}
 	}
 	
 	public void paintComponent(Graphics g) {
