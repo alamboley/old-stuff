@@ -11,6 +11,24 @@ import lo43.projet.utboheme.carte.TypeCartes;
 import lo43.projet.utboheme.pion.Pion;
 import lo43.projet.utboheme.pion.UV;
 
+/**
+ * Classe représentant un joueur
+ * 	- possède un identifiant
+ *  - possède un nom
+ *  - possède une couleur
+ *  - possède un nombre de point de victoire
+ *  - possède un attribut pour repérer s'il possède ancien plus vieu
+ *  - possède un attribut pour repérer s'il possède cursus plus long
+ *  - possède un attribut pour savoir s'il est actif
+ *  - possède une liste de groupe de cartes (ressource et développement)
+ *  - possède une liste de groupe de cartes de developpement déjà jouées
+ *  - possède une liste de contrôle continu 
+ *  - possède une liste d'uv
+ *  - possède une liste d'uv**
+ *  - possède une liste de chemin pour cursus plus long
+ * @author alexandreaugen
+ *
+ */
 public class Joueur {
 	
 	private int ident;
@@ -28,6 +46,9 @@ public class Joueur {
 	private List<UV> luvstar;
 	private List<ArbreBinaire> chemins;
 	
+	/**
+	 * Constructeur par défaut
+	 */
 	public Joueur() {
 		this.ident = 0;
 		this.nom = null;
@@ -44,12 +65,19 @@ public class Joueur {
 		this.chemins = null;
 	}
 	
+	/**
+	 * Constructeur paramétré
+	 * @param pident
+	 * @param pnom
+	 * @param pc
+	 */
 	public Joueur(Integer pident, String pnom, Color pc) {
 		this();
 		this.ident = pident;
 		this.nom = pnom;
 		this.couleur = pc;
 		
+		//Attribution par défaut des différents groupes de cartes vide
 		this.lcartes = new ArrayList<GroupeCartes>();
 		lcartes.add(new GroupeCartes(0, TypeCartes.BIERE));
 		lcartes.add(new GroupeCartes(0, TypeCartes.SOMMEIL));
@@ -62,6 +90,7 @@ public class Joueur {
 		this.luv = new ArrayList<UV>();
 		this.lcc = new ArrayList<Pion>();
 		
+		//Attribution par défaut des différents pions du joueurs
 		for(int i=0; i<4; i++) {
 			this.luvstar.add(new UV(this, 2, true));
 		}
@@ -73,72 +102,120 @@ public class Joueur {
 		}
 	}
 
-	
+	/**
+	 * Renvoi l'identifiant du joueur
+	 * @return
+	 * 	- un entier
+	 */
 	public int getIdent() {
 		return ident;
 	}
 
-	public void setIdent(int ident) {
-		this.ident = ident;
-	}
-
+	/**
+	 * Renvoi le nom du joueur
+	 * @return
+	 * 	- un string
+	 */
 	public String getNom() {
 		return nom;
 	}
 
+	/**
+	 * Attribut le paramétre au nom au joueur 
+	 * @param nom
+	 */
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
 
+	/**
+	 * Renvoi la couleur associé au joueur
+	 * @return
+	 * 	- une couleur
+	 */
 	public Color getCouleur() {
 		return couleur;
 	}
 
+	/**
+	 * Attribut le paramétre à la couleur associé au joueur
+	 * @param c
+	 */
 	public void setCouleur(Color c) {
 		this.couleur = c;
 	}
 
+	/**
+	 * Renvoi le nombre de points de victoire du joueur
+	 * @return
+	 * 	- un entier
+	 */
 	public int getNbPoints() {
 		return nbPoints;
 	}
-
-	public void setNbPoints(int nb) {
-		this.nbPoints = nb;
-	}
 	
+	/**
+	 * Méthode permettant d'ajouter un nombre "nb" au point de victoire du joueur
+	 * @param nb
+	 */
 	public void addNbPoints(int nb) {
 		this.nbPoints += nb;
 	}
 
+	/**
+	 * Test si le joueur possède la carte ancien le plus vieu
+	 * @return
+	 */
 	public boolean isAncien() {
 		return ancien;
 	}
 
+	/**
+	 * Attribut ancien le plus vieu au joueur ou enleve
+	 * @param ancien
+	 */
 	public void setAncien(boolean ancien) {
 		this.ancien = ancien;
 	}
 
+	/**
+	 * Test si le joueur possède la carte cursus le plus long
+	 * @return
+	 */
 	public boolean isCursus() {
 		return cursus;
 	}
 
+	/**
+	 * Attribut cursus le plus long au joueur ou enleve
+	 * @param cursus
+	 */
 	public void setCursus(boolean cursus) {
 		this.cursus = cursus;
 	}
 
-	
+	/**
+	 * Test si le joueur est actif
+	 * @return
+	 */
 	public boolean isActif() {
 		return actif;
 	}
 
+	/**
+	 * Attribut le joueur comme joueur actif ou non actif
+	 * @param actif
+	 */
 	public void setActif(boolean actif) {
 		this.actif = actif;
 	}
-
-	public List<GroupeCartes> getCartes() {
-		return lcartes;
-	}
 	
+	/**
+	 * Méthode permettant de renvoyer un groupe de cartes du stock du joueur selon le type passé en paramétre
+	 * @param ptype
+	 * @return
+	 * 	- un groupe de cartes
+	 */
 	public GroupeCartes getGroupeCartes(TypeCartes ptype) {
 		GroupeCartes resGroupeCartes = new GroupeCartes();
 		for(GroupeCartes gc : this.lcartes) {
@@ -150,50 +227,75 @@ public class Joueur {
 		return resGroupeCartes;
 	}
 	
+	/**
+	 * Méthode permettant d'attribuer un nombre de cartes "nbCartes" au type du groupe de cartes passé en paramétre 
+	 * @param ptype
+	 * @param nbCartes
+	 */
 	public void setGroupeCarte(TypeCartes ptype, int nbCartes) {
 		this.getGroupeCartes(ptype).addCartes(nbCartes);
 	}
 
-	public void setCartes(List<GroupeCartes> pcartes) {
-		this.lcartes = pcartes;
-	}
-	
-	public void setGroupeCartes(GroupeCartes pgc) {
-		this.lcartes.add(pgc);
-	}
-
-	public List<GroupeCartesDev> getCartesJouees() {
-		return lcartesJouees;
-	}
-
-	public void setCartesJouees(List<GroupeCartesDev> cartesJouees) {
-		this.lcartesJouees = cartesJouees;
-	}
-
+	/**
+	 * Renvoi la liste des contrôles continu du joueur
+	 * @return
+	 * 	- une liste de pions
+	 */
 	public List<Pion> getLcc() {
 		return lcc;
 	}
-
+	
+	/**
+	 * Renvoi la liste des uv du joueur
+	 * @return
+	 * 	- une liste d'uv
+	 */
 	public List<UV> getLuv() {
 		return luv;
 	}
 
+	/**
+	 * Renvoi la liste des uv** du joueur
+	 * @return
+	 * 	- une liste d'uv**
+	 */
 	public List<UV> getLuvstar() {
 		return luvstar;
 	}
 
+	/**
+	 * Renvoi la nombre d'uv du joueur
+	 * @return
+	 * 	- un entier
+	 */
 	public int getNbUV() {
 		return luv.size();
 	}
 
+	/**
+	 * Renvoi le nombre d'uv** du joueur
+	 * @return
+	 * 	- un entier
+	 */
 	public int getNbUVStar() {
 		return luvstar.size();
 	}
 
+	/**
+	 * Renvoi le nombre de contrôle continu du joueur
+	 * @return
+	 * 	- un entier
+	 */
 	public int getNbCC() {
 		return lcc.size();
 	}
 	
+	/**
+	 * Renvoi le nombre des cartes d'un ensemble de groupe de cartes du type passé en paramétre
+	 * @param ptype
+	 * @return
+	 * 	- un entier
+	 */
 	public int getNbCartes(TypeCartes ptype) {
 		return this.getGroupeCartes(ptype).getNombre();
 	}

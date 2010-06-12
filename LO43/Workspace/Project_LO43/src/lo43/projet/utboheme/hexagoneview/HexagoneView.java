@@ -15,6 +15,15 @@ import lo43.projet.utboheme.hexagone.Hexagone;
 import lo43.projet.utboheme.hexagone.Sommet;
 import lo43.projet.utboheme.hexagone.TypeTerrain;
 
+/**
+ * Classe représentant graphiquement les classes Hexagone, HexaRessource et HexaZoneTroc
+ * Hérite de Polygon
+ * 	- possède un attribut de type Hexagone pour savoir l'hexagone à représenter
+ * 	- possède une liste de représentation graphique des sommets qui composent l'hexagone associé
+ * 	- possède une liste de représentation graphique des arêtes qui composent l'hexagone associé
+ * @author alexandreaugen
+ *
+ */
 @SuppressWarnings("serial")
 public class HexagoneView extends Polygon{
 	
@@ -22,12 +31,18 @@ public class HexagoneView extends Polygon{
 	private List<SommetView> lsommetsV;
 	private List<AreteView> laretesV;
 	
+	/**
+	 * Constructeur paramétré
+	 * @param ph
+	 */
 	public HexagoneView(Hexagone ph) {
 		super();
 		this.hexa = ph;
 		lsommetsV = new ArrayList<SommetView>();
 		laretesV = new ArrayList<AreteView>();
 		
+		//Mise en place du polygone grâce au sommet de l'attribut hexagone 
+		//Création des sommets et arêtes graphique et ajout à la liste associé
 		for(Sommet s : hexa.getSommets()) {
 			this.addPoint(s.getXSom(), s.getYSom());
 			lsommetsV.add(new SommetView(s, (int)(hexa.getSize() / 4)));
@@ -38,7 +53,12 @@ public class HexagoneView extends Polygon{
 		}
 	}
 
+	/**
+	 * Méthode permettant de peindre le composant  
+	 * @param g
+	 */
 	public void paint(Graphics g) {
+		//Test du type de l'attribut hexagone pour attribuer une image différente
 		if(this.hexa.getTypeTerr() == TypeTerrain.BARS) {
 			g.setColor(new Color(128, 0, 128));
 		}else if(this.hexa.getTypeTerr() == TypeTerrain.LIEUREPOS) {
@@ -56,30 +76,35 @@ public class HexagoneView extends Polygon{
 		}else if(this.hexa.getTypeTerr() == TypeTerrain.REMPART) {
 			g.setColor(new Color(128, 128, 128));
 		}
+		//On dessine le polygone
 		g.fillPolygon(this);
 		g.setColor(Color.white);
 		g.drawPolygon(this);
 		
+		//On dessine les arêtes graphiques
 		for(AreteView av : this.laretesV) {
 			av.paint(g);
 		}
 		
+		//On dessine les sommets graphiques
 		for(SommetView sv : this.lsommetsV) {
 			sv.paint(g);
 		}
 		
+		//Si c'est un hexagone de ressource, on lui attribut un jeton initialement vide
 		if(this.hexa.getClass() == HexaRessource.class) {
 			HexaRessource hr = (HexaRessource) hexa;
 			new JetonView(hr.getJeton(), (int)hr.getXHex(), (int)hr.getYHex(), (int)hr.getSize() / 2).paint(g);
 		}
 		
+		//Si l'hexagone possède le binome glandeur, on dessine un carré sur ce dernier
 		if(hexa.isBinomeG()) {
 			g.setColor(Color.black);
 			g.fillOval((int)(hexa.getXHex() + hexa.getSize() / 8), (int)(hexa.getYHex() - hexa.getSize()/5), (int)(hexa.getSize() / 3), (int)(hexa.getSize() / 3));
 			g.fillRoundRect((int)(hexa.getXHex() + hexa.getSize() / 8), (int)(hexa.getYHex() + hexa.getSize() / 8), (int)(hexa.getSize() / 3), (int)(hexa.getSize() / 3),  (int)(hexa.getSize() / 8), (int)(hexa.getSize() / 8));
 		}
 		
-		
+		//Si l'hexagone est une zone de troc, on dessine un rond différent selon le type de carte associé
 		if(this.hexa.getClass() == HexaZoneTroc.class) {
 			HexaZoneTroc hz = (HexaZoneTroc) hexa;
 			if(hz.getTypeCarte() == TypeCartes.BIERE) {
@@ -93,6 +118,7 @@ public class HexagoneView extends Polygon{
 			}else if(hz.getTypeCarte() == TypeCartes.NOURRITURE) {
 				g.setColor(new Color(255, 180, 255));
 			}
+			//On dessine le rond avec le type de troc
 			int tailleNum = (int)(hz.getSize() / 3);
 			g.fillOval((int)(hz.getXHex() - hz.getSize() / 2), (int)(hz.getYHex() - hz.getSize() / 2), (int)hz.getSize(), (int)hz.getSize());
 			g.setColor(Color.black);
@@ -101,29 +127,23 @@ public class HexagoneView extends Polygon{
 		}
 		
 	}
-
-	public Hexagone getHexa() {
-		return hexa;
-	}
-
-	public void setHexa(Hexagone ph) {
-		this.hexa = ph;
-	}
-
+	
+	/**
+	 * Renvoi la liste des sommets graphiques
+	 * @return
+	 * 	- une liste de SommetView
+	 */
 	public List<SommetView> getLSommetV() {
 		return lsommetsV;
 	}
 
-	public void setLSommetV(List<SommetView> plsmtV) {
-		this.lsommetsV = plsmtV;
-	}
-
+	/**
+	 * Renvoi la liste des arêtes graphiques
+	 * @return
+	 * 	- une liste de AreteView
+	 */
 	public List<AreteView> getLAreteV() {
 		return laretesV;
-	}
-
-	public void setLAreteV(List<AreteView> plaV) {
-		this.laretesV = plaV;
 	}
 	
 }

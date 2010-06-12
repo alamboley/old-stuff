@@ -14,12 +14,23 @@ import lo43.projet.utboheme.hexagoneview.HexagoneView;
 import lo43.projet.utboheme.hexagoneview.SommetView;
 import lo43.projet.utboheme.jeu.Plateau;
 
+/**
+ * Classe représentant graphiquement un plateau
+ * 	- possède un attribut de type plateau pour savoir le plateau à représenter
+ *  - possède une liste de représentation graphique des hexagones du plateau
+ * @author alexandreaugen
+ *
+ */
 @SuppressWarnings("serial")
 public class PlateauView extends Canvas{
 
 	private Plateau plateau;
 	private List<HexagoneView> lHexaV;
 	
+	/**
+	 * Constructeur paramétré
+	 * @param pp
+	 */
 	public PlateauView(Plateau pp) {
 		super();
 		this.plateau = pp;
@@ -32,6 +43,9 @@ public class PlateauView extends Canvas{
 		}
 	}
 	
+	/**
+	 * Méthode pour peindre le composant
+	 */
 	public void paint(Graphics g) {
 		g.setColor(new Color(255, 255, 204));
 		g.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 100, 100);
@@ -40,15 +54,25 @@ public class PlateauView extends Canvas{
 		}
 	}
 	
+	/**
+	 * Méthode pour repeindre le composant
+	 */
 	public void update() {
 		paint(this.getGraphics());
 	}
 	
+	/**
+	 * Méthode qui permet d'affecter un pion à un sommet ou une arête
+	 * @param mousePosition
+	 * @param jv
+	 */
 	public void clicked(Point mousePosition, JoueurView jv) {
 		boolean hasSommet = false;
 		boolean hasArete = false;
 		
+		//Parcours les hexagonesView
 		for(HexagoneView hv : lHexaV) {
+			//Parcours les sommetView
 			for(SommetView s : hv.getLSommetV()) {
 				//on recupere le sommet correspondant pour l'utiliser dans le jeu
 				if (s.contains(mousePosition)) {
@@ -56,6 +80,7 @@ public class PlateauView extends Canvas{
 					hasSommet = true;
 				}
 			}
+			//Parcours les areteView
 			for(AreteView a : hv.getLAreteV()) {
 				// on recupere l'arete correspondante pour l'utiliser dans le jeu
 				if(a.contains(mousePosition)) {
@@ -73,12 +98,13 @@ public class PlateauView extends Canvas{
 		this.update();
 	}
 	
+	/**
+	 * Renvoi le plateau associé à la représentation graphique
+	 * @return
+	 * 	- un plateau
+	 */
 	public Plateau getPlateau() {
 		return plateau;
-	}
-
-	public void setP(Plateau p) {
-		this.plateau = p;
 	}
 
 }

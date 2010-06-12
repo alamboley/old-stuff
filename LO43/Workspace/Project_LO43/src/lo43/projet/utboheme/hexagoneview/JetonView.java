@@ -7,12 +7,27 @@ import java.awt.Rectangle;
 
 import lo43.projet.utboheme.hexagone.Jeton;
 
+/**
+ * Classe représentant graphiquement un jeton
+ * Hérite de Rectangle
+ * 	- possède un attribut de type jeton pour connaitre le jeton à représenter
+ * 	- possède une couleur
+ * @author alexandreaugen
+ *
+ */
 @SuppressWarnings("serial")
 public class JetonView extends Rectangle{
 	
 	private Jeton jeton;
 	private Color color;
 	
+	/**
+	 * Constructeur paramétré
+	 * @param pj
+	 * @param px
+	 * @param py
+	 * @param ptaille
+	 */
 	public JetonView(Jeton pj, int px, int py, int ptaille) {
 		super();
 		this.jeton = pj;
@@ -21,11 +36,16 @@ public class JetonView extends Rectangle{
 		this.color = Color.darkGray;
 	}
 	
+	/**
+	 * Méthode permettant de peindre le composant
+	 * @param g
+	 */
 	public void paint(Graphics g){
 		
 		g.setColor(this.color);
 		g.fillOval((int)this.getX(), (int)this.getY(), (int)this.getWidth(), (int)this.getHeight());
 		
+		//selon la valeur le texte est rouge ou blanc
 		if(this.jeton.getNumero() == 6 || this.jeton.getNumero() == 8) {
 			g.setColor(Color.red);
 		}else{
