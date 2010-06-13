@@ -63,7 +63,7 @@ public class PlateauView extends Canvas{
 	}
 	
 	/**
-	 * Methode qui permet d'affecter un sommet lors de la phase de fondation
+	 * Methode qui permet d'affecter un sommet ou une arete lors de la phase de fondation
 	 * @param mousePosition
 	 * @param jv
 	 */
@@ -97,6 +97,8 @@ public class PlateauView extends Canvas{
 		if(hasSommet){
 			jv.getJoueur().addNbPoints(1);
 			jv.getJoueur().remUV();
+		} else if (hasCc) {
+			jv.getJoueur().remCC();
 		}
 		this.update();
 		return hasSommet || hasCc;
