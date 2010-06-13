@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -25,7 +24,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import lo43.projet.utboheme.carte.GroupeCartes;
-import lo43.projet.utboheme.carte.GroupeCartesDev;
 import lo43.projet.utboheme.carte.TypeCartes;
 import lo43.projet.utboheme.carteview.GroupeCartesView;
 import lo43.projet.utboheme.hexagone.HexaRessource;
@@ -195,7 +193,7 @@ public class JeuFrame extends JFrame {
 		containerJeu.add(btCursus, gbc);
 	
 		//Bouton pour ancien le plus vieu
-		btOld = new JButton("Ancien le plus vieu");
+		btOld = new JButton("Ancien le plus vieux");
 		btOld.addActionListener(new ActionButtonOld());
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.ipadx = 20;
@@ -235,7 +233,7 @@ public class JeuFrame extends JFrame {
 		containerJeu.add(btGagner, gbc);
 	
 		//Bouton acheter carte de dev
-		btBuyCarte = new JButton("Acheter cartes");
+		btBuyCarte = new JButton("Acheter carte");
 		btBuyCarte.addActionListener(new ActionBuyCartes());
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.ipadx = 20;
@@ -245,7 +243,7 @@ public class JeuFrame extends JFrame {
 		containerJeu.add(btBuyCarte, gbc);
 		
 		//Bouton joueur carte de dev
-		btPlayCarte = new JButton("Jouer cartes");
+		btPlayCarte = new JButton("Jouer carte");
 		btPlayCarte.addActionListener(new ActionPlayCarte());
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.ipadx = 20;
@@ -446,7 +444,7 @@ public class JeuFrame extends JFrame {
 						}
 					}
 					if(h.getSommetUVProprio().isEmpty()) {
-						infosPartie.setText("Aucun participants ne possede d'uvs sur les terrains numerotes : " + String.valueOf(h.getJeton().getNumero()) + " !");
+						infosPartie.setText("Aucun participant ne possede d'uvs sur les terrains numerotes : " + String.valueOf(h.getJeton().getNumero()) + " !");
 					}
 				}
 			}
@@ -496,7 +494,7 @@ public class JeuFrame extends JFrame {
 		 */
 		public void actionPerformed(ActionEvent e) {
 			if (j.attribuerAncien()) {
-				infosPartie.setText(j.getJoueurActif().getNom() + " prend la cartes Ancien le plus vieu !");
+				infosPartie.setText(j.getJoueurActif().getNom() + " prend la cartes Ancien le plus vieux !");
 				updateJoueurs();			
 			}else{
 				infosPartie.setText(j.getJoueurActif().getNom() + " ne possede pas assez de cartes Ancien !");
@@ -594,7 +592,7 @@ public class JeuFrame extends JFrame {
 				map.setVisible(false);
 				enabledButton(containerJeu, false);
 				joueurV.get(0).setEnabled(false);
-				JTextArea fin = new JTextArea("La Partie est terminee ! \n Victoire de " + j.getJoueurActif().getNom() + " ! \n Nombre de points de victoire : " + j.getJoueurActif().getNbPoints());
+				JTextArea fin = new JTextArea("La partie est terminee ! \n Victoire de " + j.getJoueurActif().getNom() + " ! \n Nombre de points de victoire : " + j.getJoueurActif().getNbPoints());
 				fin.setFont(new Font("Comics", Font.BOLD, 15));
 				fin.setForeground(Color.red);
 				fin.setEditable(false);
