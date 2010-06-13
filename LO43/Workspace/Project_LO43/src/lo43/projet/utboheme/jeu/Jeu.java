@@ -420,7 +420,7 @@ public class Jeu {
 
 			while (choix == -1) {
 				// Choix au hasard
-				int tmp = new Random().nextInt(cartes.size() - 1);
+				int tmp = new Random().nextInt(cartes.size());
 				GroupeCartes groupe = cartes.get(tmp);
 
 				// on verif que c'est dispo
