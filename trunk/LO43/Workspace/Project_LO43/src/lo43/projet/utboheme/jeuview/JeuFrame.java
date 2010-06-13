@@ -586,7 +586,6 @@ public class JeuFrame extends JFrame {
 	private class ActionGagner implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			if(j.gagnerPartie()){
 				infosPartie.setText(j.getJoueurActif().getNom() + " a accumule(e) 10 points de victoire et gagne la partie !");
 				map.setVisible(false);
@@ -614,7 +613,6 @@ public class JeuFrame extends JFrame {
 	private class ActionBuyCartes implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			if(j.acheterCartesDev()) {
 				infosPartie.setText(""+ j.getJoueurActif().getNom() + " achete une carte de developpement !");
 			}else{
@@ -633,7 +631,6 @@ public class JeuFrame extends JFrame {
 	private class ActionPlayCarte implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 	}
