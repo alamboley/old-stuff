@@ -6,11 +6,13 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -24,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import lo43.projet.utboheme.carte.GroupeCartes;
+import lo43.projet.utboheme.carte.GroupeCartesDev;
 import lo43.projet.utboheme.carte.TypeCartes;
 import lo43.projet.utboheme.carteview.GroupeCartesView;
 import lo43.projet.utboheme.hexagone.HexaRessource;
@@ -611,9 +614,9 @@ public class JeuFrame extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 			if(j.acheterCartesDev()) {
-				infosPartie.setText(""+ j.getJoueurActif().getNom() + " achete une carte de developpement !");
+				infosPartie.setText(j.getJoueurActif().getNom() + " achete une carte de developpement !");
 			}else{
-				infosPartie.setText(""+ j.getJoueurActif().getNom() + " ne peut pas acheter de carte de developpement ! \n Pas assez de ressources disponible !");
+				infosPartie.setText(j.getJoueurActif().getNom() + " ne peut pas acheter de carte de developpement ! \n Pas assez de ressources disponible !");
 			}
 			updateJoueurs();
 			updateReserve();
@@ -628,7 +631,27 @@ public class JeuFrame extends JFrame {
 	private class ActionPlayCarte implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
+			List<GroupeCartes> cartes = j.getJoueurActif().getGroupeCartesDev();
+			List<String> liste = new ArrayList<String>();
 			
+			for (GroupeCartes groupe : cartes) {
+				if (groupe.getNombre() > 0) {
+					GroupeCartesDev g = (GroupeCartesDev) groupe;
+					String toString = g.getSousTypeCartes().toString();
+				
+					if (!liste.contains(toString))
+						liste.add(toString);
+				}
+			}
+			
+			if (!liste.isEmpty()) {
+				String[] strings = new String[liste.size()];
+				liste.toArray(strings);
+				String choix = (String) JOptionPane.showInputDialog(null, "Quelle carte jouer ?",
+					"Carte a jouer", JOptionPane.QUESTION_MESSAGE, null, strings, strings[0]);
+				
+				
+			}
 		}
 	}
 	
