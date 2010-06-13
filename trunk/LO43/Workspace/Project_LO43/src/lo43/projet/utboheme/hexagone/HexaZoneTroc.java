@@ -3,9 +3,9 @@ package lo43.projet.utboheme.hexagone;
 import lo43.projet.utboheme.carte.TypeCartes;
 
 /**
- * Classe représentant les hexagone de zone de troc
- *  - possède un type de troc
- *  - possède un type de carte associé
+ * Classe representant les hexagone de zone de troc
+ *  - possede un type de troc
+ *  - possede un type de carte associe
  * @author alexandreaugen
  *
  */
@@ -15,17 +15,17 @@ public class HexaZoneTroc extends Hexagone {
 	private TypeCartes typeC;
 	
 	/**
-	 * Constructeur par défaut
+	 * Constructeur par defaut
 	 */
 	public HexaZoneTroc() {
 		super();
 		this.typeTroc = 0;
 		this.typeC = null;
-		System.out.println("Création d'une zone de troc avec constructeur par défaut");
+		System.out.println("Creation d'une zone de troc avec constructeur par defaut");
 	}
 	
 	/**
-	 * Constructeur paramétré
+	 * Constructeur parametre
 	 * @param pindX
 	 * @param pindY
 	 * @param psize
@@ -38,7 +38,7 @@ public class HexaZoneTroc extends Hexagone {
 		super(pindX, pindY, psize, pbinome, ptypeT);
 		this.typeTroc = ptype;
 		this.typeC = ptypeC;
-		System.out.println("Création d'une zone de troc '" + this.getTypeTerr() + "' avec constructeur par recopie");
+		System.out.println("Creation d'une zone de troc '" + this.getTypeTerr() + "' avec constructeur par recopie");
 	}
 
 	/**

@@ -3,9 +3,9 @@ package lo43.projet.utboheme.pion;
 import lo43.projet.utboheme.jeu.Joueur;
 
 /**
- * Classe représentant une UV
- *  - possède un nombre de point de victoire
- *  - possède un attribut pour savoir si double étoilé ou non 
+ * Classe representant une UV
+ *  - possede un nombre de point de victoire
+ *  - possede un attribut pour savoir si double etoile ou non 
  * @author alexandreaugen
  *
  */
@@ -15,7 +15,7 @@ public class UV extends Pion {
 	private boolean doubleEtoile;
 	
 	/**
-	 * Constructeur par défaut
+	 * Constructeur par defaut
 	 */
 	public UV() {
 		super();
@@ -24,7 +24,7 @@ public class UV extends Pion {
 	}
 	
 	/**
-	 * Constructeur paramétré
+	 * Constructeur parametre
 	 * @param pj
 	 * @param pptvict
 	 * @param dstar
@@ -36,7 +36,7 @@ public class UV extends Pion {
 	}
 
 	/**
-	 * Renvoi le nombre de point de victoire associé
+	 * Renvoi le nombre de point de victoire associe
 	 * @return
 	 * 	- un entier
 	 */
@@ -45,7 +45,7 @@ public class UV extends Pion {
 	}
 	
 	/**
-	 * Test si l'uv est double étoilé ou non 
+	 * Test si l'uv est double etoile ou non 
 	 * @return
 	 */
 	public boolean isDoubleEtoile() {
@@ -53,7 +53,7 @@ public class UV extends Pion {
 	}
 	 
 	/**
-	 * Méthode qui change le statut de etoilé ou non 
+	 * Methode qui change le statut de etoile ou non 
 	 */
 	public void changeEtoile() {
 		this.doubleEtoile = !this.doubleEtoile;

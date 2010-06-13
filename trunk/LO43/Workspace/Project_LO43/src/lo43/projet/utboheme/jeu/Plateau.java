@@ -13,9 +13,9 @@ import lo43.projet.utboheme.hexagone.Sommet;
 import lo43.projet.utboheme.hexagone.TypeTerrain;
 
 /**
- * Classe représentant le plateau du jeu
- * 	- possède une taille
- *  - possède une liste d'hexagones
+ * Classe representant le plateau du jeu
+ * 	- possede une taille
+ *  - possede une liste d'hexagones
  * @author alexandreaugen
  *
  */
@@ -25,7 +25,7 @@ public class Plateau {
 	private List<Hexagone> hexagones;
 	
 	/**
-	 * Constructeur par défaut
+	 * Constructeur par defaut
 	 */
 	public Plateau() {
 		this.sizeHexa = 0;
@@ -33,7 +33,7 @@ public class Plateau {
 	}
 		
 	/**
-	 * Constructeur paramétré
+	 * Constructeur parametre
 	 * @param psize
 	 */
 	public Plateau(int psize) {
@@ -43,7 +43,7 @@ public class Plateau {
 	}
 	
 	/**
-	 * Méthode permettant d'initialiser la liste des hexagones 
+	 * Methode permettant d'initialiser la liste des hexagones 
 	 */
 	public void InitHexa() {
 		
@@ -63,10 +63,10 @@ public class Plateau {
 			lHexaZoneT.add(new HexaZoneTroc(0, 0, this.getSizeHexa(), false, TypeTerrain.ZONETROC, typeTroc, TypeCartes.random()));
 			
 		}
-		//On mélange la liste
+		//On melange la liste
 		lHexaZoneT = melanger(lHexaZoneT);
 		
-		//Création des Jetons
+		//Creation des Jetons
 		lJetons.add(new Jeton(numJeton));
 		for(int i=0; i<9; i++) {
 			numJeton++;
@@ -76,7 +76,7 @@ public class Plateau {
 			}
 		}
 		lJetons.add(new Jeton(++numJeton));
-		//On mélange la liste
+		//On melange la liste
 		lJetons = melangerJeton(lJetons);
 		
 		//Hexagone de ressource
@@ -85,7 +85,7 @@ public class Plateau {
 			typeCar = (i < 4) ? TypeCartes.BIERE : (i >= 4 && i < 7) ? TypeCartes.SOMMEIL : (i >= 7 && i < 11) ? TypeCartes.CAFE : (i >= 11 && i < 15) ? TypeCartes.SUPPORT : TypeCartes.NOURRITURE;
 			lHexaRess.add(new HexaRessource(0, 0, this.getSizeHexa(), false, typeRess, typeCar, null));
 		}
-		//On mélange la liste
+		//On melange la liste
 		lHexaRess = melangerRess(lHexaRess);
 		
 		//Selon le dessin de positionnement : ligne 1
@@ -205,7 +205,7 @@ public class Plateau {
 	}
 	
 	/**
-	 * Méthode pour mélanger une liste d'hexagones
+	 * Methode pour melanger une liste d'hexagones
 	 * @param listeD
 	 * @return
 	 * 	- une liste d'hexagones
@@ -217,7 +217,7 @@ public class Plateau {
 	}
 	
 	/**
-	 * Méthode pour mélanger une liste de jetons
+	 * Methode pour melanger une liste de jetons
 	 * @param listeD
 	 * @return
 	 * 	- une liste de jetons
@@ -229,7 +229,7 @@ public class Plateau {
 	}
 	
 	/**
-	 * Méthode pour mélanger une liste d'hexagones de ressource
+	 * Methode pour melanger une liste d'hexagones de ressource
 	 * @param listeD
 	 * @return
 	 * 	- une liste d'hexagones de ressource
@@ -241,7 +241,7 @@ public class Plateau {
 	}
 	 
 	/**
-	 * Méthode qui renvoi l'hexagone qui possède le binome glandeur
+	 * Methode qui renvoi l'hexagone qui possede le binome glandeur
 	 * @return
 	 * 	- un hexagone
 	 */
@@ -257,7 +257,7 @@ public class Plateau {
 	}
 	
 	/**
-	 * Méthode qui renvoi la liste des hexagones classiques
+	 * Methode qui renvoi la liste des hexagones classiques
 	 * @return
 	 * 	- une liste d'hexagone
 	 */
@@ -272,7 +272,7 @@ public class Plateau {
 	}
 	
 	/**
-	 * Méthode qui renvoi la liste des hexagones de ressource
+	 * Methode qui renvoi la liste des hexagones de ressource
 	 * @return
 	 * 	- une liste d'hexagone de ressource
 	 */
@@ -287,7 +287,7 @@ public class Plateau {
 	}
 	
 	/**
-	 * Méthode qui renvoi la liste des hexagones de zone de troc
+	 * Methode qui renvoi la liste des hexagones de zone de troc
 	 * @return
 	 * 	- une liste d'hexagone de zone de troc
 	 */
@@ -302,7 +302,7 @@ public class Plateau {
 	}
 	 
 	/**
-	 * Méthode qui renvoi une liste d'hexagone de ressource selon le nombre du jeton associé et le nombre passé en paramétre
+	 * Methode qui renvoi une liste d'hexagone de ressource selon le nombre du jeton associe et le nombre passe en parametre
 	 * @param pnum
 	 * @return
 	 * 	- une liste d'hexagone de ressource
@@ -318,7 +318,7 @@ public class Plateau {
 	}
 	 
 	/**
-	 * Méthode qui renvoi une liste d'hexagones de zone de troc selon le UV du joueur passé en paramétre présent sur les hexagones
+	 * Methode qui renvoi une liste d'hexagones de zone de troc selon le UV du joueur passe en parametre present sur les hexagones
 	 * @param pjoueur
 	 * @return
 	 * 	- une liste d'hexagone de zone de troc
@@ -334,7 +334,7 @@ public class Plateau {
 	}
 	
 	/**
-	 * Méthode qui renvoi une liste d'hexagones de ressource qui possédent une UV selon le numéro passé en paramétre
+	 * Methode qui renvoi une liste d'hexagones de ressource qui possedent une UV selon le numero passe en parametre
 	 * @param pnum
 	 * @return
 	 */

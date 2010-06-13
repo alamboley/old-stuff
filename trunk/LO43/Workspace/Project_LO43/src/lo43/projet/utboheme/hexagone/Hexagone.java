@@ -5,15 +5,15 @@ import java.util.List;
 import lo43.projet.utboheme.jeu.Joueur;
 
 /**
- * Classe représentant un hexagone
- *  - possède une coordonnée x
- *  - possède une coordonnée y
- *  - possède une taille
- *  - possède un boolean pour savoir s'il a le binome glandeur
- *  - possède un type de terrain
- *  - possède la liste de ces sommets
- *  - possède la liste de ces arêtes
- *  - possède la liste de ces voisins adjacent
+ * Classe representant un hexagone
+ *  - possede une coordonnee x
+ *  - possede une coordonnee y
+ *  - possede une taille
+ *  - possede un boolean pour savoir s'il a le binome glandeur
+ *  - possede un type de terrain
+ *  - possede la liste de ces sommets
+ *  - possede la liste de ces aretes
+ *  - possede la liste de ces voisins adjacent
  * @author alexandreaugen
  *
  */
@@ -30,7 +30,7 @@ public class Hexagone {
 	private List<Arete> aretes;
 	
 	/**
-	 * Constructeur par défaut
+	 * Constructeur par defaut
 	 */
 	public Hexagone() {
 		this.xHex = 0;
@@ -43,7 +43,7 @@ public class Hexagone {
 	}
 
 	/**
-	 * Constructeur paramétré
+	 * Constructeur parametre
 	 * @param pindX
 	 * @param pindY
 	 * @param psize
@@ -57,11 +57,11 @@ public class Hexagone {
 		this.binomeG = pbinome;
 		this.typeTerr = ptypeT;
 		this.InitHexa();
-		System.out.println("Création d'un hexagone '" + this.typeTerr + "' a la position x: " + this.getXHex() + " et y: " + this.getYHex());
+		System.out.println("Creation d'un hexagone '" + this.typeTerr + "' a la position x: " + this.getXHex() + " et y: " + this.getYHex());
 	}
 	
 	/**
-	 * Méthode permettant d'initialiser l'hexagone, ces sommets et ces arêtes
+	 * Methode permettant d'initialiser l'hexagone, ces sommets et ces aretes
 	 */
 	public void InitHexa(){
 		this.sommets = new ArrayList<Sommet>();
@@ -115,7 +115,7 @@ public class Hexagone {
 	}
 	
 	/**
-	 * Méthode permettant de renvoyer les sommets de l'hexagone qui possède une UV 
+	 * Methode permettant de renvoyer les sommets de l'hexagone qui possede une UV 
 	 * @return
 	 * 	- une liste de sommets
 	 */
@@ -130,9 +130,9 @@ public class Hexagone {
 	}
 	 
 	/**
-	 * Méthode permettant de renvoyer les arêtes de l'hexagone qui possède un contrôle continu
+	 * Methode permettant de renvoyer les aretes de l'hexagone qui possede un controle continu
 	 * @return
-	 * 	- une liste d'arêtes
+	 * 	- une liste d'aretes
 	 */
 	public List<Arete> getAretesCC() {
 		List<Arete> lcc = new ArrayList<Arete>();
@@ -145,7 +145,7 @@ public class Hexagone {
 	}
 	
 	/**
-	 * Méthode permettant de renvoyer les propriétaires des UVs présentent sur les sommets de l'hexagone
+	 * Methode permettant de renvoyer les proprietaires des UVs presentent sur les sommets de l'hexagone
 	 * @return
 	 * 	_ une liste de joueur
 	 */
@@ -160,7 +160,7 @@ public class Hexagone {
 	}
 	
 	/**
-	 * Méthode permettant de positionner un hexagone selon ces attributs x et y
+	 * Methode permettant de positionner un hexagone selon ces attributs x et y
 	 * @param pxHex
 	 * @param pyHex
 	 * @return
@@ -183,7 +183,7 @@ public class Hexagone {
 	}
 
 	/**
-	 * Attribut le paramétre à la position x
+	 * Attribut le parametre a la position x
 	 * @param pxHex
 	 */
 	public void setXHex(double pxHex) {
@@ -200,7 +200,7 @@ public class Hexagone {
 	}
 
 	/**
-	 * Attribut le paramétre à la position y
+	 * Attribut le parametre a la position y
 	 * @param pyHex
 	 */
 	public void setYHex(double pyHex) {
@@ -217,7 +217,7 @@ public class Hexagone {
 	}
 	
 	/**
-	 * Attribut le paramétre à la taille de l'hexagone
+	 * Attribut le parametre a la taille de l'hexagone
 	 * @param psize
 	 */
 	public void setSize(double psize) {
@@ -225,7 +225,7 @@ public class Hexagone {
 	}
 
 	/**
-	 * Test si l'hexagone possède le binome glandeur
+	 * Test si l'hexagone possede le binome glandeur
 	 * @return
 	 * 	- un boolean
 	 */
@@ -234,7 +234,7 @@ public class Hexagone {
 	}
 
 	/**
-	 * Attribut le binome glandeur à l'hexagone
+	 * Attribut le binome glandeur a l'hexagone
 	 * @param pbinomeg
 	 */
 	public void setBinomeG(boolean pbinomeg) {
@@ -259,9 +259,9 @@ public class Hexagone {
 	}
 
 	/**
-	 * Renvoi la liste des arêtes de l'hexagone
+	 * Renvoi la liste des aretes de l'hexagone
 	 * @return
-	 * 	- une liste d'arêtes
+	 * 	- une liste d'aretes
 	 */
 	public List<Arete> getAretes() {
 		return aretes;

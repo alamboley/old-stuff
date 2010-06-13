@@ -4,10 +4,10 @@ import lo43.projet.utboheme.jeu.Joueur;
 import lo43.projet.utboheme.pion.Pion;
 
 /**
- * Classe représentant une arête
- * 	- possède un attribut de type Pion pour stocker un contrôle continu
- * 	- possède un attribut de type Sommet pour définir le sommet de debut
- * 	- possède un attribut de type Sommet pour définit les sommet de fin  
+ * Classe representant une arete
+ * 	- possede un attribut de type Pion pour stocker un controle continu
+ * 	- possede un attribut de type Sommet pour definir le sommet de debut
+ * 	- possede un attribut de type Sommet pour definit les sommet de fin  
  * @author alexandreaugen
  *
  */
@@ -18,7 +18,7 @@ public class Arete {
 	private Sommet sFin;
 	
 	/**
-	 * Constructeur par défaut
+	 * Constructeur par defaut
 	 */
 	public Arete() {
 		this.sDebut = null;
@@ -27,7 +27,7 @@ public class Arete {
 	}
 	 
 	/**
-	 * Constructeur paramétré
+	 * Constructeur parametre
 	 * @param psdebut
 	 * @param psfin
 	 */
@@ -37,7 +37,7 @@ public class Arete {
 	}
 	
 	/**
-	 * Renvoi le pion stocké dans l'arête
+	 * Renvoi le pion stocke dans l'arete
 	 * @return
 	 */
 	public Pion getControleC() {
@@ -45,7 +45,7 @@ public class Arete {
 	}
 	
 	/**
-	 * Attribut le pion passé en paramétre à "controleC"
+	 * Attribut le pion passe en parametre a "controleC"
 	 * @param pcontrolec
 	 */
 	public void setControleC(Pion pcontrolec) {
@@ -69,7 +69,7 @@ public class Arete {
 	}
 	
 	/**
-	 * Test si l'arête possède un pion
+	 * Test si l'arete possede un pion
 	 * @return
 	 */
 	public boolean hasCC() {

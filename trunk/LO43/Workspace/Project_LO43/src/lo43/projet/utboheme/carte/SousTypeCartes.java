@@ -1,7 +1,7 @@
 package lo43.projet.utboheme.carte;
 
 /**
- * Classe d'énumération des sous types de cartes lié à la classe GroupeCartesDev
+ * Classe d'enumeration des sous types de cartes lies a la classe GroupeCartesDev
  * @author alexandreaugen
  *
  */

@@ -1,10 +1,10 @@
 package lo43.projet.utboheme.carte;
 
 /**
- * Classes représentant groupes de cartes de développement
- * Hérite de la classe GroupeCartes
- * 	- possède les attributs et méthodes de la classe GroupeCartes
- * 	- possède un sous type de carte de développement 
+ * Classes representant groupes de cartes de developpement
+ * Herite de la classe GroupeCartes
+ * 	- possede les attributs et methodes de la classe GroupeCartes
+ * 	- possede un sous type de carte de developpement 
  * @author alexandreaugen
  *
  */
@@ -13,7 +13,7 @@ public class GroupeCartesDev extends GroupeCartes {
 	private SousTypeCartes sousTypeCartes;
 	
 	/**
-	 * Constructeur par défaut
+	 * Constructeur par defaut
 	 */
 	public GroupeCartesDev() {
 		super();
@@ -21,7 +21,7 @@ public class GroupeCartesDev extends GroupeCartes {
 	}
 	
 	/**
-	 * Constructeur paramétré
+	 * Constructeur parametre
 	 * @param nb
 	 * @param type
 	 * @param sstype
@@ -32,7 +32,7 @@ public class GroupeCartesDev extends GroupeCartes {
 	}
 
 	/**
-	 * Renvoi le sous type de cartes du groupe de cartes de dévellopement
+	 * Renvoi le sous type de cartes du groupe de cartes de devellopement
 	 * @return
 	 * 	- sousTypeCartes : SousTypesCartes
 	 */

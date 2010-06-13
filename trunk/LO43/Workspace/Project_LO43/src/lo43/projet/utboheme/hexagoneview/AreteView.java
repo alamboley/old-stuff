@@ -8,10 +8,10 @@ import java.awt.Rectangle;
 import lo43.projet.utboheme.hexagone.Arete;
 
 /**
- * Classe représentant graphiquement une arête
- * Hérite de la classe Rectangle
- *  - possède un attribut de type Arete pour savoir l'arete à représenter
- *  - possède une couleur qui prend la valeur du pion posé sur l'arête
+ * Classe representant graphiquement une arete
+ * Herite de la classe Rectangle
+ *  - possede un attribut de type Arete pour savoir l'arete a representer
+ *  - possede une couleur qui prend la valeur du pion pose sur l'arete
  * @author alexandreaugen
  *
  */
@@ -22,7 +22,7 @@ public class AreteView extends Rectangle{
 	private Color color;
 	
 	/**
-	 * Constructeur paramétré
+	 * Constructeur parametre
 	 * @param pa
 	 * @param ptaille
 	 */
@@ -35,7 +35,7 @@ public class AreteView extends Rectangle{
 	}
 
 	/**
-	 * Méthode permettant de peindre le composant
+	 * Methode permettant de peindre le composant
 	 * @param g
 	 */
 	public void paint(Graphics g){
@@ -47,7 +47,7 @@ public class AreteView extends Rectangle{
 	}
 	
 	/**
-	 * Renvoi l'arete lié à cette représentation graphique
+	 * Renvoi l'arete lie a cette representation graphique
 	 * @return
 	 */
 	public Arete getArete() {

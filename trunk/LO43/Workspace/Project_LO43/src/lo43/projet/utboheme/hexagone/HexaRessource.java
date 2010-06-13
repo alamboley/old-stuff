@@ -3,10 +3,10 @@ package lo43.projet.utboheme.hexagone;
 import lo43.projet.utboheme.carte.TypeCartes;
 
 /**
- * Classe représentant les hexagones de ressources
- * Hérite de Hexagone
- * 	- possède un jeton 
- * 	- possède un type de cartes associé à son type de terrain
+ * Classe representant les hexagones de ressources
+ * Herite de Hexagone
+ * 	- possede un jeton 
+ * 	- possede un type de cartes associe a son type de terrain
  * @author alexandreaugen
  *
  */
@@ -16,17 +16,17 @@ public class HexaRessource extends Hexagone {
 	private TypeCartes typeCartes;
 	
 	/**
-	 * Constructeur par défaut
+	 * Constructeur par defaut
 	 */
 	public HexaRessource() {
 		super();
 		this.jeton = null;
 		this.typeCartes = null;
-		System.out.println("Création d'un hexagone de ressource avec constructeur par défaut");
+		System.out.println("Creation d'un hexagone de ressource avec constructeur par defaut");
 	}
 	
 	/**
-	 * Constructeur paramétré
+	 * Constructeur parametre
 	 * @param pindX
 	 * @param pindY
 	 * @param psize
@@ -39,7 +39,7 @@ public class HexaRessource extends Hexagone {
 		super(pindX, pindY, psize, pbinome, ptypeT);
 		this.jeton = pjeton;
 		this.typeCartes = ptypeC;
-		System.out.println("Création d'un hexagone de ressource '" + this.getTypeTerr() + "' avec constructeur par recopie");
+		System.out.println("Creation d'un hexagone de ressource '" + this.getTypeTerr() + "' avec constructeur par recopie");
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class HexaRessource extends Hexagone {
 	}
 
 	/**
-	 * Attribut un jeton à l'hexagone
+	 * Attribut un jeton a l'hexagone
 	 * @param pjeton
 	 * @return
 	 * 	- un hexagone de ressource
@@ -63,7 +63,7 @@ public class HexaRessource extends Hexagone {
 	}
 	
 	/**
-	 * Renvoi le type de cartes associé à l'hexagone
+	 * Renvoi le type de cartes associe a l'hexagone
 	 * @return
 	 * 	- un type de cartes
 	 */
@@ -72,7 +72,7 @@ public class HexaRessource extends Hexagone {
 	}
 
 	/**
-	 * Méthode de positionnement d'un hexagone de ressource
+	 * Methode de positionnement d'un hexagone de ressource
 	 */
 	public HexaRessource setPosition(int pxHex, int pyHex) {
 		this.setXHex(pxHex);

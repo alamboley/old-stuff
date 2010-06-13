@@ -8,10 +8,10 @@ import java.awt.Rectangle;
 import lo43.projet.utboheme.hexagone.Jeton;
 
 /**
- * Classe représentant graphiquement un jeton
- * Hérite de Rectangle
- * 	- possède un attribut de type jeton pour connaitre le jeton à représenter
- * 	- possède une couleur
+ * Classe representant graphiquement un jeton
+ * Herite de Rectangle
+ * 	- possede un attribut de type jeton pour connaitre le jeton a representer
+ * 	- possede une couleur
  * @author alexandreaugen
  *
  */
@@ -22,7 +22,7 @@ public class JetonView extends Rectangle{
 	private Color color;
 	
 	/**
-	 * Constructeur paramétré
+	 * Constructeur parametre
 	 * @param pj
 	 * @param px
 	 * @param py
@@ -37,7 +37,7 @@ public class JetonView extends Rectangle{
 	}
 	
 	/**
-	 * Méthode permettant de peindre le composant
+	 * Methode permettant de peindre le composant
 	 * @param g
 	 */
 	public void paint(Graphics g){
