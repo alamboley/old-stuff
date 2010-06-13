@@ -61,6 +61,8 @@ public class JeuFrame extends JFrame {
 	private JButton btOld;
 	private JButton btExchange;
 	private JButton btFinTour;
+	private JButton btGagner;
+	private JButton btBuyCartes;
 	
 	/**
 	 * Constructeur paramétré
@@ -171,8 +173,8 @@ public class JeuFrame extends JFrame {
 		btDes.addActionListener(new ActionButtonDes());
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.weighty = 0.5;
-		gbc.ipadx = 30;
-		gbc.ipady = 30;
+		gbc.ipadx = 20;
+		gbc.ipady = 20;
 		gbc.gridx = 0;
 		gbc.gridy = 3;
 		containerJeu.add(btDes, gbc);
@@ -181,8 +183,8 @@ public class JeuFrame extends JFrame {
 		btCursus = new JButton("Cursus plus long");
 		btCursus.addActionListener(new ActionButtonCursus());
 		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.ipadx = 30;
-		gbc.ipady = 30;
+		gbc.ipadx = 20;
+		gbc.ipady = 20;
 		gbc.gridx = 1;
 		gbc.gridy = 2;
 		containerJeu.add(btCursus, gbc);
@@ -191,8 +193,8 @@ public class JeuFrame extends JFrame {
 		btOld = new JButton("Ancien le plus vieu");
 		btOld.addActionListener(new ActionButtonOld());
 		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.ipadx = 30;
-		gbc.ipady = 30;
+		gbc.ipadx = 20;
+		gbc.ipady = 20;
 		gbc.gridx = 1;
 		gbc.gridy = 3;
 		containerJeu.add(btOld, gbc);
@@ -200,10 +202,10 @@ public class JeuFrame extends JFrame {
 		//Bouton pour echanger des ressources avec la reserve
 		btExchange = new JButton("Echanger");
 		btExchange.addActionListener(new ActionExchange());
-		gbc.fill = GridBagConstraints.VERTICAL;
-		gbc.ipadx = 30;
-		gbc.ipady = 30;
-		gbc.gridx = 1;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.ipadx = 20;
+		gbc.ipady = 20;
+		gbc.gridx = 0;
 		gbc.gridy = 4;
 		containerJeu.add(btExchange, gbc);
 		
@@ -211,12 +213,32 @@ public class JeuFrame extends JFrame {
 		btFinTour = new JButton("Fin Tour");
 		btFinTour.addActionListener(new ActionFinTour());
 		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.ipadx = 30;
-		gbc.ipady = 30;
+		gbc.ipadx = 20;
+		gbc.ipady = 20;
 		gbc.gridx = 0;
-		gbc.gridy = 4;
+		gbc.gridy = 5;
 		containerJeu.add(btFinTour, gbc);
+		
+		//Bouton de victoire
+		btGagner = new JButton("Gagner");
+		btGagner.addActionListener(new ActionGagner());
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.ipadx = 20;
+		gbc.ipady = 20;
+		gbc.gridx = 1;
+		gbc.gridy = 5;
+		containerJeu.add(btGagner, gbc);
 	
+		//Bouton acheter carte de dev
+		btBuyCartes = new JButton("Acheter cartes");
+		btBuyCartes.addActionListener(new ActionBuyCartes());
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.ipadx = 20;
+		gbc.ipady = 20;
+		gbc.gridx = 1;
+		gbc.gridy = 4;
+		containerJeu.add(btBuyCartes, gbc);
+		
 		containerJeu.setEnabled(false);
 		
 		map = new JLabel();
@@ -331,23 +353,8 @@ public class JeuFrame extends JFrame {
 	 */
 	private class MapListener implements MouseListener {
 
-		/**
-		 * Méthode lors d'un clique sur la sourie
-		 */
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
-			if(!containerJeu.isEnabled()) {
-				plat.clicked(e.getPoint(), getViewJoueurActif());
-				j.finirTour();
-				infosPartie.setText("Phase de fondation : \n C'est à " + j.getJoueurActif().getNom() + " de jouer !");
-				if(j.totalUVParticipants() <= 9) {
-					enabledButton(containerJeu, true);
-					infosPartie.setText("Le jeu peux commencer : \n C'est à " + j.getJoueurActif().getNom() + " de jouer !");
-				}
-			}else{
-				plat.clicked(e.getPoint(), getViewJoueurActif());
-			}
-			updateJoueurs();
 		}
 	
 
@@ -363,7 +370,24 @@ public class JeuFrame extends JFrame {
 
 		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+			if(!containerJeu.isEnabled()) {
+				if(plat.fonder(e.getPoint(), getViewJoueurActif())){
+					j.finirTour();
+					infosPartie.setText("Phase de fondation : \n C'est à " + j.getJoueurActif().getNom() + " de jouer !");
+					if(j.totalUVParticipants() <= 9) {
+						enabledButton(containerJeu, true);
+						infosPartie.setText("Le jeu peux commencer : \n C'est à " + j.getJoueurActif().getNom() + " de jouer !");
+					}
+				}
+			}else{
+				if(!plat.ajouter(e.getPoint(), getJ())){
+					infosPartie.setText("C'est à " + j.getJoueurActif().getNom() + " de jouer ! \n Vous ne pouvez pas contruire ici !");
+				}else{
+					infosPartie.setText("C'est à " + j.getJoueurActif().getNom() + " de jouer ! \n Nouvelle construction !");
+				}
+			}
+			updateJoueurs();
+			updateReserve();
 		}
 
 		public void mouseReleased(MouseEvent e) {
@@ -389,13 +413,21 @@ public class JeuFrame extends JFrame {
 			j.lancerDes();
 			valeurDes.setText("" + j.getValeurDes());
 			for(HexaRessource h : j.getPlateau().getHexaRessWithUv(j.getValeurDes())) {
-				for(Joueur jo : h.getSommetUVProprio()) {
-					j.DimGroupeCarte(h.getTypeCartes(),1);
-					jo.setGroupeCarte(h.getTypeCartes(), 1);
+				if(!h.isBinomeG()) {
+					for(Joueur jo : h.getSommetUVProprio()) {
+						j.DimGroupeCarte(h.getTypeCartes(),1);
+						jo.AugmGroupeCarte(h.getTypeCartes(), 1);
+					}
 				}
+			}
+			if(j.getValeurDes() == 7) {
+				infosPartie.setText("Le binome glandeur à été déplacé !!!");
+				getJ().deplacerBinome();
 			}
 			updateJoueurs();
 			updateReserve();
+			plat.update();
+			btDes.setEnabled(false);
 		}
 	}
 	
@@ -463,9 +495,40 @@ public class JeuFrame extends JFrame {
 			// TODO Auto-generated method stub
 			j.finirTour();
 			infosPartie.setText("C'est à " + j.getJoueurActif().getNom() + " de jouer !");
-			updateJoueurs();		
+			updateJoueurs();
+			btDes.setEnabled(true);
 		}
 		
 	}
+	
+	/**
+	 * Classe qui gére l'évenement sur le bouton de victoire
+	 * @author alexandreaugen
+	 *
+	 */
+	private class ActionGagner implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
+	
+	/**
+	 * Classe qui gére l'évenement sur le bouton d'achat de cartes
+	 * @author alexandreaugen
+	 *
+	 */
+	private class ActionBuyCartes implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
+
+	public Jeu getJ() {
+		return j;
+	}	
 
 }

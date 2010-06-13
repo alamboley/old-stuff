@@ -1,5 +1,6 @@
 package lo43.projet.utboheme.hexagone;
 
+import lo43.projet.utboheme.jeu.Joueur;
 import lo43.projet.utboheme.pion.Pion;
 
 /**
@@ -77,6 +78,20 @@ public class Arete {
 		else {
 			return false;
 		}
+	}
+	
+	public boolean hasUvOnSomm(Joueur j){
+		boolean res = false;
+		if(sDebut.hasUV() || sDebut.hasUVStar()) {
+			if(sDebut.getUv().getProprietaire() == j) {
+				res = true;
+			}
+		}else if(sFin.hasUV() || sFin.hasUVStar()){
+			if(sFin.getUv().getProprietaire() == j) {
+				res = true;
+			}
+		}
+		return res;
 	}
 
 }

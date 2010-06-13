@@ -38,11 +38,18 @@ public class SommetView extends Rectangle{
 	 * @param g
 	 */
 	public void paint(Graphics g){
-		g.setColor(this.color);
 		if(sommet.hasUV()) {
 			g.setColor(sommet.getUv().getProprietaire().getCouleur());
+			g.fillOval((int)this.getX(), (int)this.getY(), (int)this.getWidth(), (int)this.getHeight());
+		}else if(sommet.hasUVStar()) {
+			g.setColor(sommet.getUv().getProprietaire().getCouleur());
+			int[] ptsX1 = {(int)this.getX()+((int)getWidth()/2), (int)this.getX()+(int)getWidth(), (int)this.getX()};
+			int[] ptsY1 = {(int)this.getY(), (int)this.getY()+(int)getHeight(), (int)this.getY()+(int)getHeight()};
+			g.fillPolygon(ptsX1, ptsY1, 3);
+		}else{
+			g.setColor(this.color);
+			g.fillOval((int)this.getX(), (int)this.getY(), (int)this.getWidth(), (int)this.getHeight());
 		}
-		g.fillOval((int)this.getX(), (int)this.getY(), (int)this.getWidth(), (int)this.getHeight());
 	}
 	
 	/**

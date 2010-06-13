@@ -79,11 +79,11 @@ public class Joueur {
 		
 		//Attribution par défaut des différents groupes de cartes vide
 		this.lcartes = new ArrayList<GroupeCartes>();
-		lcartes.add(new GroupeCartes(0, TypeCartes.BIERE));
-		lcartes.add(new GroupeCartes(0, TypeCartes.SOMMEIL));
-		lcartes.add(new GroupeCartes(0, TypeCartes.CAFE));
-		lcartes.add(new GroupeCartes(0, TypeCartes.SUPPORT));
-		lcartes.add(new GroupeCartes(0, TypeCartes.NOURRITURE));
+		lcartes.add(new GroupeCartes(4, TypeCartes.BIERE));
+		lcartes.add(new GroupeCartes(4, TypeCartes.SOMMEIL));
+		lcartes.add(new GroupeCartes(4, TypeCartes.CAFE));
+		lcartes.add(new GroupeCartes(4, TypeCartes.SUPPORT));
+		lcartes.add(new GroupeCartes(4, TypeCartes.NOURRITURE));
 
 		this.lcartesJouees = new ArrayList<GroupeCartesDev>();
 		this.luvstar = new ArrayList<UV>();
@@ -232,8 +232,18 @@ public class Joueur {
 	 * @param ptype
 	 * @param nbCartes
 	 */
-	public void setGroupeCarte(TypeCartes ptype, int nbCartes) {
+	public void AugmGroupeCarte(TypeCartes ptype, int nbCartes) {
 		this.getGroupeCartes(ptype).addCartes(nbCartes);
+	}
+	
+	public void DimGroupeCarte(TypeCartes ptypeC, int pnb) {
+		this.getGroupeCartes(ptypeC).remCartes(pnb);
+		if(getGroupeCartes(ptypeC).getNombre() < 0) 
+			this.getGroupeCartes(ptypeC).setNombre(0);
+	}
+	
+	public void MoveAllCartes(TypeCartes type){
+		this.getGroupeCartes(type).remCartes(getGroupeCartes(type).getNombre());
 	}
 
 	/**
@@ -245,6 +255,18 @@ public class Joueur {
 		return lcc;
 	}
 	
+	public void addCC(Pion p) {
+		this.lcc.add(p);
+	}
+	
+	public void remCC() {
+		this.lcc.remove(0);
+	}
+	
+	public Pion getCC() {
+		return this.lcc.get(0);
+	}
+	
 	/**
 	 * Renvoi la liste des uv du joueur
 	 * @return
@@ -253,7 +275,19 @@ public class Joueur {
 	public List<UV> getLuv() {
 		return luv;
 	}
-
+	
+	public void addUV(UV puv) {
+		this.luv.add(puv);
+	}
+	
+	public void remUV() {
+		this.luv.remove(0);
+	}
+	
+	public UV getUV() {
+		return this.luv.get(0);
+	}
+	
 	/**
 	 * Renvoi la liste des uv** du joueur
 	 * @return
@@ -261,6 +295,18 @@ public class Joueur {
 	 */
 	public List<UV> getLuvstar() {
 		return luvstar;
+	}
+	
+	public void addUVStar(UV puvstar) {
+		this.luvstar.add(puvstar);
+	}
+	
+	public void remUVStar() {
+		this.luvstar.remove(0);
+	}
+	
+	public UV getUVStar() {
+		return this.luvstar.get(0);
 	}
 
 	/**
@@ -307,6 +353,52 @@ public class Joueur {
 	public void setChemins(List<ArbreBinaire> chemins) {
 		this.chemins = chemins;
 	}
+	
+	public boolean TestRess(Pion p) {
+		boolean res = false;
+		if(p.getClass() == UV.class) {
+			UV uv = (UV) p;
+			if(uv.isDoubleEtoile()) {
+				if(getNbCartes(TypeCartes.SUPPORT) >= 2 && getNbCartes(TypeCartes.SOMMEIL) >= 3) {
+					res = true;
+				}
+			}else{
+				if(getNbCartes(TypeCartes.BIERE) >= 1 && getNbCartes(TypeCartes.NOURRITURE) >= 1 && getNbCartes(TypeCartes.SUPPORT) >=1 && getNbCartes(TypeCartes.CAFE) >= 1) {
+					res = true;
+				}
+			}
+		}else if(p.getClass() == Pion.class) {
+			if(getNbCartes(TypeCartes.BIERE) >= 1 && getNbCartes(TypeCartes.NOURRITURE) >= 1) {
+				res = true;
+			}
+		}
+		return res;
+	}
+	
+	public void remRess(Pion p) {
+		if(p.getClass() == UV.class) {
+			UV uv = (UV) p;
+			if(uv.isDoubleEtoile()) {
+				if(getNbCartes(TypeCartes.SUPPORT) >= 2 && getNbCartes(TypeCartes.SOMMEIL) >= 3) {
+					this.DimGroupeCarte(TypeCartes.SUPPORT, 2);
+					this.DimGroupeCarte(TypeCartes.SOMMEIL, 3);
+				}
+			}else{
+				if(getNbCartes(TypeCartes.BIERE) >= 1 && getNbCartes(TypeCartes.NOURRITURE) >= 1 && getNbCartes(TypeCartes.SUPPORT) >=1 && getNbCartes(TypeCartes.CAFE) >= 1) {
+					this.DimGroupeCarte(TypeCartes.BIERE, 1);
+					this.DimGroupeCarte(TypeCartes.NOURRITURE, 1);
+					this.DimGroupeCarte(TypeCartes.SUPPORT, 1);
+					this.DimGroupeCarte(TypeCartes.CAFE, 1);
+				}
+			}
+		}else if(p.getClass() == Pion.class) {
+			if(getNbCartes(TypeCartes.BIERE) >= 1 && getNbCartes(TypeCartes.NOURRITURE) >= 1) {
+				this.DimGroupeCarte(TypeCartes.BIERE, 1);
+				this.DimGroupeCarte(TypeCartes.NOURRITURE, 1);
+			}
+		}
+	}
+	
 
 	/*public boolean construireUV(Sommet sommet, boolean etoile) {
 		//phase de fondation ?

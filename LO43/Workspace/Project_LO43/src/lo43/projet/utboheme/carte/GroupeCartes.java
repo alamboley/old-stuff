@@ -39,13 +39,10 @@ public class GroupeCartes {
 		return nombre;
 	}
 	
-	/**
-	 * Attribut le nombre passé en paramétre à "nombre" 
-	 * @param nb
-	 */
-	public void setNombre(int nb){
+	public void setNombre(int nb) {
 		this.nombre = nb;
 	}
+
 	
 	/**
 	 * Renvoi le type du Groupe de cartes
@@ -61,7 +58,7 @@ public class GroupeCartes {
 	 * @param pnb
 	 */
 	public void addCartes(int pnb) {
-		this.setNombre(this.getNombre() + pnb);
+		this.nombre += pnb;
 	}
 	
 	/**
@@ -69,7 +66,7 @@ public class GroupeCartes {
 	 * @param pnb
 	 */
 	public void remCartes(int pnb) {
-		this.setNombre(this.getNombre() - pnb);
+		this.nombre -= pnb;
 	}
 
 }

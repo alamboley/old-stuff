@@ -12,6 +12,7 @@ import lo43.projet.utboheme.hexagone.Hexagone;
 import lo43.projet.utboheme.hexagoneview.AreteView;
 import lo43.projet.utboheme.hexagoneview.HexagoneView;
 import lo43.projet.utboheme.hexagoneview.SommetView;
+import lo43.projet.utboheme.jeu.Jeu;
 import lo43.projet.utboheme.jeu.Plateau;
 
 /**
@@ -58,17 +59,16 @@ public class PlateauView extends Canvas{
 	 * Méthode pour repeindre le composant
 	 */
 	public void update() {
-		paint(this.getGraphics());
+		this.repaint();
 	}
 	
 	/**
-	 * Méthode qui permet d'affecter un pion à un sommet ou une arête
+	 * Méthode qui permet d'affecter un sommet lors de la phase de fondation
 	 * @param mousePosition
 	 * @param jv
 	 */
-	public void clicked(Point mousePosition, JoueurView jv) {
-		boolean hasSommet = false;
-		boolean hasArete = false;
+	public boolean fonder(Point mousePosition, JoueurView jv) {
+		boolean hasSommet = false; 
 		
 		//Parcours les hexagonesView
 		for(HexagoneView hv : lHexaV) {
@@ -76,26 +76,87 @@ public class PlateauView extends Canvas{
 			for(SommetView s : hv.getLSommetV()) {
 				//on recupere le sommet correspondant pour l'utiliser dans le jeu
 				if (s.contains(mousePosition)) {
-					s.getSommet().setUv(jv.getJoueur().getLuv().get(0));
-					hasSommet = true;
+					if(!s.getSommet().hasUV()) {
+						s.getSommet().setUv(jv.getJoueur().getUV());
+						hasSommet = true;
+					}
+				}
+			}
+		}
+		if(hasSommet){
+			jv.getJoueur().addNbPoints(1);
+			jv.getJoueur().remUV();
+		}
+		this.update();
+		return hasSommet;
+	}
+	
+	/**
+	 * Méthode qui permet d'affecter un pion à un sommet ou une arête
+	 * @param mousePosition
+	 * @param jv
+	 */
+	public boolean ajouter(Point mousePosition, Jeu j) {
+		boolean hasUvStar = false;
+		boolean hasUv = false;
+		boolean hasCc = false;
+		boolean res = false;
+		
+		//Parcours les hexagonesView
+		for(HexagoneView hv : lHexaV) {
+			//Parcours les sommetView
+			for(SommetView s : hv.getLSommetV()) {
+				//on recupere le sommet correspondant pour l'utiliser dans le jeu
+				if (s.contains(mousePosition)) {
+					if(!s.getSommet().hasUV()) {
+						//if(hv.getHexa().hasCC(s.getSommet(), jv.getJoueur())){
+							if(j.getJoueurActif().TestRess(j.getJoueurActif().getUV())) {
+								s.getSommet().setUv(j.getJoueurActif().getUV());
+								hasUv = s.getSommet().hasUV();
+							}
+						//}
+					}else if(!s.getSommet().hasUVStar() && s.getSommet().getUv().getProprietaire() == j.getJoueurActif()) {
+						if(j.getJoueurActif().TestRess(j.getJoueurActif().getUVStar())) {
+							s.getSommet().setUv(j.getJoueurActif().getUVStar());
+							hasUvStar = s.getSommet().hasUVStar();
+						}
+					}
 				}
 			}
 			//Parcours les areteView
 			for(AreteView a : hv.getLAreteV()) {
 				// on recupere l'arete correspondante pour l'utiliser dans le jeu
 				if(a.contains(mousePosition)) {
-					a.getArete().setControleC(jv.getJoueur().getLcc().get(0));
-					hasArete = true;
+					if(!a.getArete().hasCC() && a.getArete().hasUvOnSomm(j.getJoueurActif())) {
+						if(j.getJoueurActif().TestRess(j.getJoueurActif().getCC())) {
+							a.getArete().setControleC(j.getJoueurActif().getCC());
+							hasCc = a.getArete().hasCC();
+						}
+					}
 				}
 			}
 		}
-		if(hasSommet){
-			jv.getJoueur().getLuv().remove(0);
-			jv.getJoueur().addNbPoints(1);
-		}else if(hasArete){
-			jv.getJoueur().getLcc().remove(0);
+		if(hasUvStar){
+			j.getJoueurActif().addNbPoints(2);
+			j.getJoueurActif().remRess(j.getJoueurActif().getUVStar());
+			j.getJoueurActif().remUVStar();
+			j.putRess(j.getJoueurActif().getUVStar());
+			res = hasUvStar;
+		}else if(hasUv){
+			j.getJoueurActif().addNbPoints(1);
+			j.getJoueurActif().remRess(j.getJoueurActif().getUV());
+			j.getJoueurActif().remUV();
+			j.putRess(j.getJoueurActif().getUV());
+			res = hasUv;
+		}else if(hasCc){
+			j.getJoueurActif().remRess(j.getJoueurActif().getCC());
+			j.getJoueurActif().remCC();
+			j.putRess(j.getJoueurActif().getCC());
+			res = hasCc;
 		}
+		
 		this.update();
+		return res;
 	}
 	
 	/**

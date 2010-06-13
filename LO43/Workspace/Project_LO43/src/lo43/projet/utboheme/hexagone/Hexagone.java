@@ -28,7 +28,6 @@ public class Hexagone {
 	private TypeTerrain typeTerr;
 	private List<Sommet> sommets;
 	private List<Arete> aretes;
-	private List<Hexagone> voisins;
 	
 	/**
 	 * Constructeur par défaut
@@ -41,7 +40,6 @@ public class Hexagone {
 		this.typeTerr = null;
 		this.sommets = null;
 		this.aretes = null;
-		this.voisins = null;
 	}
 
 	/**
@@ -162,33 +160,6 @@ public class Hexagone {
 	}
 	
 	/**
-	 * Méthode permettant de récupérer les sommets adjacents au sommet passé en paramétre
-	 * @param s
-	 * @return
-	 *  - une liste de sommets
-	 */
-	public List<Sommet> getSommetAdjacent(Sommet s) {
-		List<Sommet> ls = new ArrayList<Sommet>();
-		for(Arete a: aretes) {
-			if(a.getsDebut().equals(s)) {
-				ls.add(a.getsFin());
-			}else if(a.getsFin().equals(s)) {
-				ls.add(a.getsDebut());
-			}
-		}
-		for(Hexagone h : voisins) {
-			for(Arete va : h.getAretes()) {
-				if(va.getsDebut().equals(s)) {
-					ls.add(va.getsFin());
-				}else if(va.getsFin().equals(s)) {
-					ls.add(va.getsDebut());
-				}
-			}
-		}
-		return ls;
-	}
-	
-	/**
 	 * Méthode permettant de positionner un hexagone selon ces attributs x et y
 	 * @param pxHex
 	 * @param pyHex
@@ -294,6 +265,19 @@ public class Hexagone {
 	 */
 	public List<Arete> getAretes() {
 		return aretes;
+	}
+
+	
+	public boolean hasCC(Sommet s, Joueur j) {
+		boolean res = false;
+		for(Arete a : getAretes()) {
+			if (a.getsDebut() == s || a.getsFin() == s) {
+				if(a.hasCC() && a.getControleC().getProprietaire() == j) {
+					res = true;
+				}
+			}
+		}
+		return res;
 	}
 
 }
