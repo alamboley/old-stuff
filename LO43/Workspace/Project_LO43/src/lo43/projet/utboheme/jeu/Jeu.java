@@ -16,12 +16,12 @@ import lo43.projet.utboheme.pion.Pion;
 import lo43.projet.utboheme.pion.UV;
 
 /**
- * Classe représentant le jeu
- * 	- possède un attribut tour 
- * 	- possède un attribut pour la valeur du dé
- * 	- possède un attribut plateau ou se déroule les actions
- *  - possède une liste de joueurs (participants)
- *  - possède une liste de groupe de cartes (réserve)
+ * Classe representant le jeu
+ * 	- possede un attribut tour 
+ * 	- possede un attribut pour la valeur du de
+ * 	- possede un attribut plateau ou se deroule les actions
+ *  - possede une liste de joueurs (participants)
+ *  - possede une liste de groupe de cartes (reserve)
  * @author alexandreaugen
  *
  */
@@ -34,7 +34,7 @@ public class Jeu {
 	private List<GroupeCartes> reserve;
 	
 	/**
-	 * Constructeur par défaut
+	 * Constructeur par defaut
 	 */
 	public Jeu(){
 		this.tour = 1;
@@ -45,7 +45,7 @@ public class Jeu {
 	}
 	
 	/**
-	 * Constructeur paramétré
+	 * Constructeur parametre
 	 * @param pp
 	 */
 	public Jeu(Plateau pp) {
@@ -54,7 +54,7 @@ public class Jeu {
 		
 		this.participants = new ArrayList<Joueur>();
 		
-		//Création par défaut des groupes de cartes qui composent la réserve
+		//Creation par defaut des groupes de cartes qui composent la reserve
 		this.reserve = new ArrayList<GroupeCartes>();
 		this.reserve.add(new GroupeCartes(19, TypeCartes.BIERE));
 		this.reserve.add(new GroupeCartes(19, TypeCartes.SOMMEIL));
@@ -69,14 +69,14 @@ public class Jeu {
 	}
 		
 	/**
-	 * Méthode permettant d'incrémenter le nombre de tour
+	 * Methode permettant d'incrementer le nombre de tour
 	 */
 	public void addTours() {
 		this.tour += 1;
 	}
 
 	/**
-	 * Renvoi la valeur du dé
+	 * Renvoi la valeur du de
 	 * @return
 	 * 	- un entier
 	 */
@@ -85,7 +85,7 @@ public class Jeu {
 	}
 
 	/**
-	 * Attribut le paramétre à la valeur du dé
+	 * Attribut le parametre à la valeur du de
 	 * @param pvdes
 	 */
 	public void setValeurDes(int pvdes) {
@@ -119,7 +119,7 @@ public class Jeu {
 	}
 
 	/**
-	 * Méthode permettant d'ajouter un joueur à la liste des participants
+	 * Methode permettant d'ajouter un joueur à la liste des participants
 	 * @param pj
 	 */
 	public void setParticipant(Joueur pj) {
@@ -131,7 +131,7 @@ public class Jeu {
 	}
 	 
 	/**
-	 * Méthode permettant de renvoyer un groupe de cartes de la réserve selon le type de carte passé en paramétre 
+	 * Methode permettant de renvoyer un groupe de cartes de la reserve selon le type de carte passe en parametre 
 	 * @param ptypeC
 	 * @return
 	 * 	- un groupe de cartes
@@ -147,7 +147,7 @@ public class Jeu {
 	}
 	
 	/**
-	 * Méthode permettant de renvoyer la liste de tout les groupes de cartes de type ressource
+	 * Methode permettant de renvoyer la liste de tout les groupes de cartes de type ressource
 	 * @return
 	 *  - une liste de groupe de cartes de type ressource
 	 */
@@ -162,7 +162,7 @@ public class Jeu {
 	}
 	
 	/**
-	 * Méthode permettant de renvoyer la liste de tout les groupes de cartes de type developpement
+	 * Methode permettant de renvoyer la liste de tout les groupes de cartes de type developpement
 	 * @return
 	 * 	- une liste de groupe de cartes de type developpement
 	 */
@@ -177,7 +177,7 @@ public class Jeu {
 	}
 	
 	/**
-	 * Renvoi le nombre de cartes de développement
+	 * Renvoi le nombre de cartes de developpement
 	 * @return
 	 * 	- un entier
 	 */
@@ -190,7 +190,7 @@ public class Jeu {
 	}
 	
 	/**
-	 * Méthode permettant de renvoyer un groupe de cartes de toutes les cartes de developpement
+	 * Methode permettant de renvoyer un groupe de cartes de toutes les cartes de developpement
 	 * @return
 	 * 	- un groupe de cartes de type developpement
 	 */
@@ -211,7 +211,7 @@ public class Jeu {
 	}
 
 	/**
-	 * Méthode permettant d'augmenter un groupe de cartes de la reserve selon le type de carte et le nombre passés en paramétre
+	 * Methode permettant d'augmenter un groupe de cartes de la reserve selon le type de carte et le nombre passes en parametre
 	 * @param ptypeC
 	 * @param pnb
 	 */
@@ -220,7 +220,7 @@ public class Jeu {
 	}
 	
 	/**
-	 * Méthode permettant de diminuer un groupe de cartes de la reserve selon le type de carte et le nombre passés en paramétre
+	 * Methode permettant de diminuer un groupe de cartes de la reserve selon le type de carte et le nombre passes en parametre
 	 * @param ptypeC
 	 * @param pnb
 	 */
@@ -237,7 +237,7 @@ public class Jeu {
 	}
 	
 	/**
-	 * Méthode permettant de connaitre le nombre total d'uv pour l'ensemble des participants
+	 * Methode permettant de connaitre le nombre total d'uv pour l'ensemble des participants
 	 * @return
 	 * 	- un entier
 	 */
@@ -248,16 +248,29 @@ public class Jeu {
 		}
 		return res;
 	}
+	
+	/**
+	 * Methode permettant de connaitre le nombre total de cc pour l'ensemble des participants
+	 * @return
+	 *  - un entien
+	 */
+	public int totalCCParticipants() {
+		int res = 0;
+		for (Joueur joueur : participants) {
+			res += joueur.getNbCC();
+		}
+		return res;
+	}
 	 
 	/**
-	 * Méthode permettant de passer d'un joueur actif à un autre
-	 * selon le nombre de tours effectué, le déroulement se fait dans un sens puis dans l'autre
+	 * Methode permettant de passer d'un joueur actif à un autre
+	 * selon le nombre de tours effectue, le deroulement se fait dans un sens puis dans l'autre
 	 */
 	public void finirTour() {
 		//Phase de fondation : Au tour 3 le joueur actif reste le mm
 		if(tour == 3) {
 			this.participants.get(this.participants.indexOf(getJoueurActif())).setActif(true);
-		//Phase de fondation : Entre le tour 3 et 6, déroulement en sens inverse	
+		//Phase de fondation : Entre le tour 3 et 6, deroulement en sens inverse	
 		}else if (tour > 3 && tour < 6) {
 			int index = this.participants.indexOf(getJoueurActif());
 			
@@ -281,7 +294,7 @@ public class Jeu {
 	}
 	 
 	/**
-	 * Méthode permettant de simuler le lancement de deux dés à six faces
+	 * Methode permettant de simuler le lancement de deux des à six faces
 	 */
 	public void lancerDes() {
 		int des1 = 1 + new Random().nextInt(6);
@@ -290,7 +303,7 @@ public class Jeu {
 	}
 	
 	/**
-	 * Méthode permettant de renvoyer le joueur actif du jeu
+	 * Methode permettant de renvoyer le joueur actif du jeu
 	 * @return
 	 * 	- un joueur
 	 */
