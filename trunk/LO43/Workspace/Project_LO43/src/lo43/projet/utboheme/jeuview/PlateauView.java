@@ -7,7 +7,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-
+import lo43.projet.utboheme.hexagone.HexaRessource;
 import lo43.projet.utboheme.hexagone.Hexagone;
 import lo43.projet.utboheme.hexagoneview.AreteView;
 import lo43.projet.utboheme.hexagoneview.HexagoneView;
@@ -67,10 +67,8 @@ public class PlateauView extends Canvas{
 	 * @param mousePosition
 	 * @param jv
 	 */
-	public boolean fonder(Point mousePosition, JoueurView jv) {
+	public boolean fonder(Point mousePosition, Jeu j) {
 		boolean hasSommet = false; 
-		boolean hasCc = false;
-		
 		//Parcours les hexagonesView
 		for(HexagoneView hv : lHexaV) {
 			//Parcours les sommetView
@@ -78,30 +76,21 @@ public class PlateauView extends Canvas{
 				//on recupere le sommet correspondant pour l'utiliser dans le jeu
 				if (s.contains(mousePosition)) {
 					if(!s.getSommet().hasUV()) {
-						s.getSommet().setUv(jv.getJoueur().getUV());
+						s.getSommet().setUv(j.getJoueurActif().getUV());
+						HexaRessource hexa = (HexaRessource) hv.getHexa();
+						j.getJoueurActif().AugmGroupeCarte(hexa.getTypeCartes(), 1);
+						j.DimGroupeCarte(hexa.getTypeCartes(), 1);
 						hasSommet = true;
-					}
-				}
-			}
-			//Parcours les areteView
-			for(AreteView a : hv.getLAreteV()) {
-				// on recupere l'arete correspondante pour l'utiliser dans le jeu
-				if(a.contains(mousePosition)) {
-					if(!a.getArete().hasCC()) {
-						a.getArete().setControleC(jv.getJoueur().getCC());
-						hasCc = true;
 					}
 				}
 			}
 		}
 		if(hasSommet){
-			jv.getJoueur().addNbPoints(1);
-			jv.getJoueur().remUV();
-		} else if (hasCc) {
-			jv.getJoueur().remCC();
+			j.getJoueurActif().addNbPoints(1);
+			j.getJoueurActif().remUV();
 		}
 		this.update();
-		return hasSommet || hasCc;
+		return hasSommet;
 	}
 	
 	/**
@@ -172,6 +161,19 @@ public class PlateauView extends Canvas{
 		return res;
 	}
 	
+	public boolean attribuerBinome (Point mousePosition) {
+		boolean res = false;
+		for(HexagoneView hv : lHexaV){
+			if(hv.contains(mousePosition) && hv.getHexa().getClass() == HexaRessource.class) {
+				plateau.getHexaBinomeG().setBinomeG(false);
+				HexaRessource hexa = (HexaRessource) hv.getHexa();
+				hexa.setBinomeG(true);
+				res = true;
+			}
+		}
+		this.update();
+		return res;
+	}
 	/**
 	 * Renvoi le plateau associe a la representation graphique
 	 * @return
