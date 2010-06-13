@@ -8,19 +8,18 @@ import lo43.projet.utboheme.carte.GroupeCartes;
 import lo43.projet.utboheme.carte.GroupeCartesDev;
 import lo43.projet.utboheme.carte.SousTypeCartes;
 import lo43.projet.utboheme.carte.TypeCartes;
-import lo43.projet.utboheme.hexagone.Arete;
-import lo43.projet.utboheme.hexagone.Sommet;
+import lo43.projet.utboheme.hexagone.HexaRessource;
 import lo43.projet.utboheme.jeuview.JeuFrame;
 import lo43.projet.utboheme.pion.Pion;
 import lo43.projet.utboheme.pion.UV;
 
 /**
- * Classe representant le jeu
- * 	- possede un attribut tour 
- * 	- possede un attribut pour la valeur du de
- * 	- possede un attribut plateau ou se deroule les actions
- *  - possede une liste de joueurs (participants)
- *  - possede une liste de groupe de cartes (reserve)
+ * Classe représentant le jeu
+ * 	- possède un attribut tour 
+ * 	- possède un attribut pour la valeur du dé
+ * 	- possède un attribut plateau ou se déroule les actions
+ *  - possède une liste de joueurs (participants)
+ *  - possède une liste de groupe de cartes (réserve)
  * @author alexandreaugen
  *
  */
@@ -33,7 +32,7 @@ public class Jeu {
 	private List<GroupeCartes> reserve;
 	
 	/**
-	 * Constructeur par defaut
+	 * Constructeur par défaut
 	 */
 	public Jeu(){
 		this.tour = 1;
@@ -44,7 +43,7 @@ public class Jeu {
 	}
 	
 	/**
-	 * Constructeur parametre
+	 * Constructeur paramétré
 	 * @param pp
 	 */
 	public Jeu(Plateau pp) {
@@ -53,7 +52,7 @@ public class Jeu {
 		
 		this.participants = new ArrayList<Joueur>();
 		
-		//Creation par defaut des groupes de cartes qui composent la reserve
+		//Création par défaut des groupes de cartes qui composent la réserve
 		this.reserve = new ArrayList<GroupeCartes>();
 		this.reserve.add(new GroupeCartes(19, TypeCartes.BIERE));
 		this.reserve.add(new GroupeCartes(19, TypeCartes.SOMMEIL));
@@ -68,14 +67,14 @@ public class Jeu {
 	}
 		
 	/**
-	 * Methode permettant d'incrementer le nombre de tour
+	 * Méthode permettant d'incrémenter le nombre de tour
 	 */
 	public void addTours() {
 		this.tour += 1;
 	}
 
 	/**
-	 * Renvoi la valeur du de
+	 * Renvoi la valeur du dé
 	 * @return
 	 * 	- un entier
 	 */
@@ -84,7 +83,7 @@ public class Jeu {
 	}
 
 	/**
-	 * Attribut le parametre à la valeur du de
+	 * Attribut le paramétre à la valeur du dé
 	 * @param pvdes
 	 */
 	public void setValeurDes(int pvdes) {
@@ -118,7 +117,7 @@ public class Jeu {
 	}
 
 	/**
-	 * Methode permettant d'ajouter un joueur à la liste des participants
+	 * Méthode permettant d'ajouter un joueur à la liste des participants
 	 * @param pj
 	 */
 	public void setParticipant(Joueur pj) {
@@ -130,7 +129,7 @@ public class Jeu {
 	}
 	 
 	/**
-	 * Methode permettant de renvoyer un groupe de cartes de la reserve selon le type de carte passe en parametre 
+	 * Méthode permettant de renvoyer un groupe de cartes de la réserve selon le type de carte passé en paramétre 
 	 * @param ptypeC
 	 * @return
 	 * 	- un groupe de cartes
@@ -146,7 +145,7 @@ public class Jeu {
 	}
 	
 	/**
-	 * Methode permettant de renvoyer la liste de tout les groupes de cartes de type ressource
+	 * Méthode permettant de renvoyer la liste de tout les groupes de cartes de type ressource
 	 * @return
 	 *  - une liste de groupe de cartes de type ressource
 	 */
@@ -161,7 +160,7 @@ public class Jeu {
 	}
 	
 	/**
-	 * Methode permettant de renvoyer la liste de tout les groupes de cartes de type developpement
+	 * Méthode permettant de renvoyer la liste de tout les groupes de cartes de type developpement
 	 * @return
 	 * 	- une liste de groupe de cartes de type developpement
 	 */
@@ -176,7 +175,7 @@ public class Jeu {
 	}
 	
 	/**
-	 * Renvoi le nombre de cartes de developpement
+	 * Renvoi le nombre de cartes de développement
 	 * @return
 	 * 	- un entier
 	 */
@@ -189,16 +188,28 @@ public class Jeu {
 	}
 	
 	/**
-	 * Methode permettant de renvoyer un groupe de cartes de toutes les cartes de developpement
+	 * Méthode permettant de renvoyer un groupe de cartes de toutes les cartes de developpement
 	 * @return
 	 * 	- un groupe de cartes de type developpement
 	 */
 	public GroupeCartes getGroupeCartesDev() {
 		return new GroupeCartes(this.nbCartesDev(), TypeCartes.DEVELOPPEMENT);
 	}
+	
+	public GroupeCartes getGroupeCartesDev(SousTypeCartes sstype) {
+		GroupeCartes gc = new GroupeCartes();
+		for(GroupeCartes g : getCartesDev()) {
+			GroupeCartesDev gcd = (GroupeCartesDev) g;
+			if(gcd.getSousTypeCartes() == sstype) {
+				gc = gcd;
+				break;
+			}
+		}
+		return gc;
+	}
 
 	/**
-	 * Methode permettant d'augmenter un groupe de cartes de la reserve selon le type de carte et le nombre passes en parametre
+	 * Méthode permettant d'augmenter un groupe de cartes de la reserve selon le type de carte et le nombre passés en paramétre
 	 * @param ptypeC
 	 * @param pnb
 	 */
@@ -207,7 +218,7 @@ public class Jeu {
 	}
 	
 	/**
-	 * Methode permettant de diminuer un groupe de cartes de la reserve selon le type de carte et le nombre passes en parametre
+	 * Méthode permettant de diminuer un groupe de cartes de la reserve selon le type de carte et le nombre passés en paramétre
 	 * @param ptypeC
 	 * @param pnb
 	 */
@@ -217,8 +228,14 @@ public class Jeu {
 			this.getGroupeCarte(ptypeC).setNombre(0);
 	}
 	
+	public void DimGroupeCarteDev(SousTypeCartes sstype, int pnb) {
+		this.getGroupeCartesDev(sstype).remCartes(pnb);
+		if(getGroupeCartesDev(sstype).getNombre() < 0)
+			this.getGroupeCartesDev(sstype).setNombre(0);
+	}
+	
 	/**
-	 * Methode permettant de connaitre le nombre total d'uv pour l'ensemble des participants
+	 * Méthode permettant de connaitre le nombre total d'uv pour l'ensemble des participants
 	 * @return
 	 * 	- un entier
 	 */
@@ -231,14 +248,14 @@ public class Jeu {
 	}
 	 
 	/**
-	 * Methode permettant de passer d'un joueur actif à un autre
-	 * selon le nombre de tours effectue, le deroulement se fait dans un sens puis dans l'autre
+	 * Méthode permettant de passer d'un joueur actif à un autre
+	 * selon le nombre de tours effectué, le déroulement se fait dans un sens puis dans l'autre
 	 */
 	public void finirTour() {
 		//Phase de fondation : Au tour 3 le joueur actif reste le mm
 		if(tour == 3) {
 			this.participants.get(this.participants.indexOf(getJoueurActif())).setActif(true);
-		//Phase de fondation : Entre le tour 3 et 6, deroulement en sens inverse	
+		//Phase de fondation : Entre le tour 3 et 6, déroulement en sens inverse	
 		}else if (tour > 3 && tour < 6) {
 			int index = this.participants.indexOf(getJoueurActif());
 			
@@ -262,7 +279,7 @@ public class Jeu {
 	}
 	 
 	/**
-	 * Methode permettant de simuler le lancement de deux des à six faces
+	 * Méthode permettant de simuler le lancement de deux dés à six faces
 	 */
 	public void lancerDes() {
 		int des1 = 1 + new Random().nextInt(6);
@@ -271,7 +288,7 @@ public class Jeu {
 	}
 	
 	/**
-	 * Methode permettant de renvoyer le joueur actif du jeu
+	 * Méthode permettant de renvoyer le joueur actif du jeu
 	 * @return
 	 * 	- un joueur
 	 */
@@ -304,27 +321,88 @@ public class Jeu {
 		}
 	}
 	
-	public void deplacerBinome() {
+	public void payCartesDev() {
+		this.AugmGroupeCarte(TypeCartes.SUPPORT, 1);
+		this.AugmGroupeCarte(TypeCartes.CAFE, 1);
+		this.AugmGroupeCarte(TypeCartes.SOMMEIL, 1);
+		GroupeCartesDev gcd = (GroupeCartesDev) getCartesDev().get(new Random().nextInt(getCartesDev().size()));
+		getJoueurActif().AugmenterGroupeCarteDev(gcd.getSousTypeCartes(), 1);
+		DimGroupeCarteDev(gcd.getSousTypeCartes(), 1);
+	}
+	
+	public boolean deplacerBinome() {
+		boolean res = false;
+		HexaRessource hexa = new HexaRessource();
+		hexa = (HexaRessource) plateau.getHexaRess().get(new Random().nextInt(plateau.getHexaRess().size()));
 		plateau.getHexaBinomeG().setBinomeG(false);
-		plateau.getHexaRess().get(new Random().nextInt(plateau.getHexaRess().size())).setBinomeG(true);
+		hexa.setBinomeG(true);
+		if(!hexa.getSommetsUV().isEmpty()){
+			GroupeCartes gc = hexa.getSommetUVProprio().get(new Random().nextInt(hexa.getSommetUVProprio().size())).MoveAllCartes(hexa.getTypeCartes());
+			getJoueurActif().AugmGroupeCarte(gc.getTypeCartes(), gc.getNombre());
+		}
+		return res;
 	}
 	
-	public boolean hasCursusPlusLong(Joueur pj) {
-		return false;
-	}
-	 
-	public boolean hasAncientPlusVieu(Joueur pj) {
-		return false;
+	public boolean gagnerPartie() {
+		return (getJoueurActif().getNbPoints() >= 10) ? true : false;
 	}
 	
-	// TODO construction uv
-	public boolean constructionUV (Sommet s) {
-		return false;
+	public boolean attribuerAncien() {
+		boolean res = false;
+		if (getJoueurActif().getNbCartesDev(SousTypeCartes.ANCIEN) >= 3) {
+			for(Joueur j : participants) {
+				if(!j.equals(getJoueurActif()) && j.getNbCartesDev(SousTypeCartes.ANCIEN) < getJoueurActif().getNbCartesDev(SousTypeCartes.ANCIEN)){
+					getJoueurActif().setAncien(true);
+					getJoueurActif().addNbPoints(2);
+					res = true;
+				}else{
+					j.setAncien(false);
+				}
+			}
+		}else{
+			res = false;
+		}
+		return res;
+	} 
+	
+	public boolean attribuerCursus() {
+		boolean res = false;
+			int nbpion = getJoueurActif().getNbCC() + getJoueurActif().getNbUV() + getJoueurActif().getNbUVStar();
+			if(nbpion <= 19) {
+				for(Joueur j : participants) {
+					if(j.equals(getJoueurActif())){
+						getJoueurActif().setCursus(true);
+						getJoueurActif().addNbPoints(2);
+						res = true;
+					}else{
+						j.setCursus(false);
+					}
+				}
+			}
+		return res;
+	} 
+	
+	public boolean attribuerRess(TypeCartes type, Joueur j) {
+		boolean res = false;
+		if(getGroupeCarte(type).getNombre() >= 0) {
+			DimGroupeCarte(type,1);
+			j.AugmGroupeCarte(type, 1);
+			res = true;
+		}else{
+			res = false;
+		}
+		return res;
 	}
 	
-	// TODO construction controle continue
-	public boolean constructionCC (Arete a) {
-		return false;
+	public boolean acheterCartesDev() {
+		boolean res = false;
+		if(getJoueurActif().payCartesDev()) {
+			payCartesDev();
+			res = true;
+		}else{
+			res = false;
+		}
+		return res;
 	}
 	
 	/**
@@ -335,7 +413,6 @@ public class Jeu {
 		
 		new JeuFrame(new Jeu(new Plateau(40))).setVisible(true);
 		
-
 	}
 
 }
