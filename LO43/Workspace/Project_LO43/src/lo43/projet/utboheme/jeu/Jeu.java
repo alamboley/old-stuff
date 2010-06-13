@@ -430,9 +430,11 @@ public class Jeu {
 					groupe.remCartes(1);
 
 					// on donne la carte au joueur
-					GroupeCartes thegroupe = this.getJoueurActif().getGroupeCartes(groupe.getTypeCartes());
-					thegroupe.addCartes(1);
-					System.out.println("le joueur a obtenu une carte de dev type " + ((GroupeCartesDev) thegroupe).getSousTypeCartes().toString());
+					for (GroupeCartes g : this.getJoueurActif().getGroupeCartesDev()) {
+						GroupeCartesDev devs = (GroupeCartesDev) g;
+						if (devs.getSousTypeCartes() == ((GroupeCartesDev) groupe).getSousTypeCartes())
+							devs.addCartes(1);
+					}
 				}
 			}
 		}
