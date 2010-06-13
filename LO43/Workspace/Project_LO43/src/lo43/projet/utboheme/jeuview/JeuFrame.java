@@ -28,6 +28,7 @@ import lo43.projet.utboheme.carte.GroupeCartes;
 import lo43.projet.utboheme.carte.TypeCartes;
 import lo43.projet.utboheme.carteview.GroupeCartesView;
 import lo43.projet.utboheme.hexagone.HexaRessource;
+import lo43.projet.utboheme.hexagone.TypeTerrain;
 import lo43.projet.utboheme.jeu.Jeu;
 import lo43.projet.utboheme.jeu.Joueur;
 
@@ -490,24 +491,25 @@ public class JeuFrame extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			String[] ressJoueur = new String[getJ().getJoueurActif().getGroupeCartesRess().size()];
+			TypeCartes[] ressJoueur = new TypeCartes[getJ().getJoueurActif().getGroupeCartesRess().size()];
 			int i = 0;
 			for(GroupeCartes gc : getJ().getJoueurActif().getGroupeCartesRess()){
 				if(gc.getNombre() > 0){
-					ressJoueur[i] = String.valueOf(gc.getTypeCartes());
+					ressJoueur[i] = gc.getTypeCartes();
 					i++;
 				}
 			}
-			String[] ressRess = new String[getJ().getCartesRess().size()];
+			TypeCartes[] ressRess = new TypeCartes[getJ().getCartesRess().size()];
 			i = 0;
 			for(GroupeCartes gc : getJ().getCartesRess()){
 				if(gc.getNombre() > 0){
-					ressRess[i] = String.valueOf(gc.getTypeCartes());
+					ressRess[i] = gc.getTypeCartes();
+					i++;
 				}
 			}
 			JOptionPane jop = new JOptionPane();
 			JOptionPane jop2 = new JOptionPane();
-			String RessOffre = (String) JOptionPane.showInputDialog(null, 
+			TypeCartes ressOffre = (TypeCartes) JOptionPane.showInputDialog(null, 
 													  "Quel type de ressource souhaitez vos échanger ?",
 													  "Echanger des ressources avec la réserve",
 													  JOptionPane.QUESTION_MESSAGE,
@@ -515,14 +517,20 @@ public class JeuFrame extends JFrame {
 													  ressJoueur,
 													  ressJoueur[0]);
 			
-			String ressDemString = (String) JOptionPane.showInputDialog(null, 
+			TypeCartes ressDem = (TypeCartes) JOptionPane.showInputDialog(null, 
 										  "Quel type de ressource désirez vous ?",
 										  "Echanger des ressources avec la réserve",
 										  JOptionPane.QUESTION_MESSAGE,
 										  new ImageIcon("img/carte-nourriture.png"),
 										  ressRess,
 										  ressRess[0]);
-			
+			if(j.echangerCartes(ressOffre, ressDem)) {
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a échanger des ressource " + ressOffre + " contre une ressource de " + ressDem);
+			}else{
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu échanger des ressource " + ressOffre + " contre une ressource de " + ressDem);
+			}
+			updateJoueurs();
+			updateReserve();
 		}
 		
 	}
