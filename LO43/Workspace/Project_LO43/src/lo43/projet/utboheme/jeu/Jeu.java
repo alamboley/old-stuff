@@ -9,6 +9,8 @@ import lo43.projet.utboheme.carte.GroupeCartesDev;
 import lo43.projet.utboheme.carte.SousTypeCartes;
 import lo43.projet.utboheme.carte.TypeCartes;
 import lo43.projet.utboheme.hexagone.HexaRessource;
+import lo43.projet.utboheme.hexagone.HexaZoneTroc;
+import lo43.projet.utboheme.hexagone.Hexagone;
 import lo43.projet.utboheme.jeuview.JeuFrame;
 import lo43.projet.utboheme.pion.Pion;
 import lo43.projet.utboheme.pion.UV;
@@ -401,6 +403,27 @@ public class Jeu {
 			res = true;
 		}else{
 			res = false;
+		}
+		return res;
+	}
+	
+	public boolean echangerCartes(TypeCartes typeOff, TypeCartes typeDem) {
+		int nbCartes = 4;
+		boolean res = false;
+		for(Hexagone h : getPlateau().getHexZoneT()) {
+			for(Joueur j : h.getSommetUVProprio()) {
+				HexaZoneTroc hexa = (HexaZoneTroc) h;
+				if(j == getJoueurActif() && hexa.getTypeCarte() == typeDem && nbCartes > hexa.getTypeTroc()){
+					nbCartes = hexa.getTypeTroc();
+				}
+			}	
+		}
+		if(getGroupeCarte(typeDem).getNombre() >= 1 && getJoueurActif().getGroupeCartes(typeOff).getNombre() >= nbCartes) {
+			getJoueurActif().DimGroupeCarte(typeOff, nbCartes);
+			getJoueurActif().AugmGroupeCarte(typeDem, 1);
+			DimGroupeCarte(typeDem, 1);
+			AugmGroupeCarte(typeOff, nbCartes);
+			res = true;
 		}
 		return res;
 	}
