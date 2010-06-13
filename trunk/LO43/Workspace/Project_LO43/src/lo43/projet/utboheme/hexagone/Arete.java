@@ -7,7 +7,7 @@ import lo43.projet.utboheme.pion.Pion;
  * Classe representant une arete
  * 	- possede un attribut de type Pion pour stocker un controle continu
  * 	- possede un attribut de type Sommet pour definir le sommet de debut
- * 	- possede un attribut de type Sommet pour definit les sommet de fin  
+ * 	- possede un attribut de type Sommet pour definir les sommets de fin  
  * @author alexandreaugen
  *
  */
@@ -28,8 +28,6 @@ public class Arete {
 	 
 	/**
 	 * Constructeur parametre
-	 * @param psdebut
-	 * @param psfin
 	 */
 	public Arete(Sommet psdebut, Sommet psfin){
 		this.sDebut = psdebut;
@@ -37,40 +35,37 @@ public class Arete {
 	}
 	
 	/**
-	 * Renvoi le pion stocke dans l'arete
-	 * @return
+	 * Renvoie le pion stocke dans l'arete
+	 * @return l'objet controle continu associe a l'arete
 	 */
 	public Pion getControleC() {
 		return controleC;
 	}
 	
 	/**
-	 * Attribut le pion passe en parametre a "controleC"
-	 * @param pcontrolec
+	 * Attribue le pion passe en parametre a "controleC"
 	 */
 	public void setControleC(Pion pcontrolec) {
 		this.controleC = pcontrolec;
 	}
 
 	/**
-	 * Renvoi le sommet de debut
-	 * @return
+	 * Renvoie le sommet de debut
 	 */
 	public Sommet getsDebut() {
 		return sDebut;
 	}
 
 	/**
-	 * Renvoi le sommet de fin
-	 * @return
+	 * Renvoie le sommet de fin
 	 */
 	public Sommet getsFin() {
 		return sFin;
 	}
 	
 	/**
-	 * Test si l'arete possede un pion
-	 * @return
+	 * Teste si l'arete possede un pion
+	 * @return true si c'est le cas, false sinon
 	 */
 	public boolean hasCC() {
 		if (controleC != null)

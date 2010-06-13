@@ -22,9 +22,6 @@ public class GroupeCartesDev extends GroupeCartes {
 	
 	/**
 	 * Constructeur parametre
-	 * @param nb
-	 * @param type
-	 * @param sstype
 	 */
 	public GroupeCartesDev(int nb, TypeCartes type, SousTypeCartes sstype) {
 		super(nb, type);
@@ -32,7 +29,7 @@ public class GroupeCartesDev extends GroupeCartes {
 	}
 
 	/**
-	 * Renvoi le sous type de cartes du groupe de cartes de devellopement
+	 * Renvoie le sous type de cartes du groupe de cartes de devellopement
 	 * @return
 	 * 	- sousTypeCartes : SousTypesCartes
 	 */
