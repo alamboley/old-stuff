@@ -26,7 +26,6 @@ public class GroupeCartesView extends JPanel{
 	
 	/**
 	 * Constructeur parametre
-	 * @param pgc
 	 */
 	public GroupeCartesView(GroupeCartes pgc) {
 		super();
@@ -40,7 +39,7 @@ public class GroupeCartesView extends JPanel{
 	public void paintComponent(Graphics g) {
 		Image img = null;
 		
-		// On test le type du groupe de carte pour changer l'attribut image associee
+		// On teste le type du groupe de carte pour changer l'attribut image associee
 		try {
 			if(gCartes.getTypeCartes() == TypeCartes.BIERE) {
 				img = ImageIO.read(new File("img/carte-biere.png"));

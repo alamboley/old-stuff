@@ -21,9 +21,7 @@ public class GroupeCartes {
 	}
 	
 	/**
-	 * Constructeur parametre
-	 * @param pnb
-	 * @param ptypeC
+	 * Constructeur avec parametres : nombre et type de cartes
 	 */
 	public GroupeCartes(int pnb, TypeCartes ptypeC) {
 		this.nombre = pnb;
@@ -31,7 +29,7 @@ public class GroupeCartes {
 	}
 	
 	/**
-	 * Renvoi le nombre de cartes
+	 * Renvoie le nombre de cartes
 	 * @return 
 	 * 	- nombre : int
 	 */
@@ -45,7 +43,7 @@ public class GroupeCartes {
 
 	
 	/**
-	 * Renvoi le type du Groupe de cartes
+	 * Renvoie le type du Groupe de cartes
 	 * @return
 	 * 	- typeCartes : TypeCartes
 	 */
@@ -55,7 +53,6 @@ public class GroupeCartes {
 	
 	/**
 	 * Permet d'ajouter un nombre "pnb" de cartes a un groupe de cartes
-	 * @param pnb
 	 */
 	public void addCartes(int pnb) {
 		this.nombre += pnb;
@@ -63,7 +60,6 @@ public class GroupeCartes {
 	
 	/**
 	 * Permet de retirer un nombre "pnb" de cartes a un groupe de cartes
-	 * @param pnb
 	 */
 	public void remCartes(int pnb) {
 		this.nombre -= pnb;

@@ -11,9 +11,9 @@ import lo43.projet.utboheme.jeu.Joueur;
  *  - possede une taille
  *  - possede un boolean pour savoir s'il a le binome glandeur
  *  - possede un type de terrain
- *  - possede la liste de ces sommets
- *  - possede la liste de ces aretes
- *  - possede la liste de ces voisins adjacent
+ *  - possede la liste de ses sommets
+ *  - possede la liste de ses aretes
+ *  - possede la liste de ses voisins adjacent
  * @author alexandreaugen
  *
  */
@@ -44,11 +44,11 @@ public class Hexagone {
 
 	/**
 	 * Constructeur parametre
-	 * @param pindX
-	 * @param pindY
-	 * @param psize
-	 * @param pbinome
-	 * @param ptypeT
+	 * @param pindX coordonnee en x
+	 * @param pindY coordonnee en y
+	 * @param psize taille de l'hexagone
+	 * @param pbinome si le binome est sur l'hexagone
+	 * @param ptypeT type de terrain
 	 */
 	public Hexagone(int pindX, int pindY, int psize, boolean pbinome, TypeTerrain ptypeT) {
 		this.xHex = pindX;
@@ -61,7 +61,7 @@ public class Hexagone {
 	}
 	
 	/**
-	 * Methode permettant d'initialiser l'hexagone, ces sommets et ces aretes
+	 * Methode permettant d'initialiser l'hexagone, ses sommets et ses aretes
 	 */
 	public void InitHexa(){
 		this.sommets = new ArrayList<Sommet>();
@@ -115,7 +115,7 @@ public class Hexagone {
 	}
 	
 	/**
-	 * Methode permettant de renvoyer les sommets de l'hexagone qui possede une UV 
+	 * Methode permettant de renvoyer les sommets de l'hexagone qui possedent une UV 
 	 * @return
 	 * 	- une liste de sommets
 	 */
@@ -130,7 +130,7 @@ public class Hexagone {
 	}
 	 
 	/**
-	 * Methode permettant de renvoyer les aretes de l'hexagone qui possede un controle continu
+	 * Methode permettant de renvoyer les aretes de l'hexagone qui possedent un controle continu
 	 * @return
 	 * 	- une liste d'aretes
 	 */
@@ -145,7 +145,7 @@ public class Hexagone {
 	}
 	
 	/**
-	 * Methode permettant de renvoyer les proprietaires des UVs presentent sur les sommets de l'hexagone
+	 * Methode permettant de renvoyer les proprietaires des UVs presentes sur les sommets de l'hexagone
 	 * @return
 	 * 	_ une liste de joueur
 	 */
@@ -160,9 +160,7 @@ public class Hexagone {
 	}
 	
 	/**
-	 * Methode permettant de positionner un hexagone selon ces attributs x et y
-	 * @param pxHex
-	 * @param pyHex
+	 * Methode permettant de positionner un hexagone selon ses attributs x et y
 	 * @return
 	 * 	- un hexagone
 	 */
@@ -174,7 +172,7 @@ public class Hexagone {
 	}
 
 	/**
-	 * Renvoi la position x de l'hexagone
+	 * Renvoie la position x de l'hexagone
 	 * @return
 	 *  - un double
 	 */
@@ -183,15 +181,14 @@ public class Hexagone {
 	}
 
 	/**
-	 * Attribut le parametre a la position x
-	 * @param pxHex
+	 * Attribue le parametre a la position x
 	 */
 	public void setXHex(double pxHex) {
 		this.xHex = pxHex;
 	}
 	
 	/**
-	 * Renvoi la position y de l'hexagone
+	 * Renvoie la position y de l'hexagone
 	 * @return
 	 * 	- un double
 	 */
@@ -200,15 +197,14 @@ public class Hexagone {
 	}
 
 	/**
-	 * Attribut le parametre a la position y
-	 * @param pyHex
+	 * Attribue le parametre a la position y
 	 */
 	public void setYHex(double pyHex) {
 		this.yHex = pyHex;
 	}
 	
 	/**
-	 * Renvoi la taille de l'hexagone 
+	 * Renvoie la taille de l'hexagone 
 	 * @return
 	 * 	- un double
 	 */
@@ -217,15 +213,14 @@ public class Hexagone {
 	}
 	
 	/**
-	 * Attribut le parametre a la taille de l'hexagone
-	 * @param psize
+	 * Attribue le parametre a la taille de l'hexagone
 	 */
 	public void setSize(double psize) {
 		this.size = psize;
 	}
 
 	/**
-	 * Test si l'hexagone possede le binome glandeur
+	 * Teste si l'hexagone possede le binome glandeur
 	 * @return
 	 * 	- un boolean
 	 */
@@ -234,23 +229,21 @@ public class Hexagone {
 	}
 
 	/**
-	 * Attribut le binome glandeur a l'hexagone
-	 * @param pbinomeg
+	 * Attribue le binome glandeur a l'hexagone
 	 */
 	public void setBinomeG(boolean pbinomeg) {
 		this.binomeG = pbinomeg;
 	}
 
 	/**
-	 * Renvoi le type de terrain de l'hexagone
-	 * @return
+	 * Renvoie le type de terrain de l'hexagone
 	 */
 	public TypeTerrain getTypeTerr() {
 		return typeTerr;
 	}
 	 
 	/**
-	 * Renvoi la liste des sommets de l'hexagone
+	 * Renvoie la liste des sommets de l'hexagone
 	 * @return
 	 * 	- une liste de sommets
 	 */
@@ -259,7 +252,7 @@ public class Hexagone {
 	}
 
 	/**
-	 * Renvoi la liste des aretes de l'hexagone
+	 * Renvoie la liste des aretes de l'hexagone
 	 * @return
 	 * 	- une liste d'aretes
 	 */
