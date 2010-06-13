@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -24,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import lo43.projet.utboheme.carte.GroupeCartes;
+import lo43.projet.utboheme.carte.GroupeCartesDev;
 import lo43.projet.utboheme.carte.TypeCartes;
 import lo43.projet.utboheme.carteview.GroupeCartesView;
 import lo43.projet.utboheme.hexagone.HexaRessource;
@@ -31,17 +33,17 @@ import lo43.projet.utboheme.jeu.Jeu;
 import lo43.projet.utboheme.jeu.Joueur;
 
 /**
- * Classe qui permet de représenter graphiquement la classe Jeu
- * Hérite de JFrame
- * 	- possède un attribut de type Jeu pour savoir le jeu à représenter
- *  - possède une représentation graphique du plateau associé au jeu
- *  - possède une liste des représentations graphiques des participants
- *  - possède une liste des groupes de cartes qui composent la reserve
- *  - possède un container pour les cartes
- *  - possède un container pour le container des cartes et les boutons
- *  - possède un label pour la valeur du dé
- *  - possède un champ text pour les informations du jeu
- *  - possède différents boutons de commande  
+ * Classe qui permet de representer graphiquement la classe Jeu
+ * Herite de JFrame
+ * 	- possede un attribut de type Jeu pour savoir le jeu a representer
+ *  - possede une representation graphique du plateau associe au jeu
+ *  - possede une liste des representations graphiques des participants
+ *  - possede une liste des groupes de cartes qui composent la reserve
+ *  - possede un container pour les cartes
+ *  - possede un container pour le container des cartes et les boutons
+ *  - possede un label pour la valeur du de
+ *  - possede un champ text pour les informations du jeu
+ *  - possede differents boutons de commande  
  * @author alexandreaugen
  *
  */
@@ -68,26 +70,26 @@ public class JeuFrame extends JFrame {
 	private JButton btDoTroc;
 	
 	/**
-	 * Constructeur paramétré
+	 * Constructeur parametre
 	 * @param pj
 	 */
 	public JeuFrame(Jeu pj) {
 		this.j = pj;
 		this.plat = new PlateauView(j.getPlateau());
-		this.setTitle("Les colons de l'UTboHème");
+		this.setTitle("Les colons de l'UTboHeme");
 		this.setSize(j.getPlateau().getWidth() + 550, j.getPlateau().getHeight() + 500);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBackground(Color.white);
 		this.setLocationRelativeTo(null);
 		this.setLayout(new BorderLayout());
 		
-		//création du container de jeu
+		//creation du container de jeu
 		containerJeu = new JPanel();
 		containerJeu.setLayout(new GridBagLayout());
 		//Mise en place du layout de positionnement
 		GridBagConstraints gbc = new GridBagConstraints();
 		
-		//création du container des cartes
+		//creation du container des cartes
 		containerCartes = new JPanel();
 		containerCartes.setLayout(new GridBagLayout());
 		
@@ -145,7 +147,7 @@ public class JeuFrame extends JFrame {
 		gbc.gridwidth = 2;
 		containerJeu.add(containerCartes, gbc);
 		
-		//création du champ texte pour les infos du jeu
+		//creation du champ texte pour les infos du jeu
 		infosPartie = new JTextArea();
 		infosPartie.setFont(new Font("Comics", Font.ITALIC, 13));
 		infosPartie.setForeground(Color.blue);
@@ -159,7 +161,7 @@ public class JeuFrame extends JFrame {
 		gbc.gridwidth = 2;
 		containerJeu.add(infosPartie, gbc);
 		
-		//création du label pour les valeurs du dé
+		//creation du label pour les valeurs du de
 		valeurDes = new JLabel("0");
 		valeurDes.setFont(new Font("Comics", Font.BOLD, 16));
 		valeurDes.setForeground(Color.blue);
@@ -171,8 +173,8 @@ public class JeuFrame extends JFrame {
 		gbc.gridwidth = 1;
 		containerJeu.add(valeurDes, gbc);
 		
-		//Bouton pour lancer le dé
-		btDes = new JButton("Lancer Dés");
+		//Bouton pour lancer le de
+		btDes = new JButton("Lancer Des");
 		btDes.addActionListener(new ActionButtonDes());
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.weighty = 0.5;
@@ -281,7 +283,7 @@ public class JeuFrame extends JFrame {
 	}
 	
 	/**
-	 * Méthode pour initialiser les participants
+	 * Methode pour initialiser les participants
 	 */
 	private void attribuerJoueur() {
 		
@@ -303,12 +305,12 @@ public class JeuFrame extends JFrame {
 		joueurV.add(new JoueurView(j.getParticipants().get(2), j.getParticipants().get(2).getCouleur(), "img/boy_3.png"));
 		
 		j.getParticipants().get(new Random().nextInt(3)).setActif(true);
-		infosPartie.setText("Bienvenue dans le Jeu les Colons de l'UTBohèMe ! \n C'est à " + j.getJoueurActif().getNom() + " de commencer la phase de fondation !");
+		infosPartie.setText("Bienvenue dans le Jeu les Colons de l'UTBoheMe ! \n C'est a " + j.getJoueurActif().getNom() + " de commencer la phase de fondation !");
 	
 	}
 	
 	/**
-	 * Méthode pour créer graphiquement les cartes et les stocker dans la liste associée
+	 * Methode pour creer graphiquement les cartes et les stocker dans la liste associee
 	 */
 	private void creerCartes() {
 		for(GroupeCartes gc : j.getCartesRess()) {
@@ -317,14 +319,14 @@ public class JeuFrame extends JFrame {
 	}
 	
 	/**
-	 * Méthode pour créer graphiquement les cartes de développemeny et les sctocker dans la lste associée
+	 * Methode pour creer graphiquement les cartes de developpemeny et les sctocker dans la lste associee
 	 */
 	private void creerCartesDev() {
 		reserveV.add(new GroupeCartesView(j.getGroupeCartesDev()));
 	}
 	
 	/**
-	 * Méthode qui renvoi la représentation graphique du joueur actif
+	 * Methode qui renvoi la representation graphique du joueur actif
 	 * @return
 	 * 	- un joueurView
 	 */
@@ -340,7 +342,7 @@ public class JeuFrame extends JFrame {
 	}
 	
 	/**
-	 * Méthode permettant de repeindre l'ensemble des représentation des joueurs
+	 * Methode permettant de repeindre l'ensemble des representation des joueurs
 	 */
 	private void updateJoueurs() {
 		for(JoueurView jv : joueurV) {
@@ -349,14 +351,14 @@ public class JeuFrame extends JFrame {
 	}
 	
 	/**
-	 * Méthode permettant de repeindre le containerJeu
+	 * Methode permettant de repeindre le containerJeu
 	 */
 	private void updateReserve() {
 		this.containerJeu.repaint();
 	}
 	
 	/**
-	 * Méthode permettant de désactiver les composant d'un composant
+	 * Methode permettant de desactiver les composant d'un composant
 	 * @param jc
 	 * @param b
 	 */
@@ -370,7 +372,7 @@ public class JeuFrame extends JFrame {
 	}
 	
 	/**
-	 * Classe qui permet de gérer les événements de la sourie
+	 * Classe qui permet de gerer les evenements de la sourie
 	 * @author alexandreaugen
 	 *
 	 */
@@ -395,17 +397,17 @@ public class JeuFrame extends JFrame {
 			if(!containerJeu.isEnabled()) {
 				if(plat.fonder(e.getPoint(), getViewJoueurActif())){
 					j.finirTour();
-					infosPartie.setText("Phase de fondation : \n C'est à " + j.getJoueurActif().getNom() + " de jouer !");
+					infosPartie.setText("Phase de fondation : \n C'est a " + j.getJoueurActif().getNom() + " de jouer !");
 					if(j.totalUVParticipants() <= 9) {
 						enabledButton(containerJeu, true);
-						infosPartie.setText("Le jeu peux commencer : \n C'est à " + j.getJoueurActif().getNom() + " de jouer !");
+						infosPartie.setText("Le jeu peux commencer : \n C'est a " + j.getJoueurActif().getNom() + " de jouer !");
 					}
 				}
 			}else{
 				if(!plat.ajouter(e.getPoint(), getJ())){
-					infosPartie.setText("C'est à " + j.getJoueurActif().getNom() + " de jouer ! \n Vous ne pouvez pas contruire ici !");
+					infosPartie.setText("C'est a " + j.getJoueurActif().getNom() + " de jouer ! \n Vous ne pouvez pas contruire ici !");
 				}else{
-					infosPartie.setText("C'est à " + j.getJoueurActif().getNom() + " de jouer ! \n Nouvelle construction !");
+					infosPartie.setText("C'est a " + j.getJoueurActif().getNom() + " de jouer ! \n Nouvelle construction !");
 				}
 			}
 			updateJoueurs();
@@ -419,15 +421,15 @@ public class JeuFrame extends JFrame {
 	}
 	
 	/**
-	 * Classe qui gére l'évenement sur le bouton du dé
+	 * Classe qui gere l'evenement sur le bouton du de
 	 * @author alexandreaugen
 	 *
 	 */
 	private class ActionButtonDes implements ActionListener {
 
 		/**
-		 * Méthode qui lance le dé
-		 * Affiche le résultat
+		 * Methode qui lance le de
+		 * Affiche le resultat
 		 * Attribut les ressources aux joueurs
 		 */
 		public void actionPerformed(ActionEvent e) {
@@ -438,20 +440,20 @@ public class JeuFrame extends JFrame {
 				if(!h.isBinomeG()) {
 					for(Joueur jo : h.getSommetUVProprio()) {
 						if (j.attribuerRess(h.getTypeCartes(), jo)) {
-							infosPartie.setText("Les ressources ont été attribuées à chaques participants !");
+							infosPartie.setText("Les ressources ont ete attribuees a chaques participants !");
 						}else{
-							infosPartie.setText("La reserve en ressource demandée est vide !");
+							infosPartie.setText("La reserve en ressource demandee est vide !");
 						}
 					}
 					if(h.getSommetUVProprio().isEmpty()) {
-						infosPartie.setText("Aucun participants ne posséde d'uvs sur les terrains numérotés : " + String.valueOf(h.getJeton().getNumero()) + " !");
+						infosPartie.setText("Aucun participants ne possede d'uvs sur les terrains numerotes : " + String.valueOf(h.getJeton().getNumero()) + " !");
 					}
 				}
 			}
 			if(j.getValeurDes() == 7) {
-				infosPartie.setText("Le binome glandeur à été déplacé !!!");
+				infosPartie.setText("Le binome glandeur a ete deplace !!!");
 				if(j.deplacerBinome()) {
-					infosPartie.setText("Le binome glandeur à été déplacé !!! \n Des ressources ont été volées !!!");
+					infosPartie.setText("Le binome glandeur a ete deplace !!! \n Des ressources ont ete volees !!!");
 				}
 			}
 			updateJoueurs();
@@ -462,14 +464,14 @@ public class JeuFrame extends JFrame {
 	}
 	
 	/**
-	 * Classe qui gére l'événement sur le bouton du cursus
+	 * Classe qui gere l'evenement sur le bouton du cursus
 	 * @author alexandreaugen
 	 *
 	 */
 	private class ActionButtonCursus implements ActionListener {
 
 		/**
-		 * Méthode qui attribut le cursus au joueur actif
+		 * Methode qui attribut le cursus au joueur actif
 		 */
 		public void actionPerformed(ActionEvent e) {
 			if (j.attribuerCursus()) {
@@ -477,33 +479,33 @@ public class JeuFrame extends JFrame {
 				updateJoueurs();
 
 			}else{
-				infosPartie.setText(j.getJoueurActif().getNom() + " ne possède pas le chemin le plus long !");
+				infosPartie.setText(j.getJoueurActif().getNom() + " ne possede pas le chemin le plus long !");
 			}
 		}
 	}
 	
 	/**
-	 * Classe qui gére l'événenemt sur le bouton d'ancien
+	 * Classe qui gere l'evenenemt sur le bouton d'ancien
 	 * @author alexandreaugen
 	 *
 	 */
 	private class ActionButtonOld implements ActionListener {
 
 		/**
-		 * Méthode qui attribut l'ancien au joueur actif
+		 * Methode qui attribut l'ancien au joueur actif
 		 */
 		public void actionPerformed(ActionEvent e) {
 			if (j.attribuerAncien()) {
 				infosPartie.setText(j.getJoueurActif().getNom() + " prend la cartes Ancien le plus vieu !");
 				updateJoueurs();			
 			}else{
-				infosPartie.setText(j.getJoueurActif().getNom() + " ne possède pas assez de cartes Ancien !");
+				infosPartie.setText(j.getJoueurActif().getNom() + " ne possede pas assez de cartes Ancien !");
 			}
 		}
 	}
 	
 	/**
-	 * Classe qui gére l'événement sur le bouton d'echange
+	 * Classe qui gere l'evenement sur le bouton d'echange
 	 * @author alexandreaugen
 	 *
 	 */
@@ -532,24 +534,24 @@ public class JeuFrame extends JFrame {
 			@SuppressWarnings("unused")
 			JOptionPane jop2 = new JOptionPane();
 			TypeCartes ressOffre = (TypeCartes) JOptionPane.showInputDialog(null, 
-													  "Quel type de ressource souhaitez vos échanger ?",
-													  "Echanger des ressources avec la réserve",
+													  "Quel type de ressource souhaitez vos echanger ?",
+													  "Echanger des ressources avec la reserve",
 													  JOptionPane.QUESTION_MESSAGE,
 													  new ImageIcon("img/carte-nourriture.png"),
 													  ressJoueur,
 													  ressJoueur[0]);
 			
 			TypeCartes ressDem = (TypeCartes) JOptionPane.showInputDialog(null, 
-										  "Quel type de ressource désirez vous ?",
-										  "Echanger des ressources avec la réserve",
+										  "Quel type de ressource desirez vous ?",
+										  "Echanger des ressources avec la reserve",
 										  JOptionPane.QUESTION_MESSAGE,
 										  new ImageIcon("img/carte-nourriture.png"),
 										  ressRess,
 										  ressRess[0]);
 			if(j.echangerCartes(ressOffre, ressDem)) {
-				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a échanger des ressource " + ressOffre + " contre une ressource de " + ressDem);
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a echanger des ressource " + ressOffre + " contre une ressource de " + ressDem);
 			}else{
-				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu échanger des ressource " + ressOffre + " contre une ressource de " + ressDem);
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu echanger des ressource " + ressOffre + " contre une ressource de " + ressDem);
 			}
 			updateJoueurs();
 			updateReserve();
@@ -558,20 +560,20 @@ public class JeuFrame extends JFrame {
 	}
 	
 	/**
-	 * Classe qui gére l'événement sur le bouton de fin de tour
+	 * Classe qui gere l'evenement sur le bouton de fin de tour
 	 * @author alexandreaugen
 	 *
 	 */
 	private class ActionFinTour	implements ActionListener {
 
 		/**
-		 * Méthode qui permet de finir un tour
+		 * Methode qui permet de finir un tour
 		 * Affiche les infos de la partie
-		 * Met à jour les représentations graphiques des joueurs
+		 * Met a jour les representations graphiques des joueurs
 		 */
 		public void actionPerformed(ActionEvent e) {
 			j.finirTour();
-			infosPartie.setText("C'est à " + j.getJoueurActif().getNom() + " de jouer !");
+			infosPartie.setText("C'est a " + j.getJoueurActif().getNom() + " de jouer !");
 			updateJoueurs();
 			btDes.setEnabled(true);
 		}
@@ -579,7 +581,7 @@ public class JeuFrame extends JFrame {
 	}
 	
 	/**
-	 * Classe qui gére l'évenement sur le bouton de victoire
+	 * Classe qui gere l'evenement sur le bouton de victoire
 	 * @author alexandreaugen
 	 *
 	 */
@@ -588,11 +590,11 @@ public class JeuFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			if(j.gagnerPartie()){
-				infosPartie.setText(j.getJoueurActif().getNom() + " a accumulé(e) 10 points de victoire et gagne la partie !");
+				infosPartie.setText(j.getJoueurActif().getNom() + " a accumule(e) 10 points de victoire et gagne la partie !");
 				map.setVisible(false);
 				enabledButton(containerJeu, false);
 				joueurV.get(0).setEnabled(false);
-				JTextArea fin = new JTextArea("La Partie est terminée ! \n Victoire de " + j.getJoueurActif().getNom() + " ! \n Nombre de points de victoire : " + j.getJoueurActif().getNbPoints());
+				JTextArea fin = new JTextArea("La Partie est terminee ! \n Victoire de " + j.getJoueurActif().getNom() + " ! \n Nombre de points de victoire : " + j.getJoueurActif().getNbPoints());
 				fin.setFont(new Font("Comics", Font.BOLD, 15));
 				fin.setForeground(Color.red);
 				fin.setEditable(false);
@@ -600,14 +602,14 @@ public class JeuFrame extends JFrame {
 				fin.setWrapStyleWord(true);
 				getContentPane().add(fin, BorderLayout.CENTER);
 			}else{
-				infosPartie.setText(j.getJoueurActif().getNom() + " n'a pas encore accumulé(e) 10 points de victoire !");
+				infosPartie.setText(j.getJoueurActif().getNom() + " n'a pas encore accumule(e) 10 points de victoire !");
 			}
 			
 		}
 	}
 	
 	/**
-	 * Classe qui gére l'évenement sur le bouton d'achat de cartes
+	 * Classe qui gere l'evenement sur le bouton d'achat de cartes
 	 * @author alexandreaugen
 	 *
 	 */
@@ -616,9 +618,9 @@ public class JeuFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			if(j.acheterCartesDev()) {
-				infosPartie.setText(""+ j.getJoueurActif().getNom() + " achète une carte de développement !");
+				infosPartie.setText(""+ j.getJoueurActif().getNom() + " achete une carte de developpement !");
 			}else{
-				infosPartie.setText(""+ j.getJoueurActif().getNom() + " ne peut pas acheter de carte de développement ! \n Pas assez de ressources disponible !");
+				infosPartie.setText(""+ j.getJoueurActif().getNom() + " ne peut pas acheter de carte de developpement ! \n Pas assez de ressources disponible !");
 			}
 			updateJoueurs();
 			updateReserve();
@@ -626,7 +628,7 @@ public class JeuFrame extends JFrame {
 	}
 	
 	/**
-	 * Classe qui gére l'évenement sur le bouton pour jouer une carte de dev
+	 * Classe qui gere l'evenement sur le bouton pour jouer une carte de dev
 	 * @author alexandreaugen
 	 *
 	 */
@@ -639,7 +641,7 @@ public class JeuFrame extends JFrame {
 	}
 	
 	/**
-	 * Classe qui gére l'évenement sur le bouton pour faire du troc
+	 * Classe qui gere l'evenement sur le bouton pour faire du troc
 	 * @author alexandreaugen
 	 *
 	 */
