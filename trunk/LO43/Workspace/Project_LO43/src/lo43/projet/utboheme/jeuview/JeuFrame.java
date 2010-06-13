@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -28,7 +27,6 @@ import lo43.projet.utboheme.carte.GroupeCartes;
 import lo43.projet.utboheme.carte.TypeCartes;
 import lo43.projet.utboheme.carteview.GroupeCartesView;
 import lo43.projet.utboheme.hexagone.HexaRessource;
-import lo43.projet.utboheme.hexagone.TypeTerrain;
 import lo43.projet.utboheme.jeu.Jeu;
 import lo43.projet.utboheme.jeu.Joueur;
 
@@ -65,7 +63,9 @@ public class JeuFrame extends JFrame {
 	private JButton btExchange;
 	private JButton btFinTour;
 	private JButton btGagner;
-	private JButton btBuyCartes;
+	private JButton btBuyCarte;
+	private JButton btPlayCarte;
+	private JButton btDoTroc;
 	
 	/**
 	 * Constructeur paramétré
@@ -219,7 +219,7 @@ public class JeuFrame extends JFrame {
 		gbc.ipadx = 20;
 		gbc.ipady = 20;
 		gbc.gridx = 0;
-		gbc.gridy = 5;
+		gbc.gridy = 6;
 		containerJeu.add(btFinTour, gbc);
 		
 		//Bouton de victoire
@@ -229,18 +229,38 @@ public class JeuFrame extends JFrame {
 		gbc.ipadx = 20;
 		gbc.ipady = 20;
 		gbc.gridx = 1;
-		gbc.gridy = 5;
+		gbc.gridy = 6;
 		containerJeu.add(btGagner, gbc);
 	
 		//Bouton acheter carte de dev
-		btBuyCartes = new JButton("Acheter cartes");
-		btBuyCartes.addActionListener(new ActionBuyCartes());
+		btBuyCarte = new JButton("Acheter cartes");
+		btBuyCarte.addActionListener(new ActionBuyCartes());
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.ipadx = 20;
 		gbc.ipady = 20;
 		gbc.gridx = 1;
 		gbc.gridy = 4;
-		containerJeu.add(btBuyCartes, gbc);
+		containerJeu.add(btBuyCarte, gbc);
+		
+		//Bouton joueur carte de dev
+		btPlayCarte = new JButton("Jouer cartes");
+		btPlayCarte.addActionListener(new ActionPlayCarte());
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.ipadx = 20;
+		gbc.ipady = 20;
+		gbc.gridx = 1;
+		gbc.gridy = 5;
+		containerJeu.add(btPlayCarte, gbc);
+		
+		//Bouton faire troc
+		btDoTroc = new JButton("Faire Troc");
+		btDoTroc.addActionListener(new ActionDoTroc());
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.ipadx = 20;
+		gbc.ipady = 20;
+		gbc.gridx = 0;
+		gbc.gridy = 5;
+		containerJeu.add(btDoTroc, gbc);
 		
 		containerJeu.setEnabled(false);
 		
@@ -507,7 +527,9 @@ public class JeuFrame extends JFrame {
 					i++;
 				}
 			}
+			@SuppressWarnings("unused")
 			JOptionPane jop = new JOptionPane();
+			@SuppressWarnings("unused")
 			JOptionPane jop2 = new JOptionPane();
 			TypeCartes ressOffre = (TypeCartes) JOptionPane.showInputDialog(null, 
 													  "Quel type de ressource souhaitez vos échanger ?",
@@ -600,6 +622,32 @@ public class JeuFrame extends JFrame {
 			}
 			updateJoueurs();
 			updateReserve();
+		}
+	}
+	
+	/**
+	 * Classe qui gére l'évenement sur le bouton pour jouer une carte de dev
+	 * @author alexandreaugen
+	 *
+	 */
+	private class ActionPlayCarte implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
+	
+	/**
+	 * Classe qui gére l'évenement sur le bouton pour faire du troc
+	 * @author alexandreaugen
+	 *
+	 */
+	private class ActionDoTroc implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
