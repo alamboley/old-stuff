@@ -80,11 +80,11 @@ public class Joueur {
 		
 		//Attribution par defaut des differents groupes de cartes vide
 		this.lcartes = new ArrayList<GroupeCartes>();
-		lcartes.add(new GroupeCartes(4, TypeCartes.BIERE));
-		lcartes.add(new GroupeCartes(4, TypeCartes.SOMMEIL));
-		lcartes.add(new GroupeCartes(4, TypeCartes.CAFE));
-		lcartes.add(new GroupeCartes(4, TypeCartes.SUPPORT));
-		lcartes.add(new GroupeCartes(4, TypeCartes.NOURRITURE));
+		lcartes.add(new GroupeCartes(0, TypeCartes.BIERE));
+		lcartes.add(new GroupeCartes(0, TypeCartes.SOMMEIL));
+		lcartes.add(new GroupeCartes(0, TypeCartes.CAFE));
+		lcartes.add(new GroupeCartes(0, TypeCartes.SUPPORT));
+		lcartes.add(new GroupeCartes(0, TypeCartes.NOURRITURE));
 		lcartes.add(new GroupeCartesDev(0, TypeCartes.DEVELOPPEMENT, SousTypeCartes.ANCIEN));
 		lcartes.add(new GroupeCartesDev(0, TypeCartes.DEVELOPPEMENT, SousTypeCartes.CONSTRUCTIONCC));
 		lcartes.add(new GroupeCartesDev(0, TypeCartes.DEVELOPPEMENT, SousTypeCartes.DECOUVERTE));
@@ -92,6 +92,11 @@ public class Joueur {
 		lcartes.add(new GroupeCartesDev(0, TypeCartes.DEVELOPPEMENT, SousTypeCartes.POINTVICTOIRE));
 
 		this.lcartesJouees = new ArrayList<GroupeCartesDev>();
+		lcartesJouees.add(new GroupeCartesDev(4, TypeCartes.DEVELOPPEMENT, SousTypeCartes.ANCIEN));
+		lcartesJouees.add(new GroupeCartesDev(0, TypeCartes.DEVELOPPEMENT, SousTypeCartes.CONSTRUCTIONCC));
+		lcartesJouees.add(new GroupeCartesDev(0, TypeCartes.DEVELOPPEMENT, SousTypeCartes.DECOUVERTE));
+		lcartesJouees.add(new GroupeCartesDev(0, TypeCartes.DEVELOPPEMENT, SousTypeCartes.MONOPOLE));
+		lcartesJouees.add(new GroupeCartesDev(0, TypeCartes.DEVELOPPEMENT, SousTypeCartes.POINTVICTOIRE));
 		this.luvstar = new ArrayList<UV>();
 		this.luv = new ArrayList<UV>();
 		this.lcc = new ArrayList<Pion>();
@@ -216,6 +221,8 @@ public class Joueur {
 		this.actif = actif;
 	}
 	
+	
+	
 	/**
 	 * Methode permettant de renvoyer un groupe de cartes du stock du joueur selon le type passe en parametre
 	 * @param ptype
@@ -254,9 +261,16 @@ public class Joueur {
 		return gc;
 	}
 	
-	public void AugmenterGroupeCarteDev(SousTypeCartes sstype, int nbCartes) {
-		this.getGroupeCartesDev(sstype).addCartes(nbCartes);
+	public void AugmenterGroupeCarteDev(SousTypeCartes sstype, int nb) {
+		this.getGroupeCartesDev(sstype).addCartes(nb);
 	}
+	
+	public void DimGroupeCarteDev(SousTypeCartes sstype, int nb) {
+		this.getGroupeCartesDev(sstype).remCartes(nb);
+		if(getGroupeCartesDev(sstype).getNombre() < 0) 
+			this.getGroupeCartesDev(sstype).setNombre(0);
+	}
+	
 
 	/**
 	 * Renvoi la liste des controles continu du joueur
@@ -358,6 +372,14 @@ public class Joueur {
 		return this.getGroupeCartes(ptype).getNombre();
 	}
 	
+	public int getNbCartesRessTotal(){
+		int res = 0;
+		for(GroupeCartes gc : getGroupeCartesRess()){
+			res += gc.getNombre();
+		}
+		return res;
+	}
+	
 	public List<GroupeCartes> getGroupeCartesRess() {
 		List<GroupeCartes> liste = new ArrayList<GroupeCartes>();
 		for(GroupeCartes g : lcartes) {
@@ -390,10 +412,32 @@ public class Joueur {
 		return gc;
 	}
 	
+	public GroupeCartes getGroupeCartesDevJoue(SousTypeCartes sstype) {
+		GroupeCartes gc = new GroupeCartes();
+		for (GroupeCartesDev g : lcartesJouees) {
+			if(g.getSousTypeCartes() == sstype) {
+				gc = g;
+				break;
+			}
+		}
+		return gc;
+	}
+	
 	public int getNbCartesDev(SousTypeCartes sstype) {
 		int res = 0;
 		for(GroupeCartes gc : getGroupeCartesDev()) {
 			GroupeCartesDev gcd = (GroupeCartesDev) gc;
+			if(gcd.getSousTypeCartes() == sstype){
+				res = gcd.getNombre();
+				break;
+			}
+		}
+		return res;
+	}
+	
+	public int getNbCartesDevJoue(SousTypeCartes sstype) {
+		int res = 0;
+		for(GroupeCartesDev gcd : lcartesJouees) {
 			if(gcd.getSousTypeCartes() == sstype){
 				res = gcd.getNombre();
 				break;
@@ -464,6 +508,16 @@ public class Joueur {
 			res = true;
 		}
 		return res;
+	}
+	
+	public void jouerCarteDev(SousTypeCartes sstype) {
+		DimGroupeCarteDev(sstype, 1);
+		for(GroupeCartesDev gcd : lcartesJouees) {
+			if(gcd.getSousTypeCartes() == sstype) {
+				gcd.addCartes(1);
+				break;
+			}
+		}
 	}
 
 }
