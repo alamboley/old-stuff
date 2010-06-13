@@ -69,6 +69,7 @@ public class PlateauView extends Canvas{
 	 */
 	public boolean fonder(Point mousePosition, JoueurView jv) {
 		boolean hasSommet = false; 
+		boolean hasCc = false;
 		
 		//Parcours les hexagonesView
 		for(HexagoneView hv : lHexaV) {
@@ -82,13 +83,23 @@ public class PlateauView extends Canvas{
 					}
 				}
 			}
+			//Parcours les areteView
+			for(AreteView a : hv.getLAreteV()) {
+				// on recupere l'arete correspondante pour l'utiliser dans le jeu
+				if(a.contains(mousePosition)) {
+					if(!a.getArete().hasCC()) {
+						a.getArete().setControleC(jv.getJoueur().getCC());
+						hasCc = true;
+					}
+				}
+			}
 		}
 		if(hasSommet){
 			jv.getJoueur().addNbPoints(1);
 			jv.getJoueur().remUV();
 		}
 		this.update();
-		return hasSommet;
+		return hasSommet || hasCc;
 	}
 	
 	/**
