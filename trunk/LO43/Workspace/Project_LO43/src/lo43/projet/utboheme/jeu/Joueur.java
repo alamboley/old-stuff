@@ -1,31 +1,33 @@
 package lo43.projet.utboheme.jeu;
 
 import java.awt.Color;
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
 
 import lo43.projet.utboheme.arbre.ArbreBinaire;
 import lo43.projet.utboheme.carte.GroupeCartes;
 import lo43.projet.utboheme.carte.GroupeCartesDev;
+import lo43.projet.utboheme.carte.SousTypeCartes;
 import lo43.projet.utboheme.carte.TypeCartes;
 import lo43.projet.utboheme.pion.Pion;
 import lo43.projet.utboheme.pion.UV;
 
 /**
- * Classe representant un joueur
- * 	- possede un identifiant
- *  - possede un nom
- *  - possede une couleur
- *  - possede un nombre de point de victoire
- *  - possede un attribut pour reperer s'il possede ancien plus vieu
- *  - possede un attribut pour reperer s'il possede cursus plus long
- *  - possede un attribut pour savoir s'il est actif
- *  - possede une liste de groupe de cartes (ressource et developpement)
- *  - possede une liste de groupe de cartes de developpement dejà jouees
- *  - possede une liste de controle continu 
- *  - possede une liste d'uv
- *  - possede une liste d'uv**
- *  - possede une liste de chemin pour cursus plus long
+ * Classe représentant un joueur
+ * 	- possède un identifiant
+ *  - possède un nom
+ *  - possède une couleur
+ *  - possède un nombre de point de victoire
+ *  - possède un attribut pour repérer s'il possède ancien plus vieu
+ *  - possède un attribut pour repérer s'il possède cursus plus long
+ *  - possède un attribut pour savoir s'il est actif
+ *  - possède une liste de groupe de cartes (ressource et développement)
+ *  - possède une liste de groupe de cartes de developpement déjà jouées
+ *  - possède une liste de contrôle continu 
+ *  - possède une liste d'uv
+ *  - possède une liste d'uv**
+ *  - possède une liste de chemin pour cursus plus long
  * @author alexandreaugen
  *
  */
@@ -47,7 +49,7 @@ public class Joueur {
 	private List<ArbreBinaire> chemins;
 	
 	/**
-	 * Constructeur par defaut
+	 * Constructeur par défaut
 	 */
 	public Joueur() {
 		this.ident = 0;
@@ -66,7 +68,7 @@ public class Joueur {
 	}
 	
 	/**
-	 * Constructeur parametre
+	 * Constructeur paramétré
 	 * @param pident
 	 * @param pnom
 	 * @param pc
@@ -77,20 +79,25 @@ public class Joueur {
 		this.nom = pnom;
 		this.couleur = pc;
 		
-		//Attribution par defaut des differents groupes de cartes vide
+		//Attribution par défaut des différents groupes de cartes vide
 		this.lcartes = new ArrayList<GroupeCartes>();
 		lcartes.add(new GroupeCartes(4, TypeCartes.BIERE));
 		lcartes.add(new GroupeCartes(4, TypeCartes.SOMMEIL));
 		lcartes.add(new GroupeCartes(4, TypeCartes.CAFE));
 		lcartes.add(new GroupeCartes(4, TypeCartes.SUPPORT));
 		lcartes.add(new GroupeCartes(4, TypeCartes.NOURRITURE));
+		lcartes.add(new GroupeCartesDev(0, TypeCartes.DEVELOPPEMENT, SousTypeCartes.ANCIEN));
+		lcartes.add(new GroupeCartesDev(0, TypeCartes.DEVELOPPEMENT, SousTypeCartes.CONSTRUCTIONCC));
+		lcartes.add(new GroupeCartesDev(0, TypeCartes.DEVELOPPEMENT, SousTypeCartes.DECOUVERTE));
+		lcartes.add(new GroupeCartesDev(0, TypeCartes.DEVELOPPEMENT, SousTypeCartes.MONOPOLE));
+		lcartes.add(new GroupeCartesDev(0, TypeCartes.DEVELOPPEMENT, SousTypeCartes.POINTVICTOIRE));
 
 		this.lcartesJouees = new ArrayList<GroupeCartesDev>();
 		this.luvstar = new ArrayList<UV>();
 		this.luv = new ArrayList<UV>();
 		this.lcc = new ArrayList<Pion>();
 		
-		//Attribution par defaut des differents pions du joueurs
+		//Attribution par défaut des différents pions du joueurs
 		for(int i=0; i<4; i++) {
 			this.luvstar.add(new UV(this, 2, true));
 		}
@@ -121,7 +128,7 @@ public class Joueur {
 	}
 
 	/**
-	 * Attribut le parametre au nom au joueur 
+	 * Attribut le paramétre au nom au joueur 
 	 * @param nom
 	 */
 	public void setNom(String nom) {
@@ -129,7 +136,7 @@ public class Joueur {
 	}
 
 	/**
-	 * Renvoi la couleur associe au joueur
+	 * Renvoi la couleur associé au joueur
 	 * @return
 	 * 	- une couleur
 	 */
@@ -138,7 +145,7 @@ public class Joueur {
 	}
 
 	/**
-	 * Attribut le parametre à la couleur associe au joueur
+	 * Attribut le paramétre à la couleur associé au joueur
 	 * @param c
 	 */
 	public void setCouleur(Color c) {
@@ -155,7 +162,7 @@ public class Joueur {
 	}
 	
 	/**
-	 * Methode permettant d'ajouter un nombre "nb" au point de victoire du joueur
+	 * Méthode permettant d'ajouter un nombre "nb" au point de victoire du joueur
 	 * @param nb
 	 */
 	public void addNbPoints(int nb) {
@@ -163,7 +170,7 @@ public class Joueur {
 	}
 
 	/**
-	 * Test si le joueur possede la carte ancien le plus vieu
+	 * Test si le joueur possède la carte ancien le plus vieu
 	 * @return
 	 */
 	public boolean isAncien() {
@@ -179,7 +186,7 @@ public class Joueur {
 	}
 
 	/**
-	 * Test si le joueur possede la carte cursus le plus long
+	 * Test si le joueur possède la carte cursus le plus long
 	 * @return
 	 */
 	public boolean isCursus() {
@@ -211,7 +218,7 @@ public class Joueur {
 	}
 	
 	/**
-	 * Methode permettant de renvoyer un groupe de cartes du stock du joueur selon le type passe en parametre
+	 * Méthode permettant de renvoyer un groupe de cartes du stock du joueur selon le type passé en paramétre
 	 * @param ptype
 	 * @return
 	 * 	- un groupe de cartes
@@ -228,7 +235,7 @@ public class Joueur {
 	}
 	
 	/**
-	 * Methode permettant d'attribuer un nombre de cartes "nbCartes" au type du groupe de cartes passe en parametre 
+	 * Méthode permettant d'attribuer un nombre de cartes "nbCartes" au type du groupe de cartes passé en paramétre 
 	 * @param ptype
 	 * @param nbCartes
 	 */
@@ -242,12 +249,18 @@ public class Joueur {
 			this.getGroupeCartes(ptypeC).setNombre(0);
 	}
 	
-	public void MoveAllCartes(TypeCartes type){
+	public GroupeCartes MoveAllCartes(TypeCartes type){
+		GroupeCartes gc = new GroupeCartes(getGroupeCartes(type).getNombre(), type);
 		this.getGroupeCartes(type).remCartes(getGroupeCartes(type).getNombre());
+		return gc;
+	}
+	
+	public void AugmenterGroupeCarteDev(SousTypeCartes sstype, int nbCartes) {
+		this.getGroupeCartesDev(sstype).addCartes(nbCartes);
 	}
 
 	/**
-	 * Renvoi la liste des controles continu du joueur
+	 * Renvoi la liste des contrôles continu du joueur
 	 * @return
 	 * 	- une liste de pions
 	 */
@@ -328,7 +341,7 @@ public class Joueur {
 	}
 
 	/**
-	 * Renvoi le nombre de controle continu du joueur
+	 * Renvoi le nombre de contrôle continu du joueur
 	 * @return
 	 * 	- un entier
 	 */
@@ -337,13 +350,57 @@ public class Joueur {
 	}
 	
 	/**
-	 * Renvoi le nombre des cartes d'un ensemble de groupe de cartes du type passe en parametre
+	 * Renvoi le nombre des cartes d'un ensemble de groupe de cartes du type passé en paramétre
 	 * @param ptype
 	 * @return
 	 * 	- un entier
 	 */
 	public int getNbCartes(TypeCartes ptype) {
 		return this.getGroupeCartes(ptype).getNombre();
+	}
+	
+	public List<GroupeCartes> getGroupeCartesRess() {
+		List<GroupeCartes> liste = new ArrayList<GroupeCartes>();
+		for(GroupeCartes g : lcartes) {
+			if(g.getTypeCartes() != TypeCartes.DEVELOPPEMENT) {
+				liste.add(g);
+			}
+		}
+		return liste;
+	}
+	
+	public List<GroupeCartes> getGroupeCartesDev() {
+		List<GroupeCartes> liste = new ArrayList<GroupeCartes>();
+		for(GroupeCartes g : lcartes) {
+			if(g.getTypeCartes() == TypeCartes.DEVELOPPEMENT){
+				liste.add(g);
+			}
+		}
+		return liste;
+	}
+	
+	public GroupeCartes getGroupeCartesDev(SousTypeCartes sstype) {
+		GroupeCartes gc = new GroupeCartes();
+		for (GroupeCartes g : getGroupeCartesDev()) {
+			GroupeCartesDev gcd = (GroupeCartesDev) g;
+			if(gcd.getSousTypeCartes() == sstype) {
+				gc = gcd;
+				break;
+			}
+		}
+		return gc;
+	}
+	
+	public int getNbCartesDev(SousTypeCartes sstype) {
+		int res = 0;
+		for(GroupeCartes gc : getGroupeCartesDev()) {
+			GroupeCartesDev gcd = (GroupeCartesDev) gc;
+			if(gcd.getSousTypeCartes() == sstype){
+				res = gcd.getNombre();
+				break;
+			}
+		}
+		return res;
 	}
 
 	public List<ArbreBinaire> getChemins() {
@@ -399,187 +456,15 @@ public class Joueur {
 		}
 	}
 	
+	public boolean payCartesDev() {
+		boolean res = false;
+		if(getNbCartes(TypeCartes.SUPPORT) >= 1 && getNbCartes(TypeCartes.CAFE) >= 1 && getNbCartes(TypeCartes.SOMMEIL) >= 1) {
+			this.DimGroupeCarte(TypeCartes.SUPPORT, 1);
+			this.DimGroupeCarte(TypeCartes.CAFE, 1);
+			this.DimGroupeCarte(TypeCartes.SOMMEIL, 1);
+			res = true;
+		}
+		return res;
+	}
 
-	/*public boolean construireUV(Sommet sommet, boolean etoile) {
-		//phase de fondation ?
-		if (nbUV > 3) {
-			nbUV--;
-			nbPoints++;
-		} else {
-			if (etoile) { // UV etoilee
-				// on dispose des ressources necessaires (2 supports, 3 sommeils)
-				if ((cartes.get(4).getNombre() >= 2) && (cartes.get(3).getNombre() >= 3)) {
-					if (nbUVStar == 0) {
-						//pas de pion !
-						return false;
-					} else {
-						cartes.get(4).remCartes(2);
-						cartes.get(3).remCartes(3);
-						nbUVStar--;
-						nbPoints += 2;
-					}
-				} else { //pas assez de ressources
-					return false;
-				}
-			} else { //UV simple
-				//on dispose des ressources nÔøΩcessaires (1 biere, 1 nourriture, 1 support, 1 cafe)
-				if ((cartes.get(0).getNombre() >= 1) && (cartes.get(1).getNombre() >= 1) && (cartes.get(2).getNombre() >= 1) && (cartes.get(4).getNombre() >= 1)) {
-					if (nbUV == 0) {
-						//pas de pion
-						return false;
-					} else {
-						cartes.get(0).remCartes(1);
-						cartes.get(1).remCartes(1);
-						cartes.get(2).remCartes(1);
-						cartes.get(4).remCartes(1);
-						nbUV--;
-						nbPoints++;
-					}
-				} else { //pas assez de ressources
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	 
-	public boolean construireCC(Arete arrete) {
-		//phase de fondation ?
-		if (nbCC > 13) {
-			nbCC--;
-			chemins.add(new ArbreBinaire(arrete.getsDebut(), (new ArbreBinaire(arrete.getsFin(), null, null)), null));
-		} else {
-			// on dispose des ressources necessaires (1 biere, 1 nourriture)
-			if ((cartes.get(0).getNombre() >= 1) && (cartes.get(2).getNombre() >= 1)) {
-				if (nbCC == 0) {
-					//pas de pion !
-					return false;
-				} else { //on peut construire
-					cartes.get(0).remCartes(1);
-					cartes.get(2).remCartes(1);
-					nbCC--;
-					if (!chemins.get(0).ajouterNoeud(arrete.getsDebut(), arrete.getsFin())) {
-						if (!chemins.get(1).ajouterNoeud(arrete.getsDebut(), arrete.getsFin())) {
-							return false;
-						}
-					}
-				}
-			} else { //pas assez de ressources
-				return false;
-			}
-		}
-		return true;
-	}
-	 
-	public boolean echange(Joueur joueur, TypeCartes typeDem, int nbDem, TypeCartes typeOff, int nbOff) {
-		int inOffre = 0, inDemande = 0; //indices dans les listes pour retrouver le bon type de cartes
-		// on recupere les ressources dispos du joueur initiateur de la transaction
-		for (int i = 0; i < cartes.size(); i++) {
-			if (cartes.get(i).getTypeCartes() == typeOff) {// on trouve le bon type
-				if (cartes.get(i).getNombre() >= nbOff) { //on a assez de ressource
-					inOffre = i;
-				} else {
-					return false; //pas assez de ressource
-				}
-			}
-		}
-		//on recupere les ressources dispos de l'autre joueur
-		for (int i = 0; i < joueur.cartes.size(); i++) {
-			if (joueur.cartes.get(i).getTypeCartes() == typeDem) {// on trouve le bon type
-				if (joueur.cartes.get(i).getNombre() >= nbDem) { //on a assez de ressource
-					inDemande = i;
-				} else {
-					return false; //pas assez de ressource
-				}
-			}
-		}
-		
-		//on retire de ses cartes le nombre necessaire et on les ajoute au joueur adverse
-		cartes.get(inOffre).remCartes(nbOff);
-		joueur.cartes.get(inOffre).addCartes(nbOff);
-		//on ajoute a ses cartes les nombre voulu et on les retire du joueur adverse
-		cartes.get(inDemande).addCartes(nbDem);
-		joueur.cartes.get(inDemande).remCartes(nbDem);
-		return true;
-	}
-	 
-	public boolean troc(TypeCartes matiere, int symbole) {
-		// TODO refaire la methode
-		for (GroupeCartes grpCartes : cartes) {
-			if (grpCartes.getTypeCartes() == matiere) {
-				if (grpCartes.getNombre() < symbole) {
-					return false;
-				} else {
-					grpCartes.remCartes(symbole);
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	 
-	public GroupeCartes get_cartes(TypeCartes typeCarte) {
-		for (GroupeCartes grp : cartes) {
-			if (grp.getTypeCartes() == typeCarte) {
-				return grp;
-			}
-		}
-		return null;
-	}
-	 
-	public void decouverte(TypeCartes type1, TypeCartes type2) {
-		//on ajoute les cartes voulues au stock du joueur warning : il faudra les enlever du stock du jeu
-		this.get_cartes(type1).addCartes(1);
-		this.get_cartes(type2).addCartes(1);
-		this.set_cartesJouees(SousTypeCartes.DECOUVERTE, 1);
-	}
-	 
-	//TODO deplacer la methode monopole dans la classe jeu
-	public void monopole(TypeCartes typeRess, int nb) {
-		// dans cette classe on ne peut que retirer des cartes du stock du joueur
-		this.get_cartes(typeRess).addCartes(nb);
-		this.set_cartesJouees(SousTypeCartes.MONOPOLE, 1);
-	}
-	 
-	public boolean volerCarte(Joueur joueur) {
-		return false;
-	}
-	 
-	 
-	public GroupeCartesDev get_cartesJouees(SousTypeCartes typeCarte) {
-		for (GroupeCartesDev dev : cartesJouees) {
-			if (dev.getSousTypeCartes() == typeCarte) {
-				return dev;
-			}
-		}
-		return null;
-	}
-	 
-	public void set_cartesJouees(SousTypeCartes typeCarte, int nb) {
-		for (GroupeCartesDev dev : cartesJouees) {
-			if (dev.getSousTypeCartes() == typeCarte) {
-				dev.addCartes(nb);
-			}
-		}
-	}
-	 
-	// TODO definir une methode identique dans Jeu pour les manipulations des cartes de dvpt
-	public boolean jouerCartes(SousTypeCartes cartes) {
-		return false;
-	}
-	
-	//What is it ?
-	public int get_pions(int typePion) {
-		return 0;
-	}
-	 
-	//What is it ?
-	public boolean acheterCartes() {
-		return false;
-	}
-	
-	//n'aurait-elle pas sa place dans Jeu plutot ?
-	public boolean deplacerBinomeG(Hexagone HexaInit, Hexagone HexaDest) {
-		return false;
-	}*/
 }
