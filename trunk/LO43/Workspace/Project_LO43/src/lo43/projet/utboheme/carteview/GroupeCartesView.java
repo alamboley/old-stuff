@@ -65,4 +65,9 @@ public class GroupeCartesView extends JPanel{
 		
 	}
 
+	public GroupeCartes getgCartes() {
+		return gCartes;
+	}
+	
+
 }
