@@ -1,7 +1,6 @@
 package lo43.projet.utboheme.jeu;
 
 import java.awt.Color;
-import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,20 +13,20 @@ import lo43.projet.utboheme.pion.Pion;
 import lo43.projet.utboheme.pion.UV;
 
 /**
- * Classe représentant un joueur
- * 	- possède un identifiant
- *  - possède un nom
- *  - possède une couleur
- *  - possède un nombre de point de victoire
- *  - possède un attribut pour repérer s'il possède ancien plus vieu
- *  - possède un attribut pour repérer s'il possède cursus plus long
- *  - possède un attribut pour savoir s'il est actif
- *  - possède une liste de groupe de cartes (ressource et développement)
- *  - possède une liste de groupe de cartes de developpement déjà jouées
- *  - possède une liste de contrôle continu 
- *  - possède une liste d'uv
- *  - possède une liste d'uv**
- *  - possède une liste de chemin pour cursus plus long
+ * Classe representant un joueur
+ * 	- possede un identifiant
+ *  - possede un nom
+ *  - possede une couleur
+ *  - possede un nombre de point de victoire
+ *  - possede un attribut pour reperer s'il possede ancien plus vieu
+ *  - possede un attribut pour reperer s'il possede cursus plus long
+ *  - possede un attribut pour savoir s'il est actif
+ *  - possede une liste de groupe de cartes (ressource et developpement)
+ *  - possede une liste de groupe de cartes de developpement dejà jouees
+ *  - possede une liste de controle continu 
+ *  - possede une liste d'uv
+ *  - possede une liste d'uv**
+ *  - possede une liste de chemin pour cursus plus long
  * @author alexandreaugen
  *
  */
@@ -49,7 +48,7 @@ public class Joueur {
 	private List<ArbreBinaire> chemins;
 	
 	/**
-	 * Constructeur par défaut
+	 * Constructeur par defaut
 	 */
 	public Joueur() {
 		this.ident = 0;
@@ -68,7 +67,7 @@ public class Joueur {
 	}
 	
 	/**
-	 * Constructeur paramétré
+	 * Constructeur parametre
 	 * @param pident
 	 * @param pnom
 	 * @param pc
@@ -79,7 +78,7 @@ public class Joueur {
 		this.nom = pnom;
 		this.couleur = pc;
 		
-		//Attribution par défaut des différents groupes de cartes vide
+		//Attribution par defaut des differents groupes de cartes vide
 		this.lcartes = new ArrayList<GroupeCartes>();
 		lcartes.add(new GroupeCartes(4, TypeCartes.BIERE));
 		lcartes.add(new GroupeCartes(4, TypeCartes.SOMMEIL));
@@ -97,7 +96,7 @@ public class Joueur {
 		this.luv = new ArrayList<UV>();
 		this.lcc = new ArrayList<Pion>();
 		
-		//Attribution par défaut des différents pions du joueurs
+		//Attribution par defaut des differents pions du joueurs
 		for(int i=0; i<4; i++) {
 			this.luvstar.add(new UV(this, 2, true));
 		}
@@ -128,7 +127,7 @@ public class Joueur {
 	}
 
 	/**
-	 * Attribut le paramétre au nom au joueur 
+	 * Attribut le parametre au nom au joueur 
 	 * @param nom
 	 */
 	public void setNom(String nom) {
@@ -136,7 +135,7 @@ public class Joueur {
 	}
 
 	/**
-	 * Renvoi la couleur associé au joueur
+	 * Renvoi la couleur associe au joueur
 	 * @return
 	 * 	- une couleur
 	 */
@@ -145,7 +144,7 @@ public class Joueur {
 	}
 
 	/**
-	 * Attribut le paramétre à la couleur associé au joueur
+	 * Attribut le parametre à la couleur associe au joueur
 	 * @param c
 	 */
 	public void setCouleur(Color c) {
@@ -162,7 +161,7 @@ public class Joueur {
 	}
 	
 	/**
-	 * Méthode permettant d'ajouter un nombre "nb" au point de victoire du joueur
+	 * Methode permettant d'ajouter un nombre "nb" au point de victoire du joueur
 	 * @param nb
 	 */
 	public void addNbPoints(int nb) {
@@ -170,7 +169,7 @@ public class Joueur {
 	}
 
 	/**
-	 * Test si le joueur possède la carte ancien le plus vieu
+	 * Test si le joueur possede la carte ancien le plus vieu
 	 * @return
 	 */
 	public boolean isAncien() {
@@ -186,7 +185,7 @@ public class Joueur {
 	}
 
 	/**
-	 * Test si le joueur possède la carte cursus le plus long
+	 * Test si le joueur possede la carte cursus le plus long
 	 * @return
 	 */
 	public boolean isCursus() {
@@ -218,7 +217,7 @@ public class Joueur {
 	}
 	
 	/**
-	 * Méthode permettant de renvoyer un groupe de cartes du stock du joueur selon le type passé en paramétre
+	 * Methode permettant de renvoyer un groupe de cartes du stock du joueur selon le type passe en parametre
 	 * @param ptype
 	 * @return
 	 * 	- un groupe de cartes
@@ -235,7 +234,7 @@ public class Joueur {
 	}
 	
 	/**
-	 * Méthode permettant d'attribuer un nombre de cartes "nbCartes" au type du groupe de cartes passé en paramétre 
+	 * Methode permettant d'attribuer un nombre de cartes "nbCartes" au type du groupe de cartes passe en parametre 
 	 * @param ptype
 	 * @param nbCartes
 	 */
@@ -260,7 +259,7 @@ public class Joueur {
 	}
 
 	/**
-	 * Renvoi la liste des contrôles continu du joueur
+	 * Renvoi la liste des controles continu du joueur
 	 * @return
 	 * 	- une liste de pions
 	 */
@@ -341,7 +340,7 @@ public class Joueur {
 	}
 
 	/**
-	 * Renvoi le nombre de contrôle continu du joueur
+	 * Renvoi le nombre de controle continu du joueur
 	 * @return
 	 * 	- un entier
 	 */
@@ -350,7 +349,7 @@ public class Joueur {
 	}
 	
 	/**
-	 * Renvoi le nombre des cartes d'un ensemble de groupe de cartes du type passé en paramétre
+	 * Renvoi le nombre des cartes d'un ensemble de groupe de cartes du type passe en parametre
 	 * @param ptype
 	 * @return
 	 * 	- un entier
