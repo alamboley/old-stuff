@@ -398,7 +398,7 @@ public class JeuFrame extends JFrame {
 					infosPartie.setText("Phase de fondation : \n C'est a " + j.getJoueurActif().getNom() + " de jouer !");
 					if(j.totalUVParticipants() <= 9) {
 						enabledButton(containerJeu, true);
-						infosPartie.setText("Le jeu peux commencer : \n C'est a " + j.getJoueurActif().getNom() + " de jouer !");
+						infosPartie.setText("Le jeu peut commencer : \n C'est a " + j.getJoueurActif().getNom() + " de jouer !");
 					}
 				}
 			}else{
