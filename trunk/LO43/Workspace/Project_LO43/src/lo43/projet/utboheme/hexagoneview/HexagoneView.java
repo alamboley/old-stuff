@@ -145,5 +145,11 @@ public class HexagoneView extends Polygon{
 	public List<AreteView> getLAreteV() {
 		return laretesV;
 	}
+
+	public Hexagone getHexa() {
+		return hexa;
+	}
+	
+	
 	
 }

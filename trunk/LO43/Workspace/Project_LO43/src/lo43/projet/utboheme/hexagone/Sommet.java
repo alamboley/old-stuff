@@ -76,7 +76,19 @@ public class Sommet {
 	 * @return
 	 */
 	public boolean hasUV() {
-		if(uv != null) 
+		if(uv != null && !uv.isDoubleEtoile()) 
+			return true;
+		else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Test si le sommet possède une UV**
+	 * @return
+	 */
+	public boolean hasUVStar() {
+		if(uv != null && uv.isDoubleEtoile()) 
 			return true;
 		else {
 			return false;

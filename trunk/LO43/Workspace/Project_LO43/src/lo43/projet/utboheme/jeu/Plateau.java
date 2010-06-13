@@ -3,7 +3,6 @@ package lo43.projet.utboheme.jeu;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import lo43.projet.utboheme.carte.TypeCartes;
 import lo43.projet.utboheme.hexagone.Arete;
 import lo43.projet.utboheme.hexagone.HexaRessource;
@@ -348,7 +347,7 @@ public class Plateau {
 		}
 		return lHexaWithUv;
 	}
-	
+		
 	// TODO appeler la fonction correspondante dans Jeu avec le sommet en parametre
 	public boolean constructionUV (Sommet s) {
 		return false;

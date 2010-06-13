@@ -9,8 +9,11 @@ import lo43.projet.utboheme.carte.GroupeCartesDev;
 import lo43.projet.utboheme.carte.SousTypeCartes;
 import lo43.projet.utboheme.carte.TypeCartes;
 import lo43.projet.utboheme.hexagone.Arete;
+import lo43.projet.utboheme.hexagone.HexaRessource;
 import lo43.projet.utboheme.hexagone.Sommet;
 import lo43.projet.utboheme.jeuview.JeuFrame;
+import lo43.projet.utboheme.pion.Pion;
+import lo43.projet.utboheme.pion.UV;
 
 /**
  * Classe représentant le jeu
@@ -283,11 +286,28 @@ public class Jeu {
 		}
 		return jactif;
 	}
-
 	
-	public boolean distribuerRess(){
-		
-		return false;
+	public void putRess(Pion p) {
+		if(p.getClass() == UV.class) {
+			UV uv = (UV) p;
+			if(uv.isDoubleEtoile()) {
+				this.AugmGroupeCarte(TypeCartes.SUPPORT, 2);
+				this.AugmGroupeCarte(TypeCartes.SOMMEIL, 3);
+			}else{
+				this.AugmGroupeCarte(TypeCartes.BIERE, 1);
+				this.AugmGroupeCarte(TypeCartes.NOURRITURE, 1);
+				this.AugmGroupeCarte(TypeCartes.SUPPORT, 1);
+				this.AugmGroupeCarte(TypeCartes.CAFE, 1);
+			}
+		}else if(p.getClass() == Pion.class) {
+			this.AugmGroupeCarte(TypeCartes.BIERE, 1);
+			this.AugmGroupeCarte(TypeCartes.NOURRITURE, 1);
+		}
+	}
+	
+	public void deplacerBinome() {
+		plateau.getHexaBinomeG().setBinomeG(false);
+		plateau.getHexaRess().get(new Random().nextInt(plateau.getHexaRess().size())).setBinomeG(true);
 	}
 	
 	public boolean hasCursusPlusLong(Joueur pj) {
@@ -315,6 +335,7 @@ public class Jeu {
 	public static void main(String[] args) {
 		
 		new JeuFrame(new Jeu(new Plateau(40))).setVisible(true);
+		
 
 	}
 
