@@ -203,7 +203,7 @@ public class JeuFrame extends JFrame {
 		containerJeu.add(btOld, gbc);
 		
 		//Bouton pour echanger des ressources avec la reserve
-		btExchange = new JButton("Echanger");
+		btExchange = new JButton("Faire Troc");
 		btExchange.addActionListener(new ActionExchange());
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.ipadx = 20;
@@ -253,7 +253,7 @@ public class JeuFrame extends JFrame {
 		containerJeu.add(btPlayCarte, gbc);
 		
 		//Bouton faire troc
-		btDoTroc = new JButton("Faire Troc");
+		btDoTroc = new JButton("Echanger");
 		btDoTroc.addActionListener(new ActionDoTroc());
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.ipadx = 20;
@@ -277,7 +277,6 @@ public class JeuFrame extends JFrame {
 		this.getContentPane().add(containerJeu, BorderLayout.EAST);
 		this.getContentPane().add(map, BorderLayout.CENTER);
 
-		
 	}
 	
 	/**
