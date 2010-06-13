@@ -396,7 +396,7 @@ public class JeuFrame extends JFrame {
 				if(plat.fonder(e.getPoint(), getViewJoueurActif())){
 					j.finirTour();
 					infosPartie.setText("Phase de fondation : \n C'est a " + j.getJoueurActif().getNom() + " de jouer !");
-					if(j.totalUVParticipants() <= 9) {
+					if((j.totalUVParticipants() <= 9) && (j.totalCCParticipants() <= 39)) {
 						enabledButton(containerJeu, true);
 						infosPartie.setText("Le jeu peut commencer : \n C'est a " + j.getJoueurActif().getNom() + " de jouer !");
 					}
