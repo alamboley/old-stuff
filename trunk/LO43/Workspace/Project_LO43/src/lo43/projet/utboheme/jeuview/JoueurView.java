@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-
+import lo43.projet.utboheme.carte.SousTypeCartes;
 import lo43.projet.utboheme.carte.TypeCartes;
 import lo43.projet.utboheme.jeu.Joueur;
 
@@ -33,15 +33,31 @@ public class JoueurView extends JPanel {
 	private Image img;
 	private String url;
 	private Image imgActif;
+	private Image imgVieu;
+	private Image imgCursus;
+	private Image imgAncien;
+	private Image imgCc;
+	private Image imgDecouv;
+	private Image imgMono;
+	private Image imgPoint;
 	
 	/**
 	 * Constructeur par defaut
 	 */
 	public JoueurView() {
+		super();
 		this.joueur = null;
 		this.color = null;
 		this.img = null;
 		this.url = null;
+		this.imgActif = null;
+		this.imgVieu = null;
+		this.imgCursus = null;
+		this.imgAncien = null;
+		this.imgCc = null;
+		this.imgDecouv = null;
+		this.imgMono = null;
+		this.imgPoint = null;
 	}
 	
 	/**
@@ -51,7 +67,7 @@ public class JoueurView extends JPanel {
 	 * @param url
 	 */
 	public JoueurView(Joueur j, Color col, String url) {
-		super();
+		this();
 		this.joueur = j;
 		this.color = col;
 		this.url = url;
@@ -66,9 +82,9 @@ public class JoueurView extends JPanel {
 		
 		//Definition de font
 		Font fontPion = new Font("Comics", Font.ITALIC, 9);
-		Font fontRess = new Font("Comics", Font.BOLD, 14);
-		Font fontNum = new Font("Comics", Font.PLAIN, 18);
-		Font fontNom = new Font("Comics", Font.PLAIN, 12);
+		Font fontRess = new Font("Comics", Font.BOLD, 12);
+		Font fontNum = new Font("Comics", Font.PLAIN, 14);
+		Font fontNom = new Font("Comics", Font.PLAIN, 10);
 		
 		// Lecture des images
 		try {
@@ -83,10 +99,52 @@ public class JoueurView extends JPanel {
 			e.printStackTrace();
 		}
 		
+		try {
+			this.imgVieu = ImageIO.read(new File("img/carte-ancien-le-plus-vieux.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try { 
+			this.imgCursus = ImageIO.read(new File("img/carte-cursus-le-plus-long.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try { 
+			this.imgAncien = ImageIO.read(new File("img/carte-ancien.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try { 
+			this.imgCc = ImageIO.read(new File("img/carte-cc.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try { 
+			this.imgDecouv = ImageIO.read(new File("img/carte-decouverte.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try { 
+			this.imgMono = ImageIO.read(new File("img/carte-monopole.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try { 
+			this.imgPoint = ImageIO.read(new File("img/carte-point-victoire.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		// Joueur 1
 		if(joueur.getIdent() == 1) {
 			g.setColor(new Color(255, 102, 153));
-			g.fillRoundRect(80, 10, 740, 120, 30, 30);
+			g.fillRoundRect(80, 20, 740, 110, 30, 30);
 			g.drawImage(this.img, 110, 50, this);
 			g.setColor(Color.black);
 			g.setFont(fontPion);
@@ -100,8 +158,8 @@ public class JoueurView extends JPanel {
 			g.setFont(fontNom);
 			g.drawString(this.joueur.getNom(), 120, 110);
 			g.setFont(fontRess);
-			g.drawRoundRect(230, 50, 65, 60, 10, 10);
-			g.drawRoundRect(310, 50, 455, 60, 10, 10);
+			g.drawRoundRect(230, 60, 65, 50, 10, 10);
+			g.drawRoundRect(310, 60, 455, 50, 10, 10);
 			g.drawString("Points", 240, 100);
 			g.drawString("Biere", 320, 100);
 			g.drawString("Sommeil", 380, 100);
@@ -110,14 +168,40 @@ public class JoueurView extends JPanel {
 			g.drawString("Nourriture", 670, 100);
 			g.setColor(Color.black);
 			g.setFont(fontNum);
-			g.drawString(String.valueOf(joueur.getNbPoints()), 255, 75);
-			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.BIERE)), 330, 75);
-			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.SOMMEIL)), 420, 75);
-			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.CAFE)), 500, 75);
-			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.SUPPORT)), 600, 75);
-			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.NOURRITURE)), 700, 75);
+			g.drawString(String.valueOf(joueur.getNbPoints()), 255, 80);
+			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.BIERE)), 330, 80);
+			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.SOMMEIL)), 420, 80);
+			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.CAFE)), 500, 80);
+			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.SUPPORT)), 600, 80);
+			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.NOURRITURE)), 700, 80);
 			if(joueur.isActif()) {
 				g.drawImage(imgActif, 90, 30, this);
+			}
+			if(joueur.isAncien()) {
+				g.drawImage(imgVieu, 220, 15, 45, 45, this);
+			}
+			if(joueur.isCursus()) {
+				g.drawImage(imgCursus, 270, 15, 45, 45, this);
+			}
+			if(joueur.getNbCartesDev(SousTypeCartes.ANCIEN) > 0) {
+				g.drawImage(imgAncien, 320, 15, 45, 45, this);
+				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.ANCIEN), 370, 50);
+			}
+			if(joueur.getNbCartesDev(SousTypeCartes.CONSTRUCTIONCC) > 0) {
+				g.drawImage(imgCc, 400, 15, 45, 45, this);
+				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.CONSTRUCTIONCC), 450, 50);
+			}
+			if(joueur.getNbCartesDev(SousTypeCartes.DECOUVERTE) > 0) {
+				g.drawImage(imgDecouv, 480, 15, 45, 45, this);
+				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.DECOUVERTE), 530, 50);
+			}
+			if(joueur.getNbCartesDev(SousTypeCartes.MONOPOLE) > 0) {
+				g.drawImage(imgMono, 560, 15, 45, 45, this);
+				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.MONOPOLE), 610, 50);
+			}
+			if(joueur.getNbCartesDev(SousTypeCartes.POINTVICTOIRE) > 0) {
+				g.drawImage(imgPoint, 640, 15, 45, 45, this);
+				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.POINTVICTOIRE), 690, 50);
 			}
 		
 		// Joueur 2
@@ -137,8 +221,8 @@ public class JoueurView extends JPanel {
 			g.setFont(fontNom);
 			g.drawString(this.joueur.getNom(), 40, 70);
 			g.setFont(fontRess);
-			g.drawRoundRect(10, 100, 130, 50, 10, 10);
-			g.drawRoundRect(10, 160, 130, 300, 10, 10);
+			g.drawRoundRect(10, 100, 110, 50, 10, 10);
+			g.drawRoundRect(10, 160, 110, 300, 10, 10);
 			g.drawString("Points", 20, 140);
 			g.drawString("Biere", 20, 210);
 			g.drawString("Sommeil", 20, 270);
@@ -155,6 +239,32 @@ public class JoueurView extends JPanel {
 			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.NOURRITURE)), 60, 430);
 			if(joueur.isActif()) {
 				g.drawImage(imgActif, 2, 4, this);
+			}
+			if(joueur.isAncien()){
+				g.drawImage(imgVieu, 120, 90, 45, 45, this);			
+			}
+			if(joueur.isCursus()) {
+				g.drawImage(imgCursus, 120, 140, 45, 45, this);
+			}
+			if(joueur.getNbCartesDev(SousTypeCartes.ANCIEN) > 0) {
+				g.drawImage(imgAncien, 120, 190, 45, 45, this);
+				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.ANCIEN), 130, 245);
+			}
+			if(joueur.getNbCartesDev(SousTypeCartes.CONSTRUCTIONCC) > 0) {
+				g.drawImage(imgCc, 120, 250, 45, 45, this);
+				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.CONSTRUCTIONCC), 130, 305);
+			}
+			if(joueur.getNbCartesDev(SousTypeCartes.DECOUVERTE) > 0) {
+				g.drawImage(imgDecouv, 120, 310, 45, 45, this);
+				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.DECOUVERTE), 130, 365);
+			}
+			if(joueur.getNbCartesDev(SousTypeCartes.MONOPOLE) > 0) {
+				g.drawImage(imgMono, 120, 370, 45, 45, this);
+				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.MONOPOLE), 130, 425);
+			}
+			if(joueur.getNbCartesDev(SousTypeCartes.POINTVICTOIRE) > 0) {
+				g.drawImage(imgPoint, 120, 430, 45, 45, this);
+				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.POINTVICTOIRE), 130, 485);
 			}
 			
 		// Joueur 3
@@ -192,6 +302,32 @@ public class JoueurView extends JPanel {
 			g.drawString(String.valueOf(joueur.getNbCartes(TypeCartes.NOURRITURE)), 700, 60);
 			if(joueur.isActif()) {
 				g.drawImage(imgActif, 85, 2, this);
+			}
+			if(joueur.isAncien()){
+				g.drawImage(imgVieu, 220, 80, 45, 45, this);
+			}
+			if(joueur.isCursus()) {
+				g.drawImage(imgCursus, 270, 80, 45, 45, this);
+			}
+			if(joueur.getNbCartesDev(SousTypeCartes.ANCIEN) > 0) {
+				g.drawImage(imgAncien, 320, 80, 45, 45, this);
+				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.ANCIEN), 370, 110);
+			}
+			if(joueur.getNbCartesDev(SousTypeCartes.CONSTRUCTIONCC) > 0) {
+				g.drawImage(imgCc, 400, 80, 45, 45, this);
+				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.CONSTRUCTIONCC), 450, 110);
+			}
+			if(joueur.getNbCartesDev(SousTypeCartes.DECOUVERTE) > 0) {
+				g.drawImage(imgDecouv, 480, 80, 45, 45, this);
+				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.DECOUVERTE), 530, 110);
+			}
+			if(joueur.getNbCartesDev(SousTypeCartes.MONOPOLE) > 0) {
+				g.drawImage(imgMono, 560, 80, 45, 45, this);
+				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.MONOPOLE), 610, 110);
+			}
+			if(joueur.getNbCartesDev(SousTypeCartes.POINTVICTOIRE) > 0) {
+				g.drawImage(imgPoint, 640, 80, 45, 45, this);
+				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.POINTVICTOIRE), 690, 110);
 			}
 		}		
 	}
