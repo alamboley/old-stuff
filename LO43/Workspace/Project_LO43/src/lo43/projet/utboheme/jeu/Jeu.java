@@ -411,7 +411,33 @@ public class Jeu {
 	
 	public boolean acheterCartesDev() {
 		// on fait payer le joueur *une* fois
-		return this.getJoueurActif().payCartesDev();
+		boolean achetable = this.getJoueurActif().payCartesDev();
+
+		if (achetable){
+			// "chopage" cartes de dev
+			List<GroupeCartes> cartes = this.getCartesDev();
+			int choix = -1;
+
+			while (choix == -1) {
+				// Choix au hasard
+				int tmp = new Random().nextInt(cartes.size() - 1);
+				GroupeCartes groupe = cartes.get(tmp);
+
+				// on verif que c'est dispo
+				if (groupe.getNombre() > 0) {
+					// on met a jour le stock
+					choix = tmp;
+					groupe.remCartes(1);
+
+					// on donne la carte au joueur
+					GroupeCartes thegroupe = this.getJoueurActif().getGroupeCartes(groupe.getTypeCartes());
+					thegroupe.addCartes(1);
+					System.out.println("le joueur a obtenu une carte de dev type " + ((GroupeCartesDev) thegroupe).getSousTypeCartes().toString());
+				}
+			}
+		}
+
+		return achetable;
 	}
 	
 	public boolean echangerCartes(TypeCartes typeOff, TypeCartes typeDem) {
