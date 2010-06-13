@@ -369,7 +369,6 @@ public class JeuFrame extends JFrame {
 		}
 
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
 			if(!containerJeu.isEnabled()) {
 				if(plat.fonder(e.getPoint(), getViewJoueurActif())){
 					j.finirTour();
@@ -442,7 +441,6 @@ public class JeuFrame extends JFrame {
 		 * Méthode qui attribut le cursus au joueur actif
 		 */
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			j.getJoueurActif().setCursus(true);
 			
 		}
@@ -459,7 +457,6 @@ public class JeuFrame extends JFrame {
 		 * Méthode qui attribut l'ancien au joueur actif
 		 */
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			j.getJoueurActif().setAncien(true);
 			
 		}
@@ -492,7 +489,6 @@ public class JeuFrame extends JFrame {
 		 * Met à jour les représentations graphiques des joueurs
 		 */
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			j.finirTour();
 			infosPartie.setText("C'est à " + j.getJoueurActif().getNom() + " de jouer !");
 			updateJoueurs();
