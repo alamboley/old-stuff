@@ -8,7 +8,6 @@ import lo43.projet.utboheme.carte.GroupeCartes;
 import lo43.projet.utboheme.carte.GroupeCartesDev;
 import lo43.projet.utboheme.carte.SousTypeCartes;
 import lo43.projet.utboheme.carte.TypeCartes;
-import lo43.projet.utboheme.hexagone.HexaRessource;
 import lo43.projet.utboheme.hexagone.HexaZoneTroc;
 import lo43.projet.utboheme.hexagone.Hexagone;
 import lo43.projet.utboheme.jeuview.JeuFrame;
@@ -32,7 +31,9 @@ public class Jeu {
 	private Plateau plateau;
 	private List<Joueur> participants;
 	private List<GroupeCartes> reserve;
-	
+	private boolean deplacerBinome;
+	private boolean carteJoue;
+	private int nbCursusPose;
 	/**
 	 * Constructeur par defaut
 	 */
@@ -42,6 +43,9 @@ public class Jeu {
 		this.plateau = null;
 		this.participants = null;
 		this.reserve = null;
+		this.deplacerBinome = false;
+		this.carteJoue = false;
+		this.nbCursusPose = 0;
 	}
 	
 	/**
@@ -130,6 +134,30 @@ public class Jeu {
 		}
 	}
 	 
+	public boolean isDeplacerBinome() {
+		return deplacerBinome;
+	}
+
+	public void setDeplacerBinome(boolean deplacerBinome) {
+		this.deplacerBinome = deplacerBinome;
+	}
+
+	public boolean isCarteJoue() {
+		return carteJoue;
+	}
+
+	public void setCarteJoue(boolean carteJoue) {
+		this.carteJoue = carteJoue;
+	}
+
+	public int getNbCursusPose() {
+		return nbCursusPose;
+	}
+
+	public void setNbCursusPose(int nbCursusPose) {
+		this.nbCursusPose = nbCursusPose;
+	}
+
 	/**
 	 * Methode permettant de renvoyer un groupe de cartes de la reserve selon le type de carte passe en parametre 
 	 * @param ptypeC
@@ -345,15 +373,26 @@ public class Jeu {
 		DimGroupeCarteDev(gcd.getSousTypeCartes(), 1);
 	}
 	
-	public boolean deplacerBinome() {
+	public boolean volerCartes(boolean moitie) {
 		boolean res = false;
-		HexaRessource hexa = new HexaRessource();
-		hexa = (HexaRessource) plateau.getHexaRess().get(new Random().nextInt(plateau.getHexaRess().size()));
-		plateau.getHexaBinomeG().setBinomeG(false);
-		hexa.setBinomeG(true);
-		if(!hexa.getSommetsUV().isEmpty()){
-			GroupeCartes gc = hexa.getSommetUVProprio().get(new Random().nextInt(hexa.getSommetUVProprio().size())).MoveAllCartes(hexa.getTypeCartes());
-			getJoueurActif().AugmGroupeCarte(gc.getTypeCartes(), gc.getNombre());
+		if(moitie) {
+			for(Joueur j : participants) {
+				if(j.getNbCartesRessTotal() > 7) {
+					for(int i=0; i<j.getNbCartesRessTotal()/2; i++) {
+						GroupeCartes gc = j.getGroupeCartes(TypeCartes.random());
+						gc.remCartes(1);
+						AugmGroupeCarte(gc.getTypeCartes(), 1);	
+						res = true;
+					}
+				}			
+			}
+		}else{
+ 			Joueur j = plateau.getHexaBinomeG().getSommetUVProprio().get(new Random().nextInt(plateau.getHexaBinomeG().getSommetUVProprio().size()));
+			System.out.println("" + j.getNom());
+ 			TypeCartes type = j.getGroupeCartes(TypeCartes.random()).getTypeCartes();
+			j.DimGroupeCarte(type, 1);
+			getJoueurActif().AugmGroupeCarte(type, 1);
+			res = true;
 		}
 		return res;
 	}
@@ -364,9 +403,9 @@ public class Jeu {
 	
 	public boolean attribuerAncien() {
 		boolean res = false;
-		if (getJoueurActif().getNbCartesDev(SousTypeCartes.ANCIEN) >= 3) {
+		if (getJoueurActif().getNbCartesDevJoue(SousTypeCartes.ANCIEN) >= 3) {
 			for(Joueur j : participants) {
-				if(!j.equals(getJoueurActif()) && j.getNbCartesDev(SousTypeCartes.ANCIEN) < getJoueurActif().getNbCartesDev(SousTypeCartes.ANCIEN)){
+				if(!j.equals(getJoueurActif()) && j.getNbCartesDevJoue(SousTypeCartes.ANCIEN) < getJoueurActif().getNbCartesDevJoue(SousTypeCartes.ANCIEN)){
 					getJoueurActif().setAncien(true);
 					getJoueurActif().addNbPoints(2);
 					res = true;
@@ -442,7 +481,7 @@ public class Jeu {
 		return achetable;
 	}
 	
-	public boolean echangerCartes(TypeCartes typeOff, TypeCartes typeDem) {
+	public boolean trockerCartes(TypeCartes typeOff, TypeCartes typeDem) {
 		int nbCartes = 4;
 		boolean res = false;
 		for(Hexagone h : getPlateau().getHexZoneT()) {
@@ -461,6 +500,15 @@ public class Jeu {
 			res = true;
 		}
 		return res;
+	}
+	
+	public void volerAllPart(TypeCartes type) {
+		for(Joueur j : participants){
+			if(j != getJoueurActif()) {
+				getJoueurActif().AugmGroupeCarte(type, j.getGroupeCartes(type).getNombre());
+				j.DimGroupeCarte(type, j.getGroupeCartes(type).getNombre());
+			}
+		}
 	}
 	
 	/**
