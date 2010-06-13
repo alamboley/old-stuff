@@ -431,7 +431,6 @@ public class JeuFrame extends JFrame {
 		 * Attribut les ressources aux joueurs
 		 */
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			j.lancerDes();
 			valeurDes.setText("" + j.getValeurDes());
 			for(HexaRessource h : j.getPlateau().getHexaRessWithUv(j.getValeurDes())) {
@@ -510,7 +509,6 @@ public class JeuFrame extends JFrame {
 	private class ActionExchange implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			TypeCartes[] ressJoueur = new TypeCartes[getJ().getJoueurActif().getGroupeCartesRess().size()];
 			int i = 0;
 			for(GroupeCartes gc : getJ().getJoueurActif().getGroupeCartesRess()){
