@@ -16,9 +16,9 @@ import lo43.projet.utboheme.jeu.Jeu;
 import lo43.projet.utboheme.jeu.Plateau;
 
 /**
- * Classe représentant graphiquement un plateau
- * 	- possède un attribut de type plateau pour savoir le plateau à représenter
- *  - possède une liste de représentation graphique des hexagones du plateau
+ * Classe representant graphiquement un plateau
+ * 	- possede un attribut de type plateau pour savoir le plateau a representer
+ *  - possede une liste de representation graphique des hexagones du plateau
  * @author alexandreaugen
  *
  */
@@ -29,7 +29,7 @@ public class PlateauView extends Canvas{
 	private List<HexagoneView> lHexaV;
 	
 	/**
-	 * Constructeur paramétré
+	 * Constructeur parametre
 	 * @param pp
 	 */
 	public PlateauView(Plateau pp) {
@@ -45,7 +45,7 @@ public class PlateauView extends Canvas{
 	}
 	
 	/**
-	 * Méthode pour peindre le composant
+	 * Methode pour peindre le composant
 	 */
 	public void paint(Graphics g) {
 		g.setColor(new Color(255, 255, 204));
@@ -56,14 +56,14 @@ public class PlateauView extends Canvas{
 	}
 	
 	/**
-	 * Méthode pour repeindre le composant
+	 * Methode pour repeindre le composant
 	 */
 	public void update() {
 		this.repaint();
 	}
 	
 	/**
-	 * Méthode qui permet d'affecter un sommet lors de la phase de fondation
+	 * Methode qui permet d'affecter un sommet lors de la phase de fondation
 	 * @param mousePosition
 	 * @param jv
 	 */
@@ -92,7 +92,7 @@ public class PlateauView extends Canvas{
 	}
 	
 	/**
-	 * Méthode qui permet d'affecter un pion à un sommet ou une arête
+	 * Methode qui permet d'affecter un pion a un sommet ou une arete
 	 * @param mousePosition
 	 * @param jv
 	 */
@@ -160,7 +160,7 @@ public class PlateauView extends Canvas{
 	}
 	
 	/**
-	 * Renvoi le plateau associé à la représentation graphique
+	 * Renvoi le plateau associe a la representation graphique
 	 * @return
 	 * 	- un plateau
 	 */

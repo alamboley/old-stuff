@@ -3,10 +3,10 @@ package lo43.projet.utboheme.hexagone;
 import lo43.projet.utboheme.pion.UV;
 
 /**
- * Classe représentant un sommet
- * 	- possède une coordonnée x
- * 	- possède une coordonnée y
- * 	- possède un attribut de type UV pour stocker une uv
+ * Classe representant un sommet
+ * 	- possede une coordonnee x
+ * 	- possede une coordonnee y
+ * 	- possede un attribut de type UV pour stocker une uv
  * @author alexandreaugen
  *
  */
@@ -17,7 +17,7 @@ public class Sommet {
 	private UV uv;
 	
 	/**
-	 * Constructeur par défaut
+	 * Constructeur par defaut
 	 */
 	public Sommet() {
 		this.xSom = 0;
@@ -26,14 +26,14 @@ public class Sommet {
 	}
 	
 	/**
-	 * Constructeur paramétré 
+	 * Constructeur parametre 
 	 * @param px
 	 * @param py
 	 */
 	public Sommet(int px, int py){
 		this.xSom = px;
 		this.ySom = py;
-		System.out.println("Création d'un sommet a la position x: " + this.getXSom() + " et y: " + this.getYSom());
+		System.out.println("Creation d'un sommet a la position x: " + this.getXSom() + " et y: " + this.getYSom());
 	}
 	
 	/**
@@ -55,7 +55,7 @@ public class Sommet {
 	}
 
 	/**
-	 * Renvoi l'uv stocké
+	 * Renvoi l'uv stocke
 	 * @return
 	 * 	- une uv
 	 */
@@ -64,7 +64,7 @@ public class Sommet {
 	}
 	
 	/**
-	 * Attribut le paramétre à l'uv du sommet
+	 * Attribut le parametre a l'uv du sommet
 	 * @param puv
 	 */
 	public void setUv(UV puv) {
@@ -72,7 +72,7 @@ public class Sommet {
 	}
 	 
 	/**
-	 * Test si le sommet possède une UV
+	 * Test si le sommet possede une UV
 	 * @return
 	 */
 	public boolean hasUV() {
@@ -84,7 +84,7 @@ public class Sommet {
 	}
 	
 	/**
-	 * Test si le sommet possède une UV**
+	 * Test si le sommet possede une UV**
 	 * @return
 	 */
 	public boolean hasUVStar() {

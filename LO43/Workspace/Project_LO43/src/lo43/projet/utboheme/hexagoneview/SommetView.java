@@ -7,10 +7,10 @@ import java.awt.Rectangle;
 import lo43.projet.utboheme.hexagone.Sommet;
 
 /**
- * Classe représentant graphiquement un sommet
- * Hérite de Rectangle
- * 	- possède un attribut de type sommet pour connaitre le sommet à représenter
- *  - possède une couleur qui prend la valeur de l'uv posé sur le sommet
+ * Classe representant graphiquement un sommet
+ * Herite de Rectangle
+ * 	- possede un attribut de type sommet pour connaitre le sommet a representer
+ *  - possede une couleur qui prend la valeur de l'uv pose sur le sommet
  * @author alexandreaugen
  *
  */
@@ -21,7 +21,7 @@ public class SommetView extends Rectangle{
 	private Color color;
 	
 	/**
-	 * Constructeur paramétré
+	 * Constructeur parametre
 	 * @param ps
 	 * @param ptaille
 	 */
@@ -34,7 +34,7 @@ public class SommetView extends Rectangle{
 	}
 	
 	/**
-	 * Méthode permettant de peindre le composant
+	 * Methode permettant de peindre le composant
 	 * @param g
 	 */
 	public void paint(Graphics g){
@@ -53,7 +53,7 @@ public class SommetView extends Rectangle{
 	}
 	
 	/**
-	 * Renvoi le sommet associé à cette représentation graphique
+	 * Renvoi le sommet associe a cette representation graphique
 	 * @return
 	 * 	- un sommet
 	 */

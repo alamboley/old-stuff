@@ -15,13 +15,13 @@ import lo43.projet.utboheme.carte.TypeCartes;
 import lo43.projet.utboheme.jeu.Joueur;
 
 /**
- * Classe représentant graphiquement un joueur
- * Hérite de JPanel
- * 	- possède un attribut de type joueur pour savoir le joueur à représenter
- *  - possède une couleur
- *  - possède une image
- *  - possède une url pour l'image
- *  - possède une image pour savoir s'il est le joueur actif
+ * Classe representant graphiquement un joueur
+ * Herite de JPanel
+ * 	- possede un attribut de type joueur pour savoir le joueur a representer
+ *  - possede une couleur
+ *  - possede une image
+ *  - possede une url pour l'image
+ *  - possede une image pour savoir s'il est le joueur actif
  * @author alexandreaugen
  *
  */
@@ -35,7 +35,7 @@ public class JoueurView extends JPanel {
 	private Image imgActif;
 	
 	/**
-	 * Constructeur par défaut
+	 * Constructeur par defaut
 	 */
 	public JoueurView() {
 		this.joueur = null;
@@ -45,7 +45,7 @@ public class JoueurView extends JPanel {
 	}
 	
 	/**
-	 * Constructeur paramétré
+	 * Constructeur parametre
 	 * @param j
 	 * @param col
 	 * @param url
@@ -60,11 +60,11 @@ public class JoueurView extends JPanel {
 	}
 	
 	/**
-	 * Méthode pour peindre le composant
+	 * Methode pour peindre le composant
 	 */
 	public void paintComponent(Graphics g) {
 		
-		//Définition de font
+		//Definition de font
 		Font fontPion = new Font("Comics", Font.ITALIC, 9);
 		Font fontRess = new Font("Comics", Font.BOLD, 14);
 		Font fontNum = new Font("Comics", Font.PLAIN, 18);
@@ -103,9 +103,9 @@ public class JoueurView extends JPanel {
 			g.drawRoundRect(230, 50, 65, 60, 10, 10);
 			g.drawRoundRect(310, 50, 455, 60, 10, 10);
 			g.drawString("Points", 240, 100);
-			g.drawString("Bière", 320, 100);
+			g.drawString("Biere", 320, 100);
 			g.drawString("Sommeil", 380, 100);
-			g.drawString("Café", 490, 100);
+			g.drawString("Cafe", 490, 100);
 			g.drawString("Support Cours", 550, 100);
 			g.drawString("Nourriture", 670, 100);
 			g.setColor(Color.black);
@@ -140,9 +140,9 @@ public class JoueurView extends JPanel {
 			g.drawRoundRect(10, 100, 130, 50, 10, 10);
 			g.drawRoundRect(10, 160, 130, 300, 10, 10);
 			g.drawString("Points", 20, 140);
-			g.drawString("Biére", 20, 210);
+			g.drawString("Biere", 20, 210);
 			g.drawString("Sommeil", 20, 270);
-			g.drawString("Café", 20, 330);
+			g.drawString("Cafe", 20, 330);
 			g.drawString("Support Cours", 20, 390);
 			g.drawString("Nourriture", 20, 450);
 			g.setColor(Color.black);
@@ -177,9 +177,9 @@ public class JoueurView extends JPanel {
 			g.drawRoundRect(230, 10, 65, 70, 10, 10);
 			g.drawRoundRect(310, 10, 455, 70, 10, 10);
 			g.drawString("Points", 240, 30);
-			g.drawString("Bière", 320, 30);
+			g.drawString("Biere", 320, 30);
 			g.drawString("Sommeil", 380, 30);
-			g.drawString("Café", 490, 30);
+			g.drawString("Cafe", 490, 30);
 			g.drawString("Support Cours", 550, 30);
 			g.drawString("Nourriture", 670, 30);
 			g.setColor(Color.black);
@@ -197,7 +197,7 @@ public class JoueurView extends JPanel {
 	}
 
 	/**
-	 * Renvoi le joueur associé à la représentation graphique 
+	 * Renvoi le joueur associe a la representation graphique 
 	 * @return
 	 * 	- un joueur
 	 */

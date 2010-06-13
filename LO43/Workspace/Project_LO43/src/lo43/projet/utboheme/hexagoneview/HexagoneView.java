@@ -16,11 +16,11 @@ import lo43.projet.utboheme.hexagone.Sommet;
 import lo43.projet.utboheme.hexagone.TypeTerrain;
 
 /**
- * Classe représentant graphiquement les classes Hexagone, HexaRessource et HexaZoneTroc
- * Hérite de Polygon
- * 	- possède un attribut de type Hexagone pour savoir l'hexagone à représenter
- * 	- possède une liste de représentation graphique des sommets qui composent l'hexagone associé
- * 	- possède une liste de représentation graphique des arêtes qui composent l'hexagone associé
+ * Classe representant graphiquement les classes Hexagone, HexaRessource et HexaZoneTroc
+ * Herite de Polygon
+ * 	- possede un attribut de type Hexagone pour savoir l'hexagone a representer
+ * 	- possede une liste de representation graphique des sommets qui composent l'hexagone associe
+ * 	- possede une liste de representation graphique des aretes qui composent l'hexagone associe
  * @author alexandreaugen
  *
  */
@@ -32,7 +32,7 @@ public class HexagoneView extends Polygon{
 	private List<AreteView> laretesV;
 	
 	/**
-	 * Constructeur paramétré
+	 * Constructeur parametre
 	 * @param ph
 	 */
 	public HexagoneView(Hexagone ph) {
@@ -42,7 +42,7 @@ public class HexagoneView extends Polygon{
 		laretesV = new ArrayList<AreteView>();
 		
 		//Mise en place du polygone grâce au sommet de l'attribut hexagone 
-		//Création des sommets et arêtes graphique et ajout à la liste associé
+		//Creation des sommets et aretes graphique et ajout a la liste associe
 		for(Sommet s : hexa.getSommets()) {
 			this.addPoint(s.getXSom(), s.getYSom());
 			lsommetsV.add(new SommetView(s, (int)(hexa.getSize() / 4)));
@@ -54,11 +54,11 @@ public class HexagoneView extends Polygon{
 	}
 
 	/**
-	 * Méthode permettant de peindre le composant  
+	 * Methode permettant de peindre le composant  
 	 * @param g
 	 */
 	public void paint(Graphics g) {
-		//Test du type de l'attribut hexagone pour attribuer une image différente
+		//Test du type de l'attribut hexagone pour attribuer une image differente
 		if(this.hexa.getTypeTerr() == TypeTerrain.BARS) {
 			g.setColor(new Color(128, 0, 128));
 		}else if(this.hexa.getTypeTerr() == TypeTerrain.LIEUREPOS) {
@@ -81,7 +81,7 @@ public class HexagoneView extends Polygon{
 		g.setColor(Color.white);
 		g.drawPolygon(this);
 		
-		//On dessine les arêtes graphiques
+		//On dessine les aretes graphiques
 		for(AreteView av : this.laretesV) {
 			av.paint(g);
 		}
@@ -97,14 +97,14 @@ public class HexagoneView extends Polygon{
 			new JetonView(hr.getJeton(), (int)hr.getXHex(), (int)hr.getYHex(), (int)hr.getSize() / 2).paint(g);
 		}
 		
-		//Si l'hexagone possède le binome glandeur, on dessine un carré sur ce dernier
+		//Si l'hexagone possede le binome glandeur, on dessine un carre sur ce dernier
 		if(hexa.isBinomeG()) {
 			g.setColor(Color.black);
 			g.fillOval((int)(hexa.getXHex() + hexa.getSize() / 8), (int)(hexa.getYHex() - hexa.getSize()/5), (int)(hexa.getSize() / 3), (int)(hexa.getSize() / 3));
 			g.fillRoundRect((int)(hexa.getXHex() + hexa.getSize() / 8), (int)(hexa.getYHex() + hexa.getSize() / 8), (int)(hexa.getSize() / 3), (int)(hexa.getSize() / 3),  (int)(hexa.getSize() / 8), (int)(hexa.getSize() / 8));
 		}
 		
-		//Si l'hexagone est une zone de troc, on dessine un rond différent selon le type de carte associé
+		//Si l'hexagone est une zone de troc, on dessine un rond different selon le type de carte associe
 		if(this.hexa.getClass() == HexaZoneTroc.class) {
 			HexaZoneTroc hz = (HexaZoneTroc) hexa;
 			if(hz.getTypeCarte() == TypeCartes.BIERE) {
@@ -138,7 +138,7 @@ public class HexagoneView extends Polygon{
 	}
 
 	/**
-	 * Renvoi la liste des arêtes graphiques
+	 * Renvoi la liste des aretes graphiques
 	 * @return
 	 * 	- une liste de AreteView
 	 */

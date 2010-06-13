@@ -13,9 +13,9 @@ import lo43.projet.utboheme.carte.GroupeCartes;
 import lo43.projet.utboheme.carte.TypeCartes;
 
 /**
- * Classe représentant graphiquement les classes GroupeCartes et GroupeCartesDev
- * Hérite de JPanel
- * 	- possède un attribut de type GroupeCartes pour savoir quel GroupeCarte est à représenter
+ * Classe representant graphiquement les classes GroupeCartes et GroupeCartesDev
+ * Herite de JPanel
+ * 	- possede un attribut de type GroupeCartes pour savoir quel GroupeCarte est a representer
  * @author alexandreaugen
  *
  */
@@ -25,7 +25,7 @@ public class GroupeCartesView extends JPanel{
 	private GroupeCartes gCartes;
 	
 	/**
-	 * Constructeur paramétré
+	 * Constructeur parametre
 	 * @param pgc
 	 */
 	public GroupeCartesView(GroupeCartes pgc) {
@@ -35,12 +35,12 @@ public class GroupeCartesView extends JPanel{
 	}
 	
 	/**
-	 * Méthode permettant de peindre le composant
+	 * Methode permettant de peindre le composant
 	 */
 	public void paintComponent(Graphics g) {
 		Image img = null;
 		
-		// On test le type du groupe de carte pour changer l'attribut image associée
+		// On test le type du groupe de carte pour changer l'attribut image associee
 		try {
 			if(gCartes.getTypeCartes() == TypeCartes.BIERE) {
 				img = ImageIO.read(new File("img/carte-biere.png"));
@@ -61,7 +61,7 @@ public class GroupeCartesView extends JPanel{
 		
 		// On dessine l'image
 		g.drawImage(img, 0, 0, 60, 60, this);
-		// On dessine le nombre de cartes du groupe de cartes associé
+		// On dessine le nombre de cartes du groupe de cartes associe
 		g.drawString("" + gCartes.getNombre(), 20, 10);
 		
 	}

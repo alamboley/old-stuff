@@ -3,8 +3,8 @@ package lo43.projet.utboheme.pion;
 import lo43.projet.utboheme.jeu.Joueur;
 
 /**
- * Classe représentant un pion
- * 	- possède un proprietaire 
+ * Classe representant un pion
+ * 	- possede un proprietaire 
  * @author alexandreaugen
  *
  */
@@ -20,7 +20,7 @@ public class Pion {
 	}
 	
 	/**
-	 * Constructeur paramétré
+	 * Constructeur parametre
 	 * @param pj
 	 */
 	public Pion(Joueur pj) {
@@ -37,7 +37,7 @@ public class Pion {
 	}
 
 	/**
-	 * Attribut le paramétre au proprietaire
+	 * Attribut le parametre au proprietaire
 	 * @param proprietaire
 	 */
 	public void setProprietaire(Joueur proprietaire) {

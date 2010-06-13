@@ -1,9 +1,9 @@
 package lo43.projet.utboheme.carte;
 
 /**
- * Classe reprsentant un groupes de cartes
- * 	- possde un nombre de cartes
- * 	- possde un type de cartes
+ * Classe representant un groupes de cartes
+ * 	- possede un nombre de cartes
+ * 	- possede un type de cartes
  * @author alexandreaugen
  *
  */
@@ -13,7 +13,7 @@ public class GroupeCartes {
 	private TypeCartes typeCartes;
 	
 	/**
-	 * Constructeur par dfaut
+	 * Constructeur par defaut
 	 */
 	public GroupeCartes() {
 		this.nombre = 0;
@@ -21,7 +21,7 @@ public class GroupeCartes {
 	}
 	
 	/**
-	 * Constructeur paramtr
+	 * Constructeur parametre
 	 * @param pnb
 	 * @param ptypeC
 	 */
@@ -54,7 +54,7 @@ public class GroupeCartes {
 	}
 	
 	/**
-	 * Permet d'ajouter un nombre "pnb" de cartes ˆ un groupe de cartes
+	 * Permet d'ajouter un nombre "pnb" de cartes a un groupe de cartes
 	 * @param pnb
 	 */
 	public void addCartes(int pnb) {
@@ -62,7 +62,7 @@ public class GroupeCartes {
 	}
 	
 	/**
-	 * Permet de retirer un nombre "pnb" de cartes ˆ un groupe de cartes
+	 * Permet de retirer un nombre "pnb" de cartes a un groupe de cartes
 	 * @param pnb
 	 */
 	public void remCartes(int pnb) {

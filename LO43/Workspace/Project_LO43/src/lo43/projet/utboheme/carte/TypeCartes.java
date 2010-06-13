@@ -3,7 +3,7 @@ package lo43.projet.utboheme.carte;
 import java.util.Random;
 
 /**
- * Classe d'énumération des types de carte lié à la classe GroupeCartes
+ * Classe d'enumeration des types de carte lie a la classe GroupeCartes
  * @author alexandreaugen
  *
  */
@@ -18,7 +18,7 @@ public enum TypeCartes {
 	
 
 	/**
-	 * Méthode qui permet de tirer un type de cartes aléatoirement dans la liste des énumérations
+	 * Methode qui permet de tirer un type de cartes aleatoirement dans la liste des enumerations
 	 * @return
 	 * 	- un type de carte
 	 */

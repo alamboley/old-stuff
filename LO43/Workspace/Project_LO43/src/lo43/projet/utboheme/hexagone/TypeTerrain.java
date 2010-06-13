@@ -1,7 +1,7 @@
 package lo43.projet.utboheme.hexagone;
 
 /**
- * Classe d'énumération des types de terrain associé à un hexagone
+ * Classe d'enumeration des types de terrain associe a un hexagone
  * @author alexandreaugen
  *
  */

@@ -1,8 +1,8 @@
 package lo43.projet.utboheme.hexagone;
 
 /**
- * Classe représentant un jeton
- * 	- possède un numéro
+ * Classe representant un jeton
+ * 	- possede un numero
  * @author alexandreaugen
  *
  */
@@ -11,14 +11,14 @@ public class Jeton {
 	private int numero;
 	
 	/**
-	 * Constructeur par défaut
+	 * Constructeur par defaut
 	 */
 	public Jeton() {
 		this.numero = 0;
 	}
 	
 	/**
-	 * Constructeur paramétré
+	 * Constructeur parametre
 	 * @param pnum
 	 */
 	public Jeton(int pnum) {
@@ -26,7 +26,7 @@ public class Jeton {
 	}
 
 	/**
-	 * Renvoi le numéro du jeton
+	 * Renvoi le numero du jeton
 	 * @return
 	 * 	- un entier
 	 */
