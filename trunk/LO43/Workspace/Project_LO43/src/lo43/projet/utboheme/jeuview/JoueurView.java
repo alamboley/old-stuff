@@ -183,24 +183,39 @@ public class JoueurView extends JPanel {
 			if(joueur.isCursus()) {
 				g.drawImage(imgCursus, 270, 15, 45, 45, this);
 			}
-			if(joueur.getNbCartesDev(SousTypeCartes.ANCIEN) > 0) {
+			if(joueur.getNbCartesDev(SousTypeCartes.ANCIEN) > 0 || joueur.getNbCartesDevJoue(SousTypeCartes.ANCIEN) > 0) {
 				g.drawImage(imgAncien, 320, 15, 45, 45, this);
+				g.setColor(Color.orange);
+				g.drawString(": "+joueur.getNbCartesDevJoue(SousTypeCartes.ANCIEN), 370, 35);
+				g.setColor(Color.black);
 				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.ANCIEN), 370, 50);
 			}
-			if(joueur.getNbCartesDev(SousTypeCartes.CONSTRUCTIONCC) > 0) {
+			if(joueur.getNbCartesDev(SousTypeCartes.CONSTRUCTIONCC) > 0 || joueur.getNbCartesDevJoue(SousTypeCartes.CONSTRUCTIONCC) > 0) {
 				g.drawImage(imgCc, 400, 15, 45, 45, this);
+				g.setColor(Color.orange);
+				g.drawString(": "+joueur.getNbCartesDevJoue(SousTypeCartes.CONSTRUCTIONCC), 450, 35);
+				g.setColor(Color.black);
 				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.CONSTRUCTIONCC), 450, 50);
 			}
-			if(joueur.getNbCartesDev(SousTypeCartes.DECOUVERTE) > 0) {
+			if(joueur.getNbCartesDev(SousTypeCartes.DECOUVERTE) > 0 || joueur.getNbCartesDevJoue(SousTypeCartes.DECOUVERTE) > 0) {
 				g.drawImage(imgDecouv, 480, 15, 45, 45, this);
+				g.setColor(Color.orange);
+				g.drawString(": "+joueur.getNbCartesDevJoue(SousTypeCartes.DECOUVERTE), 530, 35);
+				g.setColor(Color.black);
 				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.DECOUVERTE), 530, 50);
 			}
-			if(joueur.getNbCartesDev(SousTypeCartes.MONOPOLE) > 0) {
+			if(joueur.getNbCartesDev(SousTypeCartes.MONOPOLE) > 0 || joueur.getNbCartesDevJoue(SousTypeCartes.MONOPOLE) > 0) {
 				g.drawImage(imgMono, 560, 15, 45, 45, this);
+				g.setColor(Color.orange);
+				g.drawString(": "+joueur.getNbCartesDevJoue(SousTypeCartes.MONOPOLE), 610, 35);
+				g.setColor(Color.black);
 				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.MONOPOLE), 610, 50);
 			}
-			if(joueur.getNbCartesDev(SousTypeCartes.POINTVICTOIRE) > 0) {
+			if(joueur.getNbCartesDev(SousTypeCartes.POINTVICTOIRE) > 0  || joueur.getNbCartesDevJoue(SousTypeCartes.POINTVICTOIRE) > 0) {
 				g.drawImage(imgPoint, 640, 15, 45, 45, this);
+				g.setColor(Color.orange);
+				g.drawString(": "+joueur.getNbCartesDevJoue(SousTypeCartes.POINTVICTOIRE), 690, 35);
+				g.setColor(Color.black);
 				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.POINTVICTOIRE), 690, 50);
 			}
 		
@@ -246,25 +261,40 @@ public class JoueurView extends JPanel {
 			if(joueur.isCursus()) {
 				g.drawImage(imgCursus, 120, 140, 45, 45, this);
 			}
-			if(joueur.getNbCartesDev(SousTypeCartes.ANCIEN) > 0) {
+			if(joueur.getNbCartesDev(SousTypeCartes.ANCIEN) > 0 || joueur.getNbCartesDevJoue(SousTypeCartes.ANCIEN) > 0) {
 				g.drawImage(imgAncien, 120, 190, 45, 45, this);
-				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.ANCIEN), 130, 245);
+				g.setColor(Color.orange);
+				g.drawString(": "+joueur.getNbCartesDevJoue(SousTypeCartes.ANCIEN), 145, 245);
+				g.setColor(Color.black);
+				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.ANCIEN), 125, 245);
 			}
-			if(joueur.getNbCartesDev(SousTypeCartes.CONSTRUCTIONCC) > 0) {
+			if(joueur.getNbCartesDev(SousTypeCartes.CONSTRUCTIONCC) > 0 || joueur.getNbCartesDevJoue(SousTypeCartes.CONSTRUCTIONCC) > 0) {
 				g.drawImage(imgCc, 120, 250, 45, 45, this);
-				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.CONSTRUCTIONCC), 130, 305);
+				g.setColor(Color.orange);
+				g.drawString(": "+joueur.getNbCartesDevJoue(SousTypeCartes.CONSTRUCTIONCC), 145, 305);
+				g.setColor(Color.black);
+				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.CONSTRUCTIONCC), 125, 305);
 			}
-			if(joueur.getNbCartesDev(SousTypeCartes.DECOUVERTE) > 0) {
+			if(joueur.getNbCartesDev(SousTypeCartes.DECOUVERTE) > 0 || joueur.getNbCartesDevJoue(SousTypeCartes.DECOUVERTE) > 0) {
 				g.drawImage(imgDecouv, 120, 310, 45, 45, this);
-				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.DECOUVERTE), 130, 365);
+				g.setColor(Color.orange);
+				g.drawString(": "+joueur.getNbCartesDevJoue(SousTypeCartes.DECOUVERTE), 145, 365);
+				g.setColor(Color.black);
+				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.DECOUVERTE), 125, 365);
 			}
-			if(joueur.getNbCartesDev(SousTypeCartes.MONOPOLE) > 0) {
+			if(joueur.getNbCartesDev(SousTypeCartes.MONOPOLE) > 0 || joueur.getNbCartesDevJoue(SousTypeCartes.MONOPOLE) > 0) {
 				g.drawImage(imgMono, 120, 370, 45, 45, this);
-				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.MONOPOLE), 130, 425);
+				g.setColor(Color.orange);
+				g.drawString(": "+joueur.getNbCartesDevJoue(SousTypeCartes.MONOPOLE), 145, 425);
+				g.setColor(Color.black);
+				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.MONOPOLE), 125, 425);
 			}
-			if(joueur.getNbCartesDev(SousTypeCartes.POINTVICTOIRE) > 0) {
+			if(joueur.getNbCartesDev(SousTypeCartes.POINTVICTOIRE) > 0  || joueur.getNbCartesDevJoue(SousTypeCartes.POINTVICTOIRE) > 0) {
 				g.drawImage(imgPoint, 120, 430, 45, 45, this);
-				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.POINTVICTOIRE), 130, 485);
+				g.setColor(Color.orange);
+				g.drawString(": "+joueur.getNbCartesDevJoue(SousTypeCartes.POINTVICTOIRE), 145, 485);
+				g.setColor(Color.black);
+				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.POINTVICTOIRE), 125, 485);
 			}
 			
 		// Joueur 3
@@ -309,24 +339,39 @@ public class JoueurView extends JPanel {
 			if(joueur.isCursus()) {
 				g.drawImage(imgCursus, 270, 80, 45, 45, this);
 			}
-			if(joueur.getNbCartesDev(SousTypeCartes.ANCIEN) > 0) {
+			if(joueur.getNbCartesDev(SousTypeCartes.ANCIEN) > 0 || joueur.getNbCartesDevJoue(SousTypeCartes.ANCIEN) > 0) {
 				g.drawImage(imgAncien, 320, 80, 45, 45, this);
+				g.setColor(Color.orange);
+				g.drawString(": "+joueur.getNbCartesDevJoue(SousTypeCartes.ANCIEN), 370, 95);
+				g.setColor(Color.black);
 				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.ANCIEN), 370, 110);
 			}
-			if(joueur.getNbCartesDev(SousTypeCartes.CONSTRUCTIONCC) > 0) {
+			if(joueur.getNbCartesDev(SousTypeCartes.CONSTRUCTIONCC) > 0 || joueur.getNbCartesDevJoue(SousTypeCartes.CONSTRUCTIONCC) > 0) {
 				g.drawImage(imgCc, 400, 80, 45, 45, this);
+				g.setColor(Color.orange);
+				g.drawString(": "+joueur.getNbCartesDevJoue(SousTypeCartes.CONSTRUCTIONCC), 450, 95);
+				g.setColor(Color.black);
 				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.CONSTRUCTIONCC), 450, 110);
 			}
-			if(joueur.getNbCartesDev(SousTypeCartes.DECOUVERTE) > 0) {
+			if(joueur.getNbCartesDev(SousTypeCartes.DECOUVERTE) > 0 || joueur.getNbCartesDevJoue(SousTypeCartes.DECOUVERTE) > 0) {
 				g.drawImage(imgDecouv, 480, 80, 45, 45, this);
+				g.setColor(Color.orange);
+				g.drawString(": "+joueur.getNbCartesDevJoue(SousTypeCartes.DECOUVERTE), 530, 95);
+				g.setColor(Color.black);
 				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.DECOUVERTE), 530, 110);
 			}
-			if(joueur.getNbCartesDev(SousTypeCartes.MONOPOLE) > 0) {
+			if(joueur.getNbCartesDev(SousTypeCartes.MONOPOLE) > 0 || joueur.getNbCartesDevJoue(SousTypeCartes.MONOPOLE) > 0) {
 				g.drawImage(imgMono, 560, 80, 45, 45, this);
+				g.setColor(Color.orange);
+				g.drawString(": "+joueur.getNbCartesDevJoue(SousTypeCartes.MONOPOLE), 610, 95);
+				g.setColor(Color.black);
 				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.MONOPOLE), 610, 110);
 			}
-			if(joueur.getNbCartesDev(SousTypeCartes.POINTVICTOIRE) > 0) {
+			if(joueur.getNbCartesDev(SousTypeCartes.POINTVICTOIRE) > 0 || joueur.getNbCartesDevJoue(SousTypeCartes.POINTVICTOIRE) > 0) {
 				g.drawImage(imgPoint, 640, 80, 45, 45, this);
+				g.setColor(Color.orange);
+				g.drawString(": "+joueur.getNbCartesDevJoue(SousTypeCartes.POINTVICTOIRE), 690, 95);
+				g.setColor(Color.black);
 				g.drawString(": "+joueur.getNbCartesDev(SousTypeCartes.POINTVICTOIRE), 690, 110);
 			}
 		}		
