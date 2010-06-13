@@ -410,14 +410,8 @@ public class Jeu {
 	}
 	
 	public boolean acheterCartesDev() {
-		boolean res = false;
-		if(getJoueurActif().payCartesDev()) {
-			payCartesDev();
-			res = true;
-		}else{
-			res = false;
-		}
-		return res;
+		// on fait payer le joueur *une* fois
+		return this.getJoueurActif().payCartesDev();
 	}
 	
 	public boolean echangerCartes(TypeCartes typeOff, TypeCartes typeDem) {
