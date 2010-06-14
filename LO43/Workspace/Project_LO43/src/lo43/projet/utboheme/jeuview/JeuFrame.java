@@ -438,22 +438,18 @@ public class JeuFrame extends JFrame {
 		}
 		
 		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
 		}
 	
 
 		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 
@@ -472,7 +468,6 @@ public class JeuFrame extends JFrame {
 		 * Attribut les ressources aux joueurs
 		 */
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			j.lancerDes();
 			j.setDesLances(true);
 			valeurDes.setText("" + j.getValeurDes());
@@ -553,7 +548,6 @@ public class JeuFrame extends JFrame {
 	private class ActionDoTroc implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			TypeCartes[] ressJoueur = new TypeCartes[getJ().getJoueurActif().getGroupeCartesRess().size()];
 			int i = 0;
 			for(GroupeCartes gc : getJ().getJoueurActif().getGroupeCartesRess()){
@@ -628,7 +622,6 @@ public class JeuFrame extends JFrame {
 	private class ActionGagner implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			if(j.gagnerPartie()){
 				infosPartie.setText(j.getJoueurActif().getNom() + " a accumulé(e) 10 points de victoire et gagne la partie !");
 				map.setVisible(false);
@@ -656,7 +649,6 @@ public class JeuFrame extends JFrame {
 	private class ActionBuyCartes implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			if(j.acheterCartesDev()) {
 				infosPartie.setText(j.getJoueurActif().getNom() + " achete une carte de developpement !");
 			}else{
@@ -763,14 +755,14 @@ public class JeuFrame extends JFrame {
 	}
 	
 	/**
-	 * Classe qui gere l'evenement sur le bouton pour faire du troc
+	 * Classe qui gere l'evenement sur le bouton pour faire des échanges entre les joueurs :
 	 * @author alexandreaugen
 	 *
 	 */
 	private class ActionExchange implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+			// TODO Echange entre joueurs
 		}
 	}
 
