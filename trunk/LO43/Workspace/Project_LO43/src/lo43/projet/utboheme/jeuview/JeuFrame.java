@@ -32,7 +32,7 @@ import lo43.projet.utboheme.jeu.Jeu;
 import lo43.projet.utboheme.jeu.Joueur;
 
 /**
- * Classe qui permet de representer graphiquement la classe Jeu
+ *Classe qui permet de representer graphiquement la classe Jeu
  * Herite de JFrame
  * 	- possede un attribut de type Jeu pour savoir le jeu a representer
  *  - possede une representation graphique du plateau associe au jeu
@@ -339,7 +339,7 @@ public class JeuFrame extends JFrame {
 	}
 	
 	/**
-	 * Methode permettant de repeindre l'ensemble des representation des joueurs
+	 * MŽthode permettant de repeindre l'ensemble des representation des joueurs
 	 */
 	private void updateJoueurs() {
 		for(JoueurView jv : joueurV) {
@@ -381,11 +381,15 @@ public class JeuFrame extends JFrame {
 					if(!j.isCarteJoue()) {
 						if(plat.fonder(e.getPoint(), j)){
 							j.finirTour();
-							infosPartie.setText("Phase de fondation : \n C'est a " + j.getJoueurActif().getNom() + " de jouer !");
-							if((j.totalUVParticipants() <= 9) && (j.totalCCParticipants() <= 39)) {
+							infosPartie.setText("Phase de fondation : \n C'est ˆ " + j.getJoueurActif().getNom() + " de jouer !");
+							if(j.totalUVParticipants() <= 9) {
 								enabledButton(containerJeu, true);
-								infosPartie.setText("Le jeu peux commencer : \n C'est a " + j.getJoueurActif().getNom() + " de jouer !");
+								infosPartie.setText("Le jeu peux commencer : \n C'est ˆ " + j.getJoueurActif().getNom() + " de jouer !");
 							}
+						}else if(j.getJoueurActif().getNbUV() <= 0){
+							infosPartie.setText("" + j.getJoueurActif().getNom() + " ne possede plus assez d'uv !");
+						}else{
+							infosPartie.setText("Phase de fondation : \n Vous ne pouvez pas contruire ici !");
 						}
 					}else{
 						plat.fonder(e.getPoint(), j);
@@ -393,28 +397,40 @@ public class JeuFrame extends JFrame {
 						if(j.getNbCursusPose() <= 0) {
 							j.setCarteJoue(false);
 							enabledButton(containerJeu, true);
+							if(j.isDesLances()){
+								btDes.setEnabled(false);
+							}
 							infosPartie.setText("La construction des controles continus gratuit est finie !");
+						}else if(j.getJoueurActif().getNbUV() <=0 ){
+							infosPartie.setText("" + j.getJoueurActif().getNom() + " ne possede plus assez d'uv !");
+						}else{
+							infosPartie.setText("Vous ne pouvez pas contruire ici !");
 						}
 					}
 				}else{
-					if(!plat.ajouter(e.getPoint(), getJ())){
-						infosPartie.setText("C'est a " + j.getJoueurActif().getNom() + " de jouer ! \n Vous ne pouvez pas contruire ici !");
+					if(plat.ajouter(e.getPoint(), getJ())){
+						infosPartie.setText("C'est ˆ " + j.getJoueurActif().getNom() + " de jouer ! \n Nouvelle construction !");
+					}else if(j.getJoueurActif().getNbCC() <= 0 || j.getJoueurActif().getNbUV() <= 0 || j.getJoueurActif().getNbUVStar() <= 0){
+						infosPartie.setText("" + j.getJoueurActif().getNom() + " ne possede plus assez de pions !");
 					}else{
-						infosPartie.setText("C'est a " + j.getJoueurActif().getNom() + " de jouer ! \n Nouvelle construction !");
+						infosPartie.setText("C'est ˆ " + j.getJoueurActif().getNom() + " de jouer ! \n Vous ne pouvez pas contruire ici !");
 					}
 				}
 			}else{
 				if(plat.attribuerBinome(e.getPoint())){
-					infosPartie.setText("Le binome glandeur a ete deplace par " + j.getJoueurActif().getNom() + " !");
+					infosPartie.setText("Le binome glandeur ˆ ŽtŽ dŽplacŽ par " + j.getJoueurActif().getNom() + " !");
 					if(j.isCarteJoue()) {
 						j.volerCartes(false);
 						j.setCarteJoue(false);
 						infosPartie.setText("" + j.getJoueurActif().getNom() + " recoit une carte de ressource !");
 					}
 					enabledButton(containerJeu, true);
+					if(j.isDesLances()){
+						btDes.setEnabled(false);
+					}
 					j.setDeplacerBinome(false);
 				}else{
-					infosPartie.setText("Le binome glandeur ne peut pas etre place ici !");
+					infosPartie.setText("Le binome glandeur ne peut pas tre placŽ ici !");
 				}
 			}
 			updateJoueurs();
@@ -422,21 +438,25 @@ public class JeuFrame extends JFrame {
 		}
 		
 		public void mouseClicked(MouseEvent e) {
-
+			// TODO Auto-generated method stub
 		}
 	
 
 		public void mouseEntered(MouseEvent e) {
-
+			// TODO Auto-generated method stub
+			
 		}
 
 		public void mouseExited(MouseEvent e) {
-
+			// TODO Auto-generated method stub
+			
 		}
 
 		public void mouseReleased(MouseEvent e) {
-
+			// TODO Auto-generated method stub
+			
 		}
+
 	}
 	
 	/**
@@ -452,16 +472,18 @@ public class JeuFrame extends JFrame {
 		 * Attribut les ressources aux joueurs
 		 */
 		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
 			j.lancerDes();
+			j.setDesLances(true);
 			valeurDes.setText("" + j.getValeurDes());
 			if(j.getValeurDes() != 7) {
 				for(HexaRessource h : j.getPlateau().getHexaRessWithUv(j.getValeurDes())) {
 					if(!h.isBinomeG()) {
 						for(Joueur jo : h.getSommetUVProprio()) {
 							if (j.attribuerRess(h.getTypeCartes(), jo)) {
-								infosPartie.setText("Les ressources ont ete attribuees a chaques participants !");
+								infosPartie.setText("Les ressources ont ete attribuees ˆ chaques participants !");
 							}else{
-								infosPartie.setText("La reserve en ressource demandee est vide !");
+								infosPartie.setText("La reserve en ressource demandŽe est vide !");
 							}
 						}
 						if(h.getSommetUVProprio().isEmpty()) {
@@ -531,6 +553,7 @@ public class JeuFrame extends JFrame {
 	private class ActionDoTroc implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
 			TypeCartes[] ressJoueur = new TypeCartes[getJ().getJoueurActif().getGroupeCartesRess().size()];
 			int i = 0;
 			for(GroupeCartes gc : getJ().getJoueurActif().getGroupeCartesRess()){
@@ -592,6 +615,7 @@ public class JeuFrame extends JFrame {
 			infosPartie.setText("C'est a " + j.getJoueurActif().getNom() + " de jouer !");
 			updateJoueurs();
 			btDes.setEnabled(true);
+			j.setDesLances(false);
 		}
 		
 	}
@@ -604,8 +628,9 @@ public class JeuFrame extends JFrame {
 	private class ActionGagner implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
 			if(j.gagnerPartie()){
-				infosPartie.setText(j.getJoueurActif().getNom() + " a accumule(e) 10 points de victoire et gagne la partie !");
+				infosPartie.setText(j.getJoueurActif().getNom() + " a accumulŽ(e) 10 points de victoire et gagne la partie !");
 				map.setVisible(false);
 				enabledButton(containerJeu, false);
 				joueurV.get(0).setEnabled(false);
@@ -624,13 +649,14 @@ public class JeuFrame extends JFrame {
 	}
 	
 	/**
-	 * Classe qui gere l'evenement sur le bouton d'achat de cartes
+	 * Classe qui gŽre l'Žvenement sur le bouton d'achat de cartes
 	 * @author alexandreaugen
 	 *
 	 */
 	private class ActionBuyCartes implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
 			if(j.acheterCartesDev()) {
 				infosPartie.setText(j.getJoueurActif().getNom() + " achete une carte de developpement !");
 			}else{
@@ -661,22 +687,22 @@ public class JeuFrame extends JFrame {
 			}
 			
 			SousTypeCartes sstype = (SousTypeCartes) JOptionPane.showInputDialog(null, 
-													  "Quel cartes de developpement souhaitez vous jouer ?",
-													  "Jouer une carte de developpement",
+													  "Quel cartes de dŽveloppement souhaitez vous jouer ?",
+													  "Jouer une carte de dŽveloppement",
 													  JOptionPane.QUESTION_MESSAGE,
 													  new ImageIcon("img/carte-monopole.png"),
 													  cartesDev,
 													  cartesDev[0]);
 			
 			if(sstype == null){
-				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu jouer de cartes de developpement !");
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu jouer de cartes de dŽveloppement !");
 			}else if(sstype == SousTypeCartes.ANCIEN){
-				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de developpemet :  " + sstype + " ! \n Le binome glandeur doit etre deplace sur un nouvel Hexagone !!!");
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de dŽveloppemet :  " + sstype + " ! \n Le binome glandeur doit tre dŽplacŽ sur un nouvel Hexagone!!!");
 				j.setCarteJoue(true);
 				j.setDeplacerBinome(true);
 				enabledButton(containerJeu, false);
 			}else if(sstype == SousTypeCartes.CONSTRUCTIONCC){
-				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de developpement :  " + sstype + " ! \n Vous pouvez construire deux uvs !!!");
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de dŽveloppemet :  " + sstype + " ! \n Vous pouvez construire deux uvs!!!");
 				j.setCarteJoue(true);
 				j.setNbCursusPose(2);
 				enabledButton(containerJeu, false);
@@ -690,18 +716,18 @@ public class JeuFrame extends JFrame {
 					}
 				}
 				TypeCartes ress= (TypeCartes) JOptionPane.showInputDialog(null, 
-						  "Quel type de ressource desirez vous ?",
-						  "Prendre des ressources dans la reserve",
+						  "Quel type de ressource dŽsirez vous ?",
+						  "Prendre des ressources dans la rŽserve",
 						  JOptionPane.QUESTION_MESSAGE,
 						  new ImageIcon("img/carte-nourriture.png"),
 						  ressRess,
 						  ressRess[0]);
 				if(ress == null) {
-					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu jouer de cartes de developpement !");
+					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu jouer de cartes de dŽveloppement !");
 				}else{
 					j.getGroupeCarte(ress).remCartes(2);
 					j.getJoueurActif().getGroupeCartes(ress).addCartes(2);
-					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de developpemet :  " + sstype + " \n Deux cartes de type " + ress + " sont prises dans la reserve !");
+					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de dŽveloppemet :  " + sstype + " \n Deux cartes de type " + ress + " sont prises dans la rŽserve !");
 				}
 			}else if(sstype == SousTypeCartes.MONOPOLE) {
 				TypeCartes[] ressRess = new TypeCartes[getJ().getCartesRess().size()];
@@ -713,21 +739,21 @@ public class JeuFrame extends JFrame {
 					}
 				}
 				TypeCartes ress= (TypeCartes) JOptionPane.showInputDialog(null, 
-						  "Quel type de ressource desirez vous ?",
-						  "Prendre des ressources a chaque participants",
+						  "Quel type de ressource dŽsirez vous ?",
+						  "Prendre des ressources ˆ chaque participants",
 						  JOptionPane.QUESTION_MESSAGE,
 						  new ImageIcon("img/carte-nourriture.png"),
 						  ressRess,
 						  ressRess[0]);
 				if(ress == null) {
-					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu jouer de cartes de developpement !");
+					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu jouer de cartes de dŽveloppement !");
 				}else{
 					j.volerAllPart(ress);
-					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de developpemet :  " + sstype + " \n Toutes les cartes de type " + ress + " sont volees aux participants !");
+					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de dŽveloppemet :  " + sstype + " \n Toutes les cartes de type " + ress + " sont volŽes aux participants !");
 				}
 			}else if(sstype == SousTypeCartes.POINTVICTOIRE){
 				j.getJoueurActif().addNbPoints(2);
-				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de developpemet :  " + sstype + " \n Ajout de deux points de victoire !");
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de dŽveloppemet :  " + sstype + " \n Ajout de deux points de victoire !");
 			}
 			
 			j.getJoueurActif().jouerCarteDev(sstype);
@@ -744,7 +770,7 @@ public class JeuFrame extends JFrame {
 	private class ActionExchange implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-
+			// TODO Auto-generated method stub
 		}
 	}
 
