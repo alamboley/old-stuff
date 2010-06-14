@@ -35,6 +35,7 @@ public class Jeu {
 	private boolean carteJoue;
 	private boolean DesLances;
 	private int nbCursusPose;
+
 	/**
 	 * Constructeur par defaut
 	 */
@@ -522,13 +523,10 @@ public class Jeu {
 	}
 	
 	/**
-	 * Programme principal
+	 * Point d'entree.
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
 		new JeuFrame(new Jeu(new Plateau(40))).setVisible(true);
-		
 	}
-
 }
