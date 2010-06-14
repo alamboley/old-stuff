@@ -57,7 +57,7 @@ public class Hexagone {
 		this.binomeG = pbinome;
 		this.typeTerr = ptypeT;
 		this.InitHexa();
-		System.out.println("Creation d'un hexagone '" + this.typeTerr + "' a la position x: " + this.getXHex() + " et y: " + this.getYHex());
+		//System.out.println("Creation d'un hexagone '" + this.typeTerr + "' a la position x: " + this.getXHex() + " et y: " + this.getYHex());
 	}
 	
 	/**

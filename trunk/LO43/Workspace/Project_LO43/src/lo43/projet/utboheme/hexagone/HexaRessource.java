@@ -22,7 +22,7 @@ public class HexaRessource extends Hexagone {
 		super();
 		this.jeton = null;
 		this.typeCartes = null;
-		System.out.println("Creation d'un hexagone de ressource avec constructeur par defaut");
+		//System.out.println("Creation d'un hexagone de ressource avec constructeur par defaut");
 	}
 	
 	/**
@@ -39,7 +39,7 @@ public class HexaRessource extends Hexagone {
 		super(pindX, pindY, psize, pbinome, ptypeT);
 		this.jeton = pjeton;
 		this.typeCartes = ptypeC;
-		System.out.println("Creation d'un hexagone de ressource '" + this.getTypeTerr() + "' avec constructeur par recopie");
+		//System.out.println("Creation d'un hexagone de ressource '" + this.getTypeTerr() + "' avec constructeur par recopie");
 	}
 
 	/**
