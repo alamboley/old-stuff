@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import lo43.projet.utboheme.carte.TypeCartes;
-import lo43.projet.utboheme.hexagone.Arete;
 import lo43.projet.utboheme.hexagone.HexaRessource;
 import lo43.projet.utboheme.hexagone.HexaZoneTroc;
 import lo43.projet.utboheme.hexagone.Hexagone;
 import lo43.projet.utboheme.hexagone.Jeton;
-import lo43.projet.utboheme.hexagone.Sommet;
 import lo43.projet.utboheme.hexagone.TypeTerrain;
 
 /**
@@ -347,12 +345,20 @@ public class Plateau {
 		}
 		return lHexaWithUv;
 	}
-		
-	public boolean constructionUV (Sommet s) {
-		return false;
-	}
 	
-	public boolean constructionCC (Arete a) {
-		return false;
+	/**
+	 * Methode qui renvoi une liste d'hexagones de ressource qui possedent une UV** selon le numero passe en parametre
+	 * @param pnum
+	 * @return
+	 */
+	public List<HexaRessource> getHexaRessWithUvStar(int pnum) {
+		List<HexaRessource> lHexaWithUvStar = new ArrayList<HexaRessource>();
+		for(HexaRessource h : this.getHexaByNum(pnum)) {
+			if(!h.getSommetsUVStar().isEmpty()) {
+				lHexaWithUvStar.add(h);
+			}
+		}
+		return lHexaWithUvStar;
 	}
+
 }
