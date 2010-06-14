@@ -348,12 +348,10 @@ public class Plateau {
 		return lHexaWithUv;
 	}
 		
-	// TODO appeler la fonction correspondante dans Jeu avec le sommet en parametre
 	public boolean constructionUV (Sommet s) {
 		return false;
 	}
 	
-	// TODO appeler la fonction correspondante dans Jeu avec le sommet en parametre
 	public boolean constructionCC (Arete a) {
 		return false;
 	}
