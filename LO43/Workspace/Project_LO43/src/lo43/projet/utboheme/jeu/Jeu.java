@@ -3,11 +3,11 @@ package lo43.projet.utboheme.jeu;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import lo43.projet.utboheme.carte.GroupeCartes;
 import lo43.projet.utboheme.carte.GroupeCartesDev;
 import lo43.projet.utboheme.carte.SousTypeCartes;
 import lo43.projet.utboheme.carte.TypeCartes;
+import lo43.projet.utboheme.hexagone.HexaRessource;
 import lo43.projet.utboheme.hexagone.HexaZoneTroc;
 import lo43.projet.utboheme.hexagone.Hexagone;
 import lo43.projet.utboheme.jeuview.JeuFrame;
@@ -34,8 +34,9 @@ public class Jeu {
 	private boolean deplacerBinome;
 	private boolean carteJoue;
 	private boolean DesLances;
-	private int nbCursusPose;
-
+	private boolean uvPose;
+	private boolean ccPose;
+	private int nbUvPose;
 	/**
 	 * Constructeur par defaut
 	 */
@@ -48,7 +49,9 @@ public class Jeu {
 		this.deplacerBinome = false;
 		this.carteJoue = false;
 		this.DesLances = false;
-		this.nbCursusPose = 0;
+		this.uvPose = false;
+		this.ccPose = false;
+		this.nbUvPose = 0;
 	}
 	
 	/**
@@ -92,7 +95,7 @@ public class Jeu {
 	}
 
 	/**
-	 * Attribut le parametre a la valeur du de
+	 * Attribut le parametre ˆ la valeur du de
 	 * @param pvdes
 	 */
 	public void setValeurDes(int pvdes) {
@@ -126,7 +129,7 @@ public class Jeu {
 	}
 
 	/**
-	 * Methode permettant d'ajouter un joueur a la liste des participants
+	 * Methode permettant d'ajouter un joueur ˆ la liste des participants
 	 * @param pj
 	 */
 	public void setParticipant(Joueur pj) {
@@ -137,36 +140,106 @@ public class Jeu {
 		}
 	}
 	 
+	/**
+	 * Teste si le binome glandeur est a deplacer
+	 * @return
+	 * 	- un boolean
+	 */
 	public boolean isDeplacerBinome() {
 		return deplacerBinome;
 	}
 
+	/**
+	 * Attribut le deplacement du binome glandeur ou non
+	 * @param deplacerBinome
+	 */
 	public void setDeplacerBinome(boolean deplacerBinome) {
 		this.deplacerBinome = deplacerBinome;
 	}
 
+	/**
+	 * Teste si une carte est entrain d'etre joue
+	 * @return
+	 * 	- un boolean
+	 */
 	public boolean isCarteJoue() {
 		return carteJoue;
 	}
 
+	/**
+	 * Attribut jouer une carte ou non
+	 * @param carteJoue
+	 */
 	public void setCarteJoue(boolean carteJoue) {
 		this.carteJoue = carteJoue;
 	}
 
+	/**
+	 * Teste si les des ont deja ete lances
+	 * @return
+	 * 	- un boolean
+	 */
 	public boolean isDesLances() {
 		return DesLances;
 	}
 
+	/**
+	 * Attribut lancer des ou non
+	 * @param desLances
+	 */
 	public void setDesLances(boolean desLances) {
 		DesLances = desLances;
 	}
 
-	public int getNbCursusPose() {
-		return nbCursusPose;
+	/**
+	 * Teste si une uv a ete pose
+	 * @return
+	 *  - un boolean
+	 */
+	public boolean isUvPose() {
+		return uvPose;
 	}
 
-	public void setNbCursusPose(int nbCursusPose) {
-		this.nbCursusPose = nbCursusPose;
+	/**
+	 * Attribut uv pose ou non 
+	 * @param uvPose
+	 */
+	public void setUvPose(boolean uvPose) {
+		this.uvPose = uvPose;
+	}
+
+	/**
+	 * Teste si un controle continu a ete pose
+	 * @return
+	 *  - un boolean
+	 */
+	public boolean isCcPose() {
+		return ccPose;
+	}
+
+	/**
+	 * Attribut controle continu pose ou non
+	 * @param ccPose
+	 */
+	public void setCcPose(boolean ccPose) {
+		this.ccPose = ccPose;
+	}
+
+	/**
+	 * Renvoi le nombre d'uv pose
+	 * @return
+	 * 	- un entier
+	 */
+	public int getNbUvPose() {
+		return nbUvPose;
+	}
+
+	/**
+	 * Attribut le nombre d'uv pose
+	 * @param nbUvPose
+	 */
+	public void setNbUvPose(int nbUvPose) {
+		this.nbUvPose = nbUvPose;
 	}
 
 	/**
@@ -237,6 +310,12 @@ public class Jeu {
 		return new GroupeCartes(this.nbCartesDev(), TypeCartes.DEVELOPPEMENT);
 	}
 	
+	/**
+	 * Methode permettant de renvoyer un groupe de cartes de developpement selon un sous type sstype
+	 * @param sstype
+	 * @return
+	 * 	- un groupe de cartes
+	 */
 	public GroupeCartes getGroupeCartesDev(SousTypeCartes sstype) {
 		GroupeCartes gc = new GroupeCartes();
 		for(GroupeCartes g : getCartesDev()) {
@@ -269,6 +348,11 @@ public class Jeu {
 			this.getGroupeCarte(ptypeC).setNombre(0);
 	}
 	
+	/**
+	 * Methode permettant de diminuer un groupe de cartes de developpement selon le sous type et le nombre passes en parametre
+	 * @param sstype
+	 * @param pnb
+	 */
 	public void DimGroupeCarteDev(SousTypeCartes sstype, int pnb) {
 		this.getGroupeCartesDev(sstype).remCartes(pnb);
 		if(getGroupeCartesDev(sstype).getNombre() < 0)
@@ -302,7 +386,7 @@ public class Jeu {
 	}
 	 
 	/**
-	 * Methode permettant de passer d'un joueur actif a un autre
+	 * Methode permettant de passer d'un joueur actif ˆ un autre
 	 * selon le nombre de tours effectue, le deroulement se fait dans un sens puis dans l'autre
 	 */
 	public void finirTour() {
@@ -333,7 +417,7 @@ public class Jeu {
 	}
 	 
 	/**
-	 * Methode permettant de simuler le lancement de deux des a six faces
+	 * Methode permettant de simuler le lancement de deux des ˆ six faces
 	 */
 	public void lancerDes() {
 		int des1 = 1 + new Random().nextInt(6);
@@ -357,6 +441,10 @@ public class Jeu {
 		return jactif;
 	}
 	
+	/**
+	 * Methode permettant de diminuer la reserve selon le type de pion passŽ en parametre
+	 * @param p
+	 */
 	public void putRess(Pion p) {
 		if(p.getClass() == UV.class) {
 			UV uv = (UV) p;
@@ -375,6 +463,9 @@ public class Jeu {
 		}
 	}
 	
+	/**
+	 * Methode permettant de payer l'achat d'une carte de developpement et de l'affecter au joueur
+	 */
 	public void payCartesDev() {
 		this.AugmGroupeCarte(TypeCartes.SUPPORT, 1);
 		this.AugmGroupeCarte(TypeCartes.CAFE, 1);
@@ -384,13 +475,28 @@ public class Jeu {
 		DimGroupeCarteDev(gcd.getSousTypeCartes(), 1);
 	}
 	
+	/**
+	 * MŽthode permettant de voler des cartes
+	 * Si moitie vrai, moitie des ressources des participants dans la reserve
+	 * Si moitie faux, une ressource pour le joueur actif du joueur qui possede une uv sur la nouvelle zone du 
+	 * binome glandeur
+	 * @param moitie
+	 * @return
+	 * 	- un boolean
+	 */
 	public boolean volerCartes(boolean moitie) {
 		boolean res = false;
+		TypeCartes type = null;
+		
 		if(moitie) {
 			for(Joueur j : participants) {
 				if(j.getNbCartesRessTotal() > 7) {
 					for(int i=0; i<j.getNbCartesRessTotal()/2; i++) {
-						GroupeCartes gc = j.getGroupeCartes(TypeCartes.random());
+						type = j.getGroupeCartes(TypeCartes.random()).getTypeCartes();
+						while(j.getGroupeCartes(type).getNombre() <= 0) {
+							type = j.getGroupeCartes(TypeCartes.random()).getTypeCartes();
+						}
+						GroupeCartes gc = j.getGroupeCartes(type);
 						gc.remCartes(1);
 						AugmGroupeCarte(gc.getTypeCartes(), 1);	
 						res = true;
@@ -399,8 +505,10 @@ public class Jeu {
 			}
 		}else{
  			Joueur j = plateau.getHexaBinomeG().getSommetUVProprio().get(new Random().nextInt(plateau.getHexaBinomeG().getSommetUVProprio().size()));
-			System.out.println("" + j.getNom());
- 			TypeCartes type = j.getGroupeCartes(TypeCartes.random()).getTypeCartes();
+ 			type = j.getGroupeCartes(TypeCartes.random()).getTypeCartes();
+ 			if(j.getGroupeCartes(type).getNombre() <= 0) {
+ 	 			type = j.getGroupeCartes(TypeCartes.random()).getTypeCartes();
+ 			}
 			j.DimGroupeCarte(type, 1);
 			getJoueurActif().AugmGroupeCarte(type, 1);
 			res = true;
@@ -408,10 +516,19 @@ public class Jeu {
 		return res;
 	}
 	
+	/**
+	 * MŽthode qui test si le joueur actif a plus de dix points de victoire
+	 * @return
+	 */
 	public boolean gagnerPartie() {
 		return (getJoueurActif().getNbPoints() >= 10) ? true : false;
 	}
 	
+	/**
+	 * Methode pour attribuer l'ancien le plus vieux
+	 * @return
+	 * - un boolean
+	 */
 	public boolean attribuerAncien() {
 		boolean res = false;
 		if (getJoueurActif().getNbCartesDevJoue(SousTypeCartes.ANCIEN) >= 3) {
@@ -430,6 +547,11 @@ public class Jeu {
 		return res;
 	} 
 	
+	/**
+	 * Methode pour attribuer le cursus le plus long 
+	 * @return
+	 * 	- un boolean
+	 */
 	public boolean attribuerCursus() {
 		boolean res = false;
 			int nbpion = getJoueurActif().getNbCC() + getJoueurActif().getNbUV() + getJoueurActif().getNbUVStar();
@@ -447,11 +569,48 @@ public class Jeu {
 		return res;
 	} 
 	
-	public boolean attribuerRess(TypeCartes type, Joueur j) {
+	/**
+	 * Methode pour attribuer une ressource lors du lancement des des
+	 * @return
+	 * 	- un boolean
+	 */
+	public boolean attribuerRess() {
 		boolean res = false;
-		if(getGroupeCarte(type).getNombre() >= 0) {
-			DimGroupeCarte(type,1);
-			j.AugmGroupeCarte(type, 1);
+		
+		for(HexaRessource h : getPlateau().getHexaRessWithUv(getValeurDes())) {
+			if(!h.isBinomeG()) {
+				for(Joueur jo : h.getSommetUVProprio()) {
+					if(getGroupeCarte(h.getTypeCartes()).getNombre() >= 0) {
+						DimGroupeCarte(h.getTypeCartes(),1);
+						jo.AugmGroupeCarte(h.getTypeCartes(), 1);
+						res = true;
+					}	
+				}
+			}
+		}
+		for(HexaRessource h : getPlateau().getHexaRessWithUvStar(getValeurDes())) {
+			if(!h.isBinomeG()) {
+				for(Joueur jo : h.getSommetUVStarProprio()) {
+					if(getGroupeCarte(h.getTypeCartes()).getNombre() >= 0) {
+						DimGroupeCarte(h.getTypeCartes(), 2);
+						jo.AugmGroupeCarte(h.getTypeCartes(), 2);
+						res = true;
+					}	
+				}
+			}
+		}
+		return res;
+	}
+	
+	/**
+	 * Teste si le joueur actif peux acheter une carte de developpement
+	 * @return
+	 *  - un boolean
+	 */
+	public boolean acheterCartesDev() {
+		boolean res = false;
+		if(getJoueurActif().payCartesDev()) {
+			payCartesDev();
 			res = true;
 		}else{
 			res = false;
@@ -459,39 +618,13 @@ public class Jeu {
 		return res;
 	}
 	
-	public boolean acheterCartesDev() {
-		// on fait payer le joueur *une* fois
-		boolean achetable = this.getJoueurActif().payCartesDev();
-
-		if (achetable){
-			// "chopage" cartes de dev
-			List<GroupeCartes> cartes = this.getCartesDev();
-			int choix = -1;
-
-			while (choix == -1) {
-				// Choix au hasard
-				int tmp = new Random().nextInt(cartes.size());
-				GroupeCartes groupe = cartes.get(tmp);
-
-				// on verif que c'est dispo
-				if (groupe.getNombre() > 0) {
-					// on met a jour le stock
-					choix = tmp;
-					groupe.remCartes(1);
-
-					// on donne la carte au joueur
-					for (GroupeCartes g : this.getJoueurActif().getGroupeCartesDev()) {
-						GroupeCartesDev devs = (GroupeCartesDev) g;
-						if (devs.getSousTypeCartes() == ((GroupeCartesDev) groupe).getSousTypeCartes())
-							devs.addCartes(1);
-					}
-				}
-			}
-		}
-
-		return achetable;
-	}
-	
+	/**
+	 * Methode qui permet de faire du troc de ressources entre le joueur actif et la reserve
+	 * @param typeOff
+	 * @param typeDem
+	 * @return
+	 * 	- un boolean
+	 */
 	public boolean trockerCartes(TypeCartes typeOff, TypeCartes typeDem) {
 		int nbCartes = 4;
 		boolean res = false;
@@ -513,6 +646,32 @@ public class Jeu {
 		return res;
 	}
 	
+	/**
+	 * Methode qui permet de faire un echange de ressource en deux joueurs
+	 * @param typeOff
+	 * @param nbOff
+	 * @param typeDem
+	 * @param nbDem
+	 * @param j
+	 * @return
+	 * 	- un boolean
+	 */
+	public boolean echangerCartes(TypeCartes typeOff, int nbOff, TypeCartes typeDem, int nbDem, Joueur j){
+		boolean res = false;
+		if(getJoueurActif().getGroupeCartes(typeOff).getNombre() >= nbOff && j.getGroupeCartes(typeDem).getNombre() >= nbDem){
+			getJoueurActif().DimGroupeCarte(typeOff, nbOff);
+			j.DimGroupeCarte(typeDem, nbDem);
+			getJoueurActif().AugmGroupeCarte(typeDem, nbDem);
+			j.AugmGroupeCarte(typeOff, nbOff);
+			res = true;
+		}
+		return res;
+	}
+	
+	/**
+	 * Methode qui permet au joueur actif de voler toutes les cartes d'un type au autres joueurs
+	 * @param type
+	 */
 	public void volerAllPart(TypeCartes type) {
 		for(Joueur j : participants){
 			if(j != getJoueurActif()) {
@@ -523,10 +682,31 @@ public class Jeu {
 	}
 	
 	/**
-	 * Point d'entree.
+	 * Methode qui permet de retrouver un joueur selon son nom
+	 * @param nom
+	 * @return
+	 * 	- un joueur
+	 */
+	public Joueur getJoueur(String nom) {
+		Joueur jrech = new Joueur();
+		for(Joueur j : participants){
+			if(j.getNom() == nom){
+				jrech = j;
+				break;
+			}
+		}
+		return jrech;
+	}
+	
+	/**
+	 * Programme principal
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
+		//Creation de la fenetre principale
 		new JeuFrame(new Jeu(new Plateau(40))).setVisible(true);
+		
 	}
+
 }
