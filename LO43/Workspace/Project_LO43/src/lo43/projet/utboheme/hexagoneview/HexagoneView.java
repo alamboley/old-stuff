@@ -146,7 +146,14 @@ public class HexagoneView extends Polygon{
 		return laretesV;
 	}
 
+	/**
+	 * Renvoi l'hexagone associe ˆ cette classe
+	 * @return
+	 */
 	public Hexagone getHexa() {
 		return hexa;
 	}
+	
+	
+	
 }
