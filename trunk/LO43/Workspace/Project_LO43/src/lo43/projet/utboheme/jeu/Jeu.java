@@ -33,6 +33,7 @@ public class Jeu {
 	private List<GroupeCartes> reserve;
 	private boolean deplacerBinome;
 	private boolean carteJoue;
+	private boolean DesLances;
 	private int nbCursusPose;
 	/**
 	 * Constructeur par defaut
@@ -45,6 +46,7 @@ public class Jeu {
 		this.reserve = null;
 		this.deplacerBinome = false;
 		this.carteJoue = false;
+		this.DesLances = false;
 		this.nbCursusPose = 0;
 	}
 	
@@ -89,7 +91,7 @@ public class Jeu {
 	}
 
 	/**
-	 * Attribut le parametre a la valeur du de
+	 * Attribut le parametre ˆ la valeur du de
 	 * @param pvdes
 	 */
 	public void setValeurDes(int pvdes) {
@@ -123,7 +125,7 @@ public class Jeu {
 	}
 
 	/**
-	 * Methode permettant d'ajouter un joueur a la liste des participants
+	 * Methode permettant d'ajouter un joueur ˆ la liste des participants
 	 * @param pj
 	 */
 	public void setParticipant(Joueur pj) {
@@ -148,6 +150,14 @@ public class Jeu {
 
 	public void setCarteJoue(boolean carteJoue) {
 		this.carteJoue = carteJoue;
+	}
+
+	public boolean isDesLances() {
+		return DesLances;
+	}
+
+	public void setDesLances(boolean desLances) {
+		DesLances = desLances;
 	}
 
 	public int getNbCursusPose() {
