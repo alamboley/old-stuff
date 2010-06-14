@@ -762,7 +762,67 @@ public class JeuFrame extends JFrame {
 	private class ActionExchange implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			// TODO Echange entre joueurs
+			Joueur[] joueur = new Joueur[getJ().getParticipants().size() - 1];
+			String[] joueurNom = new String[getJ().getParticipants().size() - 1];
+			int i = 0;
+			for (Joueur joueurNonActif : getJ().getParticipants()) {
+				if (joueurNonActif.isActif() != true) {
+					joueur[i] = joueurNonActif;
+					joueurNom[i] = joueurNonActif.getNom();
+					i++;
+				}
+			}
+			
+			
+			TypeCartes[] ressJoueur = new TypeCartes[getJ().getJoueurActif().getGroupeCartesRess().size()];
+			i = 0;
+			for(GroupeCartes gc : getJ().getJoueurActif().getGroupeCartesRess()){
+				if(gc.getNombre() > 0){
+					ressJoueur[i] = gc.getTypeCartes();
+					i++;
+				}
+			}
+			TypeCartes[] ressRess = new TypeCartes[getJ().getCartesRess().size()];
+			i = 0;
+			for(GroupeCartes gc : getJ().getCartesRess()){
+				if(gc.getNombre() > 0){
+					ressRess[i] = gc.getTypeCartes();
+					i++;
+				}
+			}
+			
+			Joueur[] joueurEchange = (Joueur[]) JOptionPane.showInputDialog(null, 
+					  "Avec quel joueur souhaitez-vous echanger ?",
+					  "Echanger des ressources avec un joueur",
+					  JOptionPane.QUESTION_MESSAGE,
+					  new ImageIcon("img/boy_8.png"),
+					  joueurNom,
+					  joueurNom[0]);
+			
+			TypeCartes ressOff = (TypeCartes) JOptionPane.showInputDialog(null, 
+													  "Quel type de ressource souhaitez vos echanger ?",
+													  "Echanger des ressources avec la reserve",
+													  JOptionPane.QUESTION_MESSAGE,
+													  new ImageIcon("img/carte-nourriture.png"),
+													  ressJoueur,
+													  ressJoueur[0]);
+			
+			TypeCartes ressDem = (TypeCartes) JOptionPane.showInputDialog(null, 
+										  "Quel type de ressource desirez vous ?",
+										  "Echanger des ressources avec la reserve",
+										  JOptionPane.QUESTION_MESSAGE,
+										  new ImageIcon("img/carte-nourriture.png"),
+										  ressRess,
+										  ressRess[0]);
+			if(ressDem == null || ressOff == null){
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu echanger de ressources !");
+			}else if(j.trockerCartes(ressOff, ressDem)) {
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a echanger des ressource " + ressOff + " contre une ressource de " + ressDem);
+			}else{
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu echanger des ressource " + ressOff + " contre une ressource de " + ressDem);
+			}
+			updateJoueurs();
+			updateReserve();
 		}
 	}
 
