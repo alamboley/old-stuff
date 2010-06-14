@@ -95,7 +95,7 @@ public class PlateauView extends Canvas{
 				if(a.contains(mousePosition)) {
 					if(!a.getArete().hasCC() && a.getArete().hasUvOnSomm(j.getJoueurActif())) {
 						a.getArete().setControleC(j.getJoueurActif().getCC());
-						hasArete = a.getArete().hasCC();
+						hasArete = true;
 					}
 				}
 			}
