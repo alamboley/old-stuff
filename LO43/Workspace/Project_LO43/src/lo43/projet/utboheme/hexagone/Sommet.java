@@ -33,7 +33,7 @@ public class Sommet {
 	public Sommet(int px, int py){
 		this.xSom = px;
 		this.ySom = py;
-		System.out.println("Creation d'un sommet a la position x: " + this.getXSom() + " et y: " + this.getYSom());
+		//System.out.println("Creation d'un sommet a la position x: " + this.getXSom() + " et y: " + this.getYSom());
 	}
 	
 	/**

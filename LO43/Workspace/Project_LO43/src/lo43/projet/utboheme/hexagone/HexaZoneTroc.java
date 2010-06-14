@@ -21,7 +21,7 @@ public class HexaZoneTroc extends Hexagone {
 		super();
 		this.typeTroc = 0;
 		this.typeC = null;
-		System.out.println("Creation d'une zone de troc avec constructeur par defaut");
+		//System.out.println("Creation d'une zone de troc avec constructeur par defaut");
 	}
 	
 	/**
@@ -38,7 +38,7 @@ public class HexaZoneTroc extends Hexagone {
 		super(pindX, pindY, psize, pbinome, ptypeT);
 		this.typeTroc = ptype;
 		this.typeC = ptypeC;
-		System.out.println("Creation d'une zone de troc '" + this.getTypeTerr() + "' avec constructeur par recopie");
+		//System.out.println("Creation d'une zone de troc '" + this.getTypeTerr() + "' avec constructeur par recopie");
 	}
 
 	/**

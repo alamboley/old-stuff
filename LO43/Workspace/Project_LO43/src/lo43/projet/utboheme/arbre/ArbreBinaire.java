@@ -145,7 +145,7 @@ public class ArbreBinaire {
         boolean resultat = true;
 
         if (tmp == null) {
-            System.out.println("WTF! arbre introuvable...");
+            System.out.println("arbre introuvable...");
             resultat = false;
         } else {
             if (tmp.filsG == null) {
