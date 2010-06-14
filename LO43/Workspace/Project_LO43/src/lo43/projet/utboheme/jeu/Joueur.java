@@ -241,7 +241,7 @@ public class Joueur {
 	}
 	
 	/**
-	 * Methode permettant d'attribuer un nombre de cartes "nbCartes" au type du groupe de cartes passe en parametre 
+	 * Methode permettant d'augmenter un groupe de cartes ptype selon nbCartes 
 	 * @param ptype
 	 * @param nbCartes
 	 */
@@ -249,22 +249,44 @@ public class Joueur {
 		this.getGroupeCartes(ptype).addCartes(nbCartes);
 	}
 	
+	/**
+	 * Methode permettant de diminuer un groupe de cartes ptypeC selon pnb
+	 * @param ptypeC
+	 * @param pnb
+	 */
 	public void DimGroupeCarte(TypeCartes ptypeC, int pnb) {
 		this.getGroupeCartes(ptypeC).remCartes(pnb);
 		if(getGroupeCartes(ptypeC).getNombre() < 0) 
 			this.getGroupeCartes(ptypeC).setNombre(0);
 	}
 	
+	/**
+	 * Methode permettant de renvoyer toutes les cartes d'un type de carte passe en parametre
+	 * @param type
+	 * @return
+	 */
 	public GroupeCartes MoveAllCartes(TypeCartes type){
 		GroupeCartes gc = new GroupeCartes(getGroupeCartes(type).getNombre(), type);
 		this.getGroupeCartes(type).remCartes(getGroupeCartes(type).getNombre());
 		return gc;
 	}
 	
+	/**
+	 * Methode permettant d'augmenter un groupe de carte de developpement joue selon un sous type et un nombre passes
+	 * en parametre
+	 * @param sstype
+	 * @param nb
+	 */
 	public void AugmenterGroupeCarteDev(SousTypeCartes sstype, int nb) {
 		this.getGroupeCartesDev(sstype).addCartes(nb);
 	}
 	
+	/**
+	 * Methode permettant de diminuer un groupe de carte de developpement joue selon un sous type et un nombre passes
+	 * en parametre
+	 * @param sstype
+	 * @param nb
+	 */
 	public void DimGroupeCarteDev(SousTypeCartes sstype, int nb) {
 		this.getGroupeCartesDev(sstype).remCartes(nb);
 		if(getGroupeCartesDev(sstype).getNombre() < 0) 
@@ -281,14 +303,25 @@ public class Joueur {
 		return lcc;
 	}
 	
+	/**
+	 * Methode pour ajouter un controle continu a la liste du joueur
+	 * @param p
+	 */
 	public void addCC(Pion p) {
 		this.lcc.add(p);
 	}
 	
+	/**
+	 * Methode pour enlever un controle continu de la liste du joueur
+	 */
 	public void remCC() {
 		this.lcc.remove(0);
 	}
 	
+	/**
+	 * Renvoi un controle continu de la liste du joueur
+	 * @return
+	 */
 	public Pion getCC() {
 		return this.lcc.get(0);
 	}
@@ -302,14 +335,25 @@ public class Joueur {
 		return luv;
 	}
 	
+	/**
+	 * Methode pour ajouter une uv a la liste du joueur
+	 * @param puv
+	 */
 	public void addUV(UV puv) {
 		this.luv.add(puv);
 	}
 	
+	/**
+	 * Methode pour enlever une uv de la liste du joueur
+	 */
 	public void remUV() {
 		this.luv.remove(0);
 	}
 	
+	/**
+	 * Renvoi une uv de la liste du joueur
+	 * @return
+	 */
 	public UV getUV() {
 		return this.luv.get(0);
 	}
@@ -323,14 +367,25 @@ public class Joueur {
 		return luvstar;
 	}
 	
+	/**
+	 * Methode pour ajouter une uv** a la liste du joueur
+	 * @param puvstar
+	 */
 	public void addUVStar(UV puvstar) {
 		this.luvstar.add(puvstar);
 	}
 	
+	/**
+	 * Methode pour enlever une uv** de la liste du joueur
+	 */
 	public void remUVStar() {
 		this.luvstar.remove(0);
 	}
 	
+	/**
+	 * Renvoi un uv** de la liste du joueur
+	 * @return
+	 */
 	public UV getUVStar() {
 		return this.luvstar.get(0);
 	}
@@ -372,6 +427,11 @@ public class Joueur {
 		return this.getGroupeCartes(ptype).getNombre();
 	}
 	
+	/**
+	 * Renvoi le nombre totale de cartes de ressource du joueur
+	 * @return
+	 * 	- un entier
+	 */
 	public int getNbCartesRessTotal(){
 		int res = 0;
 		for(GroupeCartes gc : getGroupeCartesRess()){
@@ -380,6 +440,11 @@ public class Joueur {
 		return res;
 	}
 	
+	/**
+	 * Methode qui renvoi la liste des groupes de cartes de ressource
+	 * @return
+	 *  - une liste de groupe de cartes de ressource
+	 */
 	public List<GroupeCartes> getGroupeCartesRess() {
 		List<GroupeCartes> liste = new ArrayList<GroupeCartes>();
 		for(GroupeCartes g : lcartes) {
@@ -390,6 +455,11 @@ public class Joueur {
 		return liste;
 	}
 	
+	/**
+	 * Methode qui renvoi la liste des groupes de cartes de developpement
+	 * @return
+	 * 	- une liste de groupe de cartes de developpement
+	 */
 	public List<GroupeCartes> getGroupeCartesDev() {
 		List<GroupeCartes> liste = new ArrayList<GroupeCartes>();
 		for(GroupeCartes g : lcartes) {
@@ -400,6 +470,12 @@ public class Joueur {
 		return liste;
 	}
 	
+	/**
+	 * Renvoi un groupe de cartes de developpement selon le sous type passe en parametre
+	 * @param sstype
+	 * @return
+	 * 	- un groupe de carte de developpement
+	 */
 	public GroupeCartes getGroupeCartesDev(SousTypeCartes sstype) {
 		GroupeCartes gc = new GroupeCartes();
 		for (GroupeCartes g : getGroupeCartesDev()) {
@@ -412,6 +488,12 @@ public class Joueur {
 		return gc;
 	}
 	
+	/**
+	 * Renvoi le groupe de cartes de developpement joue selon le sous type passe en parametre
+	 * @param sstype
+	 * @return
+	 * 	- un groupe de cartes de developpement
+	 */
 	public GroupeCartes getGroupeCartesDevJoue(SousTypeCartes sstype) {
 		GroupeCartes gc = new GroupeCartes();
 		for (GroupeCartesDev g : lcartesJouees) {
@@ -423,6 +505,11 @@ public class Joueur {
 		return gc;
 	}
 	
+	/**
+	 * Renvoi le nombre de cartes d'un groupe de cartes de developpement selon le sous type passe en parametre
+	 * @param sstype
+	 * @return
+	 */
 	public int getNbCartesDev(SousTypeCartes sstype) {
 		int res = 0;
 		for(GroupeCartes gc : getGroupeCartesDev()) {
@@ -435,6 +522,12 @@ public class Joueur {
 		return res;
 	}
 	
+	/**
+	 * Renvoi le nombre de cartes de developpement joues
+	 * @param sstype
+	 * @return
+	 * 	- un entier
+	 */
 	public int getNbCartesDevJoue(SousTypeCartes sstype) {
 		int res = 0;
 		for(GroupeCartesDev gcd : lcartesJouees) {
@@ -445,7 +538,7 @@ public class Joueur {
 		}
 		return res;
 	}
-
+	
 	public List<ArbreBinaire> getChemins() {
 		return chemins;
 	}
@@ -454,6 +547,12 @@ public class Joueur {
 		this.chemins = chemins;
 	}
 	
+	/**
+	 * Teste si le joueur possede assez de ressources selon le type de pion passe en parametre
+	 * @param p
+	 * @return
+	 * 	- un boolean
+	 */
 	public boolean TestRess(Pion p) {
 		boolean res = false;
 		if(p.getClass() == UV.class) {
@@ -475,6 +574,11 @@ public class Joueur {
 		return res;
 	}
 	
+	/**
+	 * Methode permettant de prendre les ressources dans la reserve du joueur selon le type de pion passe
+	 * en parametre
+	 * @param p
+	 */
 	public void remRess(Pion p) {
 		if(p.getClass() == UV.class) {
 			UV uv = (UV) p;
@@ -499,6 +603,11 @@ public class Joueur {
 		}
 	}
 	
+	/**
+	 * Methode permettant de payer une carte de developpement
+	 * @return
+	 * - un boolean
+	 */
 	public boolean payCartesDev() {
 		boolean res = false;
 		if(getNbCartes(TypeCartes.SUPPORT) >= 1 && getNbCartes(TypeCartes.CAFE) >= 1 && getNbCartes(TypeCartes.SOMMEIL) >= 1) {
@@ -510,6 +619,10 @@ public class Joueur {
 		return res;
 	}
 	
+	/**
+	 * Methode permettant de diminuer le nombre de cartes de developpement selon un sous type passe en parametre
+	 * @param sstype
+	 */
 	public void jouerCarteDev(SousTypeCartes sstype) {
 		DimGroupeCarteDev(sstype, 1);
 		for(GroupeCartesDev gcd : lcartesJouees) {
