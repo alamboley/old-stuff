@@ -62,7 +62,11 @@ public class GroupeCartes {
 	 * Permet de retirer un nombre "pnb" de cartes a un groupe de cartes
 	 */
 	public void remCartes(int pnb) {
-		this.nombre -= pnb;
+		if(pnb <= nombre){
+			this.nombre -= pnb;
+		}else {
+			this.nombre = 0;
+		}
 	}
 
 }
