@@ -21,6 +21,11 @@ import lo43.projet.utboheme.carte.TypeCartes;
  import lo43.projet.utboheme.jeu.Jeu;
 import lo43.projet.utboheme.jeu.Joueur;
 
+/**
+ * Classe representant la boite de dialogue d'echange de ressources entre deux joueurs
+ * @author alexandreaugen
+ *
+ */
 @SuppressWarnings("serial")
 public class EchDial extends JDialog{
 	
@@ -33,6 +38,13 @@ public class EchDial extends JDialog{
 	private JComboBox ress1Combo, ress2Combo, nomCombo;
 	private JTextField nb1Text, nb2Text;
 	
+	/**
+	 * Constructeur parametre
+	 * @param parent
+	 * @param title
+	 * @param modal
+	 * @param j
+	 */
 	public EchDial(JFrame parent, String title, boolean modal, Jeu j) {
 		super(parent, title, modal);
 		this.setSize(500, 400);
@@ -50,6 +62,9 @@ public class EchDial extends JDialog{
 		this.initComponent();
 	}
 	
+	/*
+	 * Initialisation des composants
+	 */
 	private void initComponent() {
 		
 		ress1Icon = new JLabel(new ImageIcon("img/carte-nourriture.png"));
@@ -204,59 +219,89 @@ public class EchDial extends JDialog{
  
 	}
 
+	/**
+	 * Renvoi le type de carte offert
+	 * @return
+	 * 	- un type de carte
+	 */
 	public TypeCartes getRess1() {
 		return ress1;
 	}
 
+	/**
+	 * Attribut un type de carte offert 
+	 * @param ress1
+	 */
 	public void setRess1(TypeCartes ress1) {
 		this.ress1 = ress1;
 	}
 
+	/**
+	 * Renvoi le type de carte demande
+	 * @return
+	 *  - un type de carte
+	 */
 	public TypeCartes getRess2() {
 		return ress2;
 	}
 
+	/**
+	 * Attribut un type de carte demande
+	 * @param ress2
+	 */
 	public void setRess2(TypeCartes ress2) {
 		this.ress2 = ress2;
 	}
 
+	/**
+	 * Renvoi le nom du joueur
+	 * @return
+	 * 	- un string
+	 */
 	public String getNom() {
 		return nom;
 	}
 
+	/**
+	 * Attribut le nom du joueur
+	 * @param nom
+	 */
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
 
+	/**
+	 * Renvoi le nombre de cartes offert
+	 * @return
+	 *  - un entier
+	 */
 	public int getNb1() {
 		return nb1;
 	}
 
+	/**
+	 * Attribut le nombre de cartes offert
+	 * @param nb1
+	 */
 	public void setNb1(int nb1) {
 		this.nb1 = nb1;
 	}
 
+	/**
+	 * Renvoi le nombre de cartes demande
+	 * @return
+	 * 	- un entier
+	 */
 	public int getNb2() {
 		return nb2;
 	}
 
+	/**
+	 * Attribut le nombre de cartes demande
+	 * @param nb2
+	 */
 	public void setNb2(int nb2) {
 		this.nb2 = nb2;
 	}
 	
-	public String toString() {
-		String str;
-		if(this.ress1 != null && this.ress2 != null && this.nom != null && this.nb1 != 0 & this.nb2 != 0) {
-			str = "Description de l'Žchange";
-			str += "Ressource1 : " + this.ress1 + "\n";
-			str += "nb1 : " + this.nb1 + "\n";
-			str += "Joueur : " + this.nom + "\n";
-			str += "Ressource2 : " + this.ress2 + "\n";
-			str += "nb2 : " + this.nb2 + "\n";
-		}else{
-			str = "Aucune infos";
-		}
-		return str;
-	}
-
 }
