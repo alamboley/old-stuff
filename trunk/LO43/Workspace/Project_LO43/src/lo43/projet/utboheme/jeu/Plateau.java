@@ -357,5 +357,4 @@ public class Plateau {
 	public boolean constructionCC (Arete a) {
 		return false;
 	}
-
 }

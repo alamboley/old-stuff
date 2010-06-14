@@ -519,5 +519,4 @@ public class Joueur {
 			}
 		}
 	}
-
 }
