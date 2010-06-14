@@ -189,7 +189,6 @@ public class EchDial extends JDialog{
 		okBt.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				setRess1((TypeCartes)ress1Combo.getSelectedItem());
 				setNb1(Integer.parseInt(nb1Text.getText()));
 				setNom((String)nomCombo.getSelectedItem());
@@ -203,7 +202,6 @@ public class EchDial extends JDialog{
 		cancelBt.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				setVisible(false);
 			}
 		});
