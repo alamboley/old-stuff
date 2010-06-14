@@ -338,7 +338,7 @@ public class JeuFrame extends JFrame {
 	}
 	
 	/**
-	 * MŽthode permettant de repeindre l'ensemble des representation des joueurs
+	 * Methode permettant de repeindre l'ensemble des representation des joueurs
 	 */
 	private void updateJoueurs() {
 		for(JoueurView jv : joueurV) {
@@ -384,10 +384,10 @@ public class JeuFrame extends JFrame {
 								j.setUvPose(false);
 								j.setCcPose(false);
 							}
-							infosPartie.setText("Phase de fondation : \n C'est ˆ " + j.getJoueurActif().getNom() + " de jouer !");
+							infosPartie.setText("Phase de fondation : \n C'est a " + j.getJoueurActif().getNom() + " de jouer !");
 							if(j.totalUVParticipants() <= 9 && j.totalCCParticipants() <= 39) {
 								enabledButton(containerJeu, true);
-								infosPartie.setText("Le jeu peux commencer : \n C'est ˆ " + j.getJoueurActif().getNom() + " de jouer !");
+								infosPartie.setText("Le jeu peux commencer : \n C'est a " + j.getJoueurActif().getNom() + " de jouer !");
 							}
 						}else if(j.getJoueurActif().getNbUV() <= 0){
 							infosPartie.setText("" + j.getJoueurActif().getNom() + " ne possede plus assez d'uv !");
@@ -421,7 +421,7 @@ public class JeuFrame extends JFrame {
 				}
 			}else{
 				if(plat.attribuerBinome(e.getPoint())){
-					infosPartie.setText("Le binome glandeur ˆ ŽtŽ dŽplacŽ par " + j.getJoueurActif().getNom() + " !");
+					infosPartie.setText("Le binome glandeur ˆ ŽtŽ dŽplac par " + j.getJoueurActif().getNom() + " !");
 					if(j.isCarteJoue()) {
 						j.volerCartes(false);
 						j.setCarteJoue(false);
@@ -433,7 +433,7 @@ public class JeuFrame extends JFrame {
 					}
 					j.setDeplacerBinome(false);
 				}else{
-					infosPartie.setText("Le binome glandeur ne peut pas tre placŽ ici !");
+					infosPartie.setText("Le binome glandeur ne peut pas tre place ici !");
 				}
 			}
 			updateJoueurs();
@@ -617,7 +617,7 @@ public class JeuFrame extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 			if(j.gagnerPartie()){
-				infosPartie.setText(j.getJoueurActif().getNom() + " a accumulŽ(e) 10 points de victoire et gagne la partie !");
+				infosPartie.setText(j.getJoueurActif().getNom() + " a accumule(e) 10 points de victoire et gagne la partie !");
 				map.setVisible(false);
 				enabledButton(containerJeu, false);
 				joueurV.get(0).setEnabled(false);
@@ -636,7 +636,7 @@ public class JeuFrame extends JFrame {
 	}
 	
 	/**
-	 * Classe qui gŽre l'Žvenement sur le bouton d'achat de cartes
+	 * Classe qui gere l'evenement sur le bouton d'achat de cartes
 	 * @author alexandreaugen
 	 *
 	 */
@@ -673,22 +673,22 @@ public class JeuFrame extends JFrame {
 			}
 			
 			SousTypeCartes sstype = (SousTypeCartes) JOptionPane.showInputDialog(null, 
-													  "Quel cartes de dŽveloppement souhaitez vous jouer ?",
-													  "Jouer une carte de dŽveloppement",
+													  "Quel cartes de developpement souhaitez vous jouer ?",
+													  "Jouer une carte de developpement",
 													  JOptionPane.QUESTION_MESSAGE,
 													  new ImageIcon("img/carte-monopole.png"),
 													  cartesDev,
 													  cartesDev[0]);
 			
 			if(sstype == null){
-				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu jouer de cartes de dŽveloppement !");
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu jouer de cartes de developpement !");
 			}else if(sstype == SousTypeCartes.ANCIEN){
-				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de dŽveloppemet :  " + sstype + " ! \n Le binome glandeur doit tre dŽplacŽ sur un nouvel Hexagone!!!");
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de developpement :  " + sstype + " ! \n Le binome glandeur doit tre dŽplacŽ sur un nouvel Hexagone!!!");
 				j.setCarteJoue(true);
 				j.setDeplacerBinome(true);
 				enabledButton(containerJeu, false);
 			}else if(sstype == SousTypeCartes.CONSTRUCTIONCC){
-				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de dŽveloppemet :  " + sstype + " ! \n Vous pouvez construire deux uvs!!!");
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de developpement :  " + sstype + " ! \n Vous pouvez construire deux uvs!!!");
 				j.setCarteJoue(true);
 				j.setNbUvPose(2);
 				enabledButton(containerJeu, false);
@@ -713,7 +713,7 @@ public class JeuFrame extends JFrame {
 				}else{
 					j.getGroupeCarte(ress).remCartes(2);
 					j.getJoueurActif().getGroupeCartes(ress).addCartes(2);
-					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de dŽveloppemet :  " + sstype + " \n Deux cartes de type " + ress + " sont prises dans la rŽserve !");
+					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de developpement :  " + sstype + " \n Deux cartes de type " + ress + " sont prises dans la rŽserve !");
 				}
 			}else if(sstype == SousTypeCartes.MONOPOLE) {
 				TypeCartes[] ressRess = new TypeCartes[getJ().getCartesRess().size()];
@@ -735,11 +735,11 @@ public class JeuFrame extends JFrame {
 					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu jouer de cartes de dŽveloppement !");
 				}else{
 					j.volerAllPart(ress);
-					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de dŽveloppemet :  " + sstype + " \n Toutes les cartes de type " + ress + " sont volŽes aux participants !");
+					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de developpement :  " + sstype + " \n Toutes les cartes de type " + ress + " sont volŽes aux participants !");
 				}
 			}else if(sstype == SousTypeCartes.POINTVICTOIRE){
 				j.getJoueurActif().addNbPoints(2);
-				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de dŽveloppemet :  " + sstype + " \n Ajout de deux points de victoire !");
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de developpement :  " + sstype + " \n Ajout de deux points de victoire !");
 			}
 			
 			j.getJoueurActif().jouerCarteDev(sstype);
