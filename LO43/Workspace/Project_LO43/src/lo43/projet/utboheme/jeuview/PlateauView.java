@@ -182,5 +182,4 @@ public class PlateauView extends Canvas{
 	public Plateau getPlateau() {
 		return plateau;
 	}
-
 }
