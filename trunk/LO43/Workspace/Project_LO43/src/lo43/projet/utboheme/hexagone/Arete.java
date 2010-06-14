@@ -75,6 +75,12 @@ public class Arete {
 		}
 	}
 	
+	/**
+	 * Teste si l'arete possede une uv ou uv** du joueur j sur ces sommets
+	 * @param j
+	 * @return
+	 * 	- un boolean
+	 */
 	public boolean hasUvOnSomm(Joueur j){
 		boolean res = false;
 		if(sDebut.hasUV() || sDebut.hasUVStar()) {
