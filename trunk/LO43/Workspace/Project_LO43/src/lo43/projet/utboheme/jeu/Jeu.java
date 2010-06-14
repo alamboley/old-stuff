@@ -89,7 +89,7 @@ public class Jeu {
 	}
 
 	/**
-	 * Attribut le parametre ˆ la valeur du de
+	 * Attribut le parametre a la valeur du de
 	 * @param pvdes
 	 */
 	public void setValeurDes(int pvdes) {
@@ -123,7 +123,7 @@ public class Jeu {
 	}
 
 	/**
-	 * Methode permettant d'ajouter un joueur ˆ la liste des participants
+	 * Methode permettant d'ajouter un joueur a la liste des participants
 	 * @param pj
 	 */
 	public void setParticipant(Joueur pj) {
