@@ -92,7 +92,7 @@ public class Joueur {
 		lcartes.add(new GroupeCartesDev(0, TypeCartes.DEVELOPPEMENT, SousTypeCartes.POINTVICTOIRE));
 
 		this.lcartesJouees = new ArrayList<GroupeCartesDev>();
-		lcartesJouees.add(new GroupeCartesDev(4, TypeCartes.DEVELOPPEMENT, SousTypeCartes.ANCIEN));
+		lcartesJouees.add(new GroupeCartesDev(0, TypeCartes.DEVELOPPEMENT, SousTypeCartes.ANCIEN));
 		lcartesJouees.add(new GroupeCartesDev(0, TypeCartes.DEVELOPPEMENT, SousTypeCartes.CONSTRUCTIONCC));
 		lcartesJouees.add(new GroupeCartesDev(0, TypeCartes.DEVELOPPEMENT, SousTypeCartes.DECOUVERTE));
 		lcartesJouees.add(new GroupeCartesDev(0, TypeCartes.DEVELOPPEMENT, SousTypeCartes.MONOPOLE));
