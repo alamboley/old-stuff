@@ -27,12 +27,11 @@ import lo43.projet.utboheme.carte.GroupeCartesDev;
 import lo43.projet.utboheme.carte.SousTypeCartes;
 import lo43.projet.utboheme.carte.TypeCartes;
 import lo43.projet.utboheme.carteview.GroupeCartesView;
-import lo43.projet.utboheme.hexagone.HexaRessource;
 import lo43.projet.utboheme.jeu.Jeu;
 import lo43.projet.utboheme.jeu.Joueur;
 
 /**
- * Classe qui permet de representer graphiquement la classe Jeu
+ *Classe qui permet de representer graphiquement la classe Jeu
  * Herite de JFrame
  * 	- possede un attribut de type Jeu pour savoir le jeu a representer
  *  - possede une representation graphique du plateau associe au jeu
@@ -296,21 +295,21 @@ public class JeuFrame extends JFrame {
 		String nom3 = new String("Joueur 3");
 		String nom = new String();
 		
-		nom = (String) JOptionPane.showInputDialog(null, "Nom du joueur 1 ?", "Fiche d'inscription", JOptionPane.QUESTION_MESSAGE, imgJ1, null, null);
+		nom = (String) JOptionPane.showInputDialog(null, "Nom du joueur 1 ?", "Fiche d'inscription", JOptionPane.INFORMATION_MESSAGE, imgJ1, null, null);
 		if(nom == null) {
 			nom = nom1;
 		}
 		j.setParticipant(new Joueur(1, nom, Color.red));
 		joueurV.add(new JoueurView(j.getParticipants().get(0), j.getParticipants().get(0).getCouleur(), "img/boy_1.png"));
 		
-		nom = (String) JOptionPane.showInputDialog(null, "Nom du joueur 2 ?", "Fiche d'inscription", JOptionPane.QUESTION_MESSAGE, imgJ2, null, null);
+		nom = (String) JOptionPane.showInputDialog(null, "Nom du joueur 2 ?", "Fiche d'inscription", JOptionPane.INFORMATION_MESSAGE, imgJ2, null, null);
 		if(nom == null) {
 			nom = nom2;
 		}
 		j.setParticipant(new Joueur(2, nom, Color.blue));
 		joueurV.add(new JoueurView(j.getParticipants().get(1), j.getParticipants().get(1).getCouleur(), "img/girl_1.png"));
 		
-		nom = (String) JOptionPane.showInputDialog(null, "Nom du joueur 3 ?", "Fiche d'inscription", JOptionPane.QUESTION_MESSAGE, imgJ3, null, null);
+		nom = (String) JOptionPane.showInputDialog(null, "Nom du joueur 3 ?", "Fiche d'inscription", JOptionPane.INFORMATION_MESSAGE, imgJ3, null, null);
 		if(nom == null) {
 			nom = nom3;
 		}
@@ -339,7 +338,7 @@ public class JeuFrame extends JFrame {
 	}
 	
 	/**
-	 * Methode permettant de repeindre l'ensemble des representation des joueurs
+	 * Méthode permettant de repeindre l'ensemble des representation des joueurs
 	 */
 	private void updateJoueurs() {
 		for(JoueurView jv : joueurV) {
@@ -380,11 +379,15 @@ public class JeuFrame extends JFrame {
 				if(!containerJeu.isEnabled()) {
 					if(!j.isCarteJoue()) {
 						if(plat.fonder(e.getPoint(), j)){
-							j.finirTour();
-							infosPartie.setText("Phase de fondation : \n C'est a " + j.getJoueurActif().getNom() + " de jouer !");
-							if((j.totalUVParticipants() <= 9) && (j.totalCCParticipants() <= 39)) {
+							if(j.isCcPose()) {
+								j.finirTour();
+								j.setUvPose(false);
+								j.setCcPose(false);
+							}
+							infosPartie.setText("Phase de fondation : \n C'est à " + j.getJoueurActif().getNom() + " de jouer !");
+							if(j.totalUVParticipants() <= 9 && j.totalCCParticipants() <= 39) {
 								enabledButton(containerJeu, true);
-								infosPartie.setText("Le jeu peux commencer : \n C'est a " + j.getJoueurActif().getNom() + " de jouer !");
+								infosPartie.setText("Le jeu peux commencer : \n C'est à " + j.getJoueurActif().getNom() + " de jouer !");
 							}
 						}else if(j.getJoueurActif().getNbUV() <= 0){
 							infosPartie.setText("" + j.getJoueurActif().getNom() + " ne possede plus assez d'uv !");
@@ -393,8 +396,8 @@ public class JeuFrame extends JFrame {
 						}
 					}else{
 						plat.fonder(e.getPoint(), j);
-						j.setNbCursusPose(j.getNbCursusPose()-1);
-						if(j.getNbCursusPose() <= 0) {
+						j.setNbUvPose(j.getNbUvPose()-1);
+						if(j.getNbUvPose() <= 0) {
 							j.setCarteJoue(false);
 							enabledButton(containerJeu, true);
 							if(j.isDesLances()){
@@ -409,16 +412,16 @@ public class JeuFrame extends JFrame {
 					}
 				}else{
 					if(plat.ajouter(e.getPoint(), getJ())){
-						infosPartie.setText("C'est a " + j.getJoueurActif().getNom() + " de jouer ! \n Nouvelle construction !");
+						infosPartie.setText("C'est à " + j.getJoueurActif().getNom() + " de jouer ! \n Nouvelle construction !");
 					}else if(j.getJoueurActif().getNbCC() <= 0 || j.getJoueurActif().getNbUV() <= 0 || j.getJoueurActif().getNbUVStar() <= 0){
 						infosPartie.setText("" + j.getJoueurActif().getNom() + " ne possede plus assez de pions !");
 					}else{
-						infosPartie.setText("C'est a " + j.getJoueurActif().getNom() + " de jouer ! \n Vous ne pouvez pas contruire ici !");
+						infosPartie.setText("C'est à " + j.getJoueurActif().getNom() + " de jouer ! \n Vous ne pouvez pas contruire ici !");
 					}
 				}
 			}else{
 				if(plat.attribuerBinome(e.getPoint())){
-					infosPartie.setText("Le binome glandeur a ete deplace par " + j.getJoueurActif().getNom() + " !");
+					infosPartie.setText("Le binome glandeur à été déplacé par " + j.getJoueurActif().getNom() + " !");
 					if(j.isCarteJoue()) {
 						j.volerCartes(false);
 						j.setCarteJoue(false);
@@ -430,7 +433,7 @@ public class JeuFrame extends JFrame {
 					}
 					j.setDeplacerBinome(false);
 				}else{
-					infosPartie.setText("Le binome glandeur ne peut pas etre place ici !");
+					infosPartie.setText("Le binome glandeur ne peut pas être placé ici !");
 				}
 			}
 			updateJoueurs();
@@ -438,18 +441,22 @@ public class JeuFrame extends JFrame {
 		}
 		
 		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
 		}
 	
 
 		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
 			
 		}
 
 		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
 			
 		}
 
 		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
 			
 		}
 
@@ -468,23 +475,15 @@ public class JeuFrame extends JFrame {
 		 * Attribut les ressources aux joueurs
 		 */
 		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
 			j.lancerDes();
 			j.setDesLances(true);
 			valeurDes.setText("" + j.getValeurDes());
 			if(j.getValeurDes() != 7) {
-				for(HexaRessource h : j.getPlateau().getHexaRessWithUv(j.getValeurDes())) {
-					if(!h.isBinomeG()) {
-						for(Joueur jo : h.getSommetUVProprio()) {
-							if (j.attribuerRess(h.getTypeCartes(), jo)) {
-								infosPartie.setText("Les ressources ont ete attribuees a chaques participants !");
-							}else{
-								infosPartie.setText("La reserve en ressource demandee est vide !");
-							}
-						}
-						if(h.getSommetUVProprio().isEmpty()) {
-							infosPartie.setText("Aucun participants ne possede d'uvs sur les terrains numerotes : " + String.valueOf(h.getJeton().getNumero()) + " !");
-						}
-					}
+				if (j.attribuerRess()) {
+					infosPartie.setText("Les ressources ont ete attribuees chaques participants !");
+				}else{
+					infosPartie.setText("Les ressources n'ont pas ete attribuees a chaque participants !");
 				}
 			}else{
 				infosPartie.setText("La moitie des ressources de chaque participants a ete volee ! \n Le binome glandeur doit etre deplace sur un nouvel Hexagone!!!");
@@ -548,6 +547,7 @@ public class JeuFrame extends JFrame {
 	private class ActionDoTroc implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
 			TypeCartes[] ressJoueur = new TypeCartes[getJ().getJoueurActif().getGroupeCartesRess().size()];
 			int i = 0;
 			for(GroupeCartes gc : getJ().getJoueurActif().getGroupeCartesRess()){
@@ -622,8 +622,9 @@ public class JeuFrame extends JFrame {
 	private class ActionGagner implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
 			if(j.gagnerPartie()){
-				infosPartie.setText(j.getJoueurActif().getNom() + " a accumule(e) 10 points de victoire et gagne la partie !");
+				infosPartie.setText(j.getJoueurActif().getNom() + " a accumulé(e) 10 points de victoire et gagne la partie !");
 				map.setVisible(false);
 				enabledButton(containerJeu, false);
 				joueurV.get(0).setEnabled(false);
@@ -642,19 +643,20 @@ public class JeuFrame extends JFrame {
 	}
 	
 	/**
-	 * Classe qui gere l'evenement sur le bouton d'achat de cartes
+	 * Classe qui gére l'évenement sur le bouton d'achat de cartes
 	 * @author alexandreaugen
 	 *
 	 */
 	private class ActionBuyCartes implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
 			if(j.acheterCartesDev()) {
 				infosPartie.setText(j.getJoueurActif().getNom() + " achete une carte de developpement !");
+				reserveV.get(5).getgCartes().remCartes(1);
 			}else{
 				infosPartie.setText(j.getJoueurActif().getNom() + " ne peut pas acheter de carte de developpement ! \n Pas assez de ressources disponible !");
 			}
-			reserveV.get(5).getgCartes().remCartes(1);
 			updateJoueurs();
 			updateReserve();
 		}
@@ -679,24 +681,24 @@ public class JeuFrame extends JFrame {
 			}
 			
 			SousTypeCartes sstype = (SousTypeCartes) JOptionPane.showInputDialog(null, 
-													  "Quel cartes de developpement souhaitez vous jouer ?",
-													  "Jouer une carte de developpement",
+													  "Quel cartes de développement souhaitez vous jouer ?",
+													  "Jouer une carte de développement",
 													  JOptionPane.QUESTION_MESSAGE,
 													  new ImageIcon("img/carte-monopole.png"),
 													  cartesDev,
 													  cartesDev[0]);
 			
 			if(sstype == null){
-				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu jouer de cartes de developpement !");
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu jouer de cartes de développement !");
 			}else if(sstype == SousTypeCartes.ANCIEN){
-				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de developpemet :  " + sstype + " ! \n Le binome glandeur doit etre deplace sur un nouvel Hexagone!!!");
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de développemet :  " + sstype + " ! \n Le binome glandeur doit être déplacé sur un nouvel Hexagone!!!");
 				j.setCarteJoue(true);
 				j.setDeplacerBinome(true);
 				enabledButton(containerJeu, false);
 			}else if(sstype == SousTypeCartes.CONSTRUCTIONCC){
-				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de developpemet :  " + sstype + " ! \n Vous pouvez construire deux uvs!!!");
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de développemet :  " + sstype + " ! \n Vous pouvez construire deux uvs!!!");
 				j.setCarteJoue(true);
-				j.setNbCursusPose(2);
+				j.setNbUvPose(2);
 				enabledButton(containerJeu, false);
 			}else if(sstype == SousTypeCartes.DECOUVERTE){
 				TypeCartes[] ressRess = new TypeCartes[getJ().getCartesRess().size()];
@@ -708,18 +710,18 @@ public class JeuFrame extends JFrame {
 					}
 				}
 				TypeCartes ress= (TypeCartes) JOptionPane.showInputDialog(null, 
-						  "Quel type de ressource desirez vous ?",
-						  "Prendre des ressources dans la reserve",
+						  "Quel type de ressource désirez vous ?",
+						  "Prendre des ressources dans la réserve",
 						  JOptionPane.QUESTION_MESSAGE,
 						  new ImageIcon("img/carte-nourriture.png"),
 						  ressRess,
 						  ressRess[0]);
 				if(ress == null) {
-					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu jouer de cartes de developpement !");
+					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu jouer de cartes de développement !");
 				}else{
 					j.getGroupeCarte(ress).remCartes(2);
 					j.getJoueurActif().getGroupeCartes(ress).addCartes(2);
-					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de developpemet :  " + sstype + " \n Deux cartes de type " + ress + " sont prises dans la reserve !");
+					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de développemet :  " + sstype + " \n Deux cartes de type " + ress + " sont prises dans la réserve !");
 				}
 			}else if(sstype == SousTypeCartes.MONOPOLE) {
 				TypeCartes[] ressRess = new TypeCartes[getJ().getCartesRess().size()];
@@ -731,21 +733,21 @@ public class JeuFrame extends JFrame {
 					}
 				}
 				TypeCartes ress= (TypeCartes) JOptionPane.showInputDialog(null, 
-						  "Quel type de ressource desirez vous ?",
-						  "Prendre des ressources a chaque participants",
+						  "Quel type de ressource désirez vous ?",
+						  "Prendre des ressources à chaque participants",
 						  JOptionPane.QUESTION_MESSAGE,
 						  new ImageIcon("img/carte-nourriture.png"),
 						  ressRess,
 						  ressRess[0]);
 				if(ress == null) {
-					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu jouer de cartes de developpement !");
+					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu jouer de cartes de développement !");
 				}else{
 					j.volerAllPart(ress);
-					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de developpemet :  " + sstype + " \n Toutes les cartes de type " + ress + " sont volees aux participants !");
+					infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de développemet :  " + sstype + " \n Toutes les cartes de type " + ress + " sont volées aux participants !");
 				}
 			}else if(sstype == SousTypeCartes.POINTVICTOIRE){
 				j.getJoueurActif().addNbPoints(2);
-				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de developpemet :  " + sstype + " \n Ajout de deux points de victoire !");
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a jouer une carte de développemet :  " + sstype + " \n Ajout de deux points de victoire !");
 			}
 			
 			j.getJoueurActif().jouerCarteDev(sstype);
@@ -755,74 +757,21 @@ public class JeuFrame extends JFrame {
 	}
 	
 	/**
-	 * Classe qui gere l'evenement sur le bouton pour faire des echanges entre les joueurs :
+	 * Classe qui gere l'evenement sur le bouton pour faire du troc
 	 * @author alexandreaugen
 	 *
 	 */
 	private class ActionExchange implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			Joueur[] joueur = new Joueur[getJ().getParticipants().size() - 1];
-			String[] joueurNom = new String[getJ().getParticipants().size() - 1];
-			int i = 0;
-			for (Joueur joueurNonActif : getJ().getParticipants()) {
-				if (joueurNonActif.isActif() != true) {
-					joueur[i] = joueurNonActif;
-					joueurNom[i] = joueurNonActif.getNom();
-					i++;
-				}
-			}
-			
-			
-			TypeCartes[] ressJoueur = new TypeCartes[getJ().getJoueurActif().getGroupeCartesRess().size()];
-			i = 0;
-			for(GroupeCartes gc : getJ().getJoueurActif().getGroupeCartesRess()){
-				if(gc.getNombre() > 0){
-					ressJoueur[i] = gc.getTypeCartes();
-					i++;
-				}
-			}
-			TypeCartes[] ressRess = new TypeCartes[getJ().getCartesRess().size()];
-			i = 0;
-			for(GroupeCartes gc : getJ().getCartesRess()){
-				if(gc.getNombre() > 0){
-					ressRess[i] = gc.getTypeCartes();
-					i++;
-				}
-			}
-			
-			Joueur[] joueurEchange = (Joueur[]) JOptionPane.showInputDialog(null, 
-					  "Avec quel joueur souhaitez-vous echanger ?",
-					  "Echanger des ressources avec un joueur",
-					  JOptionPane.QUESTION_MESSAGE,
-					  new ImageIcon("img/boy_8.png"),
-					  joueurNom,
-					  joueurNom[0]);
-			
-			TypeCartes ressOff = (TypeCartes) JOptionPane.showInputDialog(null, 
-													  "Quel type de ressource souhaitez vos echanger ?",
-													  "Echanger des ressources avec la reserve",
-													  JOptionPane.QUESTION_MESSAGE,
-													  new ImageIcon("img/carte-nourriture.png"),
-													  ressJoueur,
-													  ressJoueur[0]);
-			
-			TypeCartes ressDem = (TypeCartes) JOptionPane.showInputDialog(null, 
-										  "Quel type de ressource desirez vous ?",
-										  "Echanger des ressources avec la reserve",
-										  JOptionPane.QUESTION_MESSAGE,
-										  new ImageIcon("img/carte-nourriture.png"),
-										  ressRess,
-										  ressRess[0]);
-			if(ressDem == null || ressOff == null){
-				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu echanger de ressources !");
-			}else if(j.trockerCartes(ressOff, ressDem)) {
-				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a echanger des ressource " + ressOff + " contre une ressource de " + ressDem);
+			// TODO Auto-generated method stub
+			EchDial edDial = new EchDial(null, "Echange des ressources entre Joueur", true, getJ());
+			if(j.echangerCartes(edDial.getRess1(), edDial.getNb1(), edDial.getRess2(), edDial.getNb2(), getJ().getJoueur(edDial.getNom()))){
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " a echange " + edDial.getNb1() + " " + edDial.getRess1() + " contre " + edDial.getNb2() + " " + edDial.getRess2() + " avec le joueur " + edDial.getNom());
 			}else{
-				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas pu echanger des ressource " + ressOff + " contre une ressource de " + ressDem);
+				infosPartie.setText("" + getJ().getJoueurActif().getNom() + " n'a pas echange avec " + edDial.getNom() + " ! \n Problème de ressources !");
 			}
 			updateJoueurs();
-			updateReserve();
 		}
 	}
 
