@@ -91,7 +91,7 @@ public class Jeu {
 	}
 
 	/**
-	 * Attribut le parametre ˆ la valeur du de
+	 * Attribut le parametre a la valeur du de
 	 * @param pvdes
 	 */
 	public void setValeurDes(int pvdes) {
@@ -125,7 +125,7 @@ public class Jeu {
 	}
 
 	/**
-	 * Methode permettant d'ajouter un joueur ˆ la liste des participants
+	 * Methode permettant d'ajouter un joueur a la liste des participants
 	 * @param pj
 	 */
 	public void setParticipant(Joueur pj) {
@@ -301,7 +301,7 @@ public class Jeu {
 	}
 	 
 	/**
-	 * Methode permettant de passer d'un joueur actif ˆ un autre
+	 * Methode permettant de passer d'un joueur actif a un autre
 	 * selon le nombre de tours effectue, le deroulement se fait dans un sens puis dans l'autre
 	 */
 	public void finirTour() {
@@ -332,7 +332,7 @@ public class Jeu {
 	}
 	 
 	/**
-	 * Methode permettant de simuler le lancement de deux des ˆ six faces
+	 * Methode permettant de simuler le lancement de deux des a six faces
 	 */
 	public void lancerDes() {
 		int des1 = 1 + new Random().nextInt(6);
