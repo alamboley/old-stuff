@@ -149,7 +149,4 @@ public class HexagoneView extends Polygon{
 	public Hexagone getHexa() {
 		return hexa;
 	}
-	
-	
-	
 }

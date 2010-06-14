@@ -80,7 +80,4 @@ public class HexaRessource extends Hexagone {
 		this.InitHexa();
 		return this;
 	}
-	 
-	
-
 }

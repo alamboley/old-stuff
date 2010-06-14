@@ -79,10 +79,11 @@ public class PlateauView extends Canvas{
 				if (s.contains(mousePosition)) {
 					if(!s.getSommet().hasUV()) {
 						s.getSommet().setUv(j.getJoueurActif().getUV());
-						// Code non fonctionnel, ClassCastException levee
-						//HexaRessource hexa = (HexaRessource) hv.getHexa();
-						//j.getJoueurActif().AugmGroupeCarte(hexa.getTypeCartes(), 1);
-						//j.DimGroupeCarte(hexa.getTypeCartes(), 1);
+						if (hv.getHexa() instanceof HexaRessource) {
+							HexaRessource hexa = (HexaRessource) hv.getHexa();
+							j.getJoueurActif().AugmGroupeCarte(hexa.getTypeCartes(), 1);
+							j.DimGroupeCarte(hexa.getTypeCartes(), 1);
+						}
 						hasSommet = true;
 					}
 				}
