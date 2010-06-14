@@ -128,6 +128,21 @@ public class Hexagone {
 		}
 		return luv;
 	}
+	
+	/**
+	 * Methode permettant de renvoyer les sommets de l'hexagone qui possedent une UV** 
+	 * @return
+	 * 	- une liste de sommets
+	 */
+	public List<Sommet> getSommetsUVStar() {
+		List<Sommet> luvstar = new ArrayList<Sommet>();
+		for(Sommet s : sommets){
+			if(s.hasUVStar()){
+				luvstar.add(s);
+			}
+		}
+		return luvstar;
+	}
 	 
 	/**
 	 * Methode permettant de renvoyer les aretes de l'hexagone qui possedent un controle continu
@@ -151,9 +166,20 @@ public class Hexagone {
 	 */
 	public List<Joueur> getSommetUVProprio() {
 		List<Joueur> lj = new ArrayList<Joueur>();
-		List<Sommet> luv = new ArrayList<Sommet>();
-		luv = getSommetsUV();
-		for(Sommet s : luv) {
+		for(Sommet s : getSommetsUV()) {
+			lj.add(s.getUv().getProprietaire());
+		}
+		return lj;
+	}
+	
+	/**
+	 * Methode permettant de renvoyer les proprietaires des UV**s presentes sur les sommets de l'hexagone
+	 * @return
+	 * 	_ une liste de joueur
+	 */
+	public List<Joueur> getSommetUVStarProprio() {
+		List<Joueur> lj = new ArrayList<Joueur>();
+		for(Sommet s : getSommetsUVStar()) {
 			lj.add(s.getUv().getProprietaire());
 		}
 		return lj;
@@ -260,13 +286,21 @@ public class Hexagone {
 		return aretes;
 	}
 
-	
-	public boolean hasCC(Sommet s, Joueur j) {
+	/**
+	 * Teste si une arete adjacente au sommet s possede un controle continu
+	 * du joueur j
+	 * @param s
+	 * @param j
+	 * @return
+	 * 	- un boolean
+	 */
+	public boolean AreteHasCC(Sommet s, Joueur j) {
 		boolean res = false;
-		for(Arete a : getAretes()) {
+		for(Arete a : aretes) {
 			if (a.getsDebut() == s || a.getsFin() == s) {
 				if(a.hasCC() && a.getControleC().getProprietaire() == j) {
 					res = true;
+					break;
 				}
 			}
 		}
