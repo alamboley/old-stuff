@@ -32,7 +32,7 @@ import lo43.projet.utboheme.jeu.Jeu;
 import lo43.projet.utboheme.jeu.Joueur;
 
 /**
- *Classe qui permet de representer graphiquement la classe Jeu
+ * Classe qui permet de representer graphiquement la classe Jeu
  * Herite de JFrame
  * 	- possede un attribut de type Jeu pour savoir le jeu a representer
  *  - possede une representation graphique du plateau associe au jeu
@@ -382,7 +382,7 @@ public class JeuFrame extends JFrame {
 						if(plat.fonder(e.getPoint(), j)){
 							j.finirTour();
 							infosPartie.setText("Phase de fondation : \n C'est a " + j.getJoueurActif().getNom() + " de jouer !");
-							if(j.totalUVParticipants() <= 9) {
+							if((j.totalUVParticipants() <= 9) && (j.totalCCParticipants() <= 39)) {
 								enabledButton(containerJeu, true);
 								infosPartie.setText("Le jeu peux commencer : \n C'est a " + j.getJoueurActif().getNom() + " de jouer !");
 							}
@@ -422,25 +422,21 @@ public class JeuFrame extends JFrame {
 		}
 		
 		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
+
 		}
 	
 
 		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
+
 		}
 
 		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
+
 		}
 
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
 
+		}
 	}
 	
 	/**
@@ -456,7 +452,6 @@ public class JeuFrame extends JFrame {
 		 * Attribut les ressources aux joueurs
 		 */
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			j.lancerDes();
 			valeurDes.setText("" + j.getValeurDes());
 			if(j.getValeurDes() != 7) {
@@ -536,7 +531,6 @@ public class JeuFrame extends JFrame {
 	private class ActionDoTroc implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			TypeCartes[] ressJoueur = new TypeCartes[getJ().getJoueurActif().getGroupeCartesRess().size()];
 			int i = 0;
 			for(GroupeCartes gc : getJ().getJoueurActif().getGroupeCartesRess()){
@@ -750,7 +744,7 @@ public class JeuFrame extends JFrame {
 	private class ActionExchange implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+
 		}
 	}
 

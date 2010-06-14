@@ -69,6 +69,8 @@ public class PlateauView extends Canvas{
 	 */
 	public boolean fonder(Point mousePosition, Jeu j) {
 		boolean hasSommet = false; 
+		boolean hasArete = false;
+
 		//Parcours les hexagonesView
 		for(HexagoneView hv : lHexaV) {
 			//Parcours les sommetView
@@ -77,10 +79,22 @@ public class PlateauView extends Canvas{
 				if (s.contains(mousePosition)) {
 					if(!s.getSommet().hasUV()) {
 						s.getSommet().setUv(j.getJoueurActif().getUV());
-						HexaRessource hexa = (HexaRessource) hv.getHexa();
-						j.getJoueurActif().AugmGroupeCarte(hexa.getTypeCartes(), 1);
-						j.DimGroupeCarte(hexa.getTypeCartes(), 1);
+						// Code non fonctionnel, ClassCastException levee
+						//HexaRessource hexa = (HexaRessource) hv.getHexa();
+						//j.getJoueurActif().AugmGroupeCarte(hexa.getTypeCartes(), 1);
+						//j.DimGroupeCarte(hexa.getTypeCartes(), 1);
 						hasSommet = true;
+					}
+				}
+			}
+			
+			//Parcours les areteView
+			for(AreteView a : hv.getLAreteV()) {
+				// on recupere l'arete correspondante pour l'utiliser dans le jeu
+				if(a.contains(mousePosition)) {
+					if(!a.getArete().hasCC() && a.getArete().hasUvOnSomm(j.getJoueurActif())) {
+						a.getArete().setControleC(j.getJoueurActif().getCC());
+						hasArete = a.getArete().hasCC();
 					}
 				}
 			}
@@ -88,9 +102,12 @@ public class PlateauView extends Canvas{
 		if(hasSommet){
 			j.getJoueurActif().addNbPoints(1);
 			j.getJoueurActif().remUV();
+		} else if (hasArete) {
+			j.getJoueurActif().remCC();
 		}
+		
 		this.update();
-		return hasSommet;
+		return hasSommet || hasArete;
 	}
 	
 	/**
@@ -102,7 +119,6 @@ public class PlateauView extends Canvas{
 		boolean hasUvStar = false;
 		boolean hasUv = false;
 		boolean hasCc = false;
-		boolean res = false;
 		
 		//Parcours les hexagonesView
 		for(HexagoneView hv : lHexaV) {
@@ -143,22 +159,19 @@ public class PlateauView extends Canvas{
 			j.getJoueurActif().remRess(j.getJoueurActif().getUVStar());
 			j.getJoueurActif().remUVStar();
 			j.putRess(j.getJoueurActif().getUVStar());
-			res = hasUvStar;
 		}else if(hasUv){
 			j.getJoueurActif().addNbPoints(1);
 			j.getJoueurActif().remRess(j.getJoueurActif().getUV());
 			j.getJoueurActif().remUV();
 			j.putRess(j.getJoueurActif().getUV());
-			res = hasUv;
 		}else if(hasCc){
 			j.getJoueurActif().remRess(j.getJoueurActif().getCC());
 			j.getJoueurActif().remCC();
 			j.putRess(j.getJoueurActif().getCC());
-			res = hasCc;
 		}
 		
 		this.update();
-		return res;
+		return hasUvStar || hasUv || hasCc;
 	}
 	
 	public boolean attribuerBinome (Point mousePosition) {
