@@ -50,7 +50,7 @@ public class EchDial extends JDialog{
 		this.setSize(500, 400);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
-		this.setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 		
 		this.ress1 = null;
 		this.ress2 = null;
