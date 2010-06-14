@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lo43.projet.utboheme.hexagone.HexaRessource;
 import lo43.projet.utboheme.hexagone.Hexagone;
+import lo43.projet.utboheme.hexagone.TypeTerrain;
 import lo43.projet.utboheme.hexagoneview.AreteView;
 import lo43.projet.utboheme.hexagoneview.HexagoneView;
 import lo43.projet.utboheme.hexagoneview.SommetView;
@@ -68,47 +69,56 @@ public class PlateauView extends Canvas{
 	 * @param jv
 	 */
 	public boolean fonder(Point mousePosition, Jeu j) {
-		boolean hasSommet = false; 
-		boolean hasArete = false;
-
-		//Parcours les hexagonesView
-		for(HexagoneView hv : lHexaV) {
-			//Parcours les sommetView
-			for(SommetView s : hv.getLSommetV()) {
-				//on recupere le sommet correspondant pour l'utiliser dans le jeu
-				if (s.contains(mousePosition)) {
-					if(!s.getSommet().hasUV()) {
-						s.getSommet().setUv(j.getJoueurActif().getUV());
-						if (hv.getHexa() instanceof HexaRessource) {
-							HexaRessource hexa = (HexaRessource) hv.getHexa();
-							j.getJoueurActif().AugmGroupeCarte(hexa.getTypeCartes(), 1);
-							j.DimGroupeCarte(hexa.getTypeCartes(), 1);
+		boolean hasUv = false; 
+		boolean hasCc = false;
+		boolean res = false;
+		
+		if(!j.isUvPose()) {
+			//Parcours les hexagonesView
+			for(HexagoneView hv : lHexaV) {
+				//Parcours les sommetView
+				for(SommetView s : hv.getLSommetV()) {
+					//on recupere le sommet correspondant pour l'utiliser dans le jeu
+					if (s.contains(mousePosition)) {
+						if(!s.getSommet().hasUV() && j.getJoueurActif().getNbUV() > 0) {
+							s.getSommet().setUv(j.getJoueurActif().getUV());
+							if(hv.getHexa().getTypeTerr() != TypeTerrain.DESERT && hv.getHexa().getTypeTerr() != TypeTerrain.REMPART && hv.getHexa().getTypeTerr() != TypeTerrain.ZONETROC && !j.isCarteJoue()){
+								HexaRessource hexa = (HexaRessource) hv.getHexa();
+								j.getJoueurActif().AugmGroupeCarte(hexa.getTypeCartes(), 1);
+								j.DimGroupeCarte(hexa.getTypeCartes(), 1);
+							}
+							hasUv = true;
+							j.setUvPose(true);
 						}
-						hasSommet = true;
 					}
 				}
 			}
-			
-			//Parcours les areteView
-			for(AreteView a : hv.getLAreteV()) {
-				// on recupere l'arete correspondante pour l'utiliser dans le jeu
-				if(a.contains(mousePosition)) {
-					if(!a.getArete().hasCC() && a.getArete().hasUvOnSomm(j.getJoueurActif())) {
-						a.getArete().setControleC(j.getJoueurActif().getCC());
-						hasArete = true;
+		}else{
+			//Parcours les hexagonesView
+			for(HexagoneView hv : lHexaV) {
+				//Parcours les areteView
+				for(AreteView a : hv.getLAreteV()) {
+					// on recupere l'arete correspondante pour l'utiliser dans le jeu
+					if(a.contains(mousePosition)) {
+						if(!a.getArete().hasCC() && a.getArete().hasUvOnSomm(j.getJoueurActif()) && j.getJoueurActif().getNbCC() > 0) {
+							a.getArete().setControleC(j.getJoueurActif().getCC());
+							hasCc = true;
+							j.setCcPose(true);
+						}
 					}
 				}
 			}
 		}
-		if(hasSommet){
+		if(hasUv){
 			j.getJoueurActif().addNbPoints(1);
 			j.getJoueurActif().remUV();
-		} else if (hasArete) {
+			res = hasUv;
+		}else if(hasCc){
 			j.getJoueurActif().remCC();
+			res =hasCc;
 		}
-		
 		this.update();
-		return hasSommet || hasArete;
+		return res;
 	}
 	
 	/**
@@ -120,6 +130,7 @@ public class PlateauView extends Canvas{
 		boolean hasUvStar = false;
 		boolean hasUv = false;
 		boolean hasCc = false;
+		boolean res = false;
 		
 		//Parcours les hexagonesView
 		for(HexagoneView hv : lHexaV) {
@@ -127,15 +138,15 @@ public class PlateauView extends Canvas{
 			for(SommetView s : hv.getLSommetV()) {
 				//on recupere le sommet correspondant pour l'utiliser dans le jeu
 				if (s.contains(mousePosition)) {
-					if(!s.getSommet().hasUV()) {
-						//if(hv.getHexa().hasCC(s.getSommet(), jv.getJoueur())){
+					if(!s.getSommet().hasUV() && j.getJoueurActif().getNbUV() > 0) {
+						//if(hv.getHexa().AreteHasCC(s.getSommet(), j.getJoueurActif())){
 							if(j.getJoueurActif().TestRess(j.getJoueurActif().getUV())) {
 								s.getSommet().setUv(j.getJoueurActif().getUV());
 								hasUv = s.getSommet().hasUV();
 							}
 						//}
-					}else if(!s.getSommet().hasUVStar() && s.getSommet().getUv().getProprietaire() == j.getJoueurActif()) {
-						if(j.getJoueurActif().TestRess(j.getJoueurActif().getUVStar())) {
+					}else if(!s.getSommet().hasUVStar() && j.getJoueurActif().getNbUVStar() > 0 && j.getJoueurActif().getNbUV() > 0) {
+						if(j.getJoueurActif().TestRess(j.getJoueurActif().getUVStar()) && s.getSommet().getUv().getProprietaire() == j.getJoueurActif()) {
 							s.getSommet().setUv(j.getJoueurActif().getUVStar());
 							hasUvStar = s.getSommet().hasUVStar();
 						}
@@ -146,7 +157,7 @@ public class PlateauView extends Canvas{
 			for(AreteView a : hv.getLAreteV()) {
 				// on recupere l'arete correspondante pour l'utiliser dans le jeu
 				if(a.contains(mousePosition)) {
-					if(!a.getArete().hasCC() && a.getArete().hasUvOnSomm(j.getJoueurActif())) {
+					if(!a.getArete().hasCC() && a.getArete().hasUvOnSomm(j.getJoueurActif()) && j.getJoueurActif().getNbCC() > 0) {
 						if(j.getJoueurActif().TestRess(j.getJoueurActif().getCC())) {
 							a.getArete().setControleC(j.getJoueurActif().getCC());
 							hasCc = a.getArete().hasCC();
@@ -157,22 +168,25 @@ public class PlateauView extends Canvas{
 		}
 		if(hasUvStar){
 			j.getJoueurActif().addNbPoints(2);
+			j.putRess(j.getJoueurActif().getUVStar());
 			j.getJoueurActif().remRess(j.getJoueurActif().getUVStar());
 			j.getJoueurActif().remUVStar();
-			j.putRess(j.getJoueurActif().getUVStar());
+			res = hasUvStar;
 		}else if(hasUv){
 			j.getJoueurActif().addNbPoints(1);
+			j.putRess(j.getJoueurActif().getUV());
 			j.getJoueurActif().remRess(j.getJoueurActif().getUV());
 			j.getJoueurActif().remUV();
-			j.putRess(j.getJoueurActif().getUV());
+			res = hasUv;
 		}else if(hasCc){
+			j.putRess(j.getJoueurActif().getCC());
 			j.getJoueurActif().remRess(j.getJoueurActif().getCC());
 			j.getJoueurActif().remCC();
-			j.putRess(j.getJoueurActif().getCC());
+			res = hasCc;
 		}
 		
 		this.update();
-		return hasUvStar || hasUv || hasCc;
+		return res;
 	}
 	
 	public boolean attribuerBinome (Point mousePosition) {
@@ -196,4 +210,5 @@ public class PlateauView extends Canvas{
 	public Plateau getPlateau() {
 		return plateau;
 	}
+
 }
