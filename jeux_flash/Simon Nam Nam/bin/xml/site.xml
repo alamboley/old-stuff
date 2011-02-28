@@ -1,0 +1,7 @@
+<site title="Simon Nam Nam: %PAGE%" menu="true">
+  <page id="index" src="index.swf" bytes="22175">    <page id="nav" src="nav.swf" depth="top" bytes="22160">
+          <page id="home" title="Accueil" src="home.swf" menu="true" bytes="22168"/>
+      <page id="didac" title="Didacticiel" src="didac.swf" menu="true" bytes="22168"/>
+      <page id="jeu" title="Jeu" src="jeu.swf" menu="true" bytes="22168"/>
+          </page>  </page>
+  </site>
