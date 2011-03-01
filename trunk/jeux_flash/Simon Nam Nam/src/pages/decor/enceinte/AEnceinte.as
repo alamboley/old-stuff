@@ -39,6 +39,7 @@ package pages.decor.enceinte {
 		public var speaker19:Speaker19;
 		
 		private const _NBR_ENCEINTE:uint = 19;
+		private const _BAFFLE_PEAK:Number = 0.5;
 
 		private var _s:Sound;
 		private var _sc:SoundChannel;
@@ -62,7 +63,7 @@ package pages.decor.enceinte {
 
 		private function _spectrum(evt:Event):void {
 
-			if (_sc.leftPeak > 0.95) {
+			if (_sc.leftPeak > _BAFFLE_PEAK) {
 				
 				for (var i:uint = 1; i <= _NBR_ENCEINTE; ++i) {
 					

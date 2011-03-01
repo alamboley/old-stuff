@@ -10,36 +10,36 @@ package pages.ia {
 	/**
 	 * @author Aymeric
 	 */
-	 
+
 	public class Joueur extends MovieClip {
-		
+
 		private var _stage:Stage;
 		private var _seqJoueur:Array;
-		private var _nbSon:uint;
+		private var _nbSon:uint, _nbSonPlay:uint;
 
 		public function Joueur($stage:Stage) {
-			
+
 			_stage = $stage;
-			
+
 			var joueurDispatcher:JoueurDispatcher = new JoueurDispatcher(_stage);
 			joueurDispatcher.addEventListener(JoueurEvent.SCROLLB, _playSoundEvent);
 			joueurDispatcher.addEventListener(JoueurEvent.SCROLLB_ESPACE, _playSoundEvent);
 			joueurDispatcher.addEventListener(JoueurEvent.SCROLLH, _playSoundEvent);
 			joueurDispatcher.addEventListener(JoueurEvent.SCROLLH_ESPACE, _playSoundEvent);
-			
 		}
-		
+
 		public function reproduireSequence($nbSon:uint):void {
-			
+
 			_nbSon = $nbSon;
-			
+			_nbSonPlay = 0;
+
 			for (var i:uint; i < _nbSon; ++i) {
 				trace(PlaylistSon.getPlaylist()[i][0]);
 			}
-			
-			_seqJoueur = [];	
+
+			_seqJoueur = [];
 		}
-		
+
 		private function _playSoundEvent(jEvt:JoueurEvent):void {
 
 			switch (jEvt.type) {
@@ -64,26 +64,26 @@ package pages.ia {
 					_seqJoueur.push("myMusic4");
 					break;
 			}
-			
+			++_nbSonPlay;
 			_checkSequence();
 		}
-		
+
 		private function _checkSequence():void {
-			
+
 			var reussite:uint;
-			
-			for (var i:uint; i < _nbSon; ++i) {
+			for (var i:uint; i < _nbSonPlay + 1; ++i) {
 				if (PlaylistSon.getPlaylist()[i][0] == _seqJoueur[i]) {
 					++reussite;
 				}
 			}
-			
-			if (reussite == _nbSon) {
-				this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_COMPLETE));
-				trace('reussite');
+
+			if (_nbSonPlay == _nbSon) {
+				if (reussite == _nbSon) {
+					this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_COMPLETE));
+				} else {
+					this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_FAIL));
+				}
 			}
-			
-			//this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_FAIL));
 		}
 	}
 }
