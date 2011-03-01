@@ -1,4 +1,4 @@
-package pages.event {
+package pages.ia.event {
 
 	import flash.display.Stage;
 	import flash.events.EventDispatcher;
@@ -13,7 +13,7 @@ package pages.event {
 	 * @author Aymeric
 	 */
 
-	public class JeuDispatcher extends EventDispatcher {
+	public class JoueurDispatcher extends EventDispatcher {
 
 		private var _stage:Stage;
 
@@ -24,7 +24,7 @@ package pages.event {
 		private var _valeurScroll:int;
 
 
-		public function JeuDispatcher($stage:Stage, target:IEventDispatcher = null) {
+		public function JoueurDispatcher($stage:Stage, target:IEventDispatcher = null) {
 
 			_stage = $stage;
 
@@ -70,9 +70,9 @@ package pages.event {
 					_timerRunning = false;
 					
 					if (_espace == true) {
-						this.dispatchEvent(new JeuEvent(JeuEvent.SCROLLH_ESPACE));
+						this.dispatchEvent(new JoueurEvent(JoueurEvent.SCROLLH_ESPACE));
 					} else {
-						this.dispatchEvent(new JeuEvent(JeuEvent.SCROLLH));
+						this.dispatchEvent(new JoueurEvent(JoueurEvent.SCROLLH));
 					}
 
 				} else {
@@ -80,9 +80,9 @@ package pages.event {
 					_timerRunning = false;
 
 					if (_espace == true) {
-						this.dispatchEvent(new JeuEvent(JeuEvent.SCROLLB_ESPACE));
+						this.dispatchEvent(new JoueurEvent(JoueurEvent.SCROLLB_ESPACE));
 					} else {
-						this.dispatchEvent(new JeuEvent(JeuEvent.SCROLLB));
+						this.dispatchEvent(new JoueurEvent(JoueurEvent.SCROLLB));
 					}
 				}
 			}

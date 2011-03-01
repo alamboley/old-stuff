@@ -19,12 +19,12 @@ package pages.ia {
 		private var _tailleSequence:uint;
 
 		public function Machine() {
-
-			_tailleSequence = 1;
+			
 		}
 
 		public function definirSequence():void {
-
+			
+			++_tailleSequence;
 			_timer = new Timer(1500, _tailleSequence);
 
 			_timer.start();
@@ -35,8 +35,6 @@ package pages.ia {
 		private function _jouerSequence(tEvt:TimerEvent):void {
 
 			if (_posLecture != _MAX_SON) {
-				
-				trace(PlaylistSon.getPlaylist()[_posLecture][0]);
 
 				switch (PlaylistSon.getPlaylist()[_posLecture][0]) {
 
@@ -60,7 +58,7 @@ package pages.ia {
 				++_posLecture;
 
 			} else {
-				trace('tous les sons jouer');
+				trace('tous les sons joués');
 			}
 		}
 
@@ -68,10 +66,11 @@ package pages.ia {
 
 			_posLecture = 0;
 			_timer.removeEventListener(TimerEvent.TIMER, _jouerSequence);
+			_timer.removeEventListener(TimerEvent.TIMER_COMPLETE, _finSequence);
 			_timer = null;
-
-			++_tailleSequence;
-			definirSequence();
+			
+			this.dispatchEvent(new IAEvent(IAEvent.MACHINE_COMPLETE));
+			//definirSequence();
 		}
 	}
 }
