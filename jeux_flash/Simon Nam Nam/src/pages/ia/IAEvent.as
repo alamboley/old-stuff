@@ -11,8 +11,15 @@ package pages.ia {
 		public static const JOUEUR_COMPLETE:String = "JOUEUR_COMPLETE";
 		public static const JOUEUR_FAIL:String = "JOUEUR_FAIL";
 		public static const JOUEUR_WIN:String = "JOUEUR_WIN";
+		
+		public static const SCORE_SEQUENCE_REUSSIE:String = "SCORE_SEQUENCE_REUSSIE";
+		public static const SCORE_SON_REUSSI:String = "SCORE_SON_REUSSI";
+		public static const SCORE_SEQUENCE_ECHEC:String = "SCORE_SEQUENCE_ECHEC";
+		
+		public var addScore:int;
 
-		public function IAEvent(type:String, bubbles:Boolean = false, cancelable:Boolean = false) {
+		public function IAEvent(type:String, $addScore:int = 0, bubbles:Boolean = false, cancelable:Boolean = false) {
+			addScore = $addScore;
 			super(type, bubbles, cancelable);
 		}
 	}
