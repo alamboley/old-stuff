@@ -87,6 +87,12 @@ package pages.ia {
 						++reussite;
 					}
 				}
+				
+				if (PlaylistSon.getPlaylist()[_nbSonPlay - 1][0] == _seqJoueur[_nbSonPlay - 1]) {
+					this.dispatchEvent(new DecorEvent(DecorEvent.SCORE_SEQUENCE_REUSSIE, 10));
+				} else {
+					this.dispatchEvent(new DecorEvent(DecorEvent.SCORE_SEQUENCE_ECHEC, -100));
+				}
 
 				if (_nbSonPlay == _nbSon) {
 
@@ -98,12 +104,10 @@ package pages.ia {
 					} else if (reussite == _nbSon) {
 						
 						this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_COMPLETE));
-						this.dispatchEvent(new DecorEvent(DecorEvent.SCORE_SEQUENCE_REUSSIE, 10));
 						
 					} else {
 						
 						this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_FAIL));
-						this.dispatchEvent(new DecorEvent(DecorEvent.SCORE_SEQUENCE_ECHEC, -100));
 						_fini = true;
 					}
 				}
