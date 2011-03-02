@@ -66,11 +66,7 @@ package pages.decor.enceinte {
 			if (_sc.leftPeak > _BAFFLE_PEAK) {
 				
 				for (var i:uint = 1; i <= _NBR_ENCEINTE; ++i) {
-					
-					// TODO gérer le problème du baffle n°9
-					if (i != 9) {
-						this["speaker" + i].dispatchEvent(new DecorEvent(DecorEvent.BAFFLE));
-					}
+					this["speaker" + i].dispatchEvent(new DecorEvent(DecorEvent.BAFFLE));
 				}
 			}
 		}

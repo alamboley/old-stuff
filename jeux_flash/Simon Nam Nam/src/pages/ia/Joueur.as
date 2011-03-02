@@ -1,5 +1,6 @@
 package pages.ia {
 
+	import pages.decor.DecorEvent;
 	import pages.ia.event.JoueurDispatcher;
 	import pages.ia.event.JoueurEvent;
 	import pages.son.PlaylistSon;
@@ -13,9 +14,13 @@ package pages.ia {
 
 	public class Joueur extends MovieClip {
 
+		private const _NB_MAX_SEQUENCE:uint = PlaylistSon.getPlaylist().length;
+
 		private var _stage:Stage;
 		private var _seqJoueur:Array;
 		private var _nbSon:uint, _nbSonPlay:uint;
+
+		private var _fini:Boolean;
 
 		public function Joueur($stage:Stage) {
 
@@ -45,23 +50,27 @@ package pages.ia {
 			switch (jEvt.type) {
 
 				case "SCROLLB":
-					PlaylistSon.getSoundGroup().playMySound(0);
+					PlaylistSon.getMySound("myMusic1").play();
 					_seqJoueur.push("myMusic1");
+					this.dispatchEvent(new DecorEvent(DecorEvent.DISQUE_BAS));
 					break;
 
 				case "SCROLLB_ESPACE":
-					PlaylistSon.getSoundGroup().playMySound(1);
+					PlaylistSon.getMySound("myMusic2").play();
 					_seqJoueur.push("myMusic2");
+					this.dispatchEvent(new DecorEvent(DecorEvent.FADER_SCRASH_BAS));
 					break;
 
 				case "SCROLLH":
-					PlaylistSon.getSoundGroup().playMySound(2);
+					PlaylistSon.getMySound("myMusic3").play();
 					_seqJoueur.push("myMusic3");
+					this.dispatchEvent(new DecorEvent(DecorEvent.DISQUE_HAUT));
 					break;
 
 				case "SCROLLH_ESPACE":
-					PlaylistSon.getSoundGroup().playMySound(3);
+					PlaylistSon.getMySound("myMusic4").play();
 					_seqJoueur.push("myMusic4");
+					this.dispatchEvent(new DecorEvent(DecorEvent.FADER_SCRASH_HAUT));
 					break;
 			}
 			++_nbSonPlay;
@@ -70,18 +79,27 @@ package pages.ia {
 
 		private function _checkSequence():void {
 
-			var reussite:uint;
-			for (var i:uint; i < _nbSonPlay + 1; ++i) {
-				if (PlaylistSon.getPlaylist()[i][0] == _seqJoueur[i]) {
-					++reussite;
-				}
-			}
+			if (_fini == false) {
 
-			if (_nbSonPlay == _nbSon) {
-				if (reussite == _nbSon) {
-					this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_COMPLETE));
-				} else {
-					this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_FAIL));
+				var reussite:uint;
+				for (var i:uint; i < _nbSonPlay; ++i) {
+					if (PlaylistSon.getPlaylist()[i][0] == _seqJoueur[i]) {
+						++reussite;
+					}
+				}
+
+				if (_nbSonPlay == _nbSon) {
+
+					if (reussite == _NB_MAX_SEQUENCE) {
+						this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_WIN));
+						_fini = true;
+					} else if (reussite == _nbSon) {
+						this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_COMPLETE));
+						this.dispatchEvent(new DecorEvent(DecorEvent.SCORE_SEQUENCE_REUSSIE, 10));
+					} else {
+						this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_FAIL));
+						_fini = true;
+					}
 				}
 			}
 		}
