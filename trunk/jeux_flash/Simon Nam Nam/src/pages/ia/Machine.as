@@ -39,26 +39,23 @@ package pages.ia {
 				switch (PlaylistSon.getPlaylist()[_posLecture][0]) {
 
 					case "myMusic1":
-						PlaylistSon.getSoundGroup().playMySound(0);
+						PlaylistSon.getMySound("myMusic1").play();
 						break;
 
 					case "myMusic2":
-						PlaylistSon.getSoundGroup().playMySound(1);
+						PlaylistSon.getMySound("myMusic2").play();
 						break;
 
 					case "myMusic3":
-						PlaylistSon.getSoundGroup().playMySound(2);
+						PlaylistSon.getMySound("myMusic3").play();
 						break;
 
 					case "myMusic4":
-						PlaylistSon.getSoundGroup().playMySound(3);
+						PlaylistSon.getMySound("myMusic4").play();
 						break;
 				}
 				
 				++_posLecture;
-
-			} else {
-				trace('tous les sons joués');
 			}
 		}
 
@@ -70,7 +67,6 @@ package pages.ia {
 			_timer = null;
 			
 			this.dispatchEvent(new IAEvent(IAEvent.MACHINE_COMPLETE));
-			//definirSequence();
 		}
 	}
 }

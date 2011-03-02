@@ -165,14 +165,6 @@ package com.gaiaframework.utils
 			}
 		}
 		
-		//Play my sound
-		public function playMySound($index:uint, startTime:int = 0, loops:int = 0):ISound {
-			
-			var sound:ISound = assets[$index];
-			sound.load(startTime, loops);
-			return sound;
-		}
-		
 		// Pick a sound at random and play it
 		public function playRandom(startTime:int = 0, loops:int = 0, repeat:Boolean = true):ISound
 		{
