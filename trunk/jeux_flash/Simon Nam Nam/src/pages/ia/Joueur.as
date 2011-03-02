@@ -91,13 +91,19 @@ package pages.ia {
 				if (_nbSonPlay == _nbSon) {
 
 					if (reussite == _NB_MAX_SEQUENCE) {
+						
 						this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_WIN));
 						_fini = true;
+						
 					} else if (reussite == _nbSon) {
+						
 						this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_COMPLETE));
 						this.dispatchEvent(new DecorEvent(DecorEvent.SCORE_SEQUENCE_REUSSIE, 10));
+						
 					} else {
+						
 						this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_FAIL));
+						this.dispatchEvent(new DecorEvent(DecorEvent.SCORE_SEQUENCE_ECHEC, -100));
 						_fini = true;
 					}
 				}
