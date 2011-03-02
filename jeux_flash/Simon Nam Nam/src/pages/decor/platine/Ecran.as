@@ -1,6 +1,9 @@
 package pages.decor.platine {
 
+	import com.gaiaframework.api.Gaia;
+
 	import flash.text.TextField;
+	import flash.text.TextFormat;
 
 	/**
 	 * @author Aymeric
@@ -14,6 +17,17 @@ package pages.decor.platine {
 
 		public function Ecran() {
 			
+			var tf:TextFormat = new TextFormat();
+			tf.font = Gaia.api.getFontName("RockwellBold");
+			tf.size = 24; 
+			tf.color = 0xB72200;
+			
+			scoreAffichage.defaultTextFormat = tf;
+			
+			// TODO ask nico bush pourquoi bug :
+			//scoreAffichage.embedFonts = true;
+			//scoreAffichage.setTextFormat(tf);
+			
 			scoreAffichage.text = "SCORE : " + String(_score);
 		}
 		
@@ -22,7 +36,7 @@ package pages.decor.platine {
 		}
 		
 		public function set score(value:int):void {
-			_score = value;
+			_score += value;
 			_refresh();
 		}
 		
