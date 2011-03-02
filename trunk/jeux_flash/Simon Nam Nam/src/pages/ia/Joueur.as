@@ -1,5 +1,6 @@
 package pages.ia {
 
+	import flash.events.TimerEvent;
 	import pages.decor.DecorEvent;
 	import pages.ia.event.JoueurDispatcher;
 	import pages.ia.event.JoueurEvent;
@@ -7,6 +8,7 @@ package pages.ia {
 
 	import flash.display.MovieClip;
 	import flash.display.Stage;
+	import flash.utils.Timer;
 
 	/**
 	 * @author Aymeric
@@ -19,6 +21,8 @@ package pages.ia {
 		private var _stage:Stage;
 		private var _seqJoueur:Array;
 		private var _nbSon:uint, _nbSonPlay:uint;
+		
+		private var _timerScore:Timer;
 
 		private var _fini:Boolean;
 
@@ -89,9 +93,9 @@ package pages.ia {
 				}
 				
 				if (PlaylistSon.getPlaylist()[_nbSonPlay - 1][0] == _seqJoueur[_nbSonPlay - 1]) {
-					this.dispatchEvent(new DecorEvent(DecorEvent.SCORE_SEQUENCE_REUSSIE, 10));
+					this.dispatchEvent(new IAEvent(IAEvent.SCORE_SON_REUSSI, 10));
 				} else {
-					this.dispatchEvent(new DecorEvent(DecorEvent.SCORE_SEQUENCE_ECHEC, -100));
+					this.dispatchEvent(new IAEvent(IAEvent.SCORE_SEQUENCE_ECHEC, -100));
 				}
 
 				if (_nbSonPlay == _nbSon) {
@@ -105,6 +109,11 @@ package pages.ia {
 						
 						this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_COMPLETE));
 						
+						_timerScore = new Timer(400, 1);
+						_timerScore.addEventListener(TimerEvent.TIMER_COMPLETE, _timerComplete);
+						
+						_timerScore.start();
+											
 					} else {
 						
 						this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_FAIL));
@@ -112,6 +121,14 @@ package pages.ia {
 					}
 				}
 			}
+		}
+
+		private function _timerComplete(tEvt:TimerEvent):void {
+			
+			_timerScore.removeEventListener(TimerEvent.TIMER_COMPLETE, _timerComplete);
+			_timerScore = null;
+			
+			this.dispatchEvent(new IAEvent(IAEvent.SCORE_SEQUENCE_REUSSIE, 50));
 		}
 	}
 }
