@@ -32,6 +32,8 @@ package pages.utils {
 			trace("___________________________________________");*/
 			if (_konamiCode.toString() == [69, 186, 73, 76, 69].toString()) {
 				this.dispatchEvent(new Event("KonamiCode"));
+			} else if (_konamiCode.toString() == [69, 77, 73, 76, 69].toString()) {
+				this.dispatchEvent(new Event("KonamiCode"));
 			}
 
 		}
