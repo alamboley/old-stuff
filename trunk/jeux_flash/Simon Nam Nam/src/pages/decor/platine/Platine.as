@@ -5,13 +5,13 @@ package pages.decor.platine {
 	/**
 	 * @author Aymeric
 	 */
-	public class APlatine extends MovieClip {
+	public class Platine extends MovieClip {
 		
 		public var disque:Disque;
 		public var ecran:Ecran;
 		public var fader:Fader;
 
-		public function APlatine() {
+		public function Platine() {
 			
 		}
 		

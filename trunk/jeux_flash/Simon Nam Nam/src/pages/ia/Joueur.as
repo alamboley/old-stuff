@@ -16,7 +16,7 @@ package pages.ia {
 
 	public class Joueur extends MovieClip {
 
-		private const _NB_MAX_SEQUENCE:uint = PlaylistSon.getPlaylist().length;
+		private const _NB_MAX_SEQUENCE:uint = PlaylistSon.getLength();
 		
 		private var _nbVie:int;
 

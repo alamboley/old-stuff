@@ -16,7 +16,7 @@ package pages.decor.enceinte {
 	 * @author Aymeric
 	 */
 
-	public class AEnceinte extends MovieClip {
+	public class Enceinte extends MovieClip {
 		
 		public var speaker1:Speaker1;
 		public var speaker2:Speaker2;
@@ -45,7 +45,7 @@ package pages.decor.enceinte {
 		private var _sc:SoundChannel;
 		private var _st:SoundTransform;
 
-		public function AEnceinte() {
+		public function Enceinte() {
 			
 			_s = new Sound();
 			_sc = new SoundChannel();
@@ -58,6 +58,9 @@ package pages.decor.enceinte {
 			
 			_sc = enceinteSon.play(0, int.MAX_VALUE);
 			
+			_st.volume = 1;
+			_sc.soundTransform = _st;
+			
 			this.addEventListener(Event.ENTER_FRAME, _spectrum);
 		}
 
@@ -69,6 +72,12 @@ package pages.decor.enceinte {
 					this["speaker" + i].dispatchEvent(new DecorEvent(DecorEvent.BAFFLE));
 				}
 			}
+		}
+		
+		public function augmenterVolume($value:Number):void {
+			
+			_st.volume = $value;
+			_sc.soundTransform = _st;
 		}
 		
 		protected function baffler(dEvt:DecorEvent):void {
