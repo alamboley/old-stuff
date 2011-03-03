@@ -7,7 +7,7 @@ package pages.decor.platine {
 	 * @author Aymeric
 	 */
 
-	public class Disque extends APlatine {
+	public class Disque extends Platine {
 
 		public function Disque() {
 		}

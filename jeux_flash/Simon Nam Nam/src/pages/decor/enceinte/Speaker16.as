@@ -6,7 +6,7 @@ package pages.decor.enceinte {
 	 * @author Aymeric
 	 */
 	 
-	public class Speaker16 extends AEnceinte {
+	public class Speaker16 extends Enceinte {
 
 		public function Speaker16() {
 			

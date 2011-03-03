@@ -11,11 +11,11 @@ package pages.son {
 	 
 	public class PlaylistSon {
 		
-		private static const _MAX_SON:uint = 5;
+		private static const _MAX_SON:uint = 15;
 		
 		private static var _playlistSon:Array;
 		private static var _soundGroup:SoundGroup;
-		private static var _son1:ISound, _son2:ISound, _son3:ISound, _son4:ISound;
+		private static var _son1:ISound, _son2:ISound, _son3:ISound, _son4:ISound, _applaudissement:ISound, _moquer:ISound;
 		
 		public function PlaylistSon() {
 			
@@ -27,6 +27,9 @@ package pages.son {
 			_son2 = (Math.random() > 0.5) ? Gaia.api.getPage(Pages.JEU).assets.myMusic2 : Gaia.api.getPage(Pages.JEU).assets.myMusic2;
 			_son3 = (Math.random() > 0.5) ? Gaia.api.getPage(Pages.JEU).assets.myMusic3 : Gaia.api.getPage(Pages.JEU).assets.myMusic3;
 			_son4 = (Math.random() > 0.5) ? Gaia.api.getPage(Pages.JEU).assets.myMusic4 : Gaia.api.getPage(Pages.JEU).assets.myMusic4;
+			
+			_applaudissement = Gaia.api.getPage(Pages.JEU).assets.applaudissement;
+			_moquer = Gaia.api.getPage(Pages.JEU).assets.moquer;
 			
 			_soundGroup = new SoundGroup();
 			
@@ -57,6 +60,13 @@ package pages.son {
 					break;
 				}
 			}
+			
+			_soundGroup.addSound(ISound(_applaudissement));
+			_soundGroup.addSound(ISound(_moquer));
+		}
+		
+		public static function getLength():uint {
+			return _MAX_SON;
 		}
 		
 		public static function getPlaylist():Array {
@@ -87,6 +97,14 @@ package pages.son {
 					
 				case "myMusic4":
 					return _son4;
+					break;
+					
+				case "applaudissement":
+					return _applaudissement;
+					break;
+					
+				case "moquer" :
+					return _moquer;
 					break;
 			}
 			

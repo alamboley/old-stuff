@@ -12,7 +12,7 @@ package pages.decor.platine {
 	 * @author Aymeric
 	 */
 	 
-	public class Ecran extends APlatine {
+	public class Ecran extends Platine {
 
 		public var scoreAffichage:TextField;
 		
@@ -21,6 +21,8 @@ package pages.decor.platine {
 
 		public function Ecran() {
 			
+			scoreAffichage.text = "SCORE : " + String(_score);
+			
 			var tf:TextFormat = new TextFormat();
 			tf.font = Gaia.api.getFontName("RockwellBold");
 			tf.size = 24; 
@@ -28,11 +30,8 @@ package pages.decor.platine {
 			
 			scoreAffichage.defaultTextFormat = tf;
 			
-			// TODO ask nico bush pourquoi bug :
-			//scoreAffichage.embedFonts = true;
-			//scoreAffichage.setTextFormat(tf);
-			
-			scoreAffichage.text = "SCORE : " + String(_score);
+			scoreAffichage.embedFonts = true;
+			scoreAffichage.setTextFormat(tf);
 		}
 		
 		public function get score():int {
@@ -43,7 +42,7 @@ package pages.decor.platine {
 			_score += value;
 			
 			_stf = new SplitTextField(scoreAffichage, SplitTextField.TYPE_LINES);
-			TweenMax.allTo(_stf.textFields, 0.4, {blurFilter:{blurX:20}, x:"200", autoAlpha:0, ease:Quad.easeIn, yoyo:false, onComplete:_destroyEffect}, 0.35);
+			TweenMax.allTo(_stf.textFields, 0.4, {blurFilter:{blurX:20}, x:"100", autoAlpha:0, ease:Quad.easeIn, yoyo:false, onComplete:_destroyEffect}, 0.35);
 		}
 		
 		private function _destroyEffect():void {

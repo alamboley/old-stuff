@@ -1,5 +1,6 @@
 package pages.ia {
 
+	import pages.decor.DecorEvent;
 	import pages.son.PlaylistSon;
 
 	import flash.display.MovieClip;
@@ -40,18 +41,22 @@ package pages.ia {
 
 					case "myMusic1":
 						PlaylistSon.getMySound("myMusic1").play();
+						this.dispatchEvent(new DecorEvent(DecorEvent.MACHINE_SON1));
 						break;
 
 					case "myMusic2":
 						PlaylistSon.getMySound("myMusic2").play();
+						this.dispatchEvent(new DecorEvent(DecorEvent.MACHINE_SON2));
 						break;
 
 					case "myMusic3":
 						PlaylistSon.getMySound("myMusic3").play();
+						this.dispatchEvent(new DecorEvent(DecorEvent.MACHINE_SON3));
 						break;
 
 					case "myMusic4":
 						PlaylistSon.getMySound("myMusic4").play();
+						this.dispatchEvent(new DecorEvent(DecorEvent.MACHINE_SON4));
 						break;
 				}
 				
@@ -67,6 +72,7 @@ package pages.ia {
 			_timer = null;
 			
 			this.dispatchEvent(new IAEvent(IAEvent.MACHINE_COMPLETE));
+			this.dispatchEvent(new DecorEvent(DecorEvent.MACHINE_A_TOI));
 		}
 	}
 }

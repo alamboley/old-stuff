@@ -7,7 +7,7 @@ package pages.decor.platine {
 	 * @author Aymeric
 	 */
 	 
-	public class Fader extends APlatine {
+	public class Fader extends Platine {
 
 		public function Fader() {
 			
