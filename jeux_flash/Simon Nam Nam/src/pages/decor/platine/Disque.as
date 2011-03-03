@@ -10,7 +10,6 @@ package pages.decor.platine {
 	public class Disque extends APlatine {
 
 		public function Disque() {
-			
 		}
 
 		public function animBas():void {

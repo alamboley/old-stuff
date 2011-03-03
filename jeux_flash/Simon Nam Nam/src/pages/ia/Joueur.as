@@ -1,6 +1,5 @@
 package pages.ia {
 
-	import flash.events.TimerEvent;
 	import pages.decor.DecorEvent;
 	import pages.ia.event.JoueurDispatcher;
 	import pages.ia.event.JoueurEvent;
@@ -8,6 +7,7 @@ package pages.ia {
 
 	import flash.display.MovieClip;
 	import flash.display.Stage;
+	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 
 	/**
@@ -17,6 +17,8 @@ package pages.ia {
 	public class Joueur extends MovieClip {
 
 		private const _NB_MAX_SEQUENCE:uint = PlaylistSon.getPlaylist().length;
+		
+		private var _nbVie:int;
 
 		private var _stage:Stage;
 		private var _seqJoueur:Array;
@@ -29,6 +31,7 @@ package pages.ia {
 		public function Joueur($stage:Stage) {
 
 			_stage = $stage;
+			_nbVie = 4;
 
 			var joueurDispatcher:JoueurDispatcher = new JoueurDispatcher(_stage);
 			joueurDispatcher.addEventListener(JoueurEvent.SCROLLB, _playSoundEvent);
@@ -95,7 +98,9 @@ package pages.ia {
 				if (PlaylistSon.getPlaylist()[_nbSonPlay - 1][0] == _seqJoueur[_nbSonPlay - 1]) {
 					this.dispatchEvent(new IAEvent(IAEvent.SCORE_SON_REUSSI, 10));
 				} else {
-					this.dispatchEvent(new IAEvent(IAEvent.SCORE_SEQUENCE_ECHEC, -100));
+					--_nbVie;
+					trace(_nbVie);
+					this.dispatchEvent(new IAEvent(IAEvent.SCORE_SON_ERREUR, -100));
 				}
 
 				if (_nbSonPlay == _nbSon) {
@@ -116,8 +121,12 @@ package pages.ia {
 											
 					} else {
 						
-						this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_FAIL));
-						_fini = true;
+						if (_nbVie <= 0) {
+							this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_FAIL));
+							_fini = true;
+						} else {
+							this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_SEQUENCE_ECHEC));
+						}
 					}
 				}
 			}
