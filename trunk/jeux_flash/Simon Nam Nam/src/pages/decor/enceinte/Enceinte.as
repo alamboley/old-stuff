@@ -41,22 +41,18 @@ package pages.decor.enceinte {
 		private const _NBR_ENCEINTE:uint = 19;
 		private const _BAFFLE_PEAK:Number = 0.5;
 
-		private var _s:Sound;
 		private var _sc:SoundChannel;
 		private var _st:SoundTransform;
 
 		public function Enceinte() {
 			
-			_s = new Sound();
 			_sc = new SoundChannel();
 			_st = new SoundTransform();		
 		}
 		
 		public function init():void {
 			
-			var enceinteSon:ISound = Gaia.api.getPage(Pages.JEU).assets.enceinte;
-			
-			_sc = enceinteSon.play(0, int.MAX_VALUE);
+			_sc = ISound(Gaia.api.getPage(Pages.JEU).assets.enceinte).play(0, int.MAX_VALUE);
 			
 			_st.volume = 1;
 			_sc.soundTransform = _st;
