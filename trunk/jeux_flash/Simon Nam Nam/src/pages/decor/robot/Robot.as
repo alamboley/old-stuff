@@ -38,27 +38,27 @@ package pages.decor.robot {
 
 				case "MACHINE_SON1":
 					this.gotoAndPlay("scrtach1");
-					this.tete.ecran.gotoAndPlay("normal");
+					this.tete.ecran.gotoAndPlay("scratch_bas");
 					break;
 
 				case "MACHINE_SON2":
 					this.gotoAndPlay("scrtach2");
-					this.tete.ecran.gotoAndPlay("normal");
+					this.tete.ecran.gotoAndPlay("scratch_bas_spc");
 					break;
 
 				case "MACHINE_SON3":
 					this.gotoAndPlay("scrtach3");
-					this.tete.ecran.gotoAndPlay("normal");
+					this.tete.ecran.gotoAndPlay("scratch_haut");
 					break;
 
 				case "MACHINE_SON4":
 					this.gotoAndPlay("scrtach4");
-					this.tete.ecran.gotoAndPlay("normal");
+					this.tete.ecran.gotoAndPlay("scratch_haut_spc");
 					break;
 
 				case "MACHINE_A_TOI":
 					this.gotoAndPlay("atoi");
-					this.tete.ecran.gotoAndPlay("normal");
+					this.tete.ecran.gotoAndPlay("atoi");
 					break;
 			}
 		}

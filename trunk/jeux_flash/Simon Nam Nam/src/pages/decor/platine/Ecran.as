@@ -30,8 +30,8 @@ package pages.decor.platine {
 			
 			scoreAffichage.defaultTextFormat = tf;
 			
-			scoreAffichage.embedFonts = true;
-			scoreAffichage.setTextFormat(tf);
+			//scoreAffichage.embedFonts = true;
+			//scoreAffichage.setTextFormat(tf);
 		}
 		
 		public function get score():int {
