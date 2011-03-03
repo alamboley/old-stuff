@@ -47,5 +47,9 @@ package pages.decor.platine {
 			}
 			
 		}
+		
+		public function getScore():int {
+			return ecran.score;
+		}
 	}
 }

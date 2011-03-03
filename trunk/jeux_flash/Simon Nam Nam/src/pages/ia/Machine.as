@@ -22,9 +22,9 @@ package pages.ia {
 			
 		}
 
-		public function definirSequence():void {
+		public function definirSequence($tailleSequence:uint):void {
 			
-			++_tailleSequence;
+			_tailleSequence = $tailleSequence;
 			_timer = new Timer(1500, _tailleSequence);
 
 			_timer.start();
