@@ -61,9 +61,9 @@ package pages.ia {
 			_nbSon = $nbSon;
 			_nbSonPlay = 0;
 
-			for (var i:uint; i < _nbSon; ++i) {
+			/*for (var i:uint; i < _nbSon; ++i) {
 				trace(PlaylistSon.getPlaylist()[i][0]);
-			}
+			}*/
 
 			_seqJoueur = [];
 		}
