@@ -17,13 +17,13 @@ package pages.ia {
 	public class Joueur extends MovieClip {
 
 		private const _NB_MAX_SEQUENCE:uint = PlaylistSon.getLength();
-		
+
 		private var _nbVie:int;
 
 		private var _stage:Stage;
 		private var _seqJoueur:Array;
 		private var _nbSon:uint, _nbSonPlay:uint;
-		
+
 		private var _timerScore:Timer;
 
 		private var _fini:Boolean;
@@ -32,6 +32,8 @@ package pages.ia {
 
 			_stage = $stage;
 			_nbVie = 4;
+
+			_timerScore = new Timer(400, 1);
 
 			var joueurDispatcher:JoueurDispatcher = new JoueurDispatcher(_stage);
 			joueurDispatcher.addEventListener(JoueurEvent.SCROLLB, _playSoundEvent);
@@ -95,32 +97,33 @@ package pages.ia {
 					}
 				}
 				
+				if (reussite == 3 || reussite == 6 || reussite == 9 || reussite == 12) {
+					this.dispatchEvent(new DecorEvent(DecorEvent.ENCEINTE_ONDE));
+				}
+
 				if (PlaylistSon.getPlaylist()[_nbSonPlay - 1][0] == _seqJoueur[_nbSonPlay - 1]) {
 					this.dispatchEvent(new IAEvent(IAEvent.SCORE_SON_REUSSI, 10));
 				} else {
 					--_nbVie;
-					trace(_nbVie);
 					this.dispatchEvent(new IAEvent(IAEvent.SCORE_SON_ERREUR, -100));
 				}
 
 				if (_nbSonPlay == _nbSon) {
 
 					if (reussite == _NB_MAX_SEQUENCE) {
-						
+
 						this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_WIN));
 						_fini = true;
-						
+
 					} else if (reussite == _nbSon) {
-						
+
 						this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_COMPLETE));
-						
-						_timerScore = new Timer(400, 1);
-						_timerScore.addEventListener(TimerEvent.TIMER_COMPLETE, _timerComplete);
-						
+
 						_timerScore.start();
-											
+						_timerScore.addEventListener(TimerEvent.TIMER_COMPLETE, _timerComplete);
+
 					} else {
-						
+
 						if (_nbVie <= 0) {
 							this.dispatchEvent(new IAEvent(IAEvent.JOUEUR_FAIL));
 							_fini = true;
@@ -133,10 +136,9 @@ package pages.ia {
 		}
 
 		private function _timerComplete(tEvt:TimerEvent):void {
-			
+
 			_timerScore.removeEventListener(TimerEvent.TIMER_COMPLETE, _timerComplete);
-			_timerScore = null;
-			
+
 			this.dispatchEvent(new IAEvent(IAEvent.SCORE_SEQUENCE_REUSSIE, 50));
 		}
 	}
