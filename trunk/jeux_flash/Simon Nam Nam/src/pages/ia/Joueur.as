@@ -18,6 +18,8 @@ package pages.ia {
 
 		private const _NB_MAX_SEQUENCE:uint = PlaylistSon.getLength();
 
+		private var _joueurDispatcher:JoueurDispatcher;
+
 		private var _nbVie:int;
 
 		private var _stage:Stage;
@@ -35,11 +37,23 @@ package pages.ia {
 
 			_timerScore = new Timer(400, 1);
 
-			var joueurDispatcher:JoueurDispatcher = new JoueurDispatcher(_stage);
-			joueurDispatcher.addEventListener(JoueurEvent.SCROLLB, _playSoundEvent);
-			joueurDispatcher.addEventListener(JoueurEvent.SCROLLB_ESPACE, _playSoundEvent);
-			joueurDispatcher.addEventListener(JoueurEvent.SCROLLH, _playSoundEvent);
-			joueurDispatcher.addEventListener(JoueurEvent.SCROLLH_ESPACE, _playSoundEvent);
+			_joueurDispatcher = new JoueurDispatcher(_stage);
+		}
+
+
+		public function autoriserJouerJouer($value:Boolean):void {
+
+			if ($value == true) {
+				_joueurDispatcher.addEventListener(JoueurEvent.SCROLLB, _playSoundEvent);
+				_joueurDispatcher.addEventListener(JoueurEvent.SCROLLB_ESPACE, _playSoundEvent);
+				_joueurDispatcher.addEventListener(JoueurEvent.SCROLLH, _playSoundEvent);
+				_joueurDispatcher.addEventListener(JoueurEvent.SCROLLH_ESPACE, _playSoundEvent);
+			} else {
+				_joueurDispatcher.removeEventListener(JoueurEvent.SCROLLB, _playSoundEvent);
+				_joueurDispatcher.removeEventListener(JoueurEvent.SCROLLB_ESPACE, _playSoundEvent);
+				_joueurDispatcher.removeEventListener(JoueurEvent.SCROLLH, _playSoundEvent);
+				_joueurDispatcher.removeEventListener(JoueurEvent.SCROLLH_ESPACE, _playSoundEvent);
+			}
 		}
 
 		public function reproduireSequence($nbSon:uint):void {
@@ -96,7 +110,7 @@ package pages.ia {
 						++reussite;
 					}
 				}
-				
+
 				if (reussite == 3 || reussite == 6 || reussite == 9 || reussite == 12) {
 					this.dispatchEvent(new DecorEvent(DecorEvent.ENCEINTE_ONDE));
 				}
