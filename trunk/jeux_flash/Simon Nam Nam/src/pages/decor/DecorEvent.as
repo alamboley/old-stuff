@@ -9,6 +9,8 @@ package pages.decor {
 		
 		public static const BAFFLE:String = "BAFFLE";
 		
+		public static const ENCEINTE_ONDE:String = "ENCEINTE_ONDE";
+		
 		public static const MACHINE_INIT:String = "MACHINE_INIT";
 		public static const MACHINE_SON1:String = "MACHINE_SON1";
 		public static const MACHINE_SON2:String = "MACHINE_SON2";
