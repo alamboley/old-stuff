@@ -21,7 +21,7 @@ package pages.decor.platine {
 
 		public function Ecran() {
 			
-			scoreAffichage.text = "SCORE : " + String(_score);
+			_refresh();
 			
 			var tf:TextFormat = new TextFormat();
 			tf.font = Gaia.api.getFontName("RockwellBold");
@@ -29,9 +29,6 @@ package pages.decor.platine {
 			tf.color = 0xB72200;
 			
 			scoreAffichage.defaultTextFormat = tf;
-			
-			//scoreAffichage.embedFonts = true;
-			//scoreAffichage.setTextFormat(tf);
 		}
 		
 		public function get score():int {
