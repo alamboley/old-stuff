@@ -29,12 +29,12 @@ package model {
 			return _grille;
 		}
 		
-		static public function setCoup($jeton:String, $posX:uint, $posY:uint):void {
+		static public function setCoup($jeton:String, $indiceX:uint, $indiceY:uint):void {
 			
-			if (_grille[$posX][$posY] != "vide") {
+			if (_grille[$indiceX][$indiceY] != "vide") {
 				trace("erreur, position déjà occupée");
 			} else {
-				_grille[$posX][$posY] = $jeton;
+				_grille[$indiceX][$indiceY] = $jeton;
 			}
 			
 		}
