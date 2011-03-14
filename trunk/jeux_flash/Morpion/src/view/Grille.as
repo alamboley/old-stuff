@@ -7,7 +7,7 @@ package view {
 	 */
 	public class Grille extends Sprite {
 		
-		private const _TAILLE_CELL:uint = 150;
+		static private const _TAILLE_CELL:uint = 150;
 		
 		private var _posX:uint, _posY:uint;
 
@@ -29,27 +29,45 @@ package view {
 			this.graphics.lineTo(_TAILLE_CELL * 3, _TAILLE_CELL * 2);
 		}
 		
-		public function addJeton($jeton:AJeton, $posX:uint, $posY:uint):void {
+		public function addJeton($jeton:AJeton, $indiceX:uint, $indiceY:uint):void {
 			
-			if ($posX < 150) {
-				_posX = ($jeton.type == "cercle") ?  _TAILLE_CELL * 0.5 : _TAILLE_CELL * 0.5 - $jeton.width * 0.5; 
-			} else if ($posX > 150 && $posX < 300) {
-				_posX = ($jeton.type == "cercle") ?  _TAILLE_CELL * 1.5 : _TAILLE_CELL * 1.5 - $jeton.width * 0.5; 
-			} else {
-				_posX = ($jeton.type == "cercle") ?  _TAILLE_CELL * 2.5 : _TAILLE_CELL * 2.5 - $jeton.width * 0.5; 
+			switch ($indiceX) {
+				
+				case 0:
+					_posX = ($jeton.type == "cercle") ?  _TAILLE_CELL * 0.5 : _TAILLE_CELL * 0.5 - $jeton.width * 0.5; 
+					break;
+				
+				case 1:
+					_posX = ($jeton.type == "cercle") ?  _TAILLE_CELL * 1.5 : _TAILLE_CELL * 1.5 - $jeton.width * 0.5;
+					break;
+					
+				case 2:
+					_posX = ($jeton.type == "cercle") ?  _TAILLE_CELL * 2.5 : _TAILLE_CELL * 2.5 - $jeton.width * 0.5;
+					break;
 			}
 			
-			if ($posY < 150) {
-				_posY = ($jeton.type == "cercle") ?  _TAILLE_CELL * 0.5 : _TAILLE_CELL * 0.5 - $jeton.height * 0.5; 
-			} else if ($posY > 150 && $posY < 300) {
-				_posY = ($jeton.type == "cercle") ?  _TAILLE_CELL * 1.5 : _TAILLE_CELL * 1.5 - $jeton.height * 0.5;
-			} else {
-				_posY = ($jeton.type == "cercle") ?  _TAILLE_CELL * 2.5 : _TAILLE_CELL * 2.5 - $jeton.height * 0.5;
+			switch ($indiceY) {
+				
+				case 0:
+					_posY = ($jeton.type == "cercle") ?  _TAILLE_CELL * 0.5 : _TAILLE_CELL * 0.5 - $jeton.height * 0.5; 
+					break;
+				
+				case 1:
+					_posY = ($jeton.type == "cercle") ?  _TAILLE_CELL * 1.5 : _TAILLE_CELL * 1.5 - $jeton.height * 0.5;
+					break;
+					
+				case 2:
+					_posY = ($jeton.type == "cercle") ?  _TAILLE_CELL * 2.5 : _TAILLE_CELL * 2.5 - $jeton.height * 0.5;
+					break;
 			}
 			
 			this.addChild($jeton);
 			$jeton.x = _posX;
 			$jeton.y = _posY;
+		}
+		
+		static public function get tailleCell():uint {
+			return _TAILLE_CELL; 
 		}
 	}
 }

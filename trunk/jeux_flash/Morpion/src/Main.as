@@ -8,8 +8,6 @@
 	import view.Cercle;
 	import view.Grille;
 
-	import com.base86.Tools;
-
 	import flash.display.Sprite;
 
 	/**
@@ -35,10 +33,10 @@
 			_joueur = new Joueur(stage);
 			_joueur.addEventListener(ModelEvent.POSER_PION, _joueurAJoue);
 
-			_joueur.pouvoirJouer(true);
+			_joueur.pouvoirJouer();
 
-			_grille.addJeton(new Cercle(), 152, 152);
-			_grille.addJeton(new Carre(), 5, 152);
+			_grille.addJeton(new Cercle(), 1, 1);
+			_grille.addJeton(new Carre(), 0, 1);
 
 
 			TabGrille.setCoup("cercle", 1, 1);
@@ -47,37 +45,24 @@
 
 		private function _joueurAJoue(mEvt:ModelEvent):void {
 
-			_grille.addJeton(new Carre(), mEvt.posX, mEvt.posY);
+			_grille.addJeton(new Carre(), mEvt.indiceX, mEvt.indiceY);
 
-			_ajouterCoup("Joueur", mEvt.posX, mEvt.posY);
+			_ajouterCoup("Joueur", mEvt.indiceX, mEvt.indiceY);
 		}
 
-		private function _ajouterCoup($personnage:String, $posX:uint, $posY:uint):void {
+		private function _ajouterCoup($personnage:String, $tabIndiceX:uint, $tabIndiceY:uint):void {
 
-			var tabIndiceX:uint, tabIndiceY:uint;
 
 			if ($personnage == "Joueur") {
 
-				if ($posX < 150) {
-					tabIndiceX = 0;
-				} else if ($posX > 150 && $posX < 300) {
-					tabIndiceX = 1;
-				} else {
-					tabIndiceX = 2;
-				}
-
-				if ($posY < 150) {
-					tabIndiceY = 0;
-				} else if ($posY > 150 && $posY < 300) {
-					tabIndiceY = 1;
-				} else {
-					tabIndiceY = 2;
-				}
-
-				TabGrille.setCoup("carre", tabIndiceX, tabIndiceY);
+				TabGrille.setCoup("carre", $tabIndiceX, $tabIndiceY);
 
 			} else {
-				TabGrille.setCoup("cercle", tabIndiceX, tabIndiceY);
+
+				TabGrille.setCoup("cercle", $tabIndiceX, $tabIndiceY);
+				_grille.addJeton(new Cercle(), $tabIndiceX * Grille.tailleCell, $tabIndiceY * Grille.tailleCell);
+
+				_joueur.pouvoirJouer();
 			}
 		}
 	}
