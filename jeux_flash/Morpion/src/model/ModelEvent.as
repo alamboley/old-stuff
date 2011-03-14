@@ -9,12 +9,12 @@ package model {
 		
 		static public const POSER_PION:String = "POSER_PION";
 		
-		public var posX:uint, posY:uint;
+		public var indiceX:uint, indiceY:uint;
 
-		public function ModelEvent(type:String, $posX:uint, $posY:uint, bubbles:Boolean = false, cancelable:Boolean = false) {
+		public function ModelEvent(type:String, $indiceX:uint, $indiceY:uint, bubbles:Boolean = false, cancelable:Boolean = false) {
 			
-			posX = $posX;
-			posY = $posY;
+			indiceX = $indiceX;
+			indiceY = $indiceY;
 			
 			super(type, bubbles, cancelable);
 		}
