@@ -8,17 +8,16 @@ package view {
 	public class Cercle extends AJeton {
 
 		public function Cercle() {
-
-		}
-
-		override protected function dessinerJeton():void {
 			
+			super.type = "cercle";
+
 			jeton = new Shape();
-			
-			jeton.graphics.beginFill(0xFF0000, 1);
-			jeton.graphics.drawCircle(0, 0, 15);
-			jeton.graphics.endFill();
-		}
 
+			jeton.graphics.beginFill(0xFF0000, 1);
+			jeton.graphics.drawCircle(0, 0, 20);
+			jeton.graphics.endFill();
+			
+			addChild(jeton);
+		}
 	}
 }
