@@ -27,7 +27,7 @@ package model {
 						TabGrille.getInstance()[i][j] = 1;
 						tmp = _min(--$profondeur);
 
-						if (tmp > max) {
+						if (tmp > max || (tmp == max) && (Math.random() > 0.5)) {
 
 							max = tmp;
 							maxX = i;
@@ -61,7 +61,7 @@ package model {
 						TabGrille.getInstance()[i][j] = 1;
 						tmp = _max(--$profondeur);
 
-						if (tmp < min) {
+						if (tmp < min || (tmp == min) && (Math.random() > 0.5)) {
 							min = tmp;
 						}
 
@@ -93,7 +93,7 @@ package model {
 						TabGrille.getInstance()[i][j] = 2;
 						tmp = _min(--$profondeur);
 
-						if (tmp > max) {
+						if (tmp > max || (tmp == max) && (Math.random() > 0.5)) {
 							max = tmp;
 						}
 
@@ -138,6 +138,116 @@ package model {
 
 		private function _nbSeries(n:uint):void {
 			
+			var compteur1:uint, compteur2:uint;
+			_seriesJoueur = _seriesMachine = 0;
+			
+			//Diagonale descendante
+			
+			for (var i:uint = 0; i < 3; ++i) {
+				
+				if (TabGrille.getInstance()[i][i] == 1) {
+					
+					++compteur1;
+					compteur2 = 0;
+					
+					if (compteur1 == n) {
+						++_seriesJoueur;
+					}
+					
+				} else if (TabGrille.getInstance()[i][i] == 2) {
+					
+					++compteur2;
+					compteur1 = 0;
+					
+					if (compteur2 == n)  {
+						++_seriesMachine;
+					}
+				}
+			}
+			
+			compteur1 = compteur2 = 0;
+			
+			//Diagonale montante
+			
+			for (var i:uint = 0; i < 3; ++i) {
+				
+				if (TabGrille.getInstance()[i][2 - i] == 1) {
+					
+					++compteur1;
+					compteur2 = 0;
+					
+					if (compteur1 == n) {
+						++_seriesJoueur;
+					}
+					
+				} else if (TabGrille.getInstance()[i][2 - i] == 2) {
+					
+					++compteur2;
+					compteur1 = 0;
+					
+					if (compteur2 == n) {
+						++_seriesMachine;
+					}
+				}
+			}
+			
+			//En ligne
+			
+			for (var i:uint = 0; i < 3; ++i) {
+				
+				compteur1 = compteur2 = 0;
+				
+				//Horizontalement
+				
+				for (var j:uint = 0; j < 3; ++j) {
+					
+					if (TabGrille.getInstance()[i][j] == 1) {
+						
+						++compteur1;
+						compteur2 = 0;
+						
+						if (compteur1 == n) {
+							++_seriesJoueur;
+						}
+						
+						
+					} else if (TabGrille.getInstance()[i][j]) {
+						
+						++compteur2;
+						compteur1 = 0;
+						
+						if (compteur2 == n) {
+							++_seriesMachine;
+						}
+					}
+				}
+				
+				compteur1 = compteur2 = 0;
+				
+				//Verticalement
+				
+				for (var j:uint = 0; j < 3; ++j) {
+					
+					if (TabGrille.getInstance()[j][i] == 1) {
+						
+						++compteur1;
+						compteur2 = 0;
+						
+						if (compteur1 == n) {
+							++_seriesJoueur;
+						}
+						
+					} else if (TabGrille.getInstance()[j][i] == 2) {
+						
+						++compteur2;
+						compteur1 = 0;
+						
+						if (compteur2 == n) {
+							++_seriesMachine;
+						}
+					}
+				}
+			}
 		}
 
 		private function gagnant():uint {
