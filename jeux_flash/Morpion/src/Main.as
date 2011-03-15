@@ -1,6 +1,8 @@
 ﻿package {
 
+	import com.base86.Tools;
 	import model.Joueur;
+	import model.Machine;
 	import model.ModelEvent;
 	import model.TabGrille;
 
@@ -17,6 +19,9 @@
 
 		private var _grille:Grille;
 		private var _joueur:Joueur;
+		private var _machine:Machine;
+		
+		private var _nbCasesJouees:uint;
 
 		public function Main() {
 
@@ -32,15 +37,14 @@
 
 			_joueur = new Joueur(stage);
 			_joueur.addEventListener(ModelEvent.POSER_PION, _joueurAJoue);
+			
+			_machine = new Machine();
+			
+			_machine.jouer(3);
+			
+			Tools.pr(TabGrille.getInstance());
 
 			_joueur.pouvoirJouer();
-
-			_grille.addJeton(new Cercle(), 1, 1);
-			_grille.addJeton(new Carre(), 0, 1);
-
-
-			TabGrille.setCoup("cercle", 1, 1);
-			TabGrille.setCoup("carre", 0, 1);
 		}
 
 		private function _joueurAJoue(mEvt:ModelEvent):void {
@@ -56,6 +60,8 @@
 			if ($personnage == "Joueur") {
 
 				TabGrille.setCoup("carre", $tabIndiceX, $tabIndiceY);
+				
+				++_nbCasesJouees;
 
 			} else {
 
