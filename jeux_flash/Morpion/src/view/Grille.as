@@ -66,6 +66,13 @@ package view {
 			$jeton.y = _posY;
 		}
 		
+		public function removeJeton():void {
+			
+			while (this.numChildren > 0) {
+				this.removeChildAt(0);
+			}
+		}
+		
 		static public function get tailleCell():uint {
 			return _TAILLE_CELL; 
 		}

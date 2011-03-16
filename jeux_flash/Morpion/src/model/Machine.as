@@ -15,7 +15,7 @@ package model {
 
 		public function jouer($profondeur:int):void {
 
-			var max:int = -1000;
+			var max:int = -10000;
 			var tmp:int, maxX:uint, maxY:uint;
 
 			for (var i:uint; i < 3; ++i) {
@@ -24,21 +24,22 @@ package model {
 
 					if (TabGrille.getInstance()[i][j] == 0) {
 
-						TabGrille.getInstance()[i][j] = 1;
+						TabGrille.setCoup("carre", i, j);
 						tmp = _min(--$profondeur);
 
-						if (tmp > max || (tmp == max) && (Math.random() > 0.5)) {
+						if (tmp > max) {
 
 							max = tmp;
 							maxX = i;
 							maxY = j;
 						}
 
-						TabGrille.getInstance()[i][j] == 0;
+						TabGrille.setCoup("vide", i, j);
 					}
 				}
 			}
-			TabGrille.getInstance()[maxX][maxY] = 1;
+			
+			this.dispatchEvent(new ModelEvent(ModelEvent.POSER_PION, maxX, maxY));
 		}
 
 		private function _min($profondeur:int):int {
@@ -48,7 +49,7 @@ package model {
 				return _eval();
 			}
 
-			var min:int = 1000;
+			var min:int = 10000;
 			var tmp:int;
 
 			for (var i:uint; i < 3; ++i) {
@@ -57,14 +58,14 @@ package model {
 
 					if (TabGrille.getInstance()[i][j] == 0) {
 
-						TabGrille.getInstance()[i][j] = 1;
+						TabGrille.setCoup("carre", i, j);
 						tmp = _max(--$profondeur);
 
-						if (tmp < min || (tmp == min) && (Math.random() > 0.5)) {
+						if (tmp < min) {
 							min = tmp;
 						}
 
-						TabGrille.getInstance()[i][j] == 0;
+						TabGrille.setCoup("vide", i, j);
 					}
 
 				}
@@ -80,7 +81,7 @@ package model {
 				return _eval();
 			}
 
-			var max:int = -1000;
+			var max:int = -10000;
 			var tmp:int;
 
 			for (var i:uint; i < 3; ++i) {
@@ -89,14 +90,14 @@ package model {
 
 					if (TabGrille.getInstance()[i][j] == 0) {
 
-						TabGrille.getInstance()[i][j] = 2;
+						TabGrille.setCoup("cercle", i, j);
 						tmp = _min(--$profondeur);
 
-						if (tmp > max || (tmp == max) && (Math.random() > 0.5)) {
+						if (tmp > max) {
 							max = tmp;
 						}
 
-						TabGrille.getInstance()[i][j] == 0;
+						TabGrille.setCoup("vide", i, j);
 					}
 
 				}
@@ -141,7 +142,7 @@ package model {
 			// Diagonale descendante
 
 			for (i = 0; i < 3; ++i) {
-
+				
 				if (TabGrille.getInstance()[i][i] == 1) {
 
 					++compteur1;
