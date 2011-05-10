@@ -2,6 +2,10 @@ package kinessia.level {
 
 	import org.osflash.signals.Signal;
 
+	import flash.display.Loader;
+	import flash.events.Event;
+	import flash.net.URLRequest;
+
 	/**
 	 * @author Aymeric
 	 */
@@ -9,7 +13,7 @@ package kinessia.level {
 		
 		public var onLevelChanged:Signal;
 
-		private var _levels:Array = [LevelA1, LevelA2, LevelA3];
+		private var _levels:Array;
 		private var _currentIndex:uint;
 		private var _currentLevel:ALevel;
 
@@ -17,19 +21,25 @@ package kinessia.level {
 			
 			onLevelChanged = new Signal(ALevel);
 			_currentIndex = 0;
+			
+			_levels = [];
+			_levels["Level"] = [LevelA1, LevelA2, LevelA3];
+			_levels["SWF"] = ["level/levelA1.swf", "level/levelA2.swf", "level/levelA3.swf"];
+			
 			gotoLevel();
 		}
 		
 
 		public function destroy():void {
 			onLevelChanged.removeAll();
+			_currentLevel = null;
 		}
 
 		public function nextLevel():void {
 			
-			if (_currentIndex < _levels.length - 1)
+			if (_currentIndex < _levels["Level"].length - 1)
 				++_currentIndex;
-
+				
 			gotoLevel();
 		}
 
@@ -46,9 +56,20 @@ package kinessia.level {
 			if (_currentLevel != null)
 				_currentLevel.lvlEnded.remove(_onLevelEnded);
 				
-			_currentLevel = ALevel(new _levels[_currentIndex]());
+			var loader:Loader = new Loader();
+			loader.load(new URLRequest(_levels["SWF"][_currentIndex]));
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _levelSWFLoaded);
+		}
+
+		private function _levelSWFLoaded(evt:Event):void {
+			
+			_currentLevel = ALevel(new _levels["Level"][_currentIndex](evt.target.loader.content));
 			_currentLevel.lvlEnded.add(_onLevelEnded);
+			
 			onLevelChanged.dispatch(currentLevel);
+			
+			evt.target.removeEventListener(Event.COMPLETE, _levelSWFLoaded);
+			evt.target.loader.unloadAndStop();
 		}
 
 		private function _onLevelEnded():void {
