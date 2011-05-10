@@ -2,8 +2,11 @@ package kinessia.level {
 
 	import com.citrusengine.core.State;
 	import com.citrusengine.physics.Box2D;
+	import com.citrusengine.utils.ObjectMaker;
 
 	import org.osflash.signals.Signal;
+
+	import flash.display.MovieClip;
 
 	/**
 	 * @author Aymeric
@@ -11,10 +14,14 @@ package kinessia.level {
 	public class ALevel extends State {
 
 		public var lvlEnded:Signal;
+		
+		private var _levelObjectsMC:MovieClip;
 
-		public function ALevel() {
+		public function ALevel(levelObjectsMC:MovieClip) {
 
 			super();
+			
+			_levelObjectsMC = levelObjectsMC;
 			
 			lvlEnded = new Signal();
 		}
@@ -25,7 +32,10 @@ package kinessia.level {
 			
 			var box2d:Box2D = new Box2D("box2D", {visible:true});
 			add(box2d);
+			
 			view.loadManager.onLoadComplete.addOnce(handleLoadComplete);
+			
+			ObjectMaker.FromMovieClip(_levelObjectsMC);
 		}
 
 		override public function destroy():void {
@@ -44,7 +54,7 @@ package kinessia.level {
 
 		private function handleLoadComplete():void {
 			
-			// virer l'écran de chargement
+			// remove loader
 		}
 	}
 }

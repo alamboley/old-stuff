@@ -26,7 +26,6 @@
 
 		private function _onLevelChanged(lvl:ALevel):void {
 
-			// state = _levelManager.currentLevel;
 			state = lvl;
 		}
 
