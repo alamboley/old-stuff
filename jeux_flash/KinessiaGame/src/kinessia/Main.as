@@ -21,6 +21,12 @@
 			this.console.addCommand("fullscreen", _fullscreen);
 			this.console.addCommand("play", _playGame);
 			
+			sound.addSound("Si", "sounds/si.mp3");
+			sound.addSound("Do", "sounds/do.mp3");
+			sound.addSound("Re", "sounds/re.mp3");
+			sound.addSound("Mi", "sounds/mi.mp3");
+			
+			
 			_countLifes = GameConst.nbrLifes;
 
 			_levelManager = new LevelManager();
@@ -42,6 +48,12 @@
 			
 			_countLifes = GameConst.nbrLifes;
 			lvl.damageTaken.add(_removeLife);
+			lvl.lvlEnded.add(_nextLevel);
+		}
+
+		private function _nextLevel():void {
+			
+			_levelManager.nextLevel();
 		}
 
 		private function _fullscreen():void {

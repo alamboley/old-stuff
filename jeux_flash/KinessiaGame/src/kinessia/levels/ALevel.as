@@ -6,6 +6,7 @@ package kinessia.levels {
 	import kinessia.characters.Declik;
 	import kinessia.objects.Roseau;
 
+	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.CitrusObject;
 	import com.citrusengine.core.State;
 	import com.citrusengine.math.MathVector;
@@ -28,6 +29,8 @@ package kinessia.levels {
 
 		public var lvlEnded:Signal;
 		public var damageTaken:Signal;
+		
+		protected var _ce:CitrusEngine;
 
 		protected var _declik:Declik;
 		protected var _bullzors:Vector.<CitrusObject>;
@@ -37,6 +40,8 @@ package kinessia.levels {
 		public function ALevel(levelObjectsMC:MovieClip) {
 
 			super();
+			
+			_ce = CitrusEngine.getInstance();
 
 			_levelObjectsMC = levelObjectsMC;
 
@@ -61,14 +66,25 @@ package kinessia.levels {
 
 			_declik = Declik(getObjectByName("Declik"));
 			_declik.onTakeDamage.add(_hurt);
+			
+			var endLevel:Sensor = Sensor(getObjectByName("EndLevel"));
+			endLevel.onBeginContact.add(_endLevel);
+			
 
 			var roseaux:Vector.<CitrusObject> = getObjectsByType(Roseau);
-			for each (var roseau:Sensor in roseaux) {
+			for each (var roseau:Roseau in roseaux) {
 				roseau.onBeginContact.add(_roseauTouche);
 				roseau.onEndContact.add(_roseauFin);
 			}
 
 			view.setupCamera(_declik, new MathVector(320, 240), new Rectangle(-1000, 0, 4000, 650), new MathVector(.25, .05));
+		}
+
+		protected function _endLevel(cEvt:ContactEvent):void {
+			
+			if (cEvt.other.GetBody().GetUserData() is Declik) {
+				lvlEnded.dispatch();
+			}
 		}
 
 
