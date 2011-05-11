@@ -50,7 +50,7 @@ package kinessia.levels {
 
 			super.initialize();
 
-			var box2d:Box2D = new Box2D("box2D", {visible:false});
+			var box2d:Box2D = new Box2D("box2D", {visible:true});
 			add(box2d);
 
 			view.loadManager.onLoadComplete.addOnce(handleLoadComplete);
@@ -71,27 +71,24 @@ package kinessia.levels {
 			view.setupCamera(_declik, new MathVector(320, 240), new Rectangle(-1000, 0, 4000, 650), new MathVector(.25, .05));
 		}
 
-		private function _roseauTouche(cEvt:ContactEvent):void {
-
-			cEvt.fixture.GetBody().GetUserData().anim = "white";
-		}
-
-		private function _roseauFin(cEvt:ContactEvent):void {
-
-			cEvt.fixture.GetBody().GetUserData().anim = "black";
-		}
-
 
 		protected function _hurt():void {
 			damageTaken.dispatch();
 		}
+		
+		private function _roseauTouche(cEvt:ContactEvent):void {
+			cEvt.fixture.GetBody().GetUserData().anim = "white";
+		}
+
+		private function _roseauFin(cEvt:ContactEvent):void {
+			cEvt.fixture.GetBody().GetUserData().anim = "black";
+		}
 
 		override public function destroy():void {
-
+			damageTaken.removeAll();
 			lvlEnded.removeAll();
 			super.destroy();
 		}
-
 
 		override public function update(timeDelta:Number):void {
 
