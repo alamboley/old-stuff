@@ -4,6 +4,7 @@ package kinessia.levels {
 
 	import kinessia.characters.Bullzor;
 	import kinessia.characters.Declik;
+	import kinessia.objects.MusicalSensor;
 	import kinessia.objects.Roseau;
 
 	import com.citrusengine.core.CitrusEngine;
@@ -28,8 +29,8 @@ package kinessia.levels {
 	public class ALevel extends State {
 
 		public var lvlEnded:Signal;
-		public var damageTaken:Signal;
-		
+		public var restartLevel:Signal;
+
 		protected var _ce:CitrusEngine;
 
 		protected var _declik:Declik;
@@ -40,22 +41,22 @@ package kinessia.levels {
 		public function ALevel(levelObjectsMC:MovieClip) {
 
 			super();
-			
+
 			_ce = CitrusEngine.getInstance();
 
 			_levelObjectsMC = levelObjectsMC;
 
 			lvlEnded = new Signal();
-			damageTaken = new Signal();
+			restartLevel = new Signal();
 
-			var objects:Array = [Platform, Declik, CitrusSprite, Sensor, Roseau, Bullzor];
+			var objects:Array = [Platform, Declik, CitrusSprite, Sensor, MusicalSensor, Roseau, Bullzor];
 		}
 
 		override public function initialize():void {
 
 			super.initialize();
 
-			var box2d:Box2D = new Box2D("box2D", {visible:true});
+			var box2d:Box2D = new Box2D("box2D", {visible:false});
 			add(box2d);
 
 			view.loadManager.onLoadComplete.addOnce(handleLoadComplete);
@@ -65,11 +66,14 @@ package kinessia.levels {
 			ExternalArt.smoothBitmaps = true;
 
 			_declik = Declik(getObjectByName("Declik"));
+			//_declik.onJump.add(_jump);
+			//_declik.onAnimationChange.add(_animationChange);
 			_declik.onTakeDamage.add(_hurt);
-			
+			_declik.onGiveDamage.add(_attack);
+
 			var endLevel:Sensor = Sensor(getObjectByName("EndLevel"));
 			endLevel.onBeginContact.add(_endLevel);
-			
+
 
 			var roseaux:Vector.<CitrusObject> = getObjectsByType(Roseau);
 			for each (var roseau:Roseau in roseaux) {
@@ -79,30 +83,81 @@ package kinessia.levels {
 
 			view.setupCamera(_declik, new MathVector(320, 240), new Rectangle(-1000, 0, 4000, 650), new MathVector(.25, .05));
 		}
+		
+		protected function _addMusicalSensor():void {
+			
+			var musicalSensors:Vector.<CitrusObject> = getObjectsByType(MusicalSensor);
+			for each (var musicalSensor:MusicalSensor in musicalSensors) {
+				musicalSensor.onBeginContact.add(_playSound);
+			}
+		}
 
 		protected function _endLevel(cEvt:ContactEvent):void {
-			
+
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 				lvlEnded.dispatch();
 			}
 		}
-
+		
+		protected function _restartLevel(cEvt:ContactEvent):void {
+			
+			if (cEvt.other.GetBody().GetUserData() is Declik) {
+				restartLevel.dispatch();
+			}
+		}
 
 		protected function _hurt():void {
-			damageTaken.dispatch();
+			_ce.sound.playSound("Hurt", 1, 0);
 		}
-		
+
 		private function _roseauTouche(cEvt:ContactEvent):void {
-			cEvt.fixture.GetBody().GetUserData().anim = "white";
+			
+			if (cEvt.other.GetBody().GetUserData() is Declik) {
+				cEvt.fixture.GetBody().GetUserData().anim = "white";
+			}
 		}
 
 		private function _roseauFin(cEvt:ContactEvent):void {
-			cEvt.fixture.GetBody().GetUserData().anim = "black";
+			
+			if (cEvt.other.GetBody().GetUserData() is Declik) {
+				cEvt.fixture.GetBody().GetUserData().anim = "black";
+			}
+		}
+		
+		private function _playSound(cEvt:ContactEvent):void {
+
+			if (cEvt.other.GetBody().GetUserData() is Declik) {
+				_ce.sound.playSound(cEvt.fixture.GetBody().GetUserData().song, 1, 0);
+			}
+		}
+		
+		private function _attack():void {
+			_ce.sound.playSound("Kill", 1, 0);
+		}
+
+		private function _jump():void {
+			_ce.sound.playSound("Jump", 1, 0);
+		}
+
+		private function _animationChange():void {
+			
+			if (_declik.animation == "walk") {
+				_ce.sound.stopSound("Skid");
+				_ce.sound.playSound("Walk", 1);
+				return;
+			} else {
+				_ce.sound.stopSound("Walk");
+			}
+
+			if (_declik.animation == "skid") {
+				_ce.sound.playSound("Skid", 1, 0);
+				return;
+			} else {
+				_ce.sound.stopSound("Skid");
+			}
 		}
 
 		override public function destroy():void {
-			damageTaken.removeAll();
-			lvlEnded.removeAll();
 			super.destroy();
 		}
 
