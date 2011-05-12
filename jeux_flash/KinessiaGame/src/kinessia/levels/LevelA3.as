@@ -1,5 +1,7 @@
 package kinessia.levels {
 
+	import com.citrusengine.objects.platformer.Sensor;
+
 	import flash.display.MovieClip;
 
 	/**
@@ -14,6 +16,9 @@ package kinessia.levels {
 		override public function initialize():void {
 			
 			super.initialize();
+			
+			var restartLevel:Sensor = Sensor(getObjectByName("RestartLevel"));
+			restartLevel.onBeginContact.add(_restartLevel);
 		}
 	}
 }

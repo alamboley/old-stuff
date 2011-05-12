@@ -1,12 +1,5 @@
 package kinessia.levels {
 
-	import Box2DAS.Dynamics.ContactEvent;
-
-	import kinessia.characters.Declik;
-	import kinessia.objects.MusicalSensor;
-
-	import com.citrusengine.core.CitrusObject;
-
 	import flash.display.MovieClip;
 
 	/**
@@ -22,17 +15,7 @@ package kinessia.levels {
 			
 			super.initialize();
 			
-			var musicalSensors:Vector.<CitrusObject> = getObjectsByType(MusicalSensor);
-			for each (var musicalSensor:MusicalSensor in musicalSensors) {
-				musicalSensor.onBeginContact.add(_playSound);
-			}
-		}
-
-		private function _playSound(cEvt:ContactEvent):void {
-			
-			if (cEvt.other.GetBody().GetUserData() is Declik) {
-				_ce.sound.playSound(cEvt.fixture.GetBody().GetUserData().song, 1, 0);
-			}
+			_addMusicalSensor();
 		}
 	}
 }

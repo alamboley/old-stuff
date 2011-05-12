@@ -7,20 +7,18 @@ package kinessia.levels {
 	/**
 	 * @author Aymeric
 	 */
-	public class LevelA2 extends ALevel {
+	public class LevelA4 extends ALevel {
 
-		public function LevelA2(levelObjectsMC:MovieClip) {
+		public function LevelA4(levelObjectsMC:MovieClip) {
 			super(levelObjectsMC);
 		}
-
+		
 		override public function initialize():void {
-
+			
 			super.initialize();
 			
 			var restartLevel:Sensor = Sensor(getObjectByName("RestartLevel"));
 			restartLevel.onBeginContact.add(_restartLevel);
-			
-			_addMusicalSensor();
 		}
 	}
 }

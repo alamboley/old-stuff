@@ -1,16 +1,14 @@
 ﻿package kinessia {
 
-	import com.citrusengine.core.CitrusEngine;
 	import kinessia.levels.ALevel;
 	import kinessia.levels.LevelManager;
 
+	import com.citrusengine.core.CitrusEngine;
 
 	/**
 	 * @author Aymeric
 	 */
 	public class Main extends CitrusEngine {
-		
-		private var _countLifes:uint;
 
 		private var _levelManager:LevelManager;
 
@@ -20,39 +18,40 @@
 
 			this.console.addCommand("fullscreen", _fullscreen);
 			this.console.addCommand("play", _playGame);
-			
+
+			sound.addSound("KinessiaTheme", "sounds/KinessiaTheme.mp3");
+			sound.addSound("Collect", "sounds/jump.mp3");
+			sound.addSound("Hurt", "sounds/hurt.mp3");
+			sound.addSound("Jump", "sounds/jump.mp3");
+			sound.addSound("Kill", "sounds/kill.mp3");
+			sound.addSound("Skid", "sounds/skid.mp3");
+			sound.addSound("Walk", "sounds/jump.mp3");
 			sound.addSound("Si", "sounds/si.mp3");
 			sound.addSound("Do", "sounds/do.mp3");
 			sound.addSound("Re", "sounds/re.mp3");
 			sound.addSound("Mi", "sounds/mi.mp3");
-			
-			
-			_countLifes = GameConst.nbrLifes;
+
+			sound.playSound("KinessiaTheme");
 
 			_levelManager = new LevelManager();
 			_levelManager.onLevelChanged.add(_onLevelChanged);
 			state = _levelManager.currentLevel;
 		}
 
-		private function _removeLife():void {
-			
-			--_countLifes;
-			if (_countLifes == 0) {
-				state = _levelManager.currentLevel;
-			}
-		}
-
 		private function _onLevelChanged(lvl:ALevel):void {
 
 			state = lvl;
-			
-			_countLifes = GameConst.nbrLifes;
-			lvl.damageTaken.add(_removeLife);
+
 			lvl.lvlEnded.add(_nextLevel);
+			lvl.restartLevel.add(_restartLevel);
+		}
+
+		private function _restartLevel():void {
+			state = _levelManager.currentLevel;
 		}
 
 		private function _nextLevel():void {
-			
+
 			_levelManager.nextLevel();
 		}
 

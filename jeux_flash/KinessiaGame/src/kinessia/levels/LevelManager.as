@@ -23,8 +23,8 @@ package kinessia.levels {
 			_currentIndex = 0;
 			
 			_levels = [];
-			_levels["Level"] = [LevelA1, LevelA2, LevelA3];
-			_levels["SWF"] = ["levels/levelA1.swf", "levels/levelA2.swf", "levels/levelA3.swf"];
+			_levels["Level"] = [LevelA1, LevelA2, LevelA3, LevelA4];
+			_levels["SWF"] = ["levels/levelA1.swf", "levels/levelA2.swf", "levels/levelA3.swf", "levels/levelA4.swf"];
 			
 			gotoLevel();
 		}
