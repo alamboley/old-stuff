@@ -31,7 +31,7 @@
 			sound.addSound("Re", "sounds/re.mp3");
 			sound.addSound("Mi", "sounds/mi.mp3");
 
-			sound.playSound("KinessiaTheme");
+			//sound.playSound("KinessiaTheme");
 
 			_levelManager = new LevelManager();
 			_levelManager.onLevelChanged.add(_onLevelChanged);

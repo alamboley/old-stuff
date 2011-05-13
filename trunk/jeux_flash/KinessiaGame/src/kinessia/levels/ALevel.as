@@ -4,6 +4,7 @@ package kinessia.levels {
 
 	import kinessia.characters.Bullzor;
 	import kinessia.characters.Declik;
+	import kinessia.objects.Catapulte;
 	import kinessia.objects.MusicalSensor;
 	import kinessia.objects.Roseau;
 
@@ -49,14 +50,14 @@ package kinessia.levels {
 			lvlEnded = new Signal();
 			restartLevel = new Signal();
 
-			var objects:Array = [Platform, Declik, CitrusSprite, Sensor, MusicalSensor, Roseau, Bullzor];
+			var objects:Array = [Platform, Declik, Bullzor, CitrusSprite, Sensor, MusicalSensor, Roseau, Catapulte];
 		}
 
 		override public function initialize():void {
 
 			super.initialize();
 
-			var box2d:Box2D = new Box2D("box2D", {visible:false});
+			var box2d:Box2D = new Box2D("box2D", {visible:true});
 			add(box2d);
 
 			view.loadManager.onLoadComplete.addOnce(handleLoadComplete);
@@ -82,6 +83,12 @@ package kinessia.levels {
 			}
 
 			view.setupCamera(_declik, new MathVector(320, 240), new Rectangle(-1000, 0, 4000, 650), new MathVector(.25, .05));
+		}
+		
+		protected function _addContactRestartLevel():void {
+			
+			var restartLevel:Sensor = Sensor(getObjectByName("RestartLevel"));
+			restartLevel.onBeginContact.add(_restartLevel);
 		}
 		
 		protected function _addMusicalSensor():void {
