@@ -3,6 +3,7 @@
 	import kinessia.levels.ALevel;
 	import kinessia.levels.LevelManager;
 	import kinessia.network.Network;
+	import kinessia.network.NetworkEvent;
 
 	import com.citrusengine.core.CitrusEngine;
 
