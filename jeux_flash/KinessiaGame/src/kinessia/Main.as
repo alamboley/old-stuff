@@ -2,6 +2,7 @@
 
 	import kinessia.levels.ALevel;
 	import kinessia.levels.LevelManager;
+	import kinessia.network.Network;
 
 	import com.citrusengine.core.CitrusEngine;
 
@@ -11,10 +12,13 @@
 	public class Main extends CitrusEngine {
 
 		private var _levelManager:LevelManager;
+		private var _network:Network;
 
 		public function Main() {
 
 			super();
+			
+			_network = new Network();
 
 			this.console.addCommand("fullscreen", _fullscreen);
 			this.console.addCommand("play", _playGame);
