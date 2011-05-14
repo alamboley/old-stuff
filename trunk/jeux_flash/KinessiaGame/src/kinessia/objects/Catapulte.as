@@ -15,8 +15,6 @@ package kinessia.objects {
 	public class Catapulte extends PhysicsObject {
 
 		private var _platformJoint:BodyPlatform;
-		
-		private var _heroLinearVelocity:V2;
 
 		public function Catapulte(name:String, params:Object = null) {
 
