@@ -52,9 +52,9 @@
 
 		protected function _ef(evt:Event):void {
 
-			if ((_accelX > 0.7) && (_currentVStatus != "bottom")) {
-				_room.sendMessage("CHAT_MESSAGE", true, null, "bottom");
-				_currentVStatus = "bottom";
+			if ((_accelX > 0.7) && (_currentVStatus != "onground")) {
+				_room.sendMessage("CHAT_MESSAGE", true, null, "onground");
+				_currentVStatus = "onground";
 			}
 
 			if ((_accelX < -0.7) && (_currentVStatus != "jump")) {
