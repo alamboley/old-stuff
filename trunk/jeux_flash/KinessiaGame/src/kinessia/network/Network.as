@@ -17,24 +17,40 @@ package kinessia.network {
 		private var _ce:CitrusEngine;
 		private var _reactor:Reactor;
 		private var _room:Room;
+		
+		private var _uniqueID:String;
 
 		public function Network() {
 			
 			_ce = CitrusEngine.getInstance();
+			
+			_uniqueID = "CHAT_MESSAGE"; //_generateRandomString(7);
 
 			_reactor = new Reactor();
 
-			_reactor.connect("localhost", 9110);
+			//_reactor.connect("localhost", 9110);
+			_reactor.connect("tryunion.com", 80);
 
 			_reactor.addEventListener(ReactorEvent.READY, _createRoom);
 		}
+		
+		private function _generateRandomString(newLength:uint = 1, userAlphabet:String = "123456789"):String{
+			
+				var alphabet:Array = userAlphabet.split("");
+				var alphabetLength:int = alphabet.length;
+				var randomLetters:String = "";
+				for (var i:uint = 0; i < newLength; i++){
+					randomLetters += alphabet[int(Math.floor(Math.random() * alphabetLength))];
+				}
+				return randomLetters;
+			}
 
 		private function _createRoom(rEvt:ReactorEvent):void {
 
 			_room = _reactor.getRoomManager().createRoom("Kinessia");
 			_room.join();
 
-			_room.addMessageListener("CHAT_MESSAGE", _chatMessageLisener);
+			_room.addMessageListener(_uniqueID, _chatMessageLisener);
 		}
 
 		private function _chatMessageLisener(fromClient:IClient, message:String):void {
@@ -61,6 +77,10 @@ package kinessia.network {
 					_ce.dispatchEvent(new NetworkEvent(NetworkEvent.IMMOBILE));
 					break;
 			}
+		}
+
+		public function get uniqueID():String {
+			return _uniqueID;
 		}
 	}
 }

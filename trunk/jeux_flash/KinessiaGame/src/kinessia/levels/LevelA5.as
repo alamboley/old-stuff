@@ -1,5 +1,6 @@
 package kinessia.levels {
 
+	import kinessia.objects.TheWalker;
 	import kinessia.objects.BodyPlatform;
 	import kinessia.objects.Catapulte;
 
@@ -22,6 +23,9 @@ package kinessia.levels {
 			
 			var catapulte:Catapulte = Catapulte(getFirstObjectByType(Catapulte));
 			catapulte.initJoint(BodyPlatform(getObjectByName("PlatformJoint")));
+			
+			var walker:TheWalker = new TheWalker("theWalker", {x:50});
+			add(walker);
 		}
 	}
 }
