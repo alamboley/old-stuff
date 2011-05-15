@@ -57,7 +57,7 @@ package kinessia.levels {
 
 			super.initialize();
 
-			var box2d:Box2D = new Box2D("box2D", {visible:true});
+			var box2d:Box2D = new Box2D("box2D", {visible:false});
 			add(box2d);
 
 			view.loadManager.onLoadComplete.addOnce(handleLoadComplete);
