@@ -3,9 +3,12 @@
 	import kinessia.levels.ALevel;
 	import kinessia.levels.LevelManager;
 	import kinessia.network.Network;
-	import kinessia.network.NetworkEvent;
 
 	import com.citrusengine.core.CitrusEngine;
+
+	import flash.display.Loader;
+	import flash.events.Event;
+	import flash.net.URLRequest;
 
 	/**
 	 * @author Aymeric
@@ -19,7 +22,7 @@
 
 			super();
 			
-			_network = new Network();
+			//_network = new Network();
 
 			this.console.addCommand("fullscreen", _fullscreen);
 			this.console.addCommand("play", _playGame);
@@ -41,6 +44,18 @@
 			_levelManager = new LevelManager();
 			_levelManager.onLevelChanged.add(_onLevelChanged);
 			state = _levelManager.currentLevel;
+			
+			var loader:Loader = new Loader();
+			loader.load(new URLRequest("images/logo.png"));
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _addLogo);
+		}
+
+		private function _addLogo(evt:Event):void {
+			
+			addChild(evt.target.loader.content);
+			
+			evt.target.removeEventListener(Event.COMPLETE, _addLogo);
+			evt.target.loader.unloadAndStop();
 		}
 
 		private function _onLevelChanged(lvl:ALevel):void {
