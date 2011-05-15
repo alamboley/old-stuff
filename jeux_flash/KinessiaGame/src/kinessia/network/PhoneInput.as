@@ -1,4 +1,4 @@
-package kinessia {
+package kinessia.network {
 
 	import kinessia.network.NetworkEvent;
 
