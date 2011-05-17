@@ -7,11 +7,7 @@ package kinessia.network {
 	 */
 	public class NetworkEvent extends Event {
 		
-		public static const JUMP:String = "JUMP";
-		public static const ONGROUND:String = "ONGROUND";
-		public static const LEFT:String = "LEFT";
-		public static const RIGHT:String = "RIGHT";
-		public static const IMMOBILE:String = "IMMOBILE";
+		public static const ADD_COIN:String = "ADD_COIN";
 
 		public function NetworkEvent(type:String, bubbles:Boolean = false, cancelable:Boolean = false) {
 			super(type, bubbles, cancelable);
