@@ -58,6 +58,10 @@ package kinessia.network {
 			
 			switch (message) {
 				
+				case "pauseGame":
+					_ce.dispatchEvent(new NetworkEvent(NetworkEvent.PAUSE_GAME));
+					break;
+				
 				case "jump":
 					_ce.dispatchEvent(new NetworkEvent(NetworkEvent.JUMP));
 					break;
