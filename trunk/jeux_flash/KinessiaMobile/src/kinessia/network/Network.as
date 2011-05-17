@@ -1,15 +1,14 @@
 package kinessia.network {
 
-	import flash.display.Sprite;
 	import net.user1.reactor.Reactor;
+	import net.user1.reactor.ReactorEvent;
 	import net.user1.reactor.Room;
 
+	import flash.display.Sprite;
 	import flash.events.AccelerometerEvent;
 	import flash.events.Event;
-	import flash.events.EventDispatcher;
-	import flash.events.TimerEvent;
+	import flash.events.TouchEvent;
 	import flash.sensors.Accelerometer;
-	import flash.utils.Timer;
 
 	/**
 	 * @author Aymeric
@@ -30,18 +29,16 @@ package kinessia.network {
 		public function Network() {
 			
 			_reactor  = new Reactor();
-			//_reactor.connect("169.254.170.39", 9110);
+			//_reactor.connect("169.254.143.2", 9110);
 			//_reactor.connect("localhost", 9110);
 			_reactor.connect("tryunion.com", 80);
 			
 			_uniqueID = "CHAT_MESSAGE";
-
-			var timer:Timer = new Timer(5000, 1);
-			timer.addEventListener(TimerEvent.TIMER_COMPLETE, _connexionRoom);
-			timer.start();
+			
+			_reactor.addEventListener(ReactorEvent.READY, _connexionRoom);
 		}
 
-		private function _connexionRoom(tEvt:TimerEvent):void {
+		private function _connexionRoom(rEvt:ReactorEvent):void {
 
 			_room = _reactor.getRoomManager().joinRoom("Kinessia");
 
@@ -86,6 +83,10 @@ package kinessia.network {
 				_currentHStatus = "immobile";
 			}
 
+		}
+		
+		public function pauseGame(tEvt:TouchEvent):void {
+			_room.sendMessage(_uniqueID, true, null, "pauseGame");
 		}
 
 		public function set uniqueID(uniqueID:String):void {

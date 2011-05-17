@@ -3,6 +3,7 @@
 	import kinessia.network.Network;
 
 	import flash.display.Sprite;
+	import flash.events.TouchEvent;
 	import flash.ui.Multitouch;
 	import flash.ui.MultitouchInputMode;
 
@@ -19,6 +20,8 @@
 			
 			_network = new Network();
 			addChild(_network); //Network is a Sprite instead of an EventDispatcher because of the EnterFrame
+			
+			stage.addEventListener(TouchEvent.TOUCH_TAP, _network.pauseGame);
 		}
 	}
 }
