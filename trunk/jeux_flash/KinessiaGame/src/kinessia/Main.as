@@ -1,5 +1,6 @@
 ﻿package kinessia {
 
+	import kinessia.network.NetworkEvent;
 	import kinessia.levels.ALevel;
 	import kinessia.levels.LevelManager;
 	import kinessia.network.Network;
@@ -22,10 +23,11 @@
 
 			super();
 			
-			//_network = new Network();
+			_network = new Network();
+			this.addEventListener(NetworkEvent.PAUSE_GAME, _pauseGame);
 
 			this.console.addCommand("fullscreen", _fullscreen);
-			this.console.addCommand("play", _playGame);
+			this.console.addCommand("pause", _pauseGame);
 
 			sound.addSound("KinessiaTheme", "sounds/KinessiaTheme.mp3");
 			sound.addSound("Collect", "sounds/jump.mp3");
@@ -79,7 +81,7 @@
 			stage.displayState = "fullScreen";
 		}
 
-		private function _playGame():void {
+		private function _pauseGame(nEvt:NetworkEvent = null):void {
 			this.playing = !this.playing;
 		}
 	}

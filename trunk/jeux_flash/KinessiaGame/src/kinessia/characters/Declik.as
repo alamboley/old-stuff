@@ -29,7 +29,7 @@ package kinessia.characters {
 			_phoneInput.initialize();
 		}
 
-		override public function update(timeDelta:Number):void {
+		/*override public function update(timeDelta:Number):void {
 			
 			super.update(timeDelta);
 
@@ -110,6 +110,6 @@ package kinessia.characters {
 			if (prevAnimation != _animation) {
 				onAnimationChange.dispatch();
 			}
-		}
+		}*/
 	}
 }

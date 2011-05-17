@@ -7,10 +7,18 @@ package kinessia.objects {
 	 */
 	public class MusicalSensor extends Sensor {
 		
-		public var song:String;
+		private var _song:String;
 
 		public function MusicalSensor(name:String, params:Object = null) {
 			super(name, params);
+		}
+		
+		public function get song():String {
+			return _song;
+		}
+
+		public function set song(value:String):void {
+			_song = value;
 		}
 	}
 }
