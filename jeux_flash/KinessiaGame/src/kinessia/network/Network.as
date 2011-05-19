@@ -28,8 +28,8 @@ package kinessia.network {
 
 			_reactor = new Reactor();
 
-			//_reactor.connect("localhost", 9110);
-			_reactor.connect("tryunion.com", 80);
+			_reactor.connect("localhost", 9110);
+			//_reactor.connect("tryunion.com", 80);
 
 			_reactor.addEventListener(ReactorEvent.READY, _createRoom);
 		}
@@ -68,6 +68,7 @@ package kinessia.network {
 					
 				case "onground":
 					_ce.dispatchEvent(new NetworkEvent(NetworkEvent.ONGROUND));
+					break;
 					
 				case "left":
 					_ce.dispatchEvent(new NetworkEvent(NetworkEvent.LEFT));
