@@ -13,6 +13,7 @@ package kinessia.network {
 		private var _enabled:Boolean = true;
 
 		private var _phoneJump:Boolean;
+		private var _firstJump:Boolean;
 		private var _phoneDirection:String;
 
 		public function PhoneInput() {
@@ -55,6 +56,19 @@ package kinessia.network {
 			ce.addEventListener(NetworkEvent.RIGHT, _onPhoneDirection);
 			ce.addEventListener(NetworkEvent.IMMOBILE, _onPhoneDirection);
 		}
+		
+		public function jumpJustPressed():Boolean {
+			
+			if (_phoneJump == true) {
+				
+				if (_firstJump == true) {
+					_firstJump = false;
+					return true;
+				}
+			}
+			
+			return false;
+		}
 
 		public function get phoneJump():Boolean {
 			return _phoneJump;
@@ -68,8 +82,10 @@ package kinessia.network {
 
 			if (nEvt.type == "JUMP") {
 				_phoneJump = true;
+				_firstJump = true;
 			} else {
 				_phoneJump = false;
+				_firstJump = false;
 			}
 		}
 
