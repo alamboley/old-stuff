@@ -1,5 +1,6 @@
 package kinessia.network {
 
+	import net.user1.reactor.IClient;
 	import net.user1.reactor.Reactor;
 	import net.user1.reactor.ReactorEvent;
 	import net.user1.reactor.Room;
@@ -29,9 +30,9 @@ package kinessia.network {
 		public function Network() {
 			
 			_reactor  = new Reactor();
-			//_reactor.connect("169.254.143.2", 9110);
+			_reactor.connect("169.254.25.31", 9110);
 			//_reactor.connect("localhost", 9110);
-			_reactor.connect("tryunion.com", 80);
+			//_reactor.connect("tryunion.com", 80);
 			
 			_uniqueID = "CHAT_MESSAGE";
 			
@@ -41,6 +42,8 @@ package kinessia.network {
 		private function _connexionRoom(rEvt:ReactorEvent):void {
 
 			_room = _reactor.getRoomManager().joinRoom("Kinessia");
+			
+			_room.addMessageListener(_uniqueID, _chatMessageLisener);
 
 			_accelerometer = new Accelerometer();
 
@@ -48,6 +51,18 @@ package kinessia.network {
 			
 			this.addEventListener(Event.ENTER_FRAME, _ef);
 			//_room.sendMessage(_uniqueID, true, null, "right");
+		}
+		
+		private function _chatMessageLisener(fromClient:IClient, message:String):void {
+			
+			trace(message);
+			
+			switch (message) {
+				
+				case "startMicro":
+					this.dispatchEvent(new NetworkEvent(NetworkEvent.START_MICRO));
+					break;
+			}
 		}
 
 		private function _accelerometerHandler(aEvt:AccelerometerEvent):void {
