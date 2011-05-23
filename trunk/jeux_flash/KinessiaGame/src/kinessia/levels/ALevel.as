@@ -57,7 +57,7 @@ package kinessia.levels {
 
 			super.initialize();
 
-			var box2d:Box2D = new Box2D("box2D", {visible:false});
+			var box2d:Box2D = new Box2D("Box2D", {visible:false});
 			add(box2d);
 
 			view.loadManager.onLoadComplete.addOnce(handleLoadComplete);
@@ -74,7 +74,6 @@ package kinessia.levels {
 
 			var endLevel:Sensor = Sensor(getObjectByName("EndLevel"));
 			endLevel.onBeginContact.add(_endLevel);
-
 
 			var roseaux:Vector.<CitrusObject> = getObjectsByType(Roseau);
 			for each (var roseau:Roseau in roseaux) {

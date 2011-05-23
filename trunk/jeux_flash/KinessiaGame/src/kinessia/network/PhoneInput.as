@@ -57,7 +57,7 @@ package kinessia.network {
 			ce.addEventListener(NetworkEvent.IMMOBILE, _onPhoneDirection);
 		}
 		
-		public function jumpJustPressed():Boolean {
+		public function justJumped():Boolean {
 			
 			if (_phoneJump == true) {
 				
@@ -81,11 +81,9 @@ package kinessia.network {
 		private function _onPhoneJump(nEvt:NetworkEvent):void {
 
 			if (nEvt.type == "JUMP") {
-				_phoneJump = true;
-				_firstJump = true;
+				_phoneJump = _firstJump = true;
 			} else {
-				_phoneJump = false;
-				_firstJump = false;
+				_phoneJump = _firstJump = false;
 			}
 		}
 
