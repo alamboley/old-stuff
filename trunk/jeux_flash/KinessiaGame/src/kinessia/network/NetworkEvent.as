@@ -16,6 +16,9 @@ package kinessia.network {
 		public static const LEFT:String = "LEFT";
 		public static const RIGHT:String = "RIGHT";
 		public static const IMMOBILE:String = "IMMOBILE";
+		
+		public static const FLY:String = "FLY";
+		public static const NOT_FLY:String = "NOT_FLY";
 
 		public function NetworkEvent(type:String, bubbles:Boolean = false, cancelable:Boolean = false) {
 			super(type, bubbles, cancelable);
