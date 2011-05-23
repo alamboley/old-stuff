@@ -10,6 +10,9 @@ package kinessia.characters {
 	 * @author Aymeric
 	 */
 	public class Declik extends Hero {
+		
+		private const _MAX_FLY_VELOCITY_Y:int = -5;
+		private const _FLY_VELOCITY_Y:uint = 4;
 
 		private var _phoneInput:PhoneInput;
 
@@ -59,6 +62,12 @@ package kinessia.characters {
 
 				if ((_phoneInput.phoneJump == true) && !onGround && velocity.y < 0) {
 					velocity.y -= jumpAcceleration;
+				}
+
+				if (_phoneInput.phoneMicroFly == true) {
+					if (velocity.y > _MAX_FLY_VELOCITY_Y) {
+						velocity.y -= _FLY_VELOCITY_Y;
+					}
 				}
 
 				if (_springOffEnemy != -1) {
