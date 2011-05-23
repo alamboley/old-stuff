@@ -23,7 +23,7 @@
 
 			super();
 			
-			_network = new Network();
+			//_network = new Network();
 			this.addEventListener(NetworkEvent.PAUSE_GAME, _pauseGame);
 
 			this.console.addCommand("fullscreen", _fullscreen);

@@ -51,10 +51,17 @@ package kinessia.network {
 			_room.join();
 
 			_room.addMessageListener(_uniqueID, _chatMessageLisener);
+			
+			_ce.addEventListener(NetworkEvent.START_MICRO, _startMicro);
+		}
+
+		private function _startMicro(nEvt:NetworkEvent):void {
+			_room.sendMessage(_uniqueID, true, null, "startMicro");
 		}
 
 		private function _chatMessageLisener(fromClient:IClient, message:String):void {
-			trace("Guest" + fromClient.getClientID() + " says: " + message);
+			
+			trace(message);
 			
 			switch (message) {
 				

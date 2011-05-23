@@ -52,7 +52,7 @@ package kinessia.characters {
 					_fixture.SetFriction(friction);
 				}
 
-				if (onGround && _phoneInput.jumpJustPressed() == true) {
+				if (onGround && _phoneInput.justJumped() == true) {
 					velocity.y = -jumpHeight;
 					onJump.dispatch();
 				}
