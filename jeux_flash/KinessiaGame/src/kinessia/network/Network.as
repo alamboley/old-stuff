@@ -53,6 +53,7 @@ package kinessia.network {
 			_room.addMessageListener(_uniqueID, _messageFromIphone);
 			
 			_ce.addEventListener(NetworkEvent.START_MICRO, _messageToIphone);
+			_ce.addEventListener(NetworkEvent.START_PACMAN, _messageToIphone);
 			_ce.addEventListener(NetworkEvent.COIN_TAKEN, _messageToIphone);
 		}
 
@@ -61,7 +62,13 @@ package kinessia.network {
 			switch (nEvt.type) {
 				
 				case NetworkEvent.START_MICRO:
+					_ce.removeEventListener(NetworkEvent.START_MICRO, _messageToIphone);
 					_room.sendMessage(_uniqueID, true, null, "startMicro");					
+					break;
+					
+				case NetworkEvent.START_PACMAN:
+					_ce.removeEventListener(NetworkEvent.START_PACMAN, _messageToIphone);
+					_room.sendMessage(_uniqueID, true, null, "pacman");
 					break;
 					
 				case NetworkEvent.COIN_TAKEN:
@@ -88,6 +95,10 @@ package kinessia.network {
 					
 				case "onground":
 					_ce.dispatchEvent(new NetworkEvent(NetworkEvent.ONGROUND));
+					break;
+					
+				case "stationary":
+					_ce.dispatchEvent(new NetworkEvent(NetworkEvent.STATIONARY));
 					break;
 					
 				case "left":

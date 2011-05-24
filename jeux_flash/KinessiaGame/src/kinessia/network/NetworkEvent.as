@@ -13,8 +13,13 @@ package kinessia.network {
 		
 		public static const START_MICRO:String = "START_MICRO";
 		
+		public static const START_PACMAN:String = "START_PACMAN";
+		public static const END_PACMAN:String = "END_PACMAN";
+		
 		public static const JUMP:String = "JUMP";
 		public static const ONGROUND:String = "ONGROUND";
+		public static const STATIONARY:String = "STATIONARY";
+		
 		public static const LEFT:String = "LEFT";
 		public static const RIGHT:String = "RIGHT";
 		public static const IMMOBILE:String = "IMMOBILE";

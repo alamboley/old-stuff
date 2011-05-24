@@ -14,6 +14,8 @@ package kinessia.network {
 		private var _firstJump:Boolean;
 		private var _phoneDirection:String;
 		private var _fly:Boolean;
+		
+		private var _pacmanClimb:String;
 
 		public function PhoneInput() {
 			super();
@@ -29,6 +31,7 @@ package kinessia.network {
 				
 				ce.addEventListener(NetworkEvent.JUMP, _onPhoneJump);
 				ce.addEventListener(NetworkEvent.ONGROUND, _onPhoneJump);
+				ce.addEventListener(NetworkEvent.STATIONARY, _onPhoneJump);
 				
 				ce.addEventListener(NetworkEvent.LEFT, _onPhoneDirection);
 				ce.addEventListener(NetworkEvent.RIGHT, _onPhoneDirection);
@@ -41,6 +44,7 @@ package kinessia.network {
 				
 				ce.removeEventListener(NetworkEvent.JUMP, _onPhoneJump);
 				ce.removeEventListener(NetworkEvent.ONGROUND, _onPhoneJump);
+				ce.removeEventListener(NetworkEvent.STATIONARY, _onPhoneJump);
 				
 				ce.removeEventListener(NetworkEvent.LEFT, _onPhoneDirection);
 				ce.removeEventListener(NetworkEvent.RIGHT, _onPhoneDirection);
@@ -59,6 +63,7 @@ package kinessia.network {
 			
 			ce.addEventListener(NetworkEvent.JUMP, _onPhoneJump);
 			ce.addEventListener(NetworkEvent.ONGROUND, _onPhoneJump);
+			ce.addEventListener(NetworkEvent.STATIONARY, _onPhoneJump);
 			
 			ce.addEventListener(NetworkEvent.LEFT, _onPhoneDirection);
 			ce.addEventListener(NetworkEvent.RIGHT, _onPhoneDirection);
@@ -92,13 +97,28 @@ package kinessia.network {
 		public function get phoneMicroFly():Boolean {
 			return _fly;
 		}
+		
+		public function get pacmanClimb():String {
+			return _pacmanClimb;
+		}
 
 		private function _onPhoneJump(nEvt:NetworkEvent):void {
-
-			if (nEvt.type == "JUMP") {
-				_phoneJump = _firstJump = true;
-			} else {
-				_phoneJump = _firstJump = false;
+			
+			switch (nEvt.type) {
+				
+				case "JUMP":
+					_phoneJump = _firstJump = true;
+					_pacmanClimb = "up";
+					break;
+					
+				case "ONGROUND":
+					_phoneJump = _firstJump = false;
+					_pacmanClimb = "down";
+					break;
+					
+				case "STATIONARY":
+					_pacmanClimb = "stationary";
+					break;
 			}
 		}
 
