@@ -17,6 +17,8 @@
 	public class Main extends Sprite {
 
 		private var _network:Network;
+		
+		private var _coin:uint;
 
 		public function Main() {
 
@@ -27,6 +29,7 @@
 			// Network is a Sprite instead of an EventDispatcher because of the EnterFrame
 
 			_network.addEventListener(NetworkEvent.START_MICRO, _startMicro);
+			_network.addEventListener(NetworkEvent.COIN_TAKEN, _addCoin);
 
 			stage.addEventListener(TouchEvent.TOUCH_TAP, _network.pauseGame);
 		}
@@ -46,6 +49,11 @@
 			microphone.addEventListener(ActivityEvent.ACTIVITY, _activityHandler);
 			microphone.addEventListener(StatusEvent.STATUS, _statusHandler);
 
+		}
+		
+		private function _addCoin(nEvt:NetworkEvent):void {
+			++_coin;
+			trace("coin : " + _coin);
 		}
 
 		private function _activityHandler(aEvt:ActivityEvent):void {

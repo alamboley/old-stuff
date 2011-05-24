@@ -7,7 +7,7 @@ package kinessia.network {
 	 */
 	public class NetworkEvent extends Event {
 		
-		public static const ADD_COIN:String = "ADD_COIN";
+		public static const COIN_TAKEN:String = "COIN_TAKEN";
 		
 		public static const START_MICRO:String = "START_MICRO";
 
