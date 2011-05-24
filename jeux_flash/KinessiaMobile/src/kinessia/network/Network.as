@@ -86,6 +86,11 @@ package kinessia.network {
 				_room.sendMessage(_uniqueID, true, null, "jump");
 				_currentVStatus = "jump";
 			}
+			
+			if (((_accelX < 0.7) && (_accelX > -0.7)) && (_currentVStatus != "stationary")) {
+				_room.sendMessage(_uniqueID, true, null, "stationary");
+				_currentVStatus = "stationary";
+			}
 
 			if ((_accelY > 0.7) && (_currentHStatus != "right")) {
 				_room.sendMessage(_uniqueID, true, null, "right");
