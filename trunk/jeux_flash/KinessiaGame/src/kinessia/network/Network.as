@@ -50,16 +50,29 @@ package kinessia.network {
 			_room = _reactor.getRoomManager().createRoom("Kinessia");
 			_room.join();
 
-			_room.addMessageListener(_uniqueID, _chatMessageLisener);
+			_room.addMessageListener(_uniqueID, _messageFromIphone);
 			
-			_ce.addEventListener(NetworkEvent.START_MICRO, _startMicro);
+			_ce.addEventListener(NetworkEvent.START_MICRO, _messageToIphone);
+			_ce.addEventListener(NetworkEvent.COIN_TAKEN, _messageToIphone);
 		}
 
-		private function _startMicro(nEvt:NetworkEvent):void {
-			_room.sendMessage(_uniqueID, true, null, "startMicro");
+		private function _messageToIphone(nEvt:NetworkEvent):void {
+			
+			switch (nEvt.type) {
+				
+				case NetworkEvent.START_MICRO:
+					_room.sendMessage(_uniqueID, true, null, "startMicro");					
+					break;
+					
+				case NetworkEvent.COIN_TAKEN:
+					_room.sendMessage(_uniqueID, true, null, "coinTaken");
+					break;
+			}
+			
+			
 		}
 
-		private function _chatMessageLisener(fromClient:IClient, message:String):void {
+		private function _messageFromIphone(fromClient:IClient, message:String):void {
 			
 			trace(message);
 			

@@ -1,5 +1,6 @@
 package kinessia.levels {
 
+	import kinessia.network.NetworkEvent;
 	import Box2DAS.Dynamics.ContactEvent;
 
 	import kinessia.characters.Bullzor;
@@ -13,6 +14,7 @@ package kinessia.levels {
 	import com.citrusengine.core.State;
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.CitrusSprite;
+	import com.citrusengine.objects.platformer.Coin;
 	import com.citrusengine.objects.platformer.Platform;
 	import com.citrusengine.objects.platformer.Sensor;
 	import com.citrusengine.physics.Box2D;
@@ -50,7 +52,7 @@ package kinessia.levels {
 			lvlEnded = new Signal();
 			restartLevel = new Signal();
 
-			var objects:Array = [Platform, Declik, Bullzor, CitrusSprite, Sensor, MusicalSensor, Roseau, Catapulte];
+			var objects:Array = [Platform, Declik, Bullzor, CitrusSprite, Sensor, Coin, MusicalSensor, Roseau, Catapulte];
 		}
 
 		override public function initialize():void {
@@ -71,6 +73,11 @@ package kinessia.levels {
 			//_declik.onAnimationChange.add(_animationChange);
 			_declik.onTakeDamage.add(_hurt);
 			_declik.onGiveDamage.add(_attack);
+			
+			var coins:Vector.<CitrusObject> = getObjectsByType(Coin);
+			for each (var coin : Coin in coins) {
+				coin.onBeginContact.add(_coinTaken);
+			}
 
 			var endLevel:Sensor = Sensor(getObjectByName("EndLevel"));
 			endLevel.onBeginContact.add(_endLevel);
@@ -114,6 +121,14 @@ package kinessia.levels {
 
 		protected function _hurt():void {
 			_ce.sound.playSound("Hurt", 1, 0);
+		}
+		
+		private function _coinTaken(cEvt:ContactEvent):void {
+			
+			if (cEvt.other.GetBody().GetUserData() is Declik) {
+				_ce.dispatchEvent(new NetworkEvent(NetworkEvent.COIN_TAKEN));
+				_ce.sound.playSound("Collect", 1, 0);
+			}
 		}
 
 		private function _roseauTouche(cEvt:ContactEvent):void {

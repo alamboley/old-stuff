@@ -13,6 +13,8 @@ package kinessia.characters {
 		
 		private const _MAX_FLY_VELOCITY_Y:int = -5;
 		private const _FLY_VELOCITY_Y:uint = 4;
+		
+		private var _velocityCatapulte:V2;
 
 		private var _phoneInput:PhoneInput;
 
@@ -84,8 +86,16 @@ package kinessia.characters {
 				velocity.x = maxVelocity;
 			else if (velocity.x < (-maxVelocity))
 				velocity.x = -maxVelocity;
+				
+			if (_velocityCatapulte != null) {
+				_body.SetLinearVelocity(_velocityCatapulte);
+			} else {
+				_body.SetLinearVelocity(velocity);
+			}
+		}
 
-			_body.SetLinearVelocity(velocity);
+		public function set velocityCatapulte(velocityCatapulte:V2):void {
+			_velocityCatapulte = velocityCatapulte;
 		}
 	}
 }
