@@ -30,8 +30,8 @@ package kinessia.network {
 		public function Network() {
 			
 			_reactor  = new Reactor();
-			_reactor.connect("169.254.25.31", 9110);
-			//_reactor.connect("localhost", 9110);
+			//_reactor.connect("169.254.25.31", 9110);
+			_reactor.connect("localhost", 9110);
 			//_reactor.connect("tryunion.com", 80);
 			
 			_uniqueID = "CHAT_MESSAGE";
@@ -43,7 +43,7 @@ package kinessia.network {
 
 			_room = _reactor.getRoomManager().joinRoom("Kinessia");
 			
-			_room.addMessageListener(_uniqueID, _chatMessageLisener);
+			_room.addMessageListener(_uniqueID, _messageFromGame);
 
 			_accelerometer = new Accelerometer();
 
@@ -53,7 +53,7 @@ package kinessia.network {
 			//_room.sendMessage(_uniqueID, true, null, "right");
 		}
 		
-		private function _chatMessageLisener(fromClient:IClient, message:String):void {
+		private function _messageFromGame(fromClient:IClient, message:String):void {
 			
 			trace(message);
 			
@@ -61,6 +61,10 @@ package kinessia.network {
 				
 				case "startMicro":
 					this.dispatchEvent(new NetworkEvent(NetworkEvent.START_MICRO));
+					break;
+					
+				case "coinTaken":
+					this.dispatchEvent(new NetworkEvent(NetworkEvent.COIN_TAKEN));
 					break;
 			}
 		}
