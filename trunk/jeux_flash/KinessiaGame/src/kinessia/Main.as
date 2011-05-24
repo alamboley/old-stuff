@@ -1,9 +1,10 @@
 ﻿package kinessia {
 
-	import kinessia.network.NetworkEvent;
 	import kinessia.levels.ALevel;
 	import kinessia.levels.LevelManager;
 	import kinessia.network.Network;
+	import kinessia.network.NetworkEvent;
+	import kinessia.pacman.Pacman;
 
 	import com.citrusengine.core.CitrusEngine;
 
@@ -18,6 +19,8 @@
 
 		private var _levelManager:LevelManager;
 		private var _network:Network;
+		
+		private var _pacman:Pacman;
 
 		public function Main() {
 
@@ -25,6 +28,9 @@
 			
 			_network = new Network();
 			this.addEventListener(NetworkEvent.PAUSE_GAME, _pauseGame);
+			
+			this.addEventListener(NetworkEvent.START_PACMAN, _pacmanGame);
+			stage.addEventListener(NetworkEvent.END_PACMAN, _pacmanGame);
 
 			this.console.addCommand("fullscreen", _fullscreen);
 			this.console.addCommand("pause", _pauseGame);
@@ -75,6 +81,27 @@
 		private function _nextLevel():void {
 
 			_levelManager.nextLevel();
+		}
+		
+		private function _pacmanGame(nEvt:NetworkEvent):void {
+			
+			if (nEvt.type == NetworkEvent.START_PACMAN) {
+			
+				this.removeEventListener(NetworkEvent.START_PACMAN, _pacmanGame);
+				
+				_pacman = new Pacman();
+				addChild(_pacman);
+				_pacman.x = 450;
+				_pacman.y = 350;
+				
+			} else {
+				
+				this.removeEventListener(NetworkEvent.END_PACMAN, _pacmanGame);
+				
+				_pacman.destroy();
+				removeChild(_pacman);
+				_pacman = null;
+			}
 		}
 
 		private function _fullscreen():void {
