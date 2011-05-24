@@ -46,16 +46,17 @@ package kinessia.objects {
 
 			super.defineFixture();
 
-			_fixtureDef.restitution = 0;
 			_fixtureDef.density = 0.1;
+			_fixtureDef.restitution = 0;
 		}
 
 		private function _handleBeginContact(cEvt:ContactEvent):void {
 
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
-
-				// TODO Improving catapult
-				_body.ApplyImpulse(new V2(500, 20), new V2(width, 0));
+				
+				cEvt.other.GetBody().GetUserData().velocityCatapulte = new V2(50, -7);	
+				
+				cEvt.fixture.GetBody().ApplyImpulse(new V2(100, 50), new V2(width, 0));
 			}
 		}
 

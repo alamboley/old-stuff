@@ -23,14 +23,14 @@
 
 			super();
 			
-			//_network = new Network();
+			_network = new Network();
 			this.addEventListener(NetworkEvent.PAUSE_GAME, _pauseGame);
 
 			this.console.addCommand("fullscreen", _fullscreen);
 			this.console.addCommand("pause", _pauseGame);
 
 			sound.addSound("KinessiaTheme", "sounds/KinessiaTheme.mp3");
-			sound.addSound("Collect", "sounds/jump.mp3");
+			sound.addSound("Collect", "sounds/collect.mp3");
 			sound.addSound("Hurt", "sounds/hurt.mp3");
 			sound.addSound("Jump", "sounds/jump.mp3");
 			sound.addSound("Kill", "sounds/kill.mp3");

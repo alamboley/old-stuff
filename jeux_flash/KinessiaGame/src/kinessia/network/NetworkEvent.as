@@ -9,6 +9,8 @@ package kinessia.network {
 		
 		public static const PAUSE_GAME:String = "PAUSE_GAME";
 		
+		public static const COIN_TAKEN:String = "COIN_TAKEN";
+		
 		public static const START_MICRO:String = "START_MICRO";
 		
 		public static const JUMP:String = "JUMP";

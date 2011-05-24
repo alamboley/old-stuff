@@ -17,7 +17,7 @@ package kinessia.levels {
 	public class LevelA2 extends ALevel {
 		
 		private const _HERO_GRAVITY:Number = 0.6;
-		private const _MICRO_FLY_LEVEL:uint = 10; 
+		private const _MICRO_FLY_LEVEL:uint = 20; 
 
 		public function LevelA2(levelObjectsMC:MovieClip) {
 			super(levelObjectsMC);
