@@ -9,18 +9,24 @@ package kinessia.objects {
 
 	import com.citrusengine.objects.PhysicsObject;
 
+	import org.osflash.signals.Signal;
+
 	/**
 	 * @author Aymeric
 	 */
 	public class Catapulte extends PhysicsObject {
 
+		public var onBeginContact:Signal;
+
 		public function Catapulte(name:String, params:Object = null) {
 
 			super(name, params);
+			onBeginContact = new Signal(ContactEvent);
 		}
 
 		override public function destroy():void {
 
+			onBeginContact.removeAll();
 			_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, _handleBeginContact);
 			super.destroy();
 		}
@@ -51,11 +57,12 @@ package kinessia.objects {
 		}
 
 		private function _handleBeginContact(cEvt:ContactEvent):void {
+			
+			onBeginContact.dispatch(cEvt);
 
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
-				
-				cEvt.other.GetBody().GetUserData().velocityCatapulte = new V2(50, -7);	
-				
+
+				cEvt.other.GetBody().GetUserData().velocityCatapulte = new V2(50, -5);
 				cEvt.fixture.GetBody().ApplyImpulse(new V2(100, 50), new V2(width, 0));
 			}
 		}

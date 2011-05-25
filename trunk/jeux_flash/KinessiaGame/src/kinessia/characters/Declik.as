@@ -96,6 +96,10 @@ package kinessia.characters {
 				_body.SetLinearVelocity(velocity);
 			}
 		}
+		
+		public function get velocityCatapulte():V2 {
+			return _velocityCatapulte;
+		}
 
 		public function set velocityCatapulte(velocityCatapulte:V2):void {
 			_velocityCatapulte = velocityCatapulte;

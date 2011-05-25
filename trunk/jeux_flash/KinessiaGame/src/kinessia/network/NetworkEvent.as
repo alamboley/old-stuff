@@ -17,6 +17,9 @@ package kinessia.network {
 		public static const START_PACMAN:String = "START_PACMAN";
 		public static const END_PACMAN:String = "END_PACMAN";
 		
+		public static const START_CATAPULTE:String = "START_CATAPULTE";
+		public static const END_CATAPULTE:String = "END_CATAPULTE";
+		
 		public static const JUMP:String = "JUMP";
 		public static const ONGROUND:String = "ONGROUND";
 		public static const STATIONARY:String = "STATIONARY";
