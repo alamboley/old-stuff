@@ -30,7 +30,7 @@ package kinessia.network {
 		public function Network() {
 			
 			_reactor  = new Reactor();
-			//_reactor.connect("169.254.25.31", 9110);
+			//_reactor.connect("169.254.240.206", 9110);
 			_reactor.connect("localhost", 9110);
 			//_reactor.connect("tryunion.com", 80);
 			
@@ -61,6 +61,10 @@ package kinessia.network {
 				
 				case "startMicro":
 					this.dispatchEvent(new NetworkEvent(NetworkEvent.START_MICRO));
+					break;
+					
+				case "stopMicro":
+					this.dispatchEvent(new NetworkEvent(NetworkEvent.STOP_MICRO));
 					break;
 					
 				case "coinTaken":
