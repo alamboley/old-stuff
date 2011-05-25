@@ -17,7 +17,7 @@
 	public class Main extends Sprite {
 
 		private var _network:Network;
-		
+
 		private var _coin:uint;
 
 		public function Main() {
@@ -28,40 +28,44 @@
 			addChild(_network);
 			// Network is a Sprite instead of an EventDispatcher because of the EnterFrame
 
-			_network.addEventListener(NetworkEvent.START_MICRO, _startMicro);
+			_network.addEventListener(NetworkEvent.START_MICRO, _micro);
+			_network.addEventListener(NetworkEvent.STOP_MICRO, _micro);
+
 			_network.addEventListener(NetworkEvent.COIN_TAKEN, _addCoin);
 
 			stage.addEventListener(TouchEvent.TOUCH_TAP, _network.pauseGame);
 		}
 
-		private function _startMicro(nEvt:NetworkEvent):void {
-			
-			trace(Microphone.isSupported);
-			
-			var microphone:Microphone = Microphone.getMicrophone();
+		private function _micro(nEvt:NetworkEvent):void {
 
-			microphone.gain = 100;
-			microphone.rate = 100;
-			
-			microphone.setLoopBack();
+			switch (nEvt.type) {
 
-			microphone.setUseEchoSuppression(true);
-			microphone.addEventListener(ActivityEvent.ACTIVITY, _activityHandler);
-			microphone.addEventListener(StatusEvent.STATUS, _statusHandler);
+				case NetworkEvent.START_MICRO:
+
+					trace(Microphone.isSupported);
+
+					_network.removeEventListener(NetworkEvent.START_MICRO, _micro);
+
+					var microphone:Microphone = Microphone.getMicrophone();
+
+					
+					break;
+					
+				case NetworkEvent.STOP_MICRO:
+					
+					_network.removeEventListener(NetworkEvent.STOP_MICRO, _micro);
+					
+					microphone = null;
+					
+					break;
+			}
+
 
 		}
-		
+
 		private function _addCoin(nEvt:NetworkEvent):void {
 			++_coin;
 			trace("coin : " + _coin);
-		}
-
-		private function _activityHandler(aEvt:ActivityEvent):void {
-			trace("activity handler : " + aEvt);
-		}
-
-		private function _statusHandler(sEvt:StatusEvent):void {
-			trace("status handler : " + sEvt);
 		}
 	}
 }
