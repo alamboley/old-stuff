@@ -54,7 +54,13 @@ package kinessia.network {
 			
 			_ce.addEventListener(NetworkEvent.START_MICRO, _messageToIphone);
 			_ce.addEventListener(NetworkEvent.STOP_MICRO, _messageToIphone);
+			
 			_ce.addEventListener(NetworkEvent.START_PACMAN, _messageToIphone);
+			_ce.addEventListener(NetworkEvent.END_PACMAN, _messageToIphone);
+			
+			_ce.addEventListener(NetworkEvent.START_CATAPULTE, _messageToIphone);
+			_ce.addEventListener(NetworkEvent.END_CATAPULTE, _messageToIphone);
+			
 			_ce.addEventListener(NetworkEvent.COIN_TAKEN, _messageToIphone);
 		}
 
@@ -74,7 +80,22 @@ package kinessia.network {
 					
 				case NetworkEvent.START_PACMAN:
 					_ce.removeEventListener(NetworkEvent.START_PACMAN, _messageToIphone);
-					_room.sendMessage(_uniqueID, true, null, "pacman");
+					_room.sendMessage(_uniqueID, true, null, "startPacman");
+					break;
+					
+				case NetworkEvent.END_PACMAN:
+					_ce.removeEventListener(NetworkEvent.END_PACMAN, _messageToIphone);
+					_room.sendMessage(_uniqueID, true, null, "endPacman");
+					break;
+					
+				case NetworkEvent.START_CATAPULTE:
+					_ce.removeEventListener(NetworkEvent.START_CATAPULTE, _messageToIphone);
+					_room.sendMessage(_uniqueID, true, null, "startCatapulte");
+					break;
+					
+				case NetworkEvent.END_CATAPULTE:
+					_ce.removeEventListener(NetworkEvent.END_CATAPULTE, _messageToIphone);
+					_room.sendMessage(_uniqueID, true, null, "endCatapute");
 					break;
 					
 				case NetworkEvent.COIN_TAKEN:
