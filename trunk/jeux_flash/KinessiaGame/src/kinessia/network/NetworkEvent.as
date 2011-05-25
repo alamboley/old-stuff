@@ -12,6 +12,7 @@ package kinessia.network {
 		public static const COIN_TAKEN:String = "COIN_TAKEN";
 		
 		public static const START_MICRO:String = "START_MICRO";
+		public static const STOP_MICRO:String = "STOP_MICRO";
 		
 		public static const START_PACMAN:String = "START_PACMAN";
 		public static const END_PACMAN:String = "END_PACMAN";

@@ -1,12 +1,13 @@
 package kinessia.levels {
 
-	import kinessia.network.NetworkEvent;
 	import Box2DAS.Dynamics.ContactEvent;
 
 	import kinessia.characters.Bullzor;
 	import kinessia.characters.Declik;
+	import kinessia.network.NetworkEvent;
 	import kinessia.objects.Catapulte;
 	import kinessia.objects.MusicalSensor;
+	import kinessia.objects.Piece;
 	import kinessia.objects.Roseau;
 
 	import com.citrusengine.core.CitrusEngine;
@@ -52,7 +53,7 @@ package kinessia.levels {
 			lvlEnded = new Signal();
 			restartLevel = new Signal();
 
-			var objects:Array = [Platform, Declik, Bullzor, CitrusSprite, Sensor, Coin, MusicalSensor, Roseau, Catapulte];
+			var objects:Array = [Platform, Declik, Bullzor, CitrusSprite, Sensor, Coin, Piece, MusicalSensor, Roseau, Catapulte];
 		}
 
 		override public function initialize():void {

@@ -13,7 +13,7 @@ package kinessia.pacman.objects {
 			
 			this.graphics.clear();
 			this.graphics.beginFill(0x00FF00);
-			this.graphics.drawRect(0, 0, 20, 20);
+			this.graphics.drawRect(0, 0, 25, 25);
 			this.graphics.endFill();
 		}
 	}

@@ -18,6 +18,7 @@ package com.citrusengine.physics
 		private var _scale:Number = 30;
 		private var _world:b2World;
 		private var _group:Number = 1;
+		private var _view:* = "com.citrusengine.physics.Box2DDebugArt";
 		
 		/**
 		 * Creates and initializes a Box2D world. 
@@ -114,7 +115,12 @@ package com.citrusengine.physics
 		
 		public function get view():*
 		{
-			return "com.citrusengine.physics.Box2DDebugArt";
+			return _view;
+		}
+		
+		public function set view(value:*):void
+		{
+			_view = value;
 		}
 		
 		public function get inverted():Boolean
