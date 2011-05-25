@@ -91,8 +91,8 @@
 				
 				_pacman = new Pacman();
 				addChild(_pacman);
-				_pacman.x = 450;
-				_pacman.y = 350;
+				_pacman.x = 350;
+				_pacman.y = 300;
 				
 			} else {
 				

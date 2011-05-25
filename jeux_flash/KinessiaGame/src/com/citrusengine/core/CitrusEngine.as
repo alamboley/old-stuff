@@ -12,7 +12,7 @@ package com.citrusengine.core
 	 */	
 	public class CitrusEngine extends MovieClip
 	{
-		public static const VERSION:String = "2.3.32";
+		public static const VERSION:String = "2.4.34";
 		
 		private static var _instance:CitrusEngine;
 		
