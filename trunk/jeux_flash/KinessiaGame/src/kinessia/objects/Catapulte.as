@@ -62,8 +62,8 @@ package kinessia.objects {
 
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 
-				cEvt.other.GetBody().GetUserData().velocityCatapulte = new V2(50, -5);
-				cEvt.fixture.GetBody().ApplyImpulse(new V2(100, 50), new V2(width, 0));
+				//cEvt.other.GetBody().GetUserData().velocityCatapulte = new V2(50, -5);
+				//cEvt.fixture.GetBody().ApplyImpulse(new V2(100, 50), new V2(width, 0));
 			}
 		}
 
