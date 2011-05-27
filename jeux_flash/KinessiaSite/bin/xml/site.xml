@@ -1,0 +1,3 @@
+<site title="Kinessia : %PAGE%" menu="true">  <page id="index" src="index.swf" bytes="22294">    <page id="nav" src="nav.swf" depth="top" bytes="22289">
+      <page id="home" title="Accueil" src="home.swf" menu="true" bytes="22292">
+	    <asset id="imgHome" src="images/page-home.jpg" preload="true" bytes="322395"/>      </page>      <page id="game" title="Le jeu" src="game.swf" menu="true" bytes="22291"/>      <page id="howToPlay" title="Comment Jouer" src="howToPlay.swf" menu="true" bytes="22306"/>      <page id="machine" title="L'antre des machines" src="machine.swf" menu="true" bytes="22299"/>      <page id="further" title="Aller plus loin" src="further.swf" menu="true" bytes="22298"/>    </page>  </page></site>
