@@ -1,10 +1,15 @@
 package kinessia.network {
 
+	import kinessia.art.ArtEvent;
+
 	import net.user1.reactor.IClient;
 	import net.user1.reactor.Reactor;
 	import net.user1.reactor.ReactorEvent;
 	import net.user1.reactor.Room;
 
+	import com.greensock.TweenMax;
+
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.AccelerometerEvent;
 	import flash.events.Event;
@@ -18,6 +23,8 @@ package kinessia.network {
 
 		private var _reactor:Reactor;
 		private var _room:Room;
+		
+		private var _home:MovieClip;
 
 		private var _accelX:Number, _accelY:Number;
 
@@ -27,12 +34,14 @@ package kinessia.network {
 		
 		private var _uniqueID:String;
 
-		public function Network() {
+		public function Network(home:MovieClip) {
 			
 			_reactor  = new Reactor();
-			//_reactor.connect("169.254.240.206", 9110);
-			_reactor.connect("localhost", 9110);
+			_reactor.connect("169.254.239.179", 9110);
+			//_reactor.connect("localhost", 9110);
 			//_reactor.connect("tryunion.com", 80);
+			
+			_home = home;
 			
 			_uniqueID = "CHAT_MESSAGE";
 			
@@ -43,6 +52,9 @@ package kinessia.network {
 
 			_room = _reactor.getRoomManager().joinRoom("Kinessia");
 			
+			TweenMax.to(_home, 0.3, {alpha:0, onComplete:function():void{_home.gotoAndStop("login");}});
+			TweenMax.to(_home, 0.3, {alpha:1, delay:0.3, onComplete:function():void {_home.login_btn.addEventListener(TouchEvent.TOUCH_TAP, _connectedToRoom);}});
+			
 			_room.addMessageListener(_uniqueID, _messageFromGame);
 
 			_accelerometer = new Accelerometer();
@@ -50,7 +62,13 @@ package kinessia.network {
 			_accelerometer.addEventListener(AccelerometerEvent.UPDATE, _accelerometerHandler);
 			
 			this.addEventListener(Event.ENTER_FRAME, _ef);
-			//_room.sendMessage(_uniqueID, true, null, "right");
+		}
+
+		private function _connectedToRoom(tEvt:TouchEvent):void {
+			
+			_home.login_btn.removeEventListener(TouchEvent.TOUCH_TAP, _connectedToRoom);
+			
+			this.dispatchEvent(new ArtEvent(ArtEvent.REMOVE_HOME));
 		}
 		
 		private function _messageFromGame(fromClient:IClient, message:String):void {
