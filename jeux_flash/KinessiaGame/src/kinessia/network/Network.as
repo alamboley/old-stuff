@@ -19,17 +19,25 @@ package kinessia.network {
 		private var _room:Room;
 		
 		private var _uniqueID:String;
+		
+		private var _tabMessageFromIphone:Array;
+		private var _lengthTab:uint;
 
 		public function Network() {
 			
 			_ce = CitrusEngine.getInstance();
 			
-			_uniqueID = "CHAT_MESSAGE"; //_generateRandomString(7);
+			_uniqueID = "1234567"; //_generateRandomString(7);
 
 			_reactor = new Reactor();
 
 			_reactor.connect("localhost", 9110);
 			//_reactor.connect("tryunion.com", 80);
+			
+
+			_tabMessageFromIphone = [];
+			_tabMessageFromIphone = [NetworkEvent.PAUSE_GAME, NetworkEvent.JUMP, NetworkEvent.ONGROUND, NetworkEvent.STATIONARY, NetworkEvent.RIGHT, NetworkEvent.LEFT, NetworkEvent.IMMOBILE]
+			_lengthTab = _tabMessageFromIphone.length;
 
 			_reactor.addEventListener(ReactorEvent.READY, _createRoom);
 		}
@@ -46,6 +54,8 @@ package kinessia.network {
 			}
 
 		private function _createRoom(rEvt:ReactorEvent):void {
+			
+			_reactor.removeEventListener(ReactorEvent.READY, _createRoom);
 
 			_room = _reactor.getRoomManager().createRoom("Kinessia");
 			_room.join();
@@ -66,80 +76,57 @@ package kinessia.network {
 
 		private function _messageToIphone(nEvt:NetworkEvent):void {
 			
+			trace("Jeu envoit :" + nEvt.type);
+			
+			_room.sendMessage(_uniqueID, true, null, nEvt.type);
+			
+			
 			switch (nEvt.type) {
 				
 				case NetworkEvent.START_MICRO:
-					_ce.removeEventListener(NetworkEvent.START_MICRO, _messageToIphone);
-					_room.sendMessage(_uniqueID, true, null, "startMicro");					
+					_ce.removeEventListener(NetworkEvent.START_MICRO, _messageToIphone);		
 					break;
 					
 				case NetworkEvent.STOP_MICRO:
 					_ce.removeEventListener(NetworkEvent.STOP_MICRO, _messageToIphone);
-					_room.sendMessage(_uniqueID, true, null, "stopMicro");
 					break;
 					
 				case NetworkEvent.START_PACMAN:
 					_ce.removeEventListener(NetworkEvent.START_PACMAN, _messageToIphone);
-					_room.sendMessage(_uniqueID, true, null, "startPacman");
 					break;
 					
 				case NetworkEvent.END_PACMAN:
 					_ce.removeEventListener(NetworkEvent.END_PACMAN, _messageToIphone);
-					_room.sendMessage(_uniqueID, true, null, "endPacman");
 					break;
 					
 				case NetworkEvent.START_CATAPULTE:
 					_ce.removeEventListener(NetworkEvent.START_CATAPULTE, _messageToIphone);
-					_room.sendMessage(_uniqueID, true, null, "startCatapulte");
 					break;
 					
 				case NetworkEvent.END_CATAPULTE:
 					_ce.removeEventListener(NetworkEvent.END_CATAPULTE, _messageToIphone);
-					_room.sendMessage(_uniqueID, true, null, "endCatapute");
-					break;
-					
-				case NetworkEvent.COIN_TAKEN:
-					_room.sendMessage(_uniqueID, true, null, "coinTaken");
 					break;
 			}
-			
 			
 		}
 
 		private function _messageFromIphone(fromClient:IClient, message:String):void {
 			
-			trace(message);
-			
-			switch (message) {
-				
-				case "pauseGame":
-					_ce.dispatchEvent(new NetworkEvent(NetworkEvent.PAUSE_GAME));
-					break;
-				
-				case "jump":
-					_ce.dispatchEvent(new NetworkEvent(NetworkEvent.JUMP));
-					break;
-					
-				case "onground":
-					_ce.dispatchEvent(new NetworkEvent(NetworkEvent.ONGROUND));
-					break;
-					
-				case "stationary":
-					_ce.dispatchEvent(new NetworkEvent(NetworkEvent.STATIONARY));
-					break;
-					
-				case "left":
-					_ce.dispatchEvent(new NetworkEvent(NetworkEvent.LEFT));
-					break;
-					
-				case "right":
-					_ce.dispatchEvent(new NetworkEvent(NetworkEvent.RIGHT));
-					break;
-					
-				case "immobile":
-					_ce.dispatchEvent(new NetworkEvent(NetworkEvent.IMMOBILE));
-					break;
+			if (_checkMessageFromIphone(message)) {
+				trace("provient de l'iphone : " + message);
+				_ce.dispatchEvent(new NetworkEvent(message));
 			}
+		}
+		
+		private function _checkMessageFromIphone(message:String):Boolean {
+			
+			for (var i:uint = 0; i < _lengthTab; ++i) {
+				
+				if (message == _tabMessageFromIphone[i])
+					return true;
+			}
+			
+			return false;
 		}
 
 		public function get uniqueID():String {

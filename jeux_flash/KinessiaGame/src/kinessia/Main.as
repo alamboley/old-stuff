@@ -22,7 +22,7 @@
 
 			super();
 			
-			//_network = new Network();
+			_network = new Network();
 			this.addEventListener(NetworkEvent.PAUSE_GAME, _pauseGame);
 			
 			this.addEventListener(NetworkEvent.START_PACMAN, _pacmanGame);
