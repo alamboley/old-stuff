@@ -63,7 +63,7 @@ package kinessia.levels {
 			var box2d:Box2D = new Box2D("Box2D", {visible:false});
 			add(box2d);
 
-			view.loadManager.onLoadComplete.addOnce(handleLoadComplete);
+			view.loadManager.onLoadComplete.addOnce(_handleLoadComplete);
 
 			ObjectMaker.FromMovieClip(_levelObjectsMC);
 
@@ -190,7 +190,7 @@ package kinessia.levels {
 			// _percent = Math.round(view.loadManager.bytesLoaded / view.loadManager.bytesTotal * 100).toString();
 		}
 
-		private function handleLoadComplete():void {
+		private function _handleLoadComplete():void {
 			
 			// remove loader
 		}
