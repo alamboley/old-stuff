@@ -1,11 +1,10 @@
 package kinessia.objects {
 
+	import kinessia.characters.Declik;
 	import Box2DAS.Common.V2;
 	import Box2DAS.Dynamics.ContactEvent;
 	import Box2DAS.Dynamics.Joints.b2RevoluteJoint;
 	import Box2DAS.Dynamics.Joints.b2RevoluteJointDef;
-
-	import kinessia.characters.Declik;
 
 	import com.citrusengine.objects.PhysicsObject;
 
@@ -17,11 +16,17 @@ package kinessia.objects {
 	public class Catapulte extends PhysicsObject {
 
 		public var onBeginContact:Signal;
+		
+		private var _declik:Declik;
 
 		public function Catapulte(name:String, params:Object = null) {
 
 			super(name, params);
 			onBeginContact = new Signal(ContactEvent);
+		}
+		
+		public function know(declik:Declik):void {
+			_declik = declik;
 		}
 
 		override public function destroy():void {
@@ -60,10 +65,10 @@ package kinessia.objects {
 			
 			onBeginContact.dispatch(cEvt);
 
-			if (cEvt.other.GetBody().GetUserData() is Declik) {
+			if (cEvt.other.GetBody().GetUserData() is Circle) {
 
-				//cEvt.other.GetBody().GetUserData().velocityCatapulte = new V2(50, -5);
-				//cEvt.fixture.GetBody().ApplyImpulse(new V2(100, 50), new V2(width, 0));
+				_declik.velocityCatapulte = new V2(50, -5);
+				cEvt.fixture.GetBody().ApplyImpulse(new V2(100, 50), new V2(width, 0));
 			}
 		}
 
