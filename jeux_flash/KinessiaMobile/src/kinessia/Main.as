@@ -71,7 +71,7 @@
 				
 					_screenGame.texte.gotoAndStop("start_micro");
 					_screenGame.piece1.gotoAndStop("search");
-					trace(Microphone.isSupported);
+					trace("microphone supporté :" + Microphone.isSupported);
 
 					_network.removeEventListener(NetworkEvent.START_MICRO, _micro);
 

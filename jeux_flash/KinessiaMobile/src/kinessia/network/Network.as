@@ -1,5 +1,6 @@
 package kinessia.network {
 
+	import flash.events.MouseEvent;
 	import kinessia.art.ArtEvent;
 
 	import net.user1.reactor.IClient;
@@ -37,13 +38,11 @@ package kinessia.network {
 		public function Network(home:MovieClip) {
 			
 			_reactor  = new Reactor();
-			_reactor.connect("169.254.239.179", 9110);
-			//_reactor.connect("localhost", 9110);
+			//_reactor.connect("169.254.59.137", 9110);
+			_reactor.connect("localhost", 9110);
 			//_reactor.connect("tryunion.com", 80);
 			
 			_home = home;
-			
-			_uniqueID = "CHAT_MESSAGE";
 			
 			_reactor.addEventListener(ReactorEvent.READY, _connexionRoom);
 		}
@@ -53,9 +52,7 @@ package kinessia.network {
 			_room = _reactor.getRoomManager().joinRoom("Kinessia");
 			
 			TweenMax.to(_home, 0.3, {alpha:0, onComplete:function():void{_home.gotoAndStop("login");}});
-			TweenMax.to(_home, 0.3, {alpha:1, delay:0.3, onComplete:function():void {_home.login_btn.addEventListener(TouchEvent.TOUCH_TAP, _connectedToRoom);}});
-			
-			_room.addMessageListener(_uniqueID, _messageFromGame);
+			TweenMax.to(_home, 0.3, {alpha:1, delay:0.3, onComplete:function():void {_home.login_btn.addEventListener(MouseEvent.CLICK, _connectedToRoom);}});
 
 			_accelerometer = new Accelerometer();
 
@@ -64,7 +61,10 @@ package kinessia.network {
 			this.addEventListener(Event.ENTER_FRAME, _ef);
 		}
 
-		private function _connectedToRoom(tEvt:TouchEvent):void {
+		private function _connectedToRoom(tEvt:MouseEvent):void {
+			
+			_uniqueID = _home.login_txt.text;
+			_room.addMessageListener(_uniqueID, _messageFromGame);
 			
 			_home.login_btn.removeEventListener(TouchEvent.TOUCH_TAP, _connectedToRoom);
 			
@@ -73,22 +73,9 @@ package kinessia.network {
 		
 		private function _messageFromGame(fromClient:IClient, message:String):void {
 			
-			trace(message);
+			trace("iPhone reçoit : " + message);
 			
-			switch (message) {
-				
-				case "startMicro":
-					this.dispatchEvent(new NetworkEvent(NetworkEvent.START_MICRO));
-					break;
-					
-				case "stopMicro":
-					this.dispatchEvent(new NetworkEvent(NetworkEvent.STOP_MICRO));
-					break;
-					
-				case "coinTaken":
-					this.dispatchEvent(new NetworkEvent(NetworkEvent.COIN_TAKEN));
-					break;
-			}
+			this.dispatchEvent(new NetworkEvent(message));
 		}
 
 		private function _accelerometerHandler(aEvt:AccelerometerEvent):void {
@@ -100,43 +87,39 @@ package kinessia.network {
 		private function _ef(evt:Event):void {
 
 			if ((_accelX > 0.7) && (_currentVStatus != "onground")) {
-				_room.sendMessage(_uniqueID, true, null, "onground");
+				_room.sendMessage(_uniqueID, true, null, NetworkEvent.ONGROUND);
 				_currentVStatus = "onground";
 			}
 
 			if ((_accelX < -0.7) && (_currentVStatus != "jump")) {
-				_room.sendMessage(_uniqueID, true, null, "jump");
+				_room.sendMessage(_uniqueID, true, null, NetworkEvent.JUMP);
 				_currentVStatus = "jump";
 			}
 			
 			if (((_accelX < 0.7) && (_accelX > -0.7)) && (_currentVStatus != "stationary")) {
-				_room.sendMessage(_uniqueID, true, null, "stationary");
+				_room.sendMessage(_uniqueID, true, null, NetworkEvent.STATIONARY);
 				_currentVStatus = "stationary";
 			}
 
 			if ((_accelY > 0.7) && (_currentHStatus != "right")) {
-				_room.sendMessage(_uniqueID, true, null, "right");
+				_room.sendMessage(_uniqueID, true, null, NetworkEvent.RIGHT);
 				_currentHStatus = "right";
 			}
 
 			if ((_accelY < -0.7) && (_currentHStatus != "left")) {
-				_room.sendMessage(_uniqueID, true, null, "left");
+				_room.sendMessage(_uniqueID, true, null, NetworkEvent.LEFT);
 				_currentHStatus = "left";
 			}
 
 			if (((_accelY < 0.7) && (_accelY > -0.7)) && (_currentHStatus != "immobile")) {
-				_room.sendMessage(_uniqueID, true, null, "immobile");
+				_room.sendMessage(_uniqueID, true, null, NetworkEvent.IMMOBILE);
 				_currentHStatus = "immobile";
 			}
 
 		}
 		
 		public function pauseGame(tEvt:TouchEvent):void {
-			_room.sendMessage(_uniqueID, true, null, "pauseGame");
-		}
-
-		public function set uniqueID(uniqueID:String):void {
-			_uniqueID = uniqueID;
+			_room.sendMessage(_uniqueID, true, null, NetworkEvent.PAUSE_GAME);
 		}
 	}
 }
