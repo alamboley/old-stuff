@@ -14,6 +14,10 @@ package kinessia.network {
 		public static const START_MICRO:String = "START_MICRO";
 		public static const STOP_MICRO:String = "STOP_MICRO";
 		
+		public static const START_CATAPULTE:String = "START_CATAPULTE";
+		public static const CIRCLE_DRAW:String = "CIRCLE_DRAW";
+		public static const END_CATAPULTE:String = "END_CATAPULTE";
+		
 		public static const JUMP:String = "JUMP";
 		public static const ONGROUND:String = "ONGROUND";
 		public static const STATIONARY:String = "STATIONARY";

@@ -37,8 +37,10 @@
 			
 			_network.addEventListener(ArtEvent.REMOVE_HOME, _artHandler);
 
-			_network.addEventListener(NetworkEvent.START_MICRO, _micro);
-			_network.addEventListener(NetworkEvent.STOP_MICRO, _micro);
+			_network.addEventListener(NetworkEvent.START_MICRO, _gameOnPhone);
+			_network.addEventListener(NetworkEvent.STOP_MICRO, _gameOnPhone);
+			
+			_network.addEventListener(NetworkEvent.START_CATAPULTE, _gameOnPhone);
 
 			_network.addEventListener(NetworkEvent.COIN_TAKEN, _addCoin);
 		}
@@ -63,7 +65,7 @@
 			}
 		}
 
-		private function _micro(nEvt:NetworkEvent):void {
+		private function _gameOnPhone(nEvt:NetworkEvent):void {
 
 			switch (nEvt.type) {
 
@@ -73,7 +75,7 @@
 					_screenGame.piece1.gotoAndStop("search");
 					trace("microphone supporté :" + Microphone.isSupported);
 
-					_network.removeEventListener(NetworkEvent.START_MICRO, _micro);
+					_network.removeEventListener(NetworkEvent.START_MICRO, _gameOnPhone);
 
 					var microphone:Microphone = Microphone.getMicrophone();
 
@@ -83,14 +85,29 @@
 				case NetworkEvent.STOP_MICRO:
 					
 					_screenGame.piece1.gotoAndStop("find");
-					_network.removeEventListener(NetworkEvent.STOP_MICRO, _micro);
+					_network.removeEventListener(NetworkEvent.STOP_MICRO, _gameOnPhone);
 					
 					microphone = null;
+					
+					break;
+					
+				case NetworkEvent.START_CATAPULTE:
+					
+					_network.removeEventListener(NetworkEvent.START_CATAPULTE, _gameOnPhone);
+					
+					_screenGame.addEventListener(TouchEvent.TOUCH_END, _drawCircleForCatapulte);
 					
 					break;
 			}
 
 
+		}
+		
+		private function _drawCircleForCatapulte(tEvt:TouchEvent):void {
+			
+			_screenGame.removeEventListener(TouchEvent.TOUCH_END, _drawCircleForCatapulte);
+			
+			_network.drawCircleForCatapulte();
 		}
 
 		private function _addCoin(nEvt:NetworkEvent):void {
