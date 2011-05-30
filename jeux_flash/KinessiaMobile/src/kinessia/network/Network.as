@@ -1,6 +1,5 @@
 package kinessia.network {
 
-	import flash.events.MouseEvent;
 	import kinessia.art.ArtEvent;
 
 	import net.user1.reactor.IClient;
@@ -38,8 +37,8 @@ package kinessia.network {
 		public function Network(home:MovieClip) {
 			
 			_reactor  = new Reactor();
-			//_reactor.connect("169.254.59.137", 9110);
-			_reactor.connect("localhost", 9110);
+			_reactor.connect("169.254.59.137", 9110);
+			//_reactor.connect("localhost", 9110);
 			//_reactor.connect("tryunion.com", 80);
 			
 			_home = home;
@@ -52,7 +51,7 @@ package kinessia.network {
 			_room = _reactor.getRoomManager().joinRoom("Kinessia");
 			
 			TweenMax.to(_home, 0.3, {alpha:0, onComplete:function():void{_home.gotoAndStop("login");}});
-			TweenMax.to(_home, 0.3, {alpha:1, delay:0.3, onComplete:function():void {_home.login_btn.addEventListener(MouseEvent.CLICK, _connectedToRoom);}});
+			TweenMax.to(_home, 0.3, {alpha:1, delay:0.3, onComplete:function():void {_home.login_btn.addEventListener(TouchEvent.TOUCH_TAP, _connectedToRoom);}});
 
 			_accelerometer = new Accelerometer();
 
@@ -61,7 +60,7 @@ package kinessia.network {
 			this.addEventListener(Event.ENTER_FRAME, _ef);
 		}
 
-		private function _connectedToRoom(tEvt:MouseEvent):void {
+		private function _connectedToRoom(tEvt:TouchEvent):void {
 			
 			_uniqueID = _home.login_txt.text;
 			_room.addMessageListener(_uniqueID, _messageFromGame);
@@ -116,6 +115,10 @@ package kinessia.network {
 				_currentHStatus = "immobile";
 			}
 
+		}
+		
+		public function drawCircleForCatapulte():void {
+			_room.sendMessage(_uniqueID, true, null, NetworkEvent.CIRCLE_DRAW);
 		}
 		
 		public function pauseGame(tEvt:TouchEvent):void {
