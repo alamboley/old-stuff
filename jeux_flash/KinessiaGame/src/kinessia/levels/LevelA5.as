@@ -1,31 +1,26 @@
 package kinessia.levels {
 
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
-
-	import com.citrusengine.objects.platformer.Crate;
-
-	import kinessia.effects.DrawCircle;
-
 	import Box2DAS.Dynamics.ContactEvent;
 
 	import kinessia.characters.Declik;
+	import kinessia.effects.DrawCircle;
 	import kinessia.network.NetworkEvent;
 	import kinessia.objects.BodyPlatform;
 	import kinessia.objects.Catapulte;
+	import kinessia.objects.Circle;
 	import kinessia.objects.Piece;
 
-	import com.citrusengine.objects.PhysicsObject;
-
 	import flash.display.MovieClip;
-	import flash.utils.setTimeout;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 
 	/**
 	 * @author Aymeric
 	 */
 	public class LevelA5 extends ALevel {
-
-		private var _circle:PhysicsObject;
+		
+		private var _catapulte:Catapulte;
+		private var _circle:Circle;
 
 		public function LevelA5(levelObjectsMC:MovieClip) {
 			super(levelObjectsMC);
@@ -37,12 +32,15 @@ package kinessia.levels {
 
 			_addContactRestartLevel();
 
-			var catapulte:Catapulte = Catapulte(getFirstObjectByType(Catapulte));
-			catapulte.initJoint(BodyPlatform(getObjectByName("PlatformJoint")));
-			catapulte.onBeginContact.add(_hitCatapulte);
+			_catapulte = Catapulte(getFirstObjectByType(Catapulte));
+			_catapulte.initJoint(BodyPlatform(getObjectByName("PlatformJoint")));
+			_catapulte.know(_declik);
+			_catapulte.onBeginContact.add(_hitCatapulte);
 
 			var piece:Piece = Piece(getFirstObjectByType(Piece));
 			piece.onBeginContact.add(_pieceTaken);
+			
+			_ce.addEventListener(NetworkEvent.CIRCLE_DRAW, _circleDraw);
 
 			// var walker:TheWalker = new TheWalker("theWalker", {x:50});
 			// add(walker);
@@ -51,25 +49,22 @@ package kinessia.levels {
 		private function _hitCatapulte(cEvt:ContactEvent):void {
 
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
+				
+				_catapulte.onBeginContact.remove(_hitCatapulte);
 
 				_ce.dispatchEvent(new NetworkEvent(NetworkEvent.START_CATAPULTE));
-
-				var timer:Timer = new Timer(100, 1);
-				timer.addEventListener(TimerEvent.TIMER_COMPLETE, _createCircle);
-				timer.start();
 			}
 		}
 
-		private function _createCircle(tEvt:TimerEvent):void {
+		private function _circleDraw(nEvt:NetworkEvent):void {
 			
-			tEvt.target.stop();
-			tEvt.target.removeEventListener(TimerEvent.TIMER_COMPLETE, _createCircle);
-
-			_circle = new PhysicsObject("Circle", {view:DrawCircle, x:450, y:50});
+			_ce.removeEventListener(NetworkEvent.CIRCLE_DRAW, _circleDraw);
+			
+			_circle = new Circle("Circle", {view:DrawCircle, x:450, y:50, radius:15});
 			add(_circle);
 			_circle.gravity = 0;
 
-			var timer:Timer = new Timer(250, 1);
+			var timer:Timer = new Timer(200, 1);
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE, _circleFall);
 			timer.start();
 		}
