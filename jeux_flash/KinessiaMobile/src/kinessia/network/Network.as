@@ -37,7 +37,7 @@ package kinessia.network {
 		public function Network(home:MovieClip) {
 			
 			_reactor  = new Reactor();
-			_reactor.connect("169.254.59.137", 9110);
+			_reactor.connect("169.254.119.131", 9110);
 			//_reactor.connect("localhost", 9110);
 			//_reactor.connect("tryunion.com", 80);
 			
