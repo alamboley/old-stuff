@@ -66,6 +66,8 @@ package kinessia.characters {
 					velocity.x = -speed;
 				else
 					velocity.x = speed;
+			} else {
+				velocity.x = 0;
 			}
 
 			_body.SetLinearVelocity(velocity);
