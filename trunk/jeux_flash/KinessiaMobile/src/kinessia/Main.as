@@ -1,12 +1,12 @@
 ﻿package kinessia {
 
+	import gesture.Gesture;
+	import gesture.RecognizeEvent;
 	import kinessia.art.ArtEvent;
 	import kinessia.art.ScreenGame;
 	import kinessia.network.Network;
 	import kinessia.network.NetworkEvent;
-
 	import com.greensock.TweenMax;
-
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.TouchEvent;
@@ -24,6 +24,7 @@
 		private var _screenGame:ScreenGame;
 
 		private var _network:Network;
+		private var _gesture:Gesture;
 
 		private var _coin:uint;
 
@@ -75,8 +76,6 @@
 					_screenGame.piece1.gotoAndStop("search");
 					trace("microphone supporté :" + Microphone.isSupported);
 
-					_network.removeEventListener(NetworkEvent.START_MICRO, _gameOnPhone);
-
 					var microphone:Microphone = Microphone.getMicrophone();
 
 					
@@ -85,7 +84,6 @@
 				case NetworkEvent.STOP_MICRO:
 					
 					_screenGame.piece1.gotoAndStop("find");
-					_network.removeEventListener(NetworkEvent.STOP_MICRO, _gameOnPhone);
 					
 					microphone = null;
 					
@@ -93,9 +91,9 @@
 					
 				case NetworkEvent.START_CATAPULTE:
 					
-					_network.removeEventListener(NetworkEvent.START_CATAPULTE, _gameOnPhone);
-					
-					_screenGame.addEventListener(TouchEvent.TOUCH_END, _drawCircleForCatapulte);
+					_gesture = new Gesture();
+					_screenGame.addChild(_gesture);
+					_gesture.addEventListener(RecognizeEvent.CIRCLE_IDENTIFIED, _drawCircleForCatapulte);
 					
 					break;
 			}
@@ -103,9 +101,11 @@
 
 		}
 		
-		private function _drawCircleForCatapulte(tEvt:TouchEvent):void {
+		private function _drawCircleForCatapulte(rEvt:RecognizeEvent):void {
 			
-			_screenGame.removeEventListener(TouchEvent.TOUCH_END, _drawCircleForCatapulte);
+			_gesture.removeEventListener(RecognizeEvent.CIRCLE_IDENTIFIED, _drawCircleForCatapulte);
+			_screenGame.removeChild(_gesture);
+			_gesture = null;
 			
 			_network.drawCircleForCatapulte();
 		}
