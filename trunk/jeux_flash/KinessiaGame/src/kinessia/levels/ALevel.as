@@ -2,6 +2,7 @@ package kinessia.levels {
 
 	import Box2DAS.Dynamics.ContactEvent;
 
+	import kinessia.LoadScreen;
 	import kinessia.characters.Bullzor;
 	import kinessia.characters.Declik;
 	import kinessia.network.NetworkEvent;
@@ -25,6 +26,7 @@ package kinessia.levels {
 	import org.osflash.signals.Signal;
 
 	import flash.display.MovieClip;
+	import flash.display.Shape;
 	import flash.geom.Rectangle;
 
 	/**
@@ -41,6 +43,8 @@ package kinessia.levels {
 		protected var _bullzors:Vector.<CitrusObject>;
 
 		private var _levelObjectsMC:MovieClip;
+		private var _loadScreen:LoadScreen;
+		private var _maskBgLoading:Shape;
 
 		public function ALevel(levelObjectsMC:MovieClip) {
 
@@ -62,6 +66,18 @@ package kinessia.levels {
 
 			var box2d:Box2D = new Box2D("Box2D", {visible:false});
 			add(box2d);
+			
+			_maskBgLoading = new Shape();
+			addChild(_maskBgLoading);
+			_maskBgLoading.graphics.clear();
+			_maskBgLoading.graphics.beginFill(0x000000);
+			_maskBgLoading.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+			_maskBgLoading.graphics.endFill();
+			
+			_loadScreen = new LoadScreen();
+			addChild(_loadScreen);
+			_loadScreen.x = stage.stageWidth / 2;
+			_loadScreen.y = stage.stageHeight / 2;
 
 			view.loadManager.onLoadComplete.addOnce(_handleLoadComplete);
 
@@ -186,13 +202,22 @@ package kinessia.levels {
 		override public function update(timeDelta:Number):void {
 
 			super.update(timeDelta);
-
+			
+			var percent:uint = Math.round(view.loadManager.bytesLoaded / view.loadManager.bytesTotal * 100);
 			// _percent = Math.round(view.loadManager.bytesLoaded / view.loadManager.bytesTotal * 100).toString();
+			
+			if (_loadScreen != null) {
+				_loadScreen.gotoAndStop(percent);
+			}
 		}
 
 		private function _handleLoadComplete():void {
 			
-			// remove loader
+			removeChild(_loadScreen);
+			_loadScreen = null;
+			
+			removeChild(_maskBgLoading);
+			_maskBgLoading = null;
 		}
 	}
 }
