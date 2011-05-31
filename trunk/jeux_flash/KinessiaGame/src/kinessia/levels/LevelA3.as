@@ -45,7 +45,7 @@ package kinessia.levels {
 		private function _endPacman(nEvt:NetworkEvent):void {
 
 			stage.removeEventListener(NetworkEvent.END_PACMAN, _endPacman);
-
+			_ce.dispatchEvent(new NetworkEvent(NetworkEvent.END_PACMAN));
 			_declik.controlsEnabled = true;
 		}
 	}

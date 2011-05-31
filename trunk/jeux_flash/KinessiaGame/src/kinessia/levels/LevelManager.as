@@ -10,6 +10,8 @@ package kinessia.levels {
 	 * @author Aymeric
 	 */
 	public class LevelManager {
+		
+		private static var _instance:LevelManager;
 
 		public var onLevelChanged:Signal;
 
@@ -18,15 +20,22 @@ package kinessia.levels {
 		private var _currentLevel:ALevel;
 
 		public function LevelManager() {
+			
+			_instance = this;
 
 			onLevelChanged = new Signal(ALevel);
 			_currentIndex = 0;
 
 			_levels = [];
 			_levels["Level"] = [LevelA5, LevelA2, LevelA3, LevelA4, LevelA5];
+			_levels["Name"] = ["A5", "A2", "A3", "A4", "A5"];
 			_levels["SWF"] = ["levels/levelA5.swf", "levels/levelA2.swf", "levels/levelA3.swf", "levels/levelA4.swf", "levels/levelA5.swf"];
 
 			gotoLevel();
+		}
+		
+		public static function getInstance():LevelManager {
+			return _instance;
 		}
 
 
@@ -83,6 +92,10 @@ package kinessia.levels {
 
 		public function set currentLevel(currentLevel:ALevel):void {
 			_currentLevel = currentLevel;
+		}
+		
+		public function get nameCurrentLevel():String {
+			return _levels["Name"][_currentIndex];
 		}
 	}
 }
