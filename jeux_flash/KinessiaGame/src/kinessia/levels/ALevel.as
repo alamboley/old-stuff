@@ -5,6 +5,7 @@ package kinessia.levels {
 	import kinessia.LoadScreen;
 	import kinessia.characters.Bullzor;
 	import kinessia.characters.Declik;
+	import kinessia.network.Network;
 	import kinessia.network.NetworkEvent;
 	import kinessia.objects.Catapulte;
 	import kinessia.objects.MusicalSensor;
@@ -84,6 +85,9 @@ package kinessia.levels {
 			ObjectMaker.FromMovieClip(_levelObjectsMC);
 
 			ExternalArt.smoothBitmaps = true;
+			
+			var network:Network = Network.getInstance();
+			network.addLevelListener(LevelManager.getInstance().nameCurrentLevel);
 
 			_declik = Declik(getObjectByName("Declik"));
 			//_declik.onJump.add(_jump);
