@@ -15,6 +15,10 @@ package kinessia.objects {
          super(name, params);
       }
       
+      override public function destroy():void {
+      	super.destroy();
+      }
+      
       override protected function createShape():void {
          
          _shape = new b2CircleShape();

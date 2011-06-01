@@ -12,6 +12,11 @@ package kinessia.objects {
 		public function Roseau(name:String, params:Object = null) {
 			super(name, params);
 		}
+		
+		override public function destroy():void {
+			
+			super.destroy();
+		}
 
 		override public function update(timeDelta:Number):void {
 

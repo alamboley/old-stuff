@@ -19,6 +19,10 @@ package kinessia.objects {
 
 			_animation = label;
 		}
+		
+		override public function destroy():void {
+			super.destroy();
+		}
 
 		override protected function handleBeginContact(e:ContactEvent):void {
 			
