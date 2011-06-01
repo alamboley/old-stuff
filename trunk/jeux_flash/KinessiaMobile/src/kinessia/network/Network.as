@@ -1,5 +1,7 @@
 package kinessia.network {
 
+	import flash.events.MouseEvent;
+
 	import kinessia.art.ArtEvent;
 
 	import net.user1.reactor.IClient;
@@ -23,7 +25,7 @@ package kinessia.network {
 
 		private var _reactor:Reactor;
 		private var _room:Room;
-		
+
 		private var _home:MovieClip;
 
 		private var _accelX:Number, _accelY:Number;
@@ -31,50 +33,61 @@ package kinessia.network {
 		private var _accelerometer:Accelerometer;
 
 		private var _currentHStatus:String, _currentVStatus:String;
-		
+
 		private var _uniqueID:String;
+		private var _tabMsgFromGame:Array;
+		private var _lengthTab:uint;
 
 		public function Network(home:MovieClip) {
-			
-			_reactor  = new Reactor();
-			_reactor.connect("169.254.119.131", 9110);
-			//_reactor.connect("localhost", 9110);
-			//_reactor.connect("tryunion.com", 80);
-			
+
+			_reactor = new Reactor();
+			// _reactor.connect("169.254.119.131", 9110);
+			_reactor.connect("localhost", 9110);
+			// _reactor.connect("tryunion.com", 80);
+
 			_home = home;
-			
+
+			_tabMsgFromGame = [];
+			_tabMsgFromGame = [NetworkEvent.PAUSE_GAME, NetworkEvent.SOUND_GAME];
+			_lengthTab = _tabMsgFromGame.length;
+
 			_reactor.addEventListener(ReactorEvent.READY, _connexionRoom);
 		}
 
 		private function _connexionRoom(rEvt:ReactorEvent):void {
 
 			_room = _reactor.getRoomManager().joinRoom("Kinessia");
-			
-			TweenMax.to(_home, 0.3, {alpha:0, onComplete:function():void{_home.gotoAndStop("login");}});
-			TweenMax.to(_home, 0.3, {alpha:1, delay:0.3, onComplete:function():void {_home.login_btn.addEventListener(TouchEvent.TOUCH_TAP, _connectedToRoom);}});
+
+			TweenMax.to(_home, 0.3, {alpha:0, onComplete:function():void {
+				_home.gotoAndStop("login");
+			}});
+			TweenMax.to(_home, 0.3, {alpha:1, delay:0.3, onComplete:function():void {
+				_home.login_btn.addEventListener(MouseEvent.CLICK, _connectedToRoom);
+			}});
 
 			_accelerometer = new Accelerometer();
 
 			_accelerometer.addEventListener(AccelerometerEvent.UPDATE, _accelerometerHandler);
-			
+
 			this.addEventListener(Event.ENTER_FRAME, _ef);
 		}
 
-		private function _connectedToRoom(tEvt:TouchEvent):void {
-			
+		private function _connectedToRoom(tEvt:MouseEvent):void {
+
 			_uniqueID = _home.login_txt.text;
 			_room.addMessageListener(_uniqueID, _messageFromGame);
-			
+
 			_home.login_btn.removeEventListener(TouchEvent.TOUCH_TAP, _connectedToRoom);
-			
+
 			this.dispatchEvent(new ArtEvent(ArtEvent.REMOVE_HOME));
 		}
-		
+
 		private function _messageFromGame(fromClient:IClient, message:String):void {
-			
-			trace("iPhone reçoit : " + message);
-			
-			this.dispatchEvent(new NetworkEvent(message));
+
+			if (!_checkMsgFromGame(message)) {
+				trace("provient du jeu : " + message);
+				this.dispatchEvent(new NetworkEvent(message));
+			}
 		}
 
 		private function _accelerometerHandler(aEvt:AccelerometerEvent):void {
@@ -94,7 +107,7 @@ package kinessia.network {
 				_room.sendMessage(_uniqueID, true, null, NetworkEvent.JUMP);
 				_currentVStatus = "jump";
 			}
-			
+
 			if (((_accelX < 0.7) && (_accelX > -0.7)) && (_currentVStatus != "stationary")) {
 				_room.sendMessage(_uniqueID, true, null, NetworkEvent.STATIONARY);
 				_currentVStatus = "stationary";
@@ -116,13 +129,36 @@ package kinessia.network {
 			}
 
 		}
-		
+
 		public function drawCircleForCatapulte():void {
 			_room.sendMessage(_uniqueID, true, null, NetworkEvent.CIRCLE_DRAW);
 		}
-		
-		public function pauseGame(tEvt:TouchEvent):void {
-			_room.sendMessage(_uniqueID, true, null, NetworkEvent.PAUSE_GAME);
+
+		public function hudInfo(tEvt:MouseEvent):void {
+
+			switch (tEvt.target.name) {
+
+				case "pause":
+					_room.sendMessage(_uniqueID, true, null, NetworkEvent.PAUSE_GAME);
+					break;
+
+				case "sound":
+					_room.sendMessage(_uniqueID, true, null, NetworkEvent.SOUND_GAME);
+					break;
+
+			}
+
+		}
+
+		private function _checkMsgFromGame(message:String):Boolean {
+
+			for (var i:uint = 0; i < _lengthTab; ++i) {
+
+				if (message == _tabMsgFromGame[i])
+					return true;
+			}
+
+			return false;
 		}
 	}
 }

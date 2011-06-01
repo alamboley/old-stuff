@@ -1,5 +1,6 @@
 ﻿package kinessia {
 
+	import flash.events.MouseEvent;
 	import gesture.Gesture;
 	import gesture.RecognizeEvent;
 
@@ -67,7 +68,8 @@
 					_screenGame.alpha = 0;
 					TweenMax.to(_screenGame, 0.4, {alpha:1});
 
-					_screenGame.pause.addEventListener(TouchEvent.TOUCH_TAP, _network.pauseGame);
+					_screenGame.pause.addEventListener(MouseEvent.CLICK, _network.hudInfo);
+					_screenGame.sound.addEventListener(MouseEvent.CLICK, _network.hudInfo);
 					break;
 			}
 		}
