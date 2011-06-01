@@ -22,7 +22,7 @@ package kinessia.network {
 
 		private var _uniqueID:String;
 
-		private var _tabMessageFromIphone:Array;
+		private var _tabMsgFromIphone:Array;
 		private var _lengthTab:uint;
 
 		public function Network() {
@@ -39,9 +39,9 @@ package kinessia.network {
 			// _reactor.connect("tryunion.com", 80);
 
 
-			_tabMessageFromIphone = [];
-			_tabMessageFromIphone = [NetworkEvent.PAUSE_GAME, NetworkEvent.JUMP, NetworkEvent.ONGROUND, NetworkEvent.STATIONARY, NetworkEvent.RIGHT, NetworkEvent.LEFT, NetworkEvent.IMMOBILE, NetworkEvent.CIRCLE_DRAW];
-			_lengthTab = _tabMessageFromIphone.length;
+			_tabMsgFromIphone = [];
+			_tabMsgFromIphone = [NetworkEvent.PAUSE_GAME, NetworkEvent.SOUND_GAME, NetworkEvent.JUMP, NetworkEvent.ONGROUND, NetworkEvent.STATIONARY, NetworkEvent.RIGHT, NetworkEvent.LEFT, NetworkEvent.IMMOBILE, NetworkEvent.CIRCLE_DRAW];
+			_lengthTab = _tabMsgFromIphone.length;
 
 			_reactor.addEventListener(ReactorEvent.READY, _createRoom);
 		}
@@ -93,6 +93,8 @@ package kinessia.network {
 			_room.addMessageListener(_uniqueID, _messageFromIphone);
 
 			_ce.addEventListener(NetworkEvent.COIN_TAKEN, _messageToIphone);
+			this.addEventListener(NetworkEvent.LEVEL_COMPLETE, _messageToIphone);
+			this.addEventListener(NetworkEvent.RESTART_LEVEL, _messageToIphone);
 		}
 
 		private function _messageToIphone(nEvt:NetworkEvent):void {
@@ -100,7 +102,6 @@ package kinessia.network {
 			trace("Jeu envoit :" + nEvt.type);
 
 			_room.sendMessage(_uniqueID, true, null, nEvt.type);
-
 
 			switch (nEvt.type) {
 
@@ -133,17 +134,17 @@ package kinessia.network {
 
 		private function _messageFromIphone(fromClient:IClient, message:String):void {
 
-			if (_checkMessageFromIphone(message)) {
+			if (_checkMsgFromIphone(message)) {
 				trace("provient de l'iphone : " + message);
 				_ce.dispatchEvent(new NetworkEvent(message));
 			}
 		}
 
-		private function _checkMessageFromIphone(message:String):Boolean {
+		private function _checkMsgFromIphone(message:String):Boolean {
 
 			for (var i:uint = 0; i < _lengthTab; ++i) {
 
-				if (message == _tabMessageFromIphone[i])
+				if (message == _tabMsgFromIphone[i])
 					return true;
 			}
 

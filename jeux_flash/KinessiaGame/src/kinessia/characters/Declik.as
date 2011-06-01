@@ -31,6 +31,10 @@ package kinessia.characters {
 			enemyClass = Bullzor;
 			hurtDuration = 2000;
 		}
+		
+		override public function destroy():void {
+			super.destroy();
+		}
 
 		override public function update(timeDelta:Number):void {
 

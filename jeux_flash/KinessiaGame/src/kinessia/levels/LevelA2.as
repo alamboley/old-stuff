@@ -24,6 +24,9 @@ package kinessia.levels {
 		
 		private var _heroInitGravity:Number;
 		private var _microphone:Microphone;
+		
+		private var _microphoneSensor:Sensor;
+		private var _piece:Piece;
 
 		public function LevelA2(levelObjectsMC:MovieClip) {
 			super(levelObjectsMC);
@@ -39,11 +42,16 @@ package kinessia.levels {
 
 			_addMusicalSensor();
 
-			var microphoneSensor:Sensor = Sensor(getObjectByName("Microphone"));
-			microphoneSensor.onBeginContact.add(_addMicrophone);
+			_microphoneSensor = Sensor(getObjectByName("Microphone"));
+			_microphoneSensor.onBeginContact.add(_addMicrophone);
 			
-			var piece:Piece = Piece(getFirstObjectByType(Piece));
-			piece.onBeginContact.add(_pieceTaken);
+			_piece = Piece(getFirstObjectByType(Piece));
+			_piece.onBeginContact.add(_pieceTaken);
+		}
+		
+		override public function destroy():void {
+			
+			super.destroy();
 		}
 		
 		override protected function _endLevel(cEvt:ContactEvent):void {

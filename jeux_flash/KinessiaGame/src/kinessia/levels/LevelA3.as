@@ -13,6 +13,8 @@ package kinessia.levels {
 	 * @author Aymeric
 	 */
 	public class LevelA3 extends ALevel {
+		
+		private var _pacmanSensor:Sensor;
 
 		public function LevelA3(levelObjectsMC:MovieClip) {
 			super(levelObjectsMC);
@@ -24,8 +26,13 @@ package kinessia.levels {
 
 			_addContactRestartLevel();
 
-			var pacmanSensor:Sensor = Sensor(getObjectByName("Pacman"));
-			pacmanSensor.onBeginContact.add(_addPacman);
+			_pacmanSensor = Sensor(getObjectByName("Pacman"));
+			_pacmanSensor.onBeginContact.add(_addPacman);
+		}
+		
+		override public function destroy():void {
+			
+			super.destroy();
 		}
 
 		private function _addPacman(cEvt:ContactEvent):void {

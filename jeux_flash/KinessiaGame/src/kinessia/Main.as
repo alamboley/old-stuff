@@ -17,13 +17,17 @@
 		private var _network:Network;
 		
 		private var _pacman:Pacman;
+		
+		private var _soundOn:Boolean;
 
 		public function Main() {
 
 			super();
 			
 			_network = new Network();
+			
 			this.addEventListener(NetworkEvent.PAUSE_GAME, _pauseGame);
+			this.addEventListener(NetworkEvent.SOUND_GAME, _soundGame);
 			
 			this.addEventListener(NetworkEvent.START_PACMAN, _pacmanGame);
 			stage.addEventListener(NetworkEvent.END_PACMAN, _pacmanGame);
@@ -43,7 +47,7 @@
 			sound.addSound("Re", "sounds/re.mp3");
 			sound.addSound("Mi", "sounds/mi.mp3");
 
-			//sound.playSound("KinessiaTheme");
+			sound.playSound("KinessiaTheme");
 
 			_levelManager = new LevelManager();
 			_levelManager.onLevelChanged.add(_onLevelChanged);
@@ -59,12 +63,15 @@
 		}
 
 		private function _restartLevel():void {
+			
 			state = _levelManager.currentLevel;
+			_network.dispatchEvent(new NetworkEvent(NetworkEvent.RESTART_LEVEL));
 		}
 
 		private function _nextLevel():void {
 
 			_levelManager.nextLevel();
+			_network.dispatchEvent(new NetworkEvent(NetworkEvent.LEVEL_COMPLETE));
 		}
 		
 		private function _pacmanGame(nEvt:NetworkEvent):void {
@@ -92,8 +99,19 @@
 			stage.displayState = "fullScreen";
 		}
 
-		private function _pauseGame(nEvt:NetworkEvent = null):void {
+		private function _pauseGame(nEvt:NetworkEvent):void {
 			this.playing = !this.playing;
+		}
+		
+		private function _soundGame(nEvt:NetworkEvent):void {
+			
+			if (_soundOn) {
+				this.sound.setGlobalVolume(1);
+			} else {
+				this.sound.setGlobalVolume(0);
+			}
+			
+			_soundOn = !_soundOn;
 		}
 	}
 }
