@@ -13,6 +13,10 @@ package kinessia.objects {
 			super(name, params);
 		}
 		
+		override public function destroy():void {
+			super.destroy();
+		}
+		
 		public function get song():String {
 			return _song;
 		}
