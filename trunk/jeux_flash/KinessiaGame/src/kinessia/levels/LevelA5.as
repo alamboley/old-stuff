@@ -21,6 +21,8 @@ package kinessia.levels {
 		
 		private var _catapulte:Catapulte;
 		private var _circle:Circle;
+		
+		private var _piece:Piece;
 
 		public function LevelA5(levelObjectsMC:MovieClip) {
 			super(levelObjectsMC);
@@ -37,13 +39,18 @@ package kinessia.levels {
 			_catapulte.know(_declik);
 			_catapulte.onBeginContact.add(_hitCatapulte);
 
-			var piece:Piece = Piece(getFirstObjectByType(Piece));
-			piece.onBeginContact.add(_pieceTaken);
+			_piece = Piece(getFirstObjectByType(Piece));
+			_piece.onBeginContact.add(_pieceTaken);
 			
 			_ce.addEventListener(NetworkEvent.CIRCLE_DRAW, _circleDraw);
 
 			// var walker:TheWalker = new TheWalker("theWalker", {x:50});
 			// add(walker);
+		}
+		
+		override public function destroy():void {
+			
+			super.destroy();
 		}
 
 		private function _hitCatapulte(cEvt:ContactEvent):void {

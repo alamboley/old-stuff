@@ -7,7 +7,11 @@ package kinessia.network {
 	 */
 	public class NetworkEvent extends Event {
 		
+		public static const LEVEL_COMPLETE:String = "LEVEL_COMPLETE";
+		public static const RESTART_LEVEL:String = "RESTART_LEVEL";
+		
 		public static const PAUSE_GAME:String = "PAUSE_GAME";
+		public static const SOUND_GAME:String = "SOUND_GAME";
 		
 		public static const COIN_TAKEN:String = "COIN_TAKEN";
 		

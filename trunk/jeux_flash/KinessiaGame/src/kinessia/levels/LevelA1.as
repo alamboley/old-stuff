@@ -17,5 +17,10 @@ package kinessia.levels {
 			
 			_addMusicalSensor();
 		}
+		
+		override public function destroy():void {
+			
+			super.destroy();
+		}
 	}
 }

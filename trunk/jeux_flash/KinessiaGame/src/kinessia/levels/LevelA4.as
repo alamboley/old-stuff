@@ -17,5 +17,11 @@ package kinessia.levels {
 			
 			_addContactRestartLevel();
 		}
+		
+		
+		override public function destroy():void {
+			
+			super.destroy();
+		}
 	}
 }

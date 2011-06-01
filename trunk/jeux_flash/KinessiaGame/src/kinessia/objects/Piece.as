@@ -2,7 +2,8 @@ package kinessia.objects {
 
 	import Box2DAS.Dynamics.ContactEvent;
 
-	import com.citrusengine.objects.platformer.Hero;
+	import kinessia.characters.Declik;
+
 	import com.citrusengine.objects.platformer.Sensor;
 
 	/**
@@ -10,14 +11,12 @@ package kinessia.objects {
 	 */
 	public class Piece extends Sensor {
 
-		public var label:String;
-
-		private var _collectorClass:Class = Hero;
+		private var _label:String;
 
 		public function Piece(name:String, params:Object = null) {
 			super(name, params);
 
-			_animation = label;
+			_animation = _label;
 		}
 		
 		override public function destroy():void {
@@ -28,9 +27,19 @@ package kinessia.objects {
 			
 			super.handleBeginContact(e);
 
-			if (_collectorClass && e.other.GetBody().GetUserData() is _collectorClass) {
+			if (e.other.GetBody().GetUserData() is Declik) {
 				kill = true;
 			}
 		}
+
+		public function get label():String {
+			return _label;
+		}
+
+		public function set label(value:String):void {
+			_label = value;
+		}
+		
+		
 	}
 }
