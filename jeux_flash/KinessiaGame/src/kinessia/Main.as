@@ -95,7 +95,7 @@
 			stage.displayState = "fullScreen";
 		}
 
-		private function _pauseGame(nEvt:NetworkEvent):void {
+		private function _pauseGame(nEvt:NetworkEvent = null):void {
 			this.playing = !this.playing;
 		}
 		
