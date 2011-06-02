@@ -1,5 +1,6 @@
 package kinessia.levels {
 
+	import kinessia.objects.Croquis;
 	import Box2DAS.Dynamics.ContactEvent;
 
 	import kinessia.characters.Declik;
@@ -26,6 +27,7 @@ package kinessia.levels {
 		private var _microphone:Microphone;
 		
 		private var _microphoneSensor:Sensor;
+		private var _croquis:Croquis;
 		private var _piece:Piece;
 
 		public function LevelA2(levelObjectsMC:MovieClip) {
@@ -44,6 +46,8 @@ package kinessia.levels {
 
 			_microphoneSensor = Sensor(getObjectByName("Microphone"));
 			_microphoneSensor.onBeginContact.add(_addMicrophone);
+			
+			_croquis = Croquis(getFirstObjectByType(Croquis));
 			
 			_piece = Piece(getFirstObjectByType(Piece));
 			_piece.onBeginContact.add(_pieceTaken);
@@ -70,6 +74,8 @@ package kinessia.levels {
 				_declik.gravity = _HERO_GRAVITY;
 
 				_ce.dispatchEvent(new NetworkEvent(NetworkEvent.START_MICRO));
+				
+				_croquis.anim = "white";
 
 				_microphone = Microphone.getMicrophone();
 
@@ -98,6 +104,8 @@ package kinessia.levels {
 				_pieceCaught = true;
 				
 				_ce.dispatchEvent(new NetworkEvent(NetworkEvent.STOP_MICRO));
+				
+				_croquis.anim = "black";
 				
 				_microphone.removeEventListener(SampleDataEvent.SAMPLE_DATA, _sampleData);
 				_microphone = null;

@@ -1,12 +1,14 @@
 package kinessia.objects {
 
-	import kinessia.characters.Declik;
 	import Box2DAS.Common.V2;
 	import Box2DAS.Dynamics.ContactEvent;
 	import Box2DAS.Dynamics.Joints.b2RevoluteJoint;
 	import Box2DAS.Dynamics.Joints.b2RevoluteJointDef;
 
+	import kinessia.characters.Declik;
+
 	import com.citrusengine.objects.PhysicsObject;
+	import com.citrusengine.objects.platformer.Platform;
 
 	import org.osflash.signals.Signal;
 
@@ -36,9 +38,9 @@ package kinessia.objects {
 			super.destroy();
 		}
 
-		public function initJoint($platformJoint:BodyPlatform):void {
+		public function initJoint($platformJoint:Platform):void {
 
-			var platformJoint:BodyPlatform = $platformJoint;
+			var platformJoint:Platform = $platformJoint;
 
 			var jointDefPlatform:b2RevoluteJointDef = new b2RevoluteJointDef();
 			jointDefPlatform.Initialize(_body, platformJoint.body, new V2(15, 12));

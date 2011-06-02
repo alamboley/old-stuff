@@ -58,10 +58,9 @@ package com.citrusengine.view
 		 * if you were loading any file in Flash. (graphic = "graphics/Hero.swf")
 		 * 
 		 * <p>If your graphic is embeddeded into the SWF, you can assign the <code>view</code> property in two ways: Either by package string
-		 * notation (graphic = "com.myGame.MyHero"), or by using a direct class reference (graphic = MyHero). The first method, String notation, is useful
+		 * notation (view = "com.myGame.MyHero"), or by using a direct class reference (graphic = MyHero). The first method, String notation, is useful
 		 * when you are using a level editor such as the Flash IDE or GLEED2D because all data must come through in String form. However, if you
-		 * are hardcoding your graphic class, you can simply pass a direct reference to the class.</p>
-		 * 
+		 * are hardcoding your graphic class, you can simply pass a direct reference to the class.
 		 * Whichever way you specify your class, your class must be (on some level) a <code>DisplayObject</code>.</p>
 		 * 
 		 * <p>Also note that you CANNOT assign the <code>view</code> property to a display object that you made. You must specify either an 

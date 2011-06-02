@@ -33,6 +33,11 @@ package com.citrusengine.objects.platformer
 		private var _hurtTimeoutID:Number = 0;
 		private var _hurt:Boolean = false;
 		
+		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, speed:Number, leftBound:Number = -100000, rightBound:Number = 100000, startingDirection:String = "left"):Baddy
+		{
+			return new Baddy(name, { x: x, y: y, width: width, height: height, speed: speed, leftBound: leftBound, rightBound: rightBound, startingDirection: startingDirection } );
+		}
+		
 		public function Baddy(name:String, params:Object=null)
 		{
 			super(name, params);

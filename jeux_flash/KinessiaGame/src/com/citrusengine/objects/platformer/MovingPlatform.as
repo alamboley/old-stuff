@@ -34,6 +34,11 @@ package com.citrusengine.objects.platformer
 		protected var _forward:Boolean = true;
 		protected var _passengers:Vector.<b2Body> = new Vector.<b2Body>();
 		
+		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, endX:Number, endY:Number, speed:Number = 1, waitForPassenger:Boolean = false):MovingPlatform
+		{
+			return new MovingPlatform(name, { x: x, y: y, width: width, height: height, endX: endX, endY: endY, speed: speed, waitForPassenger: waitForPassenger } );
+		}
+		
 		public function MovingPlatform(name:String, params:Object=null)
 		{
 			super(name, params);
