@@ -1,19 +1,38 @@
-﻿package kinessia.objects {
+﻿package kinessia.characters {
 
 	import Box2DAS.Collision.Shapes.b2PolygonShape;
 	import Box2DAS.Common.V2;
 	import Box2DAS.Common.b2Def;
+	import Box2DAS.Dynamics.ContactEvent;
 	import Box2DAS.Dynamics.Joints.b2RevoluteJoint;
 	import Box2DAS.Dynamics.b2Body;
 	import Box2DAS.Dynamics.b2BodyDef;
 	import Box2DAS.Dynamics.b2FixtureDef;
 
+	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.PhysicsObject;
+
+	import flash.utils.clearTimeout;
+	import flash.utils.getDefinitionByName;
+	import flash.utils.setTimeout;
 
 	public class TheWalker extends PhysicsObject {
 
-		private var tScale:Number;
+		public var speed:Number = 1;
+		public var enemyClass:String = "com.citrusengine.objects.platformer.Hero";
+		public var enemyKillVelocity:Number = 3;
+		public var startingDirection:String = "left";
+		public var hurtDuration:Number = 3000;
+		public var leftBound:Number = -100000;
+		public var rightBound:Number = 100000;
 
+		private var _hurtTimeoutID:Number = 0;
+		private var _hurt:Boolean = false;
+
+		private var _awake:Boolean;
+
+		// If the animation is with code :
+		private var tScale:Number;
 		private var m_offset:V2 = new V2();
 		private var m_chassis:b2Body;
 		private var m_wheel:b2Body;
@@ -24,6 +43,118 @@
 		public function TheWalker(name:String, params:Object = null) {
 
 			super(name, params);
+
+			if (startingDirection == "left") {
+				_inverted = true;
+			}
+
+
+			// For the fun here is the Walker animated with code, coming from Box2D WCK !!
+			// _theWalkerWithCode();
+		}
+
+		override public function destroy():void {
+
+			_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
+			clearTimeout(_hurtTimeoutID);
+			super.destroy();
+		}
+
+		override public function update(timeDelta:Number):void {
+
+			super.update(timeDelta);
+
+			var position:V2 = _body.GetPosition();
+			var velocity:V2 = _body.GetLinearVelocity();
+			
+			if (_awake) {
+
+				// Turn around when they pass their left/right bounds
+				if ((_inverted && position.x * 30 < leftBound) || (!_inverted && position.x * 30 > rightBound))
+					_inverted = !_inverted;
+
+				if (!_hurt) {
+
+					if (_inverted)
+						velocity.x = -speed;
+					else
+						velocity.x = speed;
+				} else {
+					velocity.x = 0;
+				}
+			} else {
+				velocity.x = 0;
+			}
+
+			_body.SetLinearVelocity(velocity);
+
+			updateAnimation();
+		}
+
+		public function hurt():void {
+			
+			//_hurt = true;
+			//_hurtTimeoutID = setTimeout(endHurtState, hurtDuration);
+		}
+
+		override protected function createBody():void {
+
+			super.createBody();
+			_body.SetFixedRotation(true);
+		}
+
+		override protected function defineFixture():void {
+
+			super.defineFixture();
+			_fixtureDef.friction = 0;
+		}
+
+		override protected function createFixture():void {
+
+			super.createFixture();
+			_fixture.m_reportBeginContact = true;
+			_fixture.addEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
+		}
+
+		private function handleBeginContact(e:ContactEvent):void {
+
+			var colliderBody:b2Body = e.other.GetBody();
+			var enemyClassClass:Class = flash.utils.getDefinitionByName(enemyClass) as Class;
+
+			if (colliderBody.GetUserData() is enemyClassClass && colliderBody.GetLinearVelocity().y > enemyKillVelocity)
+				hurt();
+
+			// Collision angle, // The normal property doesn't come through all the time. I think doesn't come through against sensors.
+			if (e.normal) {
+				var collisionAngle:Number = new MathVector(e.normal.x, e.normal.y).angle * 180 / Math.PI;
+				if (collisionAngle < 45 || collisionAngle > 135) {
+					_inverted = !_inverted;
+				}
+			}
+		}
+
+		private function updateAnimation():void {
+			if (_awake) {
+				_animation = "walk";
+			} else {
+				_animation = "idle";
+			}
+		}
+
+		private function endHurtState():void {
+			_hurt = false;
+			// kill = true;
+		}
+		
+		public function get awake():Boolean {
+			return _awake;
+		}
+
+		public function set awake(awake:Boolean):void {
+			_awake = awake;
+		}
+
+		private function _theWalkeWithnCode():void {
 
 			// scale walker by variable to easily change size
 			tScale = _box2D.scale * 2;
@@ -154,8 +285,6 @@
 			b2Def.revoluteJoint.Initialize(body2, m_chassis, V2.add(p4, m_offset));
 			_box2D.world.CreateJoint(b2Def.revoluteJoint);
 		}
-
-
 
 		/*public override function EnterFrame():void {
 

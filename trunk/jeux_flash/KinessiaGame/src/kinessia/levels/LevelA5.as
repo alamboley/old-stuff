@@ -3,6 +3,7 @@ package kinessia.levels {
 	import Box2DAS.Dynamics.ContactEvent;
 
 	import kinessia.characters.Declik;
+	import kinessia.characters.TheWalker;
 	import kinessia.effects.DrawCircle;
 	import kinessia.network.NetworkEvent;
 	import kinessia.objects.Catapulte;
@@ -11,6 +12,7 @@ package kinessia.levels {
 	import kinessia.objects.Piece;
 
 	import com.citrusengine.objects.platformer.Platform;
+	import com.citrusengine.objects.platformer.Sensor;
 
 	import flash.display.MovieClip;
 	import flash.events.TimerEvent;
@@ -24,10 +26,13 @@ package kinessia.levels {
 		private var _catapulte:Catapulte;
 		private var _circle:Circle;
 		
-		private var _croquis1:Croquis;
-		private var _croquis2:Croquis;
+		private var _startCatapulte:Sensor;
+		private var _croquis1:Croquis, _croquis2:Croquis;
 		
 		private var _piece:Piece;
+		
+		private var _startWalker:Sensor;
+		private var _walker:TheWalker;
 
 		public function LevelA5(levelObjectsMC:MovieClip) {
 			super(levelObjectsMC);
@@ -42,7 +47,9 @@ package kinessia.levels {
 			_catapulte = Catapulte(getFirstObjectByType(Catapulte));
 			_catapulte.initJoint(Platform(getObjectByName("PlatformJoint")));
 			_catapulte.know(_declik);
-			_catapulte.onBeginContact.add(_hitCatapulte);
+			
+			_startCatapulte = Sensor(getObjectByName("StartCatapulte"));
+			_startCatapulte.onBeginContact.add(_catapulteReady);
 			
 			_croquis1 = Croquis(getObjectByName("Croquis1"));
 			_croquis2 = Croquis(getObjectByName("Croquis2"));
@@ -51,22 +58,32 @@ package kinessia.levels {
 			_piece.onBeginContact.add(_pieceTaken);
 			
 			_ce.addEventListener(NetworkEvent.CIRCLE_DRAW, _circleDraw);
-
-			// var walker:TheWalker = new TheWalker("theWalker", {x:50});
-			// add(walker);
+			
+			_startWalker = Sensor(getObjectByName("StartWalker"));
+			_startWalker.onBeginContact.add(_awakeWalker);
+			
+			_walker = TheWalker(getFirstObjectByType(TheWalker));
 		}
 		
 		override public function destroy():void {
 			
 			super.destroy();
 		}
+		
+		override protected function _endLevel(cEvt:ContactEvent):void {
 
-		private function _hitCatapulte(cEvt:ContactEvent):void {
-
+			if (cEvt.other.GetBody().GetUserData() is TheWalker) {
+				//lvlEnded.dispatch();
+				trace('Game finish');
+			}
+		}
+		
+		private function _catapulteReady(cEvt:ContactEvent):void {
+			
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 				
-				_catapulte.onBeginContact.remove(_hitCatapulte);
-
+				_startCatapulte.kill = true;
+				
 				_ce.dispatchEvent(new NetworkEvent(NetworkEvent.START_CATAPULTE));
 				
 				_croquis1.anim = _croquis2.anim = "white";
@@ -103,6 +120,14 @@ package kinessia.levels {
 				_croquis1.anim = _croquis2.anim = "black";
 
 				_ce.dispatchEvent(new NetworkEvent(NetworkEvent.END_CATAPULTE));
+			}
+		}
+		
+		private function _awakeWalker(cEvt:ContactEvent):void {
+			
+			if (cEvt.other.GetBody().GetUserData() is Declik) {
+				_startWalker.kill = true;
+				_walker.awake = true;
 			}
 		}
 	}
