@@ -30,6 +30,11 @@ package com.citrusengine.objects
 		protected var _offsetY:Number = 0;
 		protected var _registration:String = "topLeft";
 		
+		public static function Make(name:String, x:Number, y:Number, view:*, parallax:Number = 1):CitrusSprite
+		{
+			return new CitrusSprite(name, { x: x, y: y, view: view, parallax: parallax } );
+		}
+		
 		/**
 		 * Creates a CitrusSprite instance. 
 		 */		

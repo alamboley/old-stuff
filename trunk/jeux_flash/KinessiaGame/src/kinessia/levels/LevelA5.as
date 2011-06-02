@@ -5,10 +5,12 @@ package kinessia.levels {
 	import kinessia.characters.Declik;
 	import kinessia.effects.DrawCircle;
 	import kinessia.network.NetworkEvent;
-	import kinessia.objects.BodyPlatform;
 	import kinessia.objects.Catapulte;
 	import kinessia.objects.Circle;
+	import kinessia.objects.Croquis;
 	import kinessia.objects.Piece;
+
+	import com.citrusengine.objects.platformer.Platform;
 
 	import flash.display.MovieClip;
 	import flash.events.TimerEvent;
@@ -21,6 +23,9 @@ package kinessia.levels {
 		
 		private var _catapulte:Catapulte;
 		private var _circle:Circle;
+		
+		private var _croquis1:Croquis;
+		private var _croquis2:Croquis;
 		
 		private var _piece:Piece;
 
@@ -35,9 +40,12 @@ package kinessia.levels {
 			_addContactRestartLevel();
 
 			_catapulte = Catapulte(getFirstObjectByType(Catapulte));
-			_catapulte.initJoint(BodyPlatform(getObjectByName("PlatformJoint")));
+			_catapulte.initJoint(Platform(getObjectByName("PlatformJoint")));
 			_catapulte.know(_declik);
 			_catapulte.onBeginContact.add(_hitCatapulte);
+			
+			_croquis1 = Croquis(getObjectByName("Croquis1"));
+			_croquis2 = Croquis(getObjectByName("Croquis2"));
 
 			_piece = Piece(getFirstObjectByType(Piece));
 			_piece.onBeginContact.add(_pieceTaken);
@@ -60,6 +68,8 @@ package kinessia.levels {
 				_catapulte.onBeginContact.remove(_hitCatapulte);
 
 				_ce.dispatchEvent(new NetworkEvent(NetworkEvent.START_CATAPULTE));
+				
+				_croquis1.anim = _croquis2.anim = "white";
 			}
 		}
 
@@ -89,6 +99,8 @@ package kinessia.levels {
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 
 				_declik.velocityCatapulte = null;
+				
+				_croquis1.anim = _croquis2.anim = "black";
 
 				_ce.dispatchEvent(new NetworkEvent(NetworkEvent.END_CATAPULTE));
 			}

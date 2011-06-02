@@ -1,6 +1,7 @@
 package com.citrusengine.objects.platformer
 {
 	import Box2DAS.Common.V2;
+	import Box2DAS.Dynamics.b2Fixture;
 	import Box2DAS.Dynamics.ContactEvent;
 	import Box2DAS.Dynamics.b2Body;
 	
@@ -68,11 +69,6 @@ package com.citrusengine.objects.platformer
 		public var hurtDuration:Number = 1000;
 		
 		/**
-		 * Whether or not the player can move and jump with the hero. 
-		 */		
-		public var controlsEnabled:Boolean = true;
-		
-		/**
 		 * The amount of kick-back that the hero jumps when he gets hurt. 
 		 */		
 		public var hurtVelocityX:Number = 30;
@@ -111,6 +107,12 @@ package com.citrusengine.objects.platformer
 		private var _hurt:Boolean = false;
 		private var _friction:Number = 0.75;
 		private var _playerMovingHero:Boolean = false;
+		private var _controlsEnabled:Boolean = true;
+		
+		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, view:* = null):Hero
+		{
+			return new Hero(name, { x: x, y: y, width: width, height: height, view: view } );
+		}
 		
 		/**
 		 * Creates a new hero object.
@@ -133,8 +135,24 @@ package com.citrusengine.objects.platformer
 			onJump.removeAll();
 			onGiveDamage.removeAll();
 			onTakeDamage.removeAll();
-			onAnimationChange.removeAll();
+			onAnimationChange.removeAll()
 			super.destroy();
+		}
+		
+		/**
+		 * Whether or not the player can move and jump with the hero. 
+		 */	
+		public function get controlsEnabled():Boolean
+		{
+			return _controlsEnabled;
+		}
+		
+		public function set controlsEnabled(value:Boolean):void
+		{
+			_controlsEnabled = value;
+			
+			if (!_controlsEnabled)
+				_fixture.SetFriction(_friction);
 		}
 		
 		/**
@@ -235,18 +253,33 @@ package com.citrusengine.objects.platformer
 						velocity.y = -enemySpringHeight;
 					_springOffEnemy = -1;
 				}
+				
+				//Cap velocities
+				if (velocity.x > (maxVelocity))
+					velocity.x = maxVelocity;
+				else if (velocity.x < (-maxVelocity))
+					velocity.x = -maxVelocity;
+				
+				//update physics with new velocity
+				_body.SetLinearVelocity(velocity);
 			}
 			
-			//Cap velocities
-			if (velocity.x > (maxVelocity))
-				velocity.x = maxVelocity;
-			else if (velocity.x < (-maxVelocity))
-				velocity.x = -maxVelocity;
-			
-			//update physics with new velocity
-			_body.SetLinearVelocity(velocity);
-			
 			updateAnimation();
+		}
+		
+		/**
+		 * Returns the absolute walking speed, taking moving platforms into account.
+		 * Isn't super performance-light, so use sparingly.
+		 */
+		public function getWalkingSpeed():Number
+		{
+			var groundVelocityX:Number = 0;
+			for each (var groundContact:b2Fixture in _groundContacts)
+			{
+				groundVelocityX += groundContact.GetBody().GetLinearVelocity().x;
+			}
+			
+			return _body.GetLinearVelocity().x - groundVelocityX;
 		}
 		
 		/**
@@ -361,12 +394,13 @@ package com.citrusengine.objects.platformer
 			}
 			else
 			{
-				if (velocity.x < -.5)
+				var walkingSpeed:Number = getWalkingSpeed();
+				if (walkingSpeed < -acceleration)
 				{
 					_inverted = true;
 					_animation = "walk";
 				}
-				else if (velocity.x > .5)
+				else if (walkingSpeed > acceleration)
 				{
 					_inverted = false;
 					_animation = "walk";

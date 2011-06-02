@@ -21,6 +21,11 @@ package com.citrusengine.objects.platformer
 		public var onBeginContact:Signal;
 		public var onEndContact:Signal;
 		
+		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number):Sensor
+		{
+			return new Sensor(name, { x: x, y: y, width: width, height: height } );
+		}
+		
 		public function Sensor(name:String, params:Object=null)
 		{
 			super(name, params);

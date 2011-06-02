@@ -11,6 +11,11 @@ package com.citrusengine.objects.platformer
 	{
 		private var _collectorClass:Class = Hero;
 		
+		public static function Make(name:String, x:Number, y:Number):Coin
+		{
+			return new Coin(name, { x: x, y: y } );
+		}
+		
 		public function Coin(name:String, params:Object=null)
 		{
 			super(name, params);

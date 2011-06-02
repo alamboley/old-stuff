@@ -9,7 +9,12 @@ package com.citrusengine.objects.platformer
 	{
 		private var _oneWay:Boolean = false;
 		
-		public function Platform(name:String, params:Object=null)
+		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number):Platform
+		{
+			return new Platform(name, { x: x, y: y, width: width, height: height } );
+		}
+		
+		public function Platform(name:String, params:Object = null )
 		{
 			super(name, params);
 		}

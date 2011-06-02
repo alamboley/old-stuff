@@ -1,11 +1,11 @@
 package com.citrusengine.physics
 {
-	import Box2DAS.Common.V2;
 	import Box2DAS.Common.b2Base;
+	import Box2DAS.Common.V2;
 	import Box2DAS.Dynamics.b2World;
-	
 	import com.citrusengine.core.CitrusObject;
 	import com.citrusengine.view.ISpriteView;
+	
 	
 	/**
 	 * This is a simple wrapper class that allows you to add a Box2D Alchemy world to your game's state.
@@ -19,6 +19,11 @@ package com.citrusengine.physics
 		private var _world:b2World;
 		private var _group:Number = 1;
 		private var _view:* = "com.citrusengine.physics.Box2DDebugArt";
+		
+		public static function Make(name:String, visible:Boolean):Box2D
+		{
+			return new Box2D(name, { visible: visible } );
+		}
 		
 		/**
 		 * Creates and initializes a Box2D world. 

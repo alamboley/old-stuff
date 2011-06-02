@@ -47,7 +47,7 @@
 			sound.addSound("Re", "sounds/re.mp3");
 			sound.addSound("Mi", "sounds/mi.mp3");
 
-			sound.playSound("KinessiaTheme");
+			//sound.playSound("KinessiaTheme");
 
 			_levelManager = new LevelManager();
 			_levelManager.onLevelChanged.add(_onLevelChanged);
@@ -77,8 +77,6 @@
 		private function _pacmanGame(nEvt:NetworkEvent):void {
 			
 			if (nEvt.type == NetworkEvent.START_PACMAN) {
-			
-				this.removeEventListener(NetworkEvent.START_PACMAN, _pacmanGame);
 				
 				_pacman = new Pacman();
 				addChild(_pacman);
@@ -86,8 +84,6 @@
 				_pacman.y = 300;
 				
 			} else {
-				
-				this.removeEventListener(NetworkEvent.END_PACMAN, _pacmanGame);
 				
 				_pacman.destroy();
 				removeChild(_pacman);

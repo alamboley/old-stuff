@@ -11,6 +11,11 @@ package com.citrusengine.objects.platformer
 	 */	
 	public class Crate extends PhysicsObject
 	{
+		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number):Crate
+		{
+			return new Crate(name, { x: x, y: y, width: width, height: height } );
+		}
+		
 		public function Crate(name:String, params:Object=null)
 		{
 			super(name, params);

@@ -345,6 +345,14 @@ package com.citrusengine.objects
 		}
 		
 		/**
+		 * A direction reference to the Box2D body associated with this object.
+		 */
+		public function get body():b2Body
+		{
+			return _body;
+		}
+		
+		/**
 		 * This method will often need to be overriden to provide additional definition to the Box2D body object. 
 		 */		
 		protected function defineBody():void

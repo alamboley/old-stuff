@@ -3,9 +3,9 @@ package kinessia.objects {
 	/**
 	 * @author Aymeric
 	 */
-	public class Roseau extends AnimateObject {
+	public class Croquis extends AnimateObject {
 
-		public function Roseau(name:String, params:Object = null) {
+		public function Croquis(name:String, params:Object = null) {
 			super(name, params);
 		}
 

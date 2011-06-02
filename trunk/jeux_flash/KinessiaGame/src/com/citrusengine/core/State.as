@@ -100,11 +100,13 @@ package com.citrusengine.core
 		/**
 		 * Call this method to add a CitrusObject to this state. All visible game objects and physics objects
 		 * will need to be created and added via this method so that they can be properly creatd, managed, updated, and destroyed. 
+		 * @return The CitrusObject that you passed in. Useful for linking commands together.
 		 */		
-		public function add(object:CitrusObject):void
+		public function add(object:CitrusObject):CitrusObject
 		{
 			_objects.push(object);
 			_view.addArt(object);
+			return object;
 		}
 		
 		/**
