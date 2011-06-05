@@ -1,7 +1,5 @@
 package kinessia.network {
 
-	import flash.events.MouseEvent;
-
 	import kinessia.art.ArtEvent;
 
 	import net.user1.reactor.IClient;
@@ -15,6 +13,8 @@ package kinessia.network {
 	import flash.display.Sprite;
 	import flash.events.AccelerometerEvent;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.events.SampleDataEvent;
 	import flash.events.TouchEvent;
 	import flash.sensors.Accelerometer;
 
@@ -22,6 +22,8 @@ package kinessia.network {
 	 * @author Aymeric
 	 */
 	public class Network extends Sprite {
+		
+		private const _MICRO_FLY_LEVEL:uint = 20;
 
 		private var _reactor:Reactor;
 		private var _room:Room;
@@ -41,8 +43,8 @@ package kinessia.network {
 		public function Network(home:MovieClip) {
 
 			_reactor = new Reactor();
-			// _reactor.connect("169.254.119.131", 9110);
-			_reactor.connect("localhost", 9110);
+			_reactor.connect("169.254.161.158", 9110);
+			//_reactor.connect("localhost", 9110);
 			// _reactor.connect("tryunion.com", 80);
 
 			_home = home;
@@ -148,6 +150,18 @@ package kinessia.network {
 
 			}
 
+		}
+		
+		public function sampleData(sdEvt:SampleDataEvent):void {
+
+			while (sdEvt.data.bytesAvailable) {
+				
+				if (sdEvt.data.readFloat() * 50 > _MICRO_FLY_LEVEL) {
+					_room.sendMessage(_uniqueID, true, null, NetworkEvent.FLY);
+				} else {
+					_room.sendMessage(_uniqueID, true, null, NetworkEvent.NOT_FLY);
+				}
+			}
 		}
 
 		private function _checkMsgFromGame(message:String):Boolean {
