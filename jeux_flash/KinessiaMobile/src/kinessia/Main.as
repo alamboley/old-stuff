@@ -1,6 +1,5 @@
 ﻿package kinessia {
 
-	import flash.events.MouseEvent;
 	import gesture.Gesture;
 	import gesture.RecognizeEvent;
 
@@ -13,7 +12,8 @@
 
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
-	import flash.events.TouchEvent;
+	import flash.events.MouseEvent;
+	import flash.events.SampleDataEvent;
 	import flash.media.Microphone;
 	import flash.ui.Multitouch;
 	import flash.ui.MultitouchInputMode;
@@ -29,13 +29,16 @@
 
 		private var _network:Network;
 		private var _gesture:Gesture;
-
+		
+		private var _level:uint;
 		private var _tmpLvlCoin:uint;
 
 		public function Main() {
 
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
-
+			
+			_level = 1; 
+			
 			_network = new Network(home);
 			addChild(_network);
 			// Network is a Sprite instead of an EventDispatcher because of the EnterFrame
@@ -80,10 +83,25 @@
 
 				case NetworkEvent.LEVEL_COMPLETE:
 					
+					++_level;
 					_tmpLvlCoin = 0;
 					break;
 
 				case NetworkEvent.RESTART_LEVEL:
+				
+					switch (_level) {
+						
+						case 2:
+							_screenGame.piece1.gotoAndStop("search");
+							break;
+							
+						case 3:
+							_screenGame.piece2.gotoAndStop("search");
+							break;
+							
+						case 4:
+							_screenGame.piece3.gotoAndStop("search");
+					}
 				
 					_screenGame.coin.coin_txt.text = String(uint(_screenGame.coin.coin_txt.text) - _tmpLvlCoin);
 
@@ -93,20 +111,28 @@
 				case NetworkEvent.START_MICRO:
 
 					_screenGame.texte.gotoAndStop("start_micro");
-					_screenGame.piece1.gotoAndStop("search");
-					trace("microphone supporté :" + Microphone.isSupported);
+					trace("microphone support :" + Microphone.isSupported);
 
 					var microphone:Microphone = Microphone.getMicrophone();
-
+					microphone.addEventListener(SampleDataEvent.SAMPLE_DATA, _network.sampleData);
 
 					break;
 
 				case NetworkEvent.STOP_MICRO:
 
 					_screenGame.piece1.gotoAndStop("find");
-
+					
+					microphone.removeEventListener(SampleDataEvent.SAMPLE_DATA, _network.sampleData);
 					microphone = null;
 
+					break;
+					
+				case NetworkEvent.START_PACMAN:
+				
+					break;
+					
+				case NetworkEvent.END_PACMAN:
+				
 					break;
 
 				case NetworkEvent.START_CATAPULTE:
@@ -115,6 +141,12 @@
 					_screenGame.addChild(_gesture);
 					_gesture.addEventListener(RecognizeEvent.CIRCLE_IDENTIFIED, _drawCircleForCatapulte);
 
+					break;
+					
+				case NetworkEvent.END_CATAPULTE:
+					
+					_screenGame.piece3.gotoAndStop("find");
+					
 					break;
 			}
 			
