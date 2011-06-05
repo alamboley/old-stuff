@@ -7,6 +7,8 @@ package kinessia.network {
 	 * @author Aymeric
 	 */
 	public class PhoneInput extends Input {
+		
+		private var _ce:CitrusEngine;
 
 		private var _enabled:Boolean = true;
 
@@ -25,33 +27,33 @@ package kinessia.network {
 			
 			super.enabled = value;
 
-			var ce:CitrusEngine = CitrusEngine.getInstance();
+			_ce = CitrusEngine.getInstance();
 			
 			if (_enabled) {
 				
-				ce.addEventListener(NetworkEvent.JUMP, _onPhoneJump);
-				ce.addEventListener(NetworkEvent.ONGROUND, _onPhoneJump);
-				ce.addEventListener(NetworkEvent.STATIONARY, _onPhoneJump);
+				_ce.addEventListener(NetworkEvent.JUMP, _onPhoneJump);
+				_ce.addEventListener(NetworkEvent.ONGROUND, _onPhoneJump);
+				_ce.addEventListener(NetworkEvent.STATIONARY, _onPhoneJump);
 				
-				ce.addEventListener(NetworkEvent.LEFT, _onPhoneDirection);
-				ce.addEventListener(NetworkEvent.RIGHT, _onPhoneDirection);
-				ce.addEventListener(NetworkEvent.IMMOBILE, _onPhoneDirection);
+				_ce.addEventListener(NetworkEvent.LEFT, _onPhoneDirection);
+				_ce.addEventListener(NetworkEvent.RIGHT, _onPhoneDirection);
+				_ce.addEventListener(NetworkEvent.IMMOBILE, _onPhoneDirection);
 				
-				ce.addEventListener(NetworkEvent.FLY, _onMicroFly);
-				ce.addEventListener(NetworkEvent.NOT_FLY, _onMicroFly);
+				_ce.addEventListener(NetworkEvent.FLY, _onMicroFly);
+				_ce.addEventListener(NetworkEvent.NOT_FLY, _onMicroFly);
 				
 			} else {
 				
-				ce.removeEventListener(NetworkEvent.JUMP, _onPhoneJump);
-				ce.removeEventListener(NetworkEvent.ONGROUND, _onPhoneJump);
-				ce.removeEventListener(NetworkEvent.STATIONARY, _onPhoneJump);
+				_ce.removeEventListener(NetworkEvent.JUMP, _onPhoneJump);
+				_ce.removeEventListener(NetworkEvent.ONGROUND, _onPhoneJump);
+				_ce.removeEventListener(NetworkEvent.STATIONARY, _onPhoneJump);
 				
-				ce.removeEventListener(NetworkEvent.LEFT, _onPhoneDirection);
-				ce.removeEventListener(NetworkEvent.RIGHT, _onPhoneDirection);
-				ce.removeEventListener(NetworkEvent.IMMOBILE, _onPhoneDirection);
+				_ce.removeEventListener(NetworkEvent.LEFT, _onPhoneDirection);
+				_ce.removeEventListener(NetworkEvent.RIGHT, _onPhoneDirection);
+				_ce.removeEventListener(NetworkEvent.IMMOBILE, _onPhoneDirection);
 				
-				ce.removeEventListener(NetworkEvent.FLY, _onMicroFly);
-				ce.removeEventListener(NetworkEvent.NOT_FLY, _onMicroFly);
+				_ce.removeEventListener(NetworkEvent.FLY, _onMicroFly);
+				_ce.removeEventListener(NetworkEvent.NOT_FLY, _onMicroFly);
 			}
 		}
 
@@ -59,18 +61,18 @@ package kinessia.network {
 			
 			super.initialize();
 
-			var ce:CitrusEngine = CitrusEngine.getInstance();
+			_ce = CitrusEngine.getInstance();
 			
-			ce.addEventListener(NetworkEvent.JUMP, _onPhoneJump);
-			ce.addEventListener(NetworkEvent.ONGROUND, _onPhoneJump);
-			ce.addEventListener(NetworkEvent.STATIONARY, _onPhoneJump);
+			_ce.addEventListener(NetworkEvent.JUMP, _onPhoneJump);
+			_ce.addEventListener(NetworkEvent.ONGROUND, _onPhoneJump);
+			_ce.addEventListener(NetworkEvent.STATIONARY, _onPhoneJump);
 			
-			ce.addEventListener(NetworkEvent.LEFT, _onPhoneDirection);
-			ce.addEventListener(NetworkEvent.RIGHT, _onPhoneDirection);
-			ce.addEventListener(NetworkEvent.IMMOBILE, _onPhoneDirection);
+			_ce.addEventListener(NetworkEvent.LEFT, _onPhoneDirection);
+			_ce.addEventListener(NetworkEvent.RIGHT, _onPhoneDirection);
+			_ce.addEventListener(NetworkEvent.IMMOBILE, _onPhoneDirection);
 			
-			ce.addEventListener(NetworkEvent.FLY, _onMicroFly);
-			ce.addEventListener(NetworkEvent.NOT_FLY, _onMicroFly);
+			_ce.addEventListener(NetworkEvent.FLY, _onMicroFly);
+			_ce.addEventListener(NetworkEvent.NOT_FLY, _onMicroFly);
 		}
 		
 		public function justJumped():Boolean {

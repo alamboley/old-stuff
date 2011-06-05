@@ -10,11 +10,6 @@ package kinessia.pacman.objects {
 		public function EndLevel() {
 			
 			type = TypesObjets.OBJET;
-			
-			this.graphics.clear();
-			this.graphics.beginFill(0x00FF00);
-			this.graphics.drawRect(0, 0, 25, 25);
-			this.graphics.endFill();
 		}
 	}
 }
