@@ -40,7 +40,7 @@ package kinessia.network {
 
 
 			_tabMsgFromIphone = [];
-			_tabMsgFromIphone = [NetworkEvent.PAUSE_GAME, NetworkEvent.SOUND_GAME, NetworkEvent.JUMP, NetworkEvent.ONGROUND, NetworkEvent.STATIONARY, NetworkEvent.RIGHT, NetworkEvent.LEFT, NetworkEvent.IMMOBILE, NetworkEvent.CIRCLE_DRAW];
+			_tabMsgFromIphone = [NetworkEvent.PAUSE_GAME, NetworkEvent.SOUND_GAME, NetworkEvent.JUMP, NetworkEvent.ONGROUND, NetworkEvent.STATIONARY, NetworkEvent.RIGHT, NetworkEvent.LEFT, NetworkEvent.IMMOBILE, NetworkEvent.FLY, NetworkEvent.FLY, NetworkEvent.CIRCLE_DRAW];
 			_lengthTab = _tabMsgFromIphone.length;
 
 			_reactor.addEventListener(ReactorEvent.READY, _createRoom);
