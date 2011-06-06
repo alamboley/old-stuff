@@ -47,11 +47,16 @@
 			_network.addEventListener(NetworkEvent.RESTART_LEVEL, _gameOnPhone);
 
 			_network.addEventListener(ArtEvent.REMOVE_HOME, _artHandler);
+			_network.addEventListener(ArtEvent.SKIP, _artHandler);
 
 			_network.addEventListener(NetworkEvent.START_MICRO, _gameOnPhone);
 			_network.addEventListener(NetworkEvent.STOP_MICRO, _gameOnPhone);
+			
+			_network.addEventListener(NetworkEvent.START_PACMAN, _gameOnPhone);
+			_network.addEventListener(NetworkEvent.END_PACMAN, _gameOnPhone);
 
 			_network.addEventListener(NetworkEvent.START_CATAPULTE, _gameOnPhone);
+			_network.addEventListener(NetworkEvent.END_CATAPULTE, _gameOnPhone);
 
 			_network.addEventListener(NetworkEvent.COIN_TAKEN, _addCoin);
 		}
@@ -70,9 +75,18 @@
 					addChild(_screenGame);
 					_screenGame.alpha = 0;
 					TweenMax.to(_screenGame, 0.4, {alpha:1});
+					
+					_screenGame.skip.addEventListener(MouseEvent.CLICK, _network.hudInfo);
+					
+					break;
+					
+				case ArtEvent.SKIP:
 
+					_screenGame.gotoAndStop("game");
+					_screenGame.fullscreen.addEventListener(MouseEvent.CLICK, _network.hudInfo);
 					_screenGame.pause.addEventListener(MouseEvent.CLICK, _network.hudInfo);
 					_screenGame.sound.addEventListener(MouseEvent.CLICK, _network.hudInfo);
+					
 					break;
 			}
 		}
@@ -99,8 +113,9 @@
 							_screenGame.piece2.gotoAndStop("search");
 							break;
 							
-						case 4:
+						case 5:
 							_screenGame.piece3.gotoAndStop("search");
+							break;
 					}
 				
 					_screenGame.coin.coin_txt.text = String(uint(_screenGame.coin.coin_txt.text) - _tmpLvlCoin);
@@ -121,6 +136,7 @@
 				case NetworkEvent.STOP_MICRO:
 
 					_screenGame.piece1.gotoAndStop("find");
+					_screenGame.texte.gotoAndStop("empty");
 					
 					microphone.removeEventListener(SampleDataEvent.SAMPLE_DATA, _network.sampleData);
 					microphone = null;
@@ -128,14 +144,21 @@
 					break;
 					
 				case NetworkEvent.START_PACMAN:
+					
+					_screenGame.texte.gotoAndStop("start_pacman");
 				
 					break;
 					
 				case NetworkEvent.END_PACMAN:
-				
+					
+					_screenGame.piece2.gotoAndStop("find");
+					_screenGame.texte.gotoAndStop("empty");
+					
 					break;
 
 				case NetworkEvent.START_CATAPULTE:
+				
+					_screenGame.texte.gotoAndStop("start_catapulte");
 
 					_gesture = new Gesture();
 					_screenGame.addChild(_gesture);
@@ -146,6 +169,7 @@
 				case NetworkEvent.END_CATAPULTE:
 					
 					_screenGame.piece3.gotoAndStop("find");
+					_screenGame.texte.gotoAndStop("empty");
 					
 					break;
 			}

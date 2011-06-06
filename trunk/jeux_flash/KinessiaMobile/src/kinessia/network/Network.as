@@ -43,7 +43,7 @@ package kinessia.network {
 		public function Network(home:MovieClip) {
 
 			_reactor = new Reactor();
-			_reactor.connect("169.254.161.158", 9110);
+			_reactor.connect("169.254.130.111", 9110);
 			//_reactor.connect("localhost", 9110);
 			// _reactor.connect("tryunion.com", 80);
 
@@ -88,7 +88,12 @@ package kinessia.network {
 
 			if (!_checkMsgFromGame(message)) {
 				trace("provient du jeu : " + message);
-				this.dispatchEvent(new NetworkEvent(message));
+				if (message == ArtEvent.SKIP) {
+					this.dispatchEvent(new ArtEvent(message));
+				} else {
+					this.dispatchEvent(new NetworkEvent(message));
+				}
+				
 			}
 		}
 
@@ -139,13 +144,47 @@ package kinessia.network {
 		public function hudInfo(tEvt:MouseEvent):void {
 
 			switch (tEvt.target.name) {
+				
+				case "skip":
+					_room.sendMessage(_uniqueID, true, null, NetworkEvent.SKIP);
+					this.dispatchEvent(new ArtEvent(ArtEvent.SKIP));
+					
+					break;
+					
+				case "fullscreen":
+				
+					_room.sendMessage(_uniqueID, true, null, NetworkEvent.FULLSCREEN);
+					
+					if (tEvt.target.currentFrameLabel == "fullscreen") {
+						tEvt.target.gotoAndStop("normal");
+					} else {
+						tEvt.target.gotoAndStop("fullscreen");
+					}
+					
+					break;
 
 				case "pause":
+				
 					_room.sendMessage(_uniqueID, true, null, NetworkEvent.PAUSE_GAME);
+					
+					if (tEvt.target.currentFrameLabel == "play") {
+						tEvt.target.gotoAndStop("pause");
+					} else {
+						tEvt.target.gotoAndStop("play");
+					}
+					
 					break;
 
 				case "sound":
+				
 					_room.sendMessage(_uniqueID, true, null, NetworkEvent.SOUND_GAME);
+					
+					if (tEvt.target.currentFrameLabel == "play") {
+						tEvt.target.gotoAndStop("mute");
+					} else {
+						tEvt.target.gotoAndStop("play");
+					}
+					
 					break;
 
 			}
