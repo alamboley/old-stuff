@@ -1,13 +1,15 @@
 package kinessia.art {
 
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
 
 	/**
 	 * @author Aymeric
 	 */
-	public class ScreenGame extends Sprite {
+	public class ScreenGame extends MovieClip {
 		
+		public var skip:MovieClip;
+		
+		public var fullscreen:MovieClip;
 		public var pause:MovieClip;
 		public var sound:MovieClip;
 		
