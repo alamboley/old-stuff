@@ -3,7 +3,7 @@ package kinessia.objects {
 	/**
 	 * @author Aymeric
 	 */
-	public class Croquis extends AnimateObject {
+	public class Croquis extends AnimateSensor {
 
 		public function Croquis(name:String, params:Object = null) {
 			super(name, params);

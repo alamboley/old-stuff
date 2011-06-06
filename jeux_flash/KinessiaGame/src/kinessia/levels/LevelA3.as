@@ -8,6 +8,7 @@ package kinessia.levels {
 	import com.citrusengine.objects.platformer.Sensor;
 
 	import flash.display.MovieClip;
+	import flash.utils.setTimeout;
 
 	/**
 	 * @author Aymeric
@@ -15,6 +16,7 @@ package kinessia.levels {
 	public class LevelA3 extends ALevel {
 		
 		private var _pacmanSensor:Sensor;
+		private var _bulle:Sensor;
 
 		public function LevelA3(levelObjectsMC:MovieClip) {
 			super(levelObjectsMC);
@@ -47,7 +49,15 @@ package kinessia.levels {
 				_declik.visible = false;
 
 				stage.addEventListener(NetworkEvent.END_PACMAN, _endPacman);
+				
+				setTimeout(_addBulle, 0);
 			}
+		}
+		
+		private function _addBulle():void {
+			
+			_bulle = new Sensor("bulle", {x:2420, y:70, view:"objects/bulle.swf"});
+			add(_bulle);
 		}
 
 		private function _endPacman(nEvt:NetworkEvent):void {
@@ -57,6 +67,8 @@ package kinessia.levels {
 			
 			_declik.controlsEnabled = true;
 			_declik.visible = true;
+			
+			_bulle.kill = true;
 		}
 	}
 }

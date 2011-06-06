@@ -17,6 +17,7 @@ package kinessia.levels {
 	import flash.display.MovieClip;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
+	import flash.utils.setTimeout;
 
 	/**
 	 * @author Aymeric
@@ -30,6 +31,7 @@ package kinessia.levels {
 		private var _croquis1:Croquis, _croquis2:Croquis;
 		
 		private var _piece:Piece;
+		private var _bulle:Sensor;
 		
 		private var _startWalker:Sensor;
 		private var _walker:TheWalker;
@@ -87,7 +89,15 @@ package kinessia.levels {
 				_ce.dispatchEvent(new NetworkEvent(NetworkEvent.START_CATAPULTE));
 				
 				_croquis1.anim = _croquis2.anim = "white";
+				
+				setTimeout(_addBulle, 0);
 			}
+		}
+		
+		private function _addBulle():void {
+			
+			_bulle = new Sensor("bulle", {x:-250, y:200, view:"objects/bulle.swf"});
+			add(_bulle);
 		}
 
 		private function _circleDraw(nEvt:NetworkEvent):void {
@@ -120,6 +130,8 @@ package kinessia.levels {
 				_croquis1.anim = _croquis2.anim = "black";
 
 				_ce.dispatchEvent(new NetworkEvent(NetworkEvent.END_CATAPULTE));
+				
+				_bulle.kill = true;
 			}
 		}
 		
