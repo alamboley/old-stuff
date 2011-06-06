@@ -5,11 +5,11 @@ package kinessia.objects {
 	/**
 	 * @author Aymeric
 	 */
-	public class AnimateObject extends Sensor {
+	public class AnimateSensor extends Sensor {
 
 		private var _anim:String = "idle";
 
-		public function AnimateObject(name:String, params:Object = null) {
+		public function AnimateSensor(name:String, params:Object = null) {
 			super(name, params);
 		}
 
