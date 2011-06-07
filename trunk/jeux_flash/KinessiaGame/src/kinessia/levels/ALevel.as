@@ -39,6 +39,7 @@ package kinessia.levels {
 		public var restartLevel:Signal;
 
 		protected var _ce:CitrusEngine;
+		protected var _network:Network;
 
 		protected var _declik:Declik;
 		protected var _bullzors:Vector.<CitrusObject>;
@@ -67,14 +68,14 @@ package kinessia.levels {
 
 			var box2d:Box2D = new Box2D("Box2D", {visible:false});
 			add(box2d);
-			
+
 			_maskBgLoading = new Shape();
 			addChild(_maskBgLoading);
 			_maskBgLoading.graphics.clear();
 			_maskBgLoading.graphics.beginFill(0x000000);
 			_maskBgLoading.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
 			_maskBgLoading.graphics.endFill();
-			
+
 			_loadScreen = new LoadScreen();
 			addChild(_loadScreen);
 			_loadScreen.x = stage.stageWidth / 2;
@@ -85,16 +86,16 @@ package kinessia.levels {
 			ObjectMaker.FromMovieClip(_levelObjectsMC);
 
 			ExternalArt.smoothBitmaps = true;
-			
-			var network:Network = Network.getInstance();
-			network.addLevelListener(LevelManager.getInstance().nameCurrentLevel);
+
+			_network = Network.getInstance();
+			_network.addLevelListener(LevelManager.getInstance().nameCurrentLevel);
 
 			_declik = Declik(getObjectByName("Declik"));
-			//_declik.onJump.add(_jump);
-			//_declik.onAnimationChange.add(_animationChange);
+			// _declik.onJump.add(_jump);
+			// _declik.onAnimationChange.add(_animationChange);
 			_declik.onTakeDamage.add(_hurt);
 			_declik.onGiveDamage.add(_attack);
-			
+
 			var coins:Vector.<CitrusObject> = getObjectsByType(Coin);
 			for each (var coin : Coin in coins) {
 				coin.onBeginContact.add(_coinTaken);
@@ -111,15 +112,15 @@ package kinessia.levels {
 
 			view.setupCamera(_declik, new MathVector(320, 240), new Rectangle(-1000, 0, 4000, 650), new MathVector(.25, .05));
 		}
-		
+
 		protected function _addContactRestartLevel():void {
-			
+
 			var restartLevel:Sensor = Sensor(getObjectByName("RestartLevel"));
 			restartLevel.onBeginContact.add(_restartLevel);
 		}
-		
+
 		protected function _addMusicalSensor():void {
-			
+
 			var musicalSensors:Vector.<CitrusObject> = getObjectsByType(MusicalSensor);
 			for each (var musicalSensor:MusicalSensor in musicalSensors) {
 				musicalSensor.onBeginContact.add(_playSound);
@@ -132,9 +133,9 @@ package kinessia.levels {
 				lvlEnded.dispatch();
 			}
 		}
-		
+
 		protected function _restartLevel(cEvt:ContactEvent):void {
-			
+
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 				restartLevel.dispatch();
 			}
@@ -143,9 +144,9 @@ package kinessia.levels {
 		protected function _hurt():void {
 			_ce.sound.playSound("Hurt", 1, 0);
 		}
-		
+
 		private function _coinTaken(cEvt:ContactEvent):void {
-			
+
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 				_ce.dispatchEvent(new NetworkEvent(NetworkEvent.COIN_TAKEN));
 				_ce.sound.playSound("Collect", 1, 0);
@@ -153,26 +154,26 @@ package kinessia.levels {
 		}
 
 		private function _roseauTouche(cEvt:ContactEvent):void {
-			
+
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 				cEvt.fixture.GetBody().GetUserData().anim = "white";
 			}
 		}
 
 		private function _roseauFin(cEvt:ContactEvent):void {
-			
+
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 				cEvt.fixture.GetBody().GetUserData().anim = "black";
 			}
 		}
-		
+
 		private function _playSound(cEvt:ContactEvent):void {
 
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 				_ce.sound.playSound(cEvt.fixture.GetBody().GetUserData().song, 1, 0);
 			}
 		}
-		
+
 		private function _attack():void {
 			_ce.sound.playSound("Kill", 1, 0);
 		}
@@ -182,7 +183,7 @@ package kinessia.levels {
 		}
 
 		private function _animationChange():void {
-			
+
 			if (_declik.animation == "walk") {
 				_ce.sound.stopSound("Skid");
 				_ce.sound.playSound("Walk", 1);
@@ -206,20 +207,20 @@ package kinessia.levels {
 		override public function update(timeDelta:Number):void {
 
 			super.update(timeDelta);
-			
+
 			var percent:uint = Math.round(view.loadManager.bytesLoaded / view.loadManager.bytesTotal * 100);
 			// _percent = Math.round(view.loadManager.bytesLoaded / view.loadManager.bytesTotal * 100).toString();
-			
+
 			if (_loadScreen != null) {
 				_loadScreen.gotoAndStop(percent);
 			}
 		}
 
 		private function _handleLoadComplete():void {
-			
+
 			removeChild(_loadScreen);
 			_loadScreen = null;
-			
+
 			removeChild(_maskBgLoading);
 			_maskBgLoading = null;
 		}
