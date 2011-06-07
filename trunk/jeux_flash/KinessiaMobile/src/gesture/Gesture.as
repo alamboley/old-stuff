@@ -83,9 +83,9 @@
 			
 			if (myResult.Name == "circle") {
 				this.dispatchEvent(new RecognizeEvent(RecognizeEvent.CIRCLE_IDENTIFIED));
-			} else {
-				this.graphics.clear();
 			}
+			
+			this.graphics.clear();
 			
 		}
 
