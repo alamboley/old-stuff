@@ -1,5 +1,6 @@
 ﻿package kinessia {
 
+	import kinessia.sound.Ring;
 	import gesture.Gesture;
 	import gesture.RecognizeEvent;
 
@@ -32,12 +33,16 @@
 		
 		private var _level:uint;
 		private var _tmpLvlCoin:uint;
+		
+		private var _ring:Ring;
 
 		public function Main() {
 
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			
 			_level = 1; 
+			
+			_ring = new Ring();
 			
 			_network = new Network(home);
 			addChild(_network);
@@ -47,6 +52,7 @@
 			_network.addEventListener(NetworkEvent.RESTART_LEVEL, _gameOnPhone);
 
 			_network.addEventListener(ArtEvent.REMOVE_HOME, _artHandler);
+			_network.addEventListener(NetworkEvent.TALK, _artHandler);
 			_network.addEventListener(ArtEvent.SKIP, _artHandler);
 
 			_network.addEventListener(NetworkEvent.START_MICRO, _gameOnPhone);
@@ -77,15 +83,26 @@
 					TweenMax.to(_screenGame, 0.4, {alpha:1});
 					
 					_screenGame.skip.addEventListener(MouseEvent.CLICK, _network.hudInfo);
-					
-					break;
-					
-				case ArtEvent.SKIP:
-
-					_screenGame.gotoAndStop("game");
 					_screenGame.fullscreen.addEventListener(MouseEvent.CLICK, _network.hudInfo);
 					_screenGame.pause.addEventListener(MouseEvent.CLICK, _network.hudInfo);
 					_screenGame.sound.addEventListener(MouseEvent.CLICK, _network.hudInfo);
+					
+					break;
+					
+				case NetworkEvent.TALK:
+					
+					_screenGame.skip.visible = true;
+					_screenGame.textfield.visible = true;
+					_screenGame.playText();	
+					break;
+					
+				case ArtEvent.SKIP:
+					
+					_screenGame.skip = null;
+					_screenGame.stopText();
+					_screenGame.textfield  = null;
+					
+					_screenGame.gotoAndStop("game");
 					
 					break;
 			}
@@ -124,11 +141,14 @@
 					break;
 
 				case NetworkEvent.START_MICRO:
+				
+					_ring.play();
 
 					_screenGame.texte.gotoAndStop("start_micro");
 					trace("microphone support :" + Microphone.isSupported);
 
 					var microphone:Microphone = Microphone.getMicrophone();
+					_network.catchMic(true);
 					microphone.addEventListener(SampleDataEvent.SAMPLE_DATA, _network.sampleData);
 
 					break;
@@ -138,12 +158,16 @@
 					_screenGame.piece1.gotoAndStop("find");
 					_screenGame.texte.gotoAndStop("empty");
 					
+					_network.catchMic(false);
+					
 					microphone.removeEventListener(SampleDataEvent.SAMPLE_DATA, _network.sampleData);
 					microphone = null;
 
 					break;
 					
 				case NetworkEvent.START_PACMAN:
+				
+					_ring.play();
 					
 					_screenGame.texte.gotoAndStop("start_pacman");
 				
@@ -157,6 +181,8 @@
 					break;
 
 				case NetworkEvent.START_CATAPULTE:
+				
+					_ring.play();
 				
 					_screenGame.texte.gotoAndStop("start_catapulte");
 

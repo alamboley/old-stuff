@@ -15,15 +15,18 @@ package kinessia.network {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.SampleDataEvent;
+	import flash.events.TimerEvent;
 	import flash.events.TouchEvent;
 	import flash.sensors.Accelerometer;
+	import flash.utils.ByteArray;
+	import flash.utils.Timer;
 
 	/**
 	 * @author Aymeric
 	 */
 	public class Network extends Sprite {
-		
-		private const _MICRO_FLY_LEVEL:uint = 20;
+
+		private const _MICRO_FLY_LEVEL:Number = 0.8;
 
 		private var _reactor:Reactor;
 		private var _room:Room;
@@ -40,11 +43,13 @@ package kinessia.network {
 		private var _tabMsgFromGame:Array;
 		private var _lengthTab:uint;
 
+		private var _micArray:Array;
+
 		public function Network(home:MovieClip) {
 
 			_reactor = new Reactor();
-			_reactor.connect("169.254.130.111", 9110);
-			//_reactor.connect("localhost", 9110);
+			_reactor.connect("169.254.64.229", 9110);
+			// _reactor.connect("localhost", 9110);
 			// _reactor.connect("tryunion.com", 80);
 
 			_home = home;
@@ -88,12 +93,13 @@ package kinessia.network {
 
 			if (!_checkMsgFromGame(message)) {
 				trace("provient du jeu : " + message);
-				if (message == ArtEvent.SKIP) {
+				if (message == ArtEvent.SKIP || message == NetworkEvent.TALK) {
 					this.dispatchEvent(new ArtEvent(message));
 				} else {
+
 					this.dispatchEvent(new NetworkEvent(message));
 				}
-				
+
 			}
 		}
 
@@ -144,62 +150,92 @@ package kinessia.network {
 		public function hudInfo(tEvt:MouseEvent):void {
 
 			switch (tEvt.target.name) {
-				
+
 				case "skip":
 					_room.sendMessage(_uniqueID, true, null, NetworkEvent.SKIP);
 					this.dispatchEvent(new ArtEvent(ArtEvent.SKIP));
-					
+
 					break;
-					
+
 				case "fullscreen":
-				
+
 					_room.sendMessage(_uniqueID, true, null, NetworkEvent.FULLSCREEN);
-					
+
 					if (tEvt.target.currentFrameLabel == "fullscreen") {
 						tEvt.target.gotoAndStop("normal");
 					} else {
 						tEvt.target.gotoAndStop("fullscreen");
 					}
-					
+
 					break;
 
 				case "pause":
-				
+
 					_room.sendMessage(_uniqueID, true, null, NetworkEvent.PAUSE_GAME);
-					
+
 					if (tEvt.target.currentFrameLabel == "play") {
 						tEvt.target.gotoAndStop("pause");
 					} else {
 						tEvt.target.gotoAndStop("play");
 					}
-					
+
 					break;
 
 				case "sound":
-				
+
 					_room.sendMessage(_uniqueID, true, null, NetworkEvent.SOUND_GAME);
-					
+
 					if (tEvt.target.currentFrameLabel == "play") {
 						tEvt.target.gotoAndStop("mute");
 					} else {
 						tEvt.target.gotoAndStop("play");
 					}
-					
+
 					break;
 
 			}
 
 		}
-		
+
+		public function catchMic($value:Boolean):void {
+
+			if ($value == true) {
+
+				var timer:Timer = new Timer(100);
+
+				_micArray = [];
+
+				timer.start();
+				timer.addEventListener(TimerEvent.TIMER, _timeMic);
+
+			} else {
+				
+				timer.stop();
+				timer.removeEventListener(TimerEvent.TIMER, _timeMic);
+				
+				timer = null;
+			}
+		}
+
+		private function _timeMic(tEvt:TimerEvent):void {
+
+			var max:Number = 0;
+
+			for (var i:uint = 0; i < _micArray.length; ++i) {
+				if (_micArray[i] > max)
+					max = _micArray[i];
+			}
+
+			(max > _MICRO_FLY_LEVEL) ? _room.sendMessage(_uniqueID, true, null, NetworkEvent.FLY) : _room.sendMessage(_uniqueID, true, null, NetworkEvent.NOT_FLY);
+			_micArray = [];
+		}
+
 		public function sampleData(sdEvt:SampleDataEvent):void {
 
-			while (sdEvt.data.bytesAvailable) {
-				
-				if (sdEvt.data.readFloat() * 50 > _MICRO_FLY_LEVEL) {
-					_room.sendMessage(_uniqueID, true, null, NetworkEvent.FLY);
-				} else {
-					_room.sendMessage(_uniqueID, true, null, NetworkEvent.NOT_FLY);
-				}
+			var byteArray:ByteArray = sdEvt.data;
+
+			while (sdEvt.data.bytesAvailable > 0) {
+				_micArray.push(byteArray.readByte());
 			}
 		}
 
