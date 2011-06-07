@@ -10,6 +10,7 @@ package kinessia.network {
 		public static const LEVEL_COMPLETE:String = "LEVEL_COMPLETE";
 		public static const RESTART_LEVEL:String = "RESTART_LEVEL";
 		
+		public static const TALK:String = "TALK";
 		public static const SKIP:String = "SKIP";
 		public static const FULLSCREEN:String = "FULLSCREEN";
 		public static const PAUSE_GAME:String = "PAUSE_GAME";
