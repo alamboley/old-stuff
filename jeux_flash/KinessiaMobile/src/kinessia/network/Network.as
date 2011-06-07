@@ -48,14 +48,14 @@ package kinessia.network {
 		public function Network(home:MovieClip) {
 
 			_reactor = new Reactor();
-			_reactor.connect("169.254.64.229", 9110);
-			// _reactor.connect("localhost", 9110);
+			//_reactor.connect("169.254.64.229", 9110);
+			 _reactor.connect("localhost", 9110);
 			// _reactor.connect("tryunion.com", 80);
 
 			_home = home;
 
 			_tabMsgFromGame = [];
-			_tabMsgFromGame = [NetworkEvent.PAUSE_GAME, NetworkEvent.SOUND_GAME];
+			_tabMsgFromGame = [NetworkEvent.CONNECTED, NetworkEvent.PAUSE_GAME, NetworkEvent.SOUND_GAME, NetworkEvent.FLY, NetworkEvent.NOT_FLY];
 			_lengthTab = _tabMsgFromGame.length;
 
 			_reactor.addEventListener(ReactorEvent.READY, _connexionRoom);
@@ -85,6 +85,8 @@ package kinessia.network {
 			_room.addMessageListener(_uniqueID, _messageFromGame);
 
 			_home.login_btn.removeEventListener(TouchEvent.TOUCH_TAP, _connectedToRoom);
+			
+			_room.sendMessage(_uniqueID, true, null, NetworkEvent.CONNECTED);
 
 			this.dispatchEvent(new ArtEvent(ArtEvent.REMOVE_HOME));
 		}
