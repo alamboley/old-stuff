@@ -7,6 +7,8 @@ package kinessia.network {
 	 */
 	public class NetworkEvent extends Event {
 		
+		public static const CONNECTED:String = "CONNECTED";
+		
 		public static const LEVEL_COMPLETE:String = "LEVEL_COMPLETE";
 		public static const RESTART_LEVEL:String = "RESTART_LEVEL";
 		

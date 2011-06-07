@@ -1,9 +1,11 @@
 package kinessia.levels {
 
+	import com.greensock.TweenMax;
 	import Box2DAS.Dynamics.ContactEvent;
 
 	import kinessia.characters.Conservateur;
 	import kinessia.characters.Declik;
+	import kinessia.network.BulleSynch;
 	import kinessia.network.NetworkEvent;
 
 	import flash.display.MovieClip;
@@ -13,7 +15,8 @@ package kinessia.levels {
 	 * @author Aymeric
 	 */
 	public class LevelA1 extends ALevel {
-
+		
+		private var _bulle:BulleSynch;
 		private var _conservateur:Conservateur;
 
 		public function LevelA1(levelObjectsMC:MovieClip) {
@@ -25,11 +28,32 @@ package kinessia.levels {
 			super.initialize();
 
 			_addMusicalSensor();
+			
+			_bulle = new BulleSynch();
+			addChildAt(_bulle, 1);
+			TweenMax.to(_bulle, 0.4, {alpha:1, delay:1});
+			
+			_bulle.x = 100;
+			_bulle.y = 350;			
+			_bulle.texte.text = "Entre ce numéro : " + _network.uniqueID;
+			
+			_declik.controlsEnabled = false;
 
 			_conservateur = Conservateur(getFirstObjectByType(Conservateur));
 			_conservateur.onBeginContact.addOnce(_talk);
-
+			
+			_ce.addEventListener(NetworkEvent.CONNECTED, _connected);
 			_ce.addEventListener(NetworkEvent.SKIP, _skip);
+		}
+
+		private function _connected(nEvt:NetworkEvent):void {
+			
+			_ce.removeEventListener(NetworkEvent.CONNECTED, _connected);
+			
+			_declik.controlsEnabled = true;
+			
+			removeChild(_bulle);
+			_bulle = null;
 		}
 
 		private function _talk(cEvt:ContactEvent):void {
