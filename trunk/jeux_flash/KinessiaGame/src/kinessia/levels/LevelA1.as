@@ -35,6 +35,9 @@ package kinessia.levels {
 		private function _talk(cEvt:ContactEvent):void {
 
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
+				
+				_ce.dispatchEvent(new NetworkEvent(NetworkEvent.TALK));
+				
 				_conservateur.anim = "talk";
 				_ce.sound.playSound("Conservateur", 1, 0);
 				_ce.sound.getSoundChannel("Conservateur").addEventListener(Event.SOUND_COMPLETE, _soundComplete);
@@ -43,10 +46,6 @@ package kinessia.levels {
 		}
 
 		private function _soundComplete(evt:Event):void {
-
-			_conservateur.anim = "idle";
-			_ce.sound.getSoundChannel("Conservateur").removeEventListener(Event.SOUND_COMPLETE, _soundComplete);
-			_declik.controlsEnabled = true;
 
 			_ce.dispatchEvent(new NetworkEvent(NetworkEvent.SKIP));
 		}
@@ -67,8 +66,6 @@ package kinessia.levels {
 		}
 
 		override public function destroy():void {
-
-			_ce.removeEventListener(NetworkEvent.SKIP, _skip);
 
 			super.destroy();
 		}

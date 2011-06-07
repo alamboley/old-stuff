@@ -55,6 +55,7 @@ package kinessia.network {
 			switch (level) {
 				
 				case "A1":
+					_ce.addEventListener(NetworkEvent.TALK, _messageToIphone);
 					_ce.addEventListener(NetworkEvent.SKIP, _messageToIphone);
 					break;
 
@@ -108,6 +109,10 @@ package kinessia.network {
 			_room.sendMessage(_uniqueID, true, null, nEvt.type);
 
 			switch (nEvt.type) {
+				
+				case NetworkEvent.TALK:
+					_ce.removeEventListener(NetworkEvent.TALK, _messageToIphone);
+					break;
 				
 				case NetworkEvent.SKIP:
 					_ce.removeEventListener(NetworkEvent.SKIP, _messageToIphone);
