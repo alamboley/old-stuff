@@ -91,6 +91,7 @@ package kinessia.levels {
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 
 				_declik.gravity = _heroInitGravity;
+				
 				_pieceCaught = true;
 
 				_ce.dispatchEvent(new NetworkEvent(NetworkEvent.STOP_MICRO));
@@ -98,6 +99,8 @@ package kinessia.levels {
 				_croquis.anim = "black";
 				
 				_bulle.kill = true;
+				
+				_declik.stopFlying();
 			}
 		}
 	}
