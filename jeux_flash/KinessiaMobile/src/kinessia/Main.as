@@ -104,6 +104,8 @@
 					
 					_screenGame.gotoAndStop("game");
 					
+					_screenGame.earth.addEventListener(MouseEvent.CLICK, _screenGame.question);
+					
 					break;
 			}
 		}
@@ -115,6 +117,7 @@
 				case NetworkEvent.LEVEL_COMPLETE:
 					
 					++_level;
+					_screenGame.level = _level;
 					_tmpLvlCoin = 0;
 					break;
 
@@ -156,7 +159,7 @@
 				case NetworkEvent.STOP_MICRO:
 
 					_screenGame.piece1.gotoAndStop("find");
-					_screenGame.texte.gotoAndStop("empty");
+					_screenGame.texte.gotoAndStop("fiche1");
 					
 					_network.catchMic(false);
 					
@@ -176,7 +179,7 @@
 				case NetworkEvent.END_PACMAN:
 					
 					_screenGame.piece2.gotoAndStop("find");
-					_screenGame.texte.gotoAndStop("empty");
+					_screenGame.texte.gotoAndStop("fiche2");
 					
 					break;
 
@@ -195,7 +198,7 @@
 				case NetworkEvent.END_CATAPULTE:
 					
 					_screenGame.piece3.gotoAndStop("find");
-					_screenGame.texte.gotoAndStop("empty");
+					_screenGame.texte.gotoAndStop("fiche3");
 					
 					break;
 			}

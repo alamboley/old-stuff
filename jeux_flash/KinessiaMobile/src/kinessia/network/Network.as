@@ -26,7 +26,7 @@ package kinessia.network {
 	 */
 	public class Network extends Sprite {
 
-		private const _MICRO_FLY_LEVEL:Number = 0.8;
+		private const _MICRO_FLY_LEVEL:Number = 0.85;
 
 		private var _reactor:Reactor;
 		private var _room:Room;
@@ -44,12 +44,13 @@ package kinessia.network {
 		private var _lengthTab:uint;
 
 		private var _micArray:Array;
+		private var _timer:Timer;
 
 		public function Network(home:MovieClip) {
 
 			_reactor = new Reactor();
-			//_reactor.connect("169.254.64.229", 9110);
-			 _reactor.connect("localhost", 9110);
+			_reactor.connect("169.254.64.229", 9110);
+			//_reactor.connect("localhost", 9110);
 			// _reactor.connect("tryunion.com", 80);
 
 			_home = home;
@@ -203,19 +204,21 @@ package kinessia.network {
 
 			if ($value == true) {
 
-				var timer:Timer = new Timer(100);
+				_timer = new Timer(100);
 
 				_micArray = [];
 
-				timer.start();
-				timer.addEventListener(TimerEvent.TIMER, _timeMic);
+				_timer.start();
+				_timer.addEventListener(TimerEvent.TIMER, _timeMic);
 
 			} else {
 				
-				timer.stop();
-				timer.removeEventListener(TimerEvent.TIMER, _timeMic);
+				_timer.stop();
+				_timer.removeEventListener(TimerEvent.TIMER, _timeMic);
 				
-				timer = null;
+				_timer.reset();
+				
+				_timer = null;
 			}
 		}
 
