@@ -1,6 +1,7 @@
 package kinessia.art {
 
 	import flash.display.MovieClip;
+	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.text.TextField;
 	import flash.utils.Timer;
@@ -29,6 +30,7 @@ package kinessia.art {
 		public var texte:MovieClip;
 		
 		private var _timer:Timer;
+		private var _level:uint;
 
 		public function ScreenGame() {
 			
@@ -55,6 +57,29 @@ package kinessia.art {
 			
 			_timer.stop();
 			_timer.removeEventListener(TimerEvent.TIMER_COMPLETE, _nextText);
+		}
+
+		public function question(mEvt:MouseEvent):void {
+			
+			if (earth.currentFrameLabel == "init") {
+				earth.gotoAndStop("youknow");
+				
+				if (_level == 2) {
+					texte.gotoAndStop("fiche1");
+				} else if (_level == 3 || _level == 4) {
+					texte.gotoAndStop("fiche2");
+				} else if (_level == 5) {
+					texte.gotoAndStop("fiche3");
+				}
+				
+			} else {
+				earth.gotoAndStop("init");
+				texte.gotoAndStop("empty");
+			}
+		}
+
+		public function set level($level:uint):void {
+			_level = $level;
 		}
 	}
 }
