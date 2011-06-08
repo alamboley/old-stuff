@@ -20,6 +20,8 @@ package kinessia.characters {
 
 		private var _springOffEnemy:Number = -1;
 		private var _playerMovingHero:Boolean = false;
+		
+		private var _securityMicro:Boolean = false;
 
 		public function Declik(name:String, params:Object = null) {
 
@@ -73,9 +75,10 @@ package kinessia.characters {
 					velocity.y -= jumpAcceleration;
 				}
 
-				if (_phoneInput.phoneMicroFly == true) {
+				if (_phoneInput.phoneMicroFly == true && _securityMicro == false) {
 					if (velocity.y > _MAX_FLY_VELOCITY_Y) {
 						velocity.y -= _FLY_VELOCITY_Y;
+						trace('okkkk');
 					}
 				}
 
@@ -99,6 +102,11 @@ package kinessia.characters {
 			} else {
 				_body.SetLinearVelocity(velocity);
 			}
+		}
+		
+		public function stopFlying():void {
+			_phoneInput.phoneMicroFly = false;
+			_securityMicro = true;
 		}
 		
 		public function get velocityCatapulte():V2 {

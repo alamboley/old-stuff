@@ -100,6 +100,10 @@ package kinessia.network {
 			return _fly;
 		}
 		
+		public function set phoneMicroFly(value:Boolean):void {
+			_fly = value;
+		}
+		
 		public function get pacmanClimb():String {
 			return _pacmanClimb;
 		}
