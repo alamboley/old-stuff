@@ -38,6 +38,15 @@ package com.citrusengine.core
 		public function CitrusEngine()
 		{
 			_instance = this;
+			
+			this.addEventListener(Event.ADDED_TO_STAGE, _init);
+		}
+
+		private function _init(evt:Event):void {
+			
+			this.removeEventListener(Event.ADDED_TO_STAGE, _init);
+			
+			
 			stage.scaleMode = "noScale";
 			stage.align = "topLeft";
 			
