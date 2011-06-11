@@ -37,7 +37,7 @@ package kinessia.levels {
 			_bulle.y = 350;			
 			_bulle.texte.text = "Entre ce numéro : " + _network.uniqueID;
 			
-			_declik.controlsEnabled = false;
+			//_declik.controlsEnabled = false;
 
 			_conservateur = Conservateur(getFirstObjectByType(Conservateur));
 			_conservateur.onBeginContact.addOnce(_talk);

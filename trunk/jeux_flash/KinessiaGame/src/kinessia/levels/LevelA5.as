@@ -1,5 +1,6 @@
 package kinessia.levels {
 
+	import flash.display.Bitmap;
 	import Box2DAS.Dynamics.ContactEvent;
 
 	import kinessia.characters.Declik;
@@ -10,9 +11,13 @@ package kinessia.levels {
 	import kinessia.objects.Circle;
 	import kinessia.objects.Croquis;
 	import kinessia.objects.Piece;
+	import kinessia.video.Video;
 
 	import com.citrusengine.objects.platformer.Platform;
 	import com.citrusengine.objects.platformer.Sensor;
+	import com.greensock.TweenMax;
+	
+	import fl.video.VideoEvent;
 
 	import flash.display.MovieClip;
 	import flash.events.TimerEvent;
@@ -35,6 +40,8 @@ package kinessia.levels {
 		
 		private var _startWalker:Sensor;
 		private var _walker:TheWalker;
+		
+		private var _videoEnd:Video;
 
 		public function LevelA5(levelObjectsMC:MovieClip) {
 			super(levelObjectsMC);
@@ -76,8 +83,28 @@ package kinessia.levels {
 
 			if (cEvt.other.GetBody().GetUserData() is TheWalker) {
 				//lvlEnded.dispatch();
-				trace('Game finish');
+				
+				_videoEnd = new Video();
+				_videoEnd.alpha = 0;
+				addChild(_videoEnd);
+				_videoEnd.x = 475;
+				_videoEnd.y = 325;
+				
+				TweenMax.to(_videoEnd, 2, {alpha:1, onComplete:function():void{_ce.playing = false; _videoEnd.myVideo.theVideo.play();}});
+				
+				_videoEnd.myVideo.theVideo.addEventListener(VideoEvent.COMPLETE, _end);
 			}
+		}
+		
+		private function _end(vEvt:VideoEvent):void {
+			
+			_videoEnd.myVideo.theVideo.removeEventListener(VideoEvent.COMPLETE, _end);
+			
+			var endScreen:Bitmap = new Bitmap(new EndScreen(0, 0));
+			endScreen.alpha = 0;
+			addChild(endScreen);
+			
+			TweenMax.to(endScreen, 1, {alpha:1, onComplete:function():void{_videoEnd.myVideo.theVideo = null;_videoEnd.myVideo = null;}});
 		}
 		
 		private function _catapulteReady(cEvt:ContactEvent):void {
