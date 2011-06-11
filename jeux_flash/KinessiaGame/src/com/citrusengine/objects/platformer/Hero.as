@@ -4,6 +4,8 @@ package com.citrusengine.objects.platformer
 	import Box2DAS.Dynamics.b2Fixture;
 	import Box2DAS.Dynamics.ContactEvent;
 	import Box2DAS.Dynamics.b2Body;
+	import com.citrusengine.physics.CollisionCategories;
+	import flash.display.MovieClip;
 	
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.PhysicsObject;
@@ -99,18 +101,19 @@ package com.citrusengine.objects.platformer
 		 */		
 		public var onAnimationChange:Signal;
 		
-		private var _groundContacts:Array = [];//Used to determine if he's on ground or not.
-		private var _enemyClass:Class = Baddy;
-		private var _onGround:Boolean = false;
-		private var _springOffEnemy:Number = -1;
-		private var _hurtTimeoutID:Number;
-		private var _hurt:Boolean = false;
-		private var _friction:Number = 0.75;
-		private var _playerMovingHero:Boolean = false;
-		private var _controlsEnabled:Boolean = true;
+		protected var _groundContacts:Array = [];//Used to determine if he's on ground or not.
+		protected var _enemyClass:Class = Baddy;
+		protected var _onGround:Boolean = false;
+		protected var _springOffEnemy:Number = -1;
+		protected var _hurtTimeoutID:Number;
+		protected var _hurt:Boolean = false;
+		protected var _friction:Number = 0.75;
+		protected var _playerMovingHero:Boolean = false;
+		protected var _controlsEnabled:Boolean = true;
 		
 		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, view:* = null):Hero
 		{
+			if (view == null) view = MovieClip;
 			return new Hero(name, { x: x, y: y, width: width, height: height, view: view } );
 		}
 		
@@ -246,7 +249,6 @@ package com.citrusengine.objects.platformer
 				
 				if (_springOffEnemy != -1)
 				{
-					y = _springOffEnemy;
 					if (_ce.input.isDown(Keyboard.SPACE))
 						velocity.y = -enemySpringJumpHeight;
 					else
@@ -261,7 +263,7 @@ package com.citrusengine.objects.platformer
 					velocity.x = -maxVelocity;
 				
 				//update physics with new velocity
-				_body.SetLinearVelocity(velocity);
+				_body.SetLinearVelocity(V2.multiplyN(velocity, timeDelta));
 			}
 			
 			updateAnimation();
@@ -312,6 +314,8 @@ package com.citrusengine.objects.platformer
 			super.defineFixture();
 			_fixtureDef.friction = _friction;
 			_fixtureDef.restitution = 0;
+			_fixtureDef.filter.categoryBits = CollisionCategories.Get("GoodGuys");
+			_fixtureDef.filter.maskBits = CollisionCategories.GetAll();
 		}
 		
 		override protected function createFixture():void
