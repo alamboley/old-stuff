@@ -97,6 +97,8 @@
 					break;
 					
 				case ArtEvent.SKIP:
+				
+					_network.removeEventListener(ArtEvent.SKIP, _artHandler);
 					
 					_screenGame.skip = null;
 					_screenGame.stopText();
@@ -148,6 +150,8 @@
 					_ring.play();
 
 					_screenGame.texte.gotoAndStop("start_micro");
+					_screenGame.earth.gotoAndStop("init");
+					
 					trace("microphone support :" + Microphone.isSupported);
 
 					var microphone:Microphone = Microphone.getMicrophone();
@@ -160,6 +164,7 @@
 
 					_screenGame.piece1.gotoAndStop("find");
 					_screenGame.texte.gotoAndStop("fiche1");
+					_screenGame.earth.gotoAndStop("youknow");
 					
 					_network.catchMic(false);
 					
@@ -173,6 +178,7 @@
 					_ring.play();
 					
 					_screenGame.texte.gotoAndStop("start_pacman");
+					_screenGame.earth.gotoAndStop("init");
 				
 					break;
 					
@@ -180,6 +186,7 @@
 					
 					_screenGame.piece2.gotoAndStop("find");
 					_screenGame.texte.gotoAndStop("fiche2");
+					_screenGame.earth.gotoAndStop("youknow");
 					
 					break;
 
@@ -188,6 +195,7 @@
 					_ring.play();
 				
 					_screenGame.texte.gotoAndStop("start_catapulte");
+					_screenGame.earth.gotoAndStop("init");
 
 					_gesture = new Gesture();
 					_screenGame.addChild(_gesture);
@@ -199,6 +207,7 @@
 					
 					_screenGame.piece3.gotoAndStop("find");
 					_screenGame.texte.gotoAndStop("fiche3");
+					_screenGame.earth.gotoAndStop("youknow");
 					
 					break;
 			}
