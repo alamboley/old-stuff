@@ -33,6 +33,12 @@ package com.citrusengine.physics
 			super(name, params);
 			_world = new b2World(new V2(0, 0));
 			b2Base.initialize();
+			
+			//Set up collision categories
+			CollisionCategories.Add("GoodGuys");
+			CollisionCategories.Add("BadGuys");
+			CollisionCategories.Add("Level");
+			CollisionCategories.Add("Items");
 		}
 		
 		override public function destroy():void
@@ -65,7 +71,7 @@ package com.citrusengine.physics
 		{
 			super.update(timeDelta);
 			
-			_world.Step(1 / 20, 8, 3);
+			_world.Step(1 / 20, 8, 8);
 		}
 		
 		public function get x():Number

@@ -3,6 +3,7 @@ package com.citrusengine.objects.platformer
 	import Box2DAS.Common.V2;
 	import Box2DAS.Dynamics.ContactEvent;
 	import Box2DAS.Dynamics.b2Body;
+	import flash.display.MovieClip;
 	
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.math.MathVector;
@@ -10,7 +11,16 @@ package com.citrusengine.objects.platformer
 	
 	/**
 	 * A platform that moves between two points. The MovingPlatform has several properties that
-	 * can customize it. 
+	 * can customize it.
+	 * 
+	 * Properties:
+	 * speed - The speed at which the moving platform travels. 
+	 * enabled - Whether or not the MovingPlatform can move, no matter the condition.
+	 * startX -  The initial starting X position of the MovingPlatform, and the place it returns to when it reaches the end destination.
+	 * startY -  The initial starting Y position of the MovingPlatform, and the place it returns to when it reaches the end destination.
+	 * endX -  The ending X position of the MovingPlatform, and the place it returns to when it reaches the start destination.
+	 * endY -  The ending Y position of the MovingPlatform, and the place it returns to when it reaches the start destination.
+	 * waitForPassenger - If set to true, MovingPlatform will not move unless there is a passenger. If set to false, it continually moves.
 	 */	
 	public class MovingPlatform extends Platform
 	{
@@ -34,9 +44,10 @@ package com.citrusengine.objects.platformer
 		protected var _forward:Boolean = true;
 		protected var _passengers:Vector.<b2Body> = new Vector.<b2Body>();
 		
-		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, endX:Number, endY:Number, speed:Number = 1, waitForPassenger:Boolean = false):MovingPlatform
+		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, endX:Number, endY:Number, view:* = null, speed:Number = 1, waitForPassenger:Boolean = false):MovingPlatform
 		{
-			return new MovingPlatform(name, { x: x, y: y, width: width, height: height, endX: endX, endY: endY, speed: speed, waitForPassenger: waitForPassenger } );
+			if (view == null) view = MovieClip;
+			return new MovingPlatform(name, { x: x, y: y, width: width, height: height, endX: endX, endY: endY, view: view, speed: speed, waitForPassenger: waitForPassenger } );
 		}
 		
 		public function MovingPlatform(name:String, params:Object=null)

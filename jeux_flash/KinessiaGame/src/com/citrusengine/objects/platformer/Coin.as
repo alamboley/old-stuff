@@ -1,6 +1,7 @@
 package com.citrusengine.objects.platformer
 {
 	import Box2DAS.Dynamics.ContactEvent;
+	import flash.display.MovieClip;
 	
 	import flash.utils.getDefinitionByName;
 	
@@ -11,9 +12,10 @@ package com.citrusengine.objects.platformer
 	{
 		private var _collectorClass:Class = Hero;
 		
-		public static function Make(name:String, x:Number, y:Number):Coin
+		public static function Make(name:String, x:Number, y:Number, view:* = null):Coin
 		{
-			return new Coin(name, { x: x, y: y } );
+			if (view == null) view = MovieClip;
+			return new Coin(name, { x: x, y: y, view: view } );
 		}
 		
 		public function Coin(name:String, params:Object=null)
