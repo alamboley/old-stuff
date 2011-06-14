@@ -78,8 +78,8 @@ package kinessia.levels {
 
 			_loadScreen = new LoadScreen();
 			addChild(_loadScreen);
-			_loadScreen.x = stage.stageWidth / 2;
-			_loadScreen.y = stage.stageHeight / 2;
+			_loadScreen.x = 450;
+			_loadScreen.y = 350;
 
 			view.loadManager.onLoadComplete.addOnce(_handleLoadComplete);
 
@@ -110,7 +110,7 @@ package kinessia.levels {
 				roseau.onEndContact.add(_roseauFin);
 			}
 
-			view.setupCamera(_declik, new MathVector(320, 240), new Rectangle(-1000, 0, 4000, 650), new MathVector(.25, .05));
+			view.setupCamera(_declik, new MathVector(320, 240), new Rectangle(-1000, 0, 4475, 650), new MathVector(.25, .05));
 		}
 
 		protected function _addContactRestartLevel():void {

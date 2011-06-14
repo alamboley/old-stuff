@@ -90,6 +90,8 @@ package kinessia.levels {
 				_videoEnd.x = 475;
 				_videoEnd.y = 325;
 				
+				_ce.sound.stopSound("KinessiaTheme");
+				
 				TweenMax.to(_videoEnd, 2, {alpha:1, onComplete:function():void{_ce.playing = false; _videoEnd.myVideo.theVideo.play();}});
 				
 				_videoEnd.myVideo.theVideo.addEventListener(VideoEvent.COMPLETE, _end);

@@ -3,6 +3,8 @@ package com.citrusengine.objects.platformer
 	import Box2DAS.Common.V2;
 	import Box2DAS.Dynamics.ContactEvent;
 	import Box2DAS.Dynamics.b2Body;
+	import com.citrusengine.physics.CollisionCategories;
+	import flash.display.MovieClip;
 	
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.PhysicsObject;
@@ -23,7 +25,6 @@ package com.citrusengine.objects.platformer
 	public class Baddy extends PhysicsObject
 	{
 		public var speed:Number = 1.3;
-		public var enemyClass:String = "com.citrusengine.objects.platformer.Hero";
 		public var enemyKillVelocity:Number = 3;
 		public var startingDirection:String = "left";
 		public var hurtDuration:Number = 400;
@@ -32,10 +33,12 @@ package com.citrusengine.objects.platformer
 		
 		private var _hurtTimeoutID:Number = 0;
 		private var _hurt:Boolean = false;
+		public var _enemyClass:* = Hero;
 		
-		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, speed:Number, leftBound:Number = -100000, rightBound:Number = 100000, startingDirection:String = "left"):Baddy
+		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, speed:Number, view:* = null, leftBound:Number = -100000, rightBound:Number = 100000, startingDirection:String = "left"):Baddy
 		{
-			return new Baddy(name, { x: x, y: y, width: width, height: height, speed: speed, leftBound: leftBound, rightBound: rightBound, startingDirection: startingDirection } );
+			if (view == null) view = MovieClip;
+			return new Baddy(name, { x: x, y: y, width: width, height: height, speed: speed, view: view, leftBound: leftBound, rightBound: rightBound, startingDirection: startingDirection } );
 		}
 		
 		public function Baddy(name:String, params:Object=null)
@@ -53,6 +56,19 @@ package com.citrusengine.objects.platformer
 			_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
 			clearTimeout(_hurtTimeoutID);
 			super.destroy();
+		}
+		
+		public function get enemyClass():*
+		{
+			return _enemyClass;
+		}
+		
+		public function set enemyClass(value:*):void
+		{
+			if (value is String)
+				_enemyClass = getDefinitionByName(value) as Class;
+			else if (value is Class)
+				_enemyClass = value;
 		}
 		
 		override public function update(timeDelta:Number):void
@@ -95,6 +111,8 @@ package com.citrusengine.objects.platformer
 		{
 			super.defineFixture();
 			_fixtureDef.friction = 0;
+			_fixtureDef.filter.categoryBits = CollisionCategories.Get("BadGuys");
+			_fixtureDef.filter.maskBits = CollisionCategories.GetAllExcept("Items");
 		}
 		
 		override protected function createFixture():void
@@ -107,9 +125,8 @@ package com.citrusengine.objects.platformer
 		private function handleBeginContact(e:ContactEvent):void
 		{
 			var colliderBody:b2Body = e.other.GetBody();
-			var enemyClassClass:Class = flash.utils.getDefinitionByName(enemyClass) as Class;
 			
-			if (colliderBody.GetUserData() is enemyClassClass && colliderBody.GetLinearVelocity().y > enemyKillVelocity)
+			if (colliderBody.GetUserData() is _enemyClass && colliderBody.GetLinearVelocity().y > enemyKillVelocity)
 				hurt();
 			
 			//Collision angle

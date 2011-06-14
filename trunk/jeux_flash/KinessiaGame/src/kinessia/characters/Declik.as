@@ -1,120 +1,117 @@
 package kinessia.characters {
 
-        import Box2DAS.Common.V2;
+	import Box2DAS.Common.V2;
 
-        import kinessia.network.PhoneInput;
+	import kinessia.network.PhoneInput;
 
-        import com.citrusengine.objects.platformer.Hero;
+	import com.citrusengine.objects.platformer.Hero;
 
-        /**
-         * @author Aymeric
-         */
-        public class Declik extends Hero {
-               
-                private const _MAX_FLY_VELOCITY_Y:int = -5;
-                private const _FLY_VELOCITY_Y:uint = 4;
-               
-                private var _velocityCatapulte:V2;
+	/**
+	 * @author Aymeric
+	 */
+	public class Declik extends Hero {
 
-                private var _phoneInput:PhoneInput;
+		private const _MAX_FLY_VELOCITY_Y:int = -5;
+		private const _FLY_VELOCITY_Y:uint = 4;
 
-                private var _springOffEnemy:Number = -1;
-                private var _playerMovingHero:Boolean = false;
-               
-                private var _securityMicro:Boolean = false;
+		private var _velocityCatapulte:V2;
 
-                public function Declik(name:String, params:Object = null) {
+		private var _phoneInput:PhoneInput;
 
-                        super(name, params);
+		private var _securityMicro:Boolean = false;
 
-                        _phoneInput = new PhoneInput();
-                        _phoneInput.initialize();
-                       
-                        enemyClass = Bullzor;
-                        hurtDuration = 2000;
-                }
-               
-                override public function destroy():void {
-                        super.destroy();
-                }
+		public function Declik(name:String, params:Object = null) {
 
-                override public function update(timeDelta:Number):void {
+			super(name, params);
 
-                        super.update(timeDelta);
+			_phoneInput = new PhoneInput();
+			_phoneInput.initialize();
 
-                        var velocity:V2 = _body.GetLinearVelocity();
+			enemyClass = Bullzor;
+			hurtDuration = 2000;
+		}
 
-                        if (controlsEnabled) {
+		override public function destroy():void {
+			super.destroy();
+		}
 
-                                var moveKeyPressed:Boolean = false;
+		override public function update(timeDelta:Number):void {
 
-                                if (_phoneInput.phoneDirecton == "right") {
-                                        velocity.x += (acceleration);
-                                        moveKeyPressed = true;
-                                }
+			super.update(timeDelta);
 
-                                if (_phoneInput.phoneDirecton == "left") {
-                                        velocity.x -= (acceleration);
-                                        moveKeyPressed = true;
-                                }
+			var velocity:V2 = _body.GetLinearVelocity();
 
-                                if (moveKeyPressed && !_playerMovingHero) {
-                                        _playerMovingHero = true;
-                                        _fixture.SetFriction(0);
-                                } else if (!moveKeyPressed && _playerMovingHero) {
-                                        _playerMovingHero = false;
-                                        _fixture.SetFriction(friction);
-                                }
+			if (controlsEnabled) {
 
-                                if (onGround && _phoneInput.justJumped() == true) {
-                                        velocity.y = -jumpHeight;
-                                        onJump.dispatch();
-                                }
+				var moveKeyPressed:Boolean = false;
 
-                                if ((_phoneInput.phoneJump == true) && !onGround && velocity.y < 0) {
-                                        velocity.y -= jumpAcceleration;
-                                }
+				if (_phoneInput.phoneDirecton == "right") {
+					velocity.x += (acceleration);
+					moveKeyPressed = true;
+				}
 
-                                if (_phoneInput.phoneMicroFly == true && _securityMicro == false) {
-                                        if (velocity.y > _MAX_FLY_VELOCITY_Y) {
-                                                velocity.y -= _FLY_VELOCITY_Y;
-                                        }
-                                }
+				if (_phoneInput.phoneDirecton == "left") {
+					velocity.x -= (acceleration);
+					moveKeyPressed = true;
+				}
 
-                                if (_springOffEnemy != -1) {
-                                        y = _springOffEnemy;
-                                        if (_phoneInput.phoneJump == true)
-                                                velocity.y = -enemySpringJumpHeight;
-                                        else
-                                                velocity.y = -enemySpringHeight;
-                                        _springOffEnemy = -1;
-                                }
-                        }
+				if (moveKeyPressed && !_playerMovingHero) {
+					_playerMovingHero = true;
+					_fixture.SetFriction(0);
+				} else if (!moveKeyPressed && _playerMovingHero) {
+					_playerMovingHero = false;
+					_fixture.SetFriction(friction);
+				}
 
-                        if (velocity.x > (maxVelocity))
-                                velocity.x = maxVelocity;
-                        else if (velocity.x < (-maxVelocity))
-                                velocity.x = -maxVelocity;
-                               
-                        if (_velocityCatapulte != null) {
-                                _body.SetLinearVelocity(_velocityCatapulte);
-                        } else {
-                                _body.SetLinearVelocity(velocity);
-                        }
-                }
-               
-                public function stopFlying():void {
-                        _phoneInput.phoneMicroFly = false;
-                        _securityMicro = true;
-                }
-               
-                public function get velocityCatapulte():V2 {
-                        return _velocityCatapulte;
-                }
+				if (onGround && _phoneInput.justJumped() == true) {
+					velocity.y = -jumpHeight;
+					onJump.dispatch();
+				}
 
-                public function set velocityCatapulte(velocityCatapulte:V2):void {
-                        _velocityCatapulte = velocityCatapulte;
-                }
-        }
+				if ((_phoneInput.phoneJump == true) && !onGround && velocity.y < 0) {
+					velocity.y -= jumpAcceleration;
+				}
+
+				if (_phoneInput.phoneMicroFly == true && _securityMicro == false) {
+					if (velocity.y > _MAX_FLY_VELOCITY_Y) {
+						velocity.y -= _FLY_VELOCITY_Y;
+					}
+				}
+
+				if (_springOffEnemy != -1) {
+					if (_phoneInput.phoneJump == true)
+						velocity.y = -enemySpringJumpHeight;
+					else
+						velocity.y = -enemySpringHeight;
+					_springOffEnemy = -1;
+				}
+			}
+
+			if (velocity.x > (maxVelocity))
+				velocity.x = maxVelocity;
+			else if (velocity.x < (-maxVelocity))
+				velocity.x = -maxVelocity;
+
+			if (_velocityCatapulte != null) {
+				_body.SetLinearVelocity(_velocityCatapulte);
+			} else {
+				_body.SetLinearVelocity(velocity);
+			}
+		}
+
+
+		public function stopFlying():void {
+			_phoneInput.phoneMicroFly = false;
+			_securityMicro = true;
+		}
+
+		public function get velocityCatapulte():V2 {
+			return _velocityCatapulte;
+		}
+
+		public function set velocityCatapulte(velocityCatapulte:V2):void {
+			_velocityCatapulte = velocityCatapulte;
+		}
+	}
 }
 

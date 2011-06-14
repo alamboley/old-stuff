@@ -9,6 +9,7 @@ package com.citrusengine.objects
 	import Box2DAS.Dynamics.b2BodyDef;
 	import Box2DAS.Dynamics.b2Fixture;
 	import Box2DAS.Dynamics.b2FixtureDef;
+	import com.citrusengine.physics.CollisionCategories;
 	
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.CitrusObject;
@@ -52,6 +53,13 @@ package com.citrusengine.objects
 		private var _offsetX:Number = 0;
 		private var _offsetY:Number = 0;
 		private var _registration:String = "center";
+		
+		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, view:*):PhysicsObject
+		{
+			if (!view)
+				view = MovieClip;
+			return new PhysicsObject(name, { x: x, y: y, width: width, height: height, view: view } );
+		}
 		
 		/**
 		 * Creates an instance of a PhysicsObject. Natively, this object does not default to any graphical representation,
@@ -393,6 +401,8 @@ package com.citrusengine.objects
 			_fixtureDef.density = 1;
 			_fixtureDef.friction = 0.6;
 			_fixtureDef.restitution = 0.3;
+			_fixtureDef.filter.categoryBits = CollisionCategories.Get("Level");
+			_fixtureDef.filter.maskBits = CollisionCategories.GetAll();
 		}
 		
 		/**

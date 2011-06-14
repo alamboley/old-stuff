@@ -2,6 +2,7 @@ package com.citrusengine.objects.platformer
 {
 	import Box2DAS.Collision.Shapes.b2MassData;
 	import Box2DAS.Dynamics.b2Body;
+	import flash.display.MovieClip;
 	
 	import com.citrusengine.objects.PhysicsObject;
 	
@@ -11,9 +12,10 @@ package com.citrusengine.objects.platformer
 	 */	
 	public class Crate extends PhysicsObject
 	{
-		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number):Crate
+		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, view:* = null):Crate
 		{
-			return new Crate(name, { x: x, y: y, width: width, height: height } );
+			if (view == null) view = MovieClip;
+			return new Crate(name, { x: x, y: y, width: width, height: height, view: view } );
 		}
 		
 		public function Crate(name:String, params:Object=null)
