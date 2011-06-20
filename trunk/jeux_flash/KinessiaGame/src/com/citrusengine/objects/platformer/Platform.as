@@ -5,16 +5,6 @@ package com.citrusengine.objects.platformer
 	
 	import com.citrusengine.objects.PhysicsObject;
 	
-	/**
-	 * A Platform is a rectangular object that is meant to be stood on. It can be given any position, width, height, or rotation to suit your level's needs.
-	 * You can make your platform a "one-way" or "cloud" platform so that you can jump on from underneath (collision is only applied when coming from above it).
-	 * 
-	 * There are two ways of adding graphics for your platform. You can give your platform a graphic just like you would any other object (by passing a graphical
-	 * class into the view property) or you can leave your platform invisible and line it up with your backgrounds for a more custom look.
-	 * 
-	 * Properties:
-	 * oneWay - Makes the platform only collidable when falling from above it.
-	 */
 	public class Platform extends PhysicsObject
 	{
 		private var _oneWay:Boolean = false;
@@ -35,9 +25,6 @@ package com.citrusengine.objects.platformer
 			super.destroy();
 		}
 		
-		/**
-		 * Makes the platform only collidable when falling from above it.
-		 */
 		public function get oneWay():Boolean
 		{
 			return _oneWay;
