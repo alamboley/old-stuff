@@ -1,6 +1,7 @@
 ﻿package kinessia {
 
 	import flash.events.Event;
+
 	import kinessia.levels.ALevel;
 	import kinessia.levels.LevelManager;
 	import kinessia.network.Network;
@@ -25,18 +26,18 @@
 		private var _soundOn:Boolean;
 
 		public function Main() {
-			
+
 			super();
-			
+
 			this.addEventListener(Event.ADDED_TO_STAGE, _init);
 		}
-		
+
 		private function _init(evt:Event):void {
-			
+
 			this.removeEventListener(Event.ADDED_TO_STAGE, _init);
 
 			_network = new Network();
-			
+
 			this.addEventListener(NetworkEvent.FULLSCREEN, _fullscreen);
 			this.addEventListener(NetworkEvent.PAUSE_GAME, _pauseGame);
 			this.addEventListener(NetworkEvent.SOUND_GAME, _soundGame);
@@ -66,7 +67,7 @@
 			_levelManager = new LevelManager();
 			_levelManager.onLevelChanged.add(_onLevelChanged);
 			state = _levelManager.currentLevel;
-			
+
 		}
 
 		private function _onLevelChanged(lvl:ALevel):void {
@@ -107,7 +108,7 @@
 		}
 
 		private function _fullscreen(nEvt:NetworkEvent = null):void {
-			
+
 			if (stage.displayState == "normal") {
 				stage.displayState = "fullScreen";
 			} else {

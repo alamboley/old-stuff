@@ -18,6 +18,9 @@ package kinessia.characters {
 
 		private var _phoneInput:PhoneInput;
 
+		private var _springOffEnemy:Number = -1;
+		private var _playerMovingHero:Boolean = false;
+
 		private var _securityMicro:Boolean = false;
 
 		public function Declik(name:String, params:Object = null) {
@@ -79,6 +82,7 @@ package kinessia.characters {
 				}
 
 				if (_springOffEnemy != -1) {
+					y = _springOffEnemy;
 					if (_phoneInput.phoneJump == true)
 						velocity.y = -enemySpringJumpHeight;
 					else
@@ -98,7 +102,6 @@ package kinessia.characters {
 				_body.SetLinearVelocity(velocity);
 			}
 		}
-
 
 		public function stopFlying():void {
 			_phoneInput.phoneMicroFly = false;
