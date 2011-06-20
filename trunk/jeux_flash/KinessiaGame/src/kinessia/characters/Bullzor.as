@@ -6,10 +6,7 @@ package kinessia.characters {
 
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.PhysicsObject;
-	import com.citrusengine.objects.platformer.Hero;
-	import com.citrusengine.physics.CollisionCategories;
 
-	import flash.display.MovieClip;
 	import flash.utils.clearTimeout;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.setTimeout;
@@ -26,6 +23,7 @@ package kinessia.characters {
 	public class Bullzor extends PhysicsObject {
 
 		public var speed:Number = 1.3;
+		public var enemyClass:String = "com.citrusengine.objects.platformer.Hero";
 		public var enemyKillVelocity:Number = 3;
 		public var startingDirection:String = "left";
 		public var hurtDuration:Number = 3000;
@@ -34,13 +32,6 @@ package kinessia.characters {
 
 		private var _hurtTimeoutID:Number = 0;
 		private var _hurt:Boolean = false;
-		public var _enemyClass:* = Hero;
-
-		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, speed:Number, view:* = null, leftBound:Number = -100000, rightBound:Number = 100000, startingDirection:String = "left"):Bullzor {
-
-			if (view == null) view = MovieClip;
-			return new Bullzor(name, {x:x, y:y, width:width, height:height, speed:speed, view:view, leftBound:leftBound, rightBound:rightBound, startingDirection:startingDirection});
-		}
 
 		public function Bullzor(name:String, params:Object = null) {
 
@@ -58,18 +49,6 @@ package kinessia.characters {
 			super.destroy();
 		}
 
-		public function get enemyClass():* {
-			return _enemyClass;
-		}
-
-		public function set enemyClass(value:*):void {
-
-			if (value is String)
-				_enemyClass = getDefinitionByName(value) as Class;
-			else if (value is Class)
-				_enemyClass = value;
-		}
-
 		override public function update(timeDelta:Number):void {
 
 			super.update(timeDelta);
@@ -82,6 +61,7 @@ package kinessia.characters {
 
 			var velocity:V2 = _body.GetLinearVelocity();
 			if (!_hurt) {
+
 				if (_inverted)
 					velocity.x = -speed;
 				else
@@ -96,35 +76,39 @@ package kinessia.characters {
 		}
 
 		public function hurt():void {
+
 			_hurt = true;
 			_hurtTimeoutID = setTimeout(endHurtState, hurtDuration);
 		}
 
 		override protected function createBody():void {
+
 			super.createBody();
 			_body.SetFixedRotation(true);
 		}
 
 		override protected function defineFixture():void {
+
 			super.defineFixture();
 			_fixtureDef.friction = 0;
-			_fixtureDef.filter.categoryBits = CollisionCategories.Get("BadGuys");
-			_fixtureDef.filter.maskBits = CollisionCategories.GetAllExcept("Items");
 		}
 
 		override protected function createFixture():void {
+
 			super.createFixture();
 			_fixture.m_reportBeginContact = true;
 			_fixture.addEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
 		}
 
 		private function handleBeginContact(e:ContactEvent):void {
-			var colliderBody:b2Body = e.other.GetBody();
 
-			if (colliderBody.GetUserData() is _enemyClass && colliderBody.GetLinearVelocity().y > enemyKillVelocity)
+			var colliderBody:b2Body = e.other.GetBody();
+			var enemyClassClass:Class = flash.utils.getDefinitionByName(enemyClass) as Class;
+
+			if (colliderBody.GetUserData() is enemyClassClass && colliderBody.GetLinearVelocity().y > enemyKillVelocity)
 				hurt();
 
-			// Collision angle, the normal property doesn't come through all the time. I think doesn't come through against sensors.
+			// Collision angle, // The normal property doesn't come through all the time. I think doesn't come through against sensors.
 			if (e.normal) {
 				var collisionAngle:Number = new MathVector(e.normal.x, e.normal.y).angle * 180 / Math.PI;
 				if (collisionAngle < 45 || collisionAngle > 135) {
