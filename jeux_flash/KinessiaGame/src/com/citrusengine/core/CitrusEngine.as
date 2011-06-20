@@ -12,7 +12,7 @@ package com.citrusengine.core
 	 */	
 	public class CitrusEngine extends MovieClip
 	{
-		public static const VERSION:String = "2.8.46";
+		public static const VERSION:String = "2.5.37";
 		
 		private static var _instance:CitrusEngine;
 		
@@ -21,6 +21,7 @@ package com.citrusengine.core
 		private var _stateDisplayIndex:uint = 0;
 		private var _startTime:Number;
 		private var _gameTime:Number;
+		private var _desiredFrameRate:Number;
 		private var _playing:Boolean = true;
 		private var _input:Input;
 		private var _sound:SoundManager;
@@ -38,6 +39,17 @@ package com.citrusengine.core
 		{
 			_instance = this;
 			
+			this.addEventListener(Event.ADDED_TO_STAGE, _init);
+		}
+
+		private function _init(evt:Event):void {
+			
+			this.removeEventListener(Event.ADDED_TO_STAGE, _init);
+			
+			
+			stage.scaleMode = "noScale";
+			stage.align = "topLeft";
+			
 			//Set up console
 			_console = new Console(9); //Opens with tab key by default
 			_console.onShowConsole.add(handleShowConsole);
@@ -47,15 +59,16 @@ package com.citrusengine.core
 			//timekeeping
 			_startTime = new Date().time;
 			_gameTime = _startTime;
+			_desiredFrameRate = stage.frameRate;
 			
 			//Set up input
 			_input = new Input();
+			_input.initialize();
 			
 			//Set up sound manager
 			_sound = SoundManager.getInstance();
 			
 			addEventListener(Event.ENTER_FRAME, handleEnterFrame);
-			addEventListener(Event.ADDED_TO_STAGE, handleAddedToStage);
 		}
 		
 		/**
@@ -92,8 +105,6 @@ package com.citrusengine.core
 		public function set playing(value:Boolean):void
 		{
 			_playing = value;
-			if (_playing)
-				_gameTime = new Date().time;
 		}
 		
 		/**
@@ -127,19 +138,6 @@ package com.citrusengine.core
 		}
 		
 		/**
-		 * Set up things that need the stage access.
-		 */
-		private function handleAddedToStage(e:Event):void 
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, handleAddedToStage);
-			stage.scaleMode = "noScale";
-			stage.align = "topLeft";
-			stage.addEventListener(Event.DEACTIVATE, handleStageDeactivated);
-			
-			_input.initialize();
-		}
-		
-		/**
 		 * This is the game loop. It switches states if necessary, then calls update on the current state.
 		 */		
 		//TODO The CE updates use the timeDelta to keep consistent speed during slow framerates. However, Box2D becomes unstable when changing timestep. Why?
@@ -164,26 +162,11 @@ package com.citrusengine.core
 			{
 				var nowTime:Number = new Date().time;
 				var timeSinceLastFrame:Number = nowTime - _gameTime;
-				var timeDelta:Number = timeSinceLastFrame / 1000;
+				var timeDelta:Number = timeSinceLastFrame / _desiredFrameRate;
 				_gameTime = nowTime;
 				
 				_state.update(timeDelta);
 			}
-		}
-		
-		private function handleStageDeactivated(e:Event):void
-		{
-			if (_playing)
-			{
-				playing = false;
-				stage.addEventListener(Event.ACTIVATE, handleStageActivated);
-			}
-		}
-		
-		private function handleStageActivated(e:Event):void
-		{
-			playing = true;
-			stage.removeEventListener(Event.ACTIVATE, handleStageActivated);
 		}
 		
 		private function handleShowConsole():void

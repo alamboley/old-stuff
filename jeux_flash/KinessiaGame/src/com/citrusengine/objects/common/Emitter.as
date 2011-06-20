@@ -6,10 +6,6 @@ package com.citrusengine.objects.common
 	import com.citrusengine.view.BlittingView;
 	import flash.utils.Dictionary;
 	
-	/**
-	 * An emitter creates particles at a specified rate with specified distribution properties. You can set the emitter's x and y
-	 * location at any time as well as change the graphic of the particles that the emitter makes.
-	 */
 	public class Emitter extends CitrusObject
 	{
 		/**

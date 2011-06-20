@@ -2,7 +2,6 @@ package com.citrusengine.objects.platformer
 {
 	import Box2DAS.Dynamics.ContactEvent;
 	import Box2DAS.Dynamics.b2Body;
-	import flash.display.MovieClip;
 	
 	import com.citrusengine.objects.PhysicsObject;
 	
@@ -16,26 +15,15 @@ package com.citrusengine.objects.platformer
 	 * Remember that signals dispatch events when ANY Box2D object collides with them, so you will want
 	 * your collision handler to ignore collisions with objects that it is not interested in, or extend
 	 * the sensor and use maskBits to ignore collisions altogether.  
-	 * 
-	 * Events
-	 * onBeginContact - Dispatches on first contact with the sensor.
-	 * onEndContact - Dispatches when the object leaves the sensor.
 	 */	
 	public class Sensor extends PhysicsObject
 	{
-		/**
-		 * Dispatches on first contact with the sensor.
-		 */
 		public var onBeginContact:Signal;
-		/**
-		 * Dispatches when the object leaves the sensor.
-		 */
 		public var onEndContact:Signal;
 		
-		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, view:* = null):Sensor
+		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number):Sensor
 		{
-			if (view == null) view = MovieClip;
-			return new Sensor(name, { x: x, y: y, width: width, height: height, view: view } );
+			return new Sensor(name, { x: x, y: y, width: width, height: height } );
 		}
 		
 		public function Sensor(name:String, params:Object=null)
