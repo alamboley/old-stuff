@@ -46,7 +46,6 @@ package com.citrusengine.core
 			
 			this.removeEventListener(Event.ADDED_TO_STAGE, _init);
 			
-			
 			stage.scaleMode = "noScale";
 			stage.align = "topLeft";
 			

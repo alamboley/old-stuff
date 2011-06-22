@@ -80,7 +80,8 @@ package com.citrusengine.view
 			
 			var ce:CitrusEngine = CitrusEngine.getInstance();
 			
-			cameraLensWidth = ce.stage.stageWidth;
+			//cameraLensWidth = ce.stage.stageWidth;
+			cameraLensWidth = 950;
 			cameraLensHeight = ce.stage.stageHeight;
 			
 			loadManager = new LoadManager();
