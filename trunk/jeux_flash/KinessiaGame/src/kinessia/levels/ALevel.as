@@ -109,8 +109,8 @@ package kinessia.levels {
 				roseau.onBeginContact.add(_roseauTouche);
 				roseau.onEndContact.add(_roseauFin);
 			}
-
-			view.setupCamera(_declik, new MathVector(320, 240), new Rectangle(-1000, 0, 4475, 650), new MathVector(.25, .05));
+			
+			view.setupCamera(_declik, new MathVector(320, 240), new Rectangle(-1000, 0, 4000, 650), new MathVector(.25, .05));
 		}
 
 		protected function _addContactRestartLevel():void {
