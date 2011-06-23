@@ -29,7 +29,8 @@ package kinessia.characters {
 
 			_phoneInput = new PhoneInput();
 			_phoneInput.initialize();
-
+			
+			maxVelocity = 8;
 			enemyClass = Bullzor;
 			hurtDuration = 2000;
 		}

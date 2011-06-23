@@ -79,7 +79,7 @@
 		}
 
 		private function _restartLevel():void {
-
+			
 			state = _levelManager.currentLevel;
 			_network.dispatchEvent(new NetworkEvent(NetworkEvent.RESTART_LEVEL));
 		}
