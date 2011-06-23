@@ -41,6 +41,7 @@ package kinessia.levels {
 
 			_conservateur = Conservateur(getFirstObjectByType(Conservateur));
 			_conservateur.onBeginContact.addOnce(_talk);
+			_conservateur.anim = "idle";
 			
 			_ce.addEventListener(NetworkEvent.CONNECTED, _connected);
 			_ce.addEventListener(NetworkEvent.SKIP, _skip);
