@@ -161,6 +161,8 @@
 					break;
 
 				case NetworkEvent.STOP_MICRO:
+				
+					_ring.play();
 
 					_screenGame.piece1.gotoAndStop("find");
 					_screenGame.texte.gotoAndStop("fiche1");
@@ -183,6 +185,8 @@
 					break;
 					
 				case NetworkEvent.END_PACMAN:
+				
+					_ring.play();
 					
 					_screenGame.piece2.gotoAndStop("find");
 					_screenGame.texte.gotoAndStop("fiche2");
@@ -204,6 +208,8 @@
 					break;
 					
 				case NetworkEvent.END_CATAPULTE:
+				
+					_ring.play();
 					
 					_screenGame.piece3.gotoAndStop("find");
 					_screenGame.texte.gotoAndStop("fiche3");
