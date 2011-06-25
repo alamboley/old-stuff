@@ -30,7 +30,7 @@ package kinessia.characters {
 			_phoneInput = new PhoneInput();
 			_phoneInput.initialize();
 			
-			maxVelocity = 8;
+			maxVelocity = 7;
 			enemyClass = Bullzor;
 			hurtDuration = 2000;
 		}
