@@ -87,10 +87,11 @@ package kinessia.levels {
 				_videoEnd = new Video();
 				_videoEnd.alpha = 0;
 				addChild(_videoEnd);
-				_videoEnd.x = 475;
+				_videoEnd.x = 470;
 				_videoEnd.y = 325;
 				
 				_ce.sound.stopSound("KinessiaTheme");
+				_ce.playing = false;
 				
 				TweenMax.to(_videoEnd, 2, {alpha:1, onComplete:function():void{_ce.playing = false; _videoEnd.myVideo.theVideo.play();}});
 				
@@ -104,6 +105,7 @@ package kinessia.levels {
 			
 			var endScreen:Bitmap = new Bitmap(new EndScreen(0, 0));
 			endScreen.alpha = 0;
+			endScreen.x = -5;
 			addChild(endScreen);
 			
 			TweenMax.to(endScreen, 1, {alpha:1, onComplete:function():void{_videoEnd.myVideo.theVideo = null;_videoEnd.myVideo = null;}});
