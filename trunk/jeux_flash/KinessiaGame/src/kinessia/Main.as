@@ -1,7 +1,5 @@
 ﻿package kinessia {
 
-	import flash.events.Event;
-
 	import kinessia.levels.ALevel;
 	import kinessia.levels.LevelManager;
 	import kinessia.network.Network;
@@ -10,6 +8,7 @@
 
 	import com.citrusengine.core.CitrusEngine;
 
+	import flash.events.Event;
 	import flash.media.SoundMixer;
 	import flash.media.SoundTransform;
 
