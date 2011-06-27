@@ -23,10 +23,10 @@ package kinessia.objects {
 
 			super.update(timeDelta);
 
-			updateAnimation();
+			_updateAnimation();
 		}
 
-		private function updateAnimation():void {
+		private function _updateAnimation():void {
 
 			_animation = _anim;
 		}
