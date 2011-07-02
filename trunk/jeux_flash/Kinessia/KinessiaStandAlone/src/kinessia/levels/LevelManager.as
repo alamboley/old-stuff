@@ -10,7 +10,7 @@ package kinessia.levels {
 	 * @author Aymeric
 	 */
 	public class LevelManager {
-		
+
 		private static var _instance:LevelManager;
 
 		public var onLevelChanged:Signal;
@@ -20,7 +20,7 @@ package kinessia.levels {
 		private var _currentLevel:ALevel;
 
 		public function LevelManager() {
-			
+
 			_instance = this;
 
 			onLevelChanged = new Signal(ALevel);
@@ -33,7 +33,7 @@ package kinessia.levels {
 
 			gotoLevel();
 		}
-		
+
 		public static function getInstance():LevelManager {
 			return _instance;
 		}
@@ -60,12 +60,15 @@ package kinessia.levels {
 			gotoLevel();
 		}
 
-		public function gotoLevel():void {
+		public function gotoLevel($index:int = -1):void {
 
 			if (_currentLevel != null)
 				_currentLevel.lvlEnded.remove(_onLevelEnded);
 
 			var loader:Loader = new Loader();
+			if ($index != -1) {
+				_currentIndex = $index;
+			}
 			loader.load(new URLRequest(_levels["SWF"][_currentIndex]));
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _levelSWFLoaded);
 		}
@@ -93,7 +96,7 @@ package kinessia.levels {
 		public function set currentLevel(currentLevel:ALevel):void {
 			_currentLevel = currentLevel;
 		}
-		
+
 		public function get nameCurrentLevel():String {
 			return _levels["Name"][_currentIndex];
 		}
