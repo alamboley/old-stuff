@@ -1,19 +1,8 @@
 package kinessia.levels {
 
-	import Dynamics.ContactEvent;
+	import Box2DAS.Dynamics.ContactEvent;
 
-	import citrusengine.core.CitrusEngine;
-	import citrusengine.core.CitrusObject;
-	import citrusengine.core.State;
-	import citrusengine.math.MathVector;
-	import citrusengine.objects.CitrusSprite;
-	import citrusengine.objects.platformer.Coin;
-	import citrusengine.objects.platformer.Platform;
-	import citrusengine.objects.platformer.Sensor;
-	import citrusengine.physics.Box2D;
-	import citrusengine.utils.ObjectMaker;
-	import citrusengine.view.ExternalArt;
-
+	import kinessia.LoadScreen;
 	import kinessia.characters.Bullzor;
 	import kinessia.characters.Declik;
 	import kinessia.objects.Catapulte;
@@ -21,7 +10,19 @@ package kinessia.levels {
 	import kinessia.objects.Piece;
 	import kinessia.objects.Roseau;
 
-	import osflash.signals.Signal;
+	import com.citrusengine.core.CitrusEngine;
+	import com.citrusengine.core.CitrusObject;
+	import com.citrusengine.core.State;
+	import com.citrusengine.math.MathVector;
+	import com.citrusengine.objects.CitrusSprite;
+	import com.citrusengine.objects.platformer.Coin;
+	import com.citrusengine.objects.platformer.Platform;
+	import com.citrusengine.objects.platformer.Sensor;
+	import com.citrusengine.physics.Box2D;
+	import com.citrusengine.utils.ObjectMaker;
+	import com.citrusengine.view.ExternalArt;
+
+	import org.osflash.signals.Signal;
 
 	import flash.display.MovieClip;
 	import flash.display.Shape;
@@ -36,7 +37,6 @@ package kinessia.levels {
 		public var restartLevel:Signal;
 
 		protected var _ce:CitrusEngine;
-		protected var _network:Network;
 
 		protected var _declik:Declik;
 		protected var _bullzors:Vector.<CitrusObject>;
@@ -84,12 +84,7 @@ package kinessia.levels {
 
 			ExternalArt.smoothBitmaps = true;
 
-			_network = Network.getInstance();
-			_network.addLevelListener(LevelManager.getInstance().nameCurrentLevel);
-
 			_declik = Declik(getObjectByName("Declik"));
-			// _declik.onJump.add(_jump);
-			// _declik.onAnimationChange.add(_animationChange);
 			_declik.onTakeDamage.add(_hurt);
 			_declik.onGiveDamage.add(_attack);
 
@@ -145,7 +140,6 @@ package kinessia.levels {
 		private function _coinTaken(cEvt:ContactEvent):void {
 
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
-				_ce.dispatchEvent(new NetworkEvent(NetworkEvent.COIN_TAKEN));
 				_ce.sound.playSound("Collect", 1, 0);
 			}
 		}

@@ -3,7 +3,6 @@ package kinessia.levels {
 	import Box2DAS.Dynamics.ContactEvent;
 
 	import kinessia.characters.Declik;
-	import kinessia.network.NetworkEvent;
 	import kinessia.objects.Croquis;
 	import kinessia.objects.Piece;
 
@@ -71,8 +70,6 @@ package kinessia.levels {
 
 				_declik.gravity = _HERO_GRAVITY;
 
-				_ce.dispatchEvent(new NetworkEvent(NetworkEvent.START_MICRO));
-
 				_croquis.anim = "white";
 
 				setTimeout(_addBulle, 0);
@@ -93,8 +90,6 @@ package kinessia.levels {
 				_declik.gravity = _heroInitGravity;
 				
 				_pieceCaught = true;
-
-				_ce.dispatchEvent(new NetworkEvent(NetworkEvent.STOP_MICRO));
 
 				_croquis.anim = "black";
 				

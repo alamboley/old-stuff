@@ -3,7 +3,6 @@ package kinessia.levels {
 	import Box2DAS.Dynamics.ContactEvent;
 
 	import kinessia.characters.Declik;
-	import kinessia.network.NetworkEvent;
 
 	import com.citrusengine.objects.platformer.Sensor;
 
@@ -43,12 +42,8 @@ package kinessia.levels {
 
 				cEvt.fixture.GetBody().GetUserData().kill = true;
 
-				_ce.dispatchEvent(new NetworkEvent(NetworkEvent.START_PACMAN));
-
 				_declik.controlsEnabled = false;
 				_declik.visible = false;
-
-				stage.addEventListener(NetworkEvent.END_PACMAN, _endPacman);
 				
 				setTimeout(_addBulle, 0);
 			}
@@ -60,10 +55,7 @@ package kinessia.levels {
 			add(_bulle);
 		}
 
-		private function _endPacman(nEvt:NetworkEvent):void {
-
-			stage.removeEventListener(NetworkEvent.END_PACMAN, _endPacman);
-			_ce.dispatchEvent(new NetworkEvent(NetworkEvent.END_PACMAN));
+		private function _endPacman():void {
 			
 			_declik.controlsEnabled = true;
 			_declik.visible = true;

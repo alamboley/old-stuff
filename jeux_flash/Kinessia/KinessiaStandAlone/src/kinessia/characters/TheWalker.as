@@ -1,4 +1,4 @@
-﻿package kinessia.characters {
+package kinessia.characters {
 
 	import Box2DAS.Collision.Shapes.b2PolygonShape;
 	import Box2DAS.Common.V2;
@@ -14,7 +14,6 @@
 
 	import flash.utils.clearTimeout;
 	import flash.utils.getDefinitionByName;
-	import flash.utils.setTimeout;
 
 	public class TheWalker extends PhysicsObject {
 
