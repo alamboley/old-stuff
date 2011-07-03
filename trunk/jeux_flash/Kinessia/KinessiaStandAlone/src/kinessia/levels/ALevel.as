@@ -9,6 +9,8 @@ package kinessia.levels {
 	import kinessia.objects.MusicalSensor;
 	import kinessia.objects.Piece;
 	import kinessia.objects.Roseau;
+	import kinessia.ui.Hud;
+	import kinessia.ui.HudEvent;
 
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.CitrusObject;
@@ -43,6 +45,7 @@ package kinessia.levels {
 
 		private var _levelObjectsMC:MovieClip;
 		private var _loadScreen:LoadScreen;
+		private var _hud:Hud;
 		private var _maskBgLoading:Shape;
 
 		public function ALevel(levelObjectsMC:MovieClip) {
@@ -50,6 +53,7 @@ package kinessia.levels {
 			super();
 
 			_ce = CitrusEngine.getInstance();
+			_hud = Hud.getInstance();
 
 			_levelObjectsMC = levelObjectsMC;
 
@@ -140,6 +144,7 @@ package kinessia.levels {
 		private function _coinTaken(cEvt:ContactEvent):void {
 
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
+				_hud.dispatchEvent(new HudEvent(HudEvent.COIN));
 				_ce.sound.playSound("Collect", 1, 0);
 			}
 		}
@@ -192,6 +197,7 @@ package kinessia.levels {
 		}
 
 		override public function destroy():void {
+			_hud.visible = false;
 			super.destroy();
 		}
 
@@ -200,7 +206,6 @@ package kinessia.levels {
 			super.update(timeDelta);
 
 			var percent:uint = Math.round(view.loadManager.bytesLoaded / view.loadManager.bytesTotal * 100);
-			// _percent = Math.round(view.loadManager.bytesLoaded / view.loadManager.bytesTotal * 100).toString();
 
 			if (_loadScreen != null) {
 				_loadScreen.gotoAndStop(percent);
@@ -208,6 +213,8 @@ package kinessia.levels {
 		}
 
 		private function _handleLoadComplete():void {
+			
+			_hud.visible = true;
 
 			removeChild(_loadScreen);
 			_loadScreen = null;

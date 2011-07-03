@@ -29,7 +29,7 @@ package kinessia.levels {
 			_levels = [];
 			_levels["Level"] = [LevelA1, LevelA2, LevelA3, LevelA4, LevelA5];
 			_levels["Name"] = ["A1", "A2", "A3", "A4", "A5"];
-			_levels["SWF"] = ["levels/levelA1.swf", "levels/levelA2.swf", "levels/levelA3.swf", "levels/levelA4.swf", "levels/levelA5.swf"];
+			_levels["SWF"] = ["levels/LevelA1.swf", "levels/LevelA2.swf", "levels/LevelA3.swf", "levels/LevelA4.swf", "levels/LevelA5.swf"];
 
 			gotoLevel();
 		}
@@ -66,9 +66,10 @@ package kinessia.levels {
 				_currentLevel.lvlEnded.remove(_onLevelEnded);
 
 			var loader:Loader = new Loader();
-			if ($index != -1) {
+			
+			if ($index != -1)
 				_currentIndex = $index;
-			}
+
 			loader.load(new URLRequest(_levels["SWF"][_currentIndex]));
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _levelSWFLoaded);
 		}
@@ -78,7 +79,7 @@ package kinessia.levels {
 			_currentLevel = ALevel(new _levels["Level"][_currentIndex](evt.target.loader.content));
 			_currentLevel.lvlEnded.add(_onLevelEnded);
 
-			onLevelChanged.dispatch(currentLevel);
+			onLevelChanged.dispatch(_currentLevel);
 
 			evt.target.removeEventListener(Event.COMPLETE, _levelSWFLoaded);
 			evt.target.loader.unloadAndStop();
