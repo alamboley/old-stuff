@@ -1,5 +1,6 @@
 package kinessia {
 
+	import kinessia.events.KinessiaEvent;
 	import kinessia.levels.ALevel;
 	import kinessia.levels.LevelManager;
 	import kinessia.pacman.Pacman;
@@ -64,6 +65,9 @@ package kinessia {
 
 			_levelManager = new LevelManager();
 			_levelManager.onLevelChanged.add(_onLevelChanged);
+			
+			this.addEventListener(KinessiaEvent.START_PACMAN, _pacmanGame);
+			stage.addEventListener(KinessiaEvent.END_PACMAN, _pacmanGame);
 		}
 
 		private function _onLevelChanged(lvl:ALevel):void {
@@ -93,9 +97,9 @@ package kinessia {
 			_levelManager.gotoLevel($level);
 		}
 
-		private function _pacmanGame($play:Boolean):void {
+		private function _pacmanGame(kEvt:KinessiaEvent):void {
 
-			if ($play) {
+			if (kEvt.type == KinessiaEvent.START_PACMAN) {
 
 				_pacman = new Pacman();
 				addChild(_pacman);

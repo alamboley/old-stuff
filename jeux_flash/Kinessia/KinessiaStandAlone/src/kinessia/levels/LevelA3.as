@@ -3,11 +3,11 @@ package kinessia.levels {
 	import Box2DAS.Dynamics.ContactEvent;
 
 	import kinessia.characters.Declik;
+	import kinessia.events.KinessiaEvent;
 
 	import com.citrusengine.objects.platformer.Sensor;
 
 	import flash.display.MovieClip;
-	import flash.utils.setTimeout;
 
 	/**
 	 * @author Aymeric
@@ -15,7 +15,6 @@ package kinessia.levels {
 	public class LevelA3 extends ALevel {
 		
 		private var _pacmanSensor:Sensor;
-		private var _bulle:Sensor;
 
 		public function LevelA3(levelObjectsMC:MovieClip) {
 			super(levelObjectsMC);
@@ -28,7 +27,9 @@ package kinessia.levels {
 			_addContactRestartLevel();
 
 			_pacmanSensor = Sensor(getObjectByName("Pacman"));
-			_pacmanSensor.onBeginContact.add(_addPacman);
+			_pacmanSensor.onBeginContact.addOnce(_addPacman);
+			
+			stage.addEventListener(KinessiaEvent.END_PACMAN, _endPacman);
 		}
 		
 		override public function destroy():void {
@@ -39,28 +40,25 @@ package kinessia.levels {
 		private function _addPacman(cEvt:ContactEvent):void {
 
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
+				
+				_hud.putText(3);
+				_hud.information.visible = true;
 
 				cEvt.fixture.GetBody().GetUserData().kill = true;
 
 				_declik.controlsEnabled = false;
 				_declik.visible = false;
 				
-				setTimeout(_addBulle, 0);
+				_ce.dispatchEvent(new KinessiaEvent(KinessiaEvent.START_PACMAN));
 			}
 		}
-		
-		private function _addBulle():void {
-			
-			_bulle = new Sensor("bulle", {x:2420, y:70, view:"objects/bulle.swf"});
-			add(_bulle);
-		}
 
-		private function _endPacman():void {
+		private function _endPacman(kEvt:KinessiaEvent):void {
 			
 			_declik.controlsEnabled = true;
 			_declik.visible = true;
 			
-			_bulle.kill = true;
+			_hud.information.visible = false;
 		}
 	}
 }

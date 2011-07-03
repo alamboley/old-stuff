@@ -9,13 +9,18 @@ package kinessia.levels {
 	import com.citrusengine.objects.platformer.Sensor;
 
 	import flash.display.MovieClip;
-	import flash.utils.setTimeout;
+	import flash.events.SampleDataEvent;
+	import flash.events.TimerEvent;
+	import flash.media.Microphone;
+	import flash.utils.ByteArray;
+	import flash.utils.Timer;
 
 	/**
 	 * @author Aymeric
 	 */
 	public class LevelA2 extends ALevel {
 
+		private const _MICRO_FLY_LEVEL:Number = 0.9;
 		private const _HERO_GRAVITY:Number = 0.6;
 
 		private var _pieceCaught:Boolean;
@@ -25,7 +30,10 @@ package kinessia.levels {
 		private var _microphoneSensor:Sensor;
 		private var _croquis:Croquis;
 		private var _piece:Piece;
-		private var _bulle:Sensor;
+		
+		private var _microphone:Microphone;
+		private var _micArray:Array;
+		private var _timer:Timer;
 
 		public function LevelA2(levelObjectsMC:MovieClip) {
 			super(levelObjectsMC);
@@ -42,7 +50,9 @@ package kinessia.levels {
 			_addMusicalSensor();
 
 			_microphoneSensor = Sensor(getObjectByName("Microphone"));
-			_microphoneSensor.onBeginContact.add(_addMicrophone);
+			_microphoneSensor.onBeginContact.addOnce(_addMicrophone);
+			_microphoneSensor.onBeginContact.add(_showText);
+			_microphoneSensor.onEndContact.add(_hideText);
 
 			_croquis = Croquis(getFirstObjectByType(Croquis));
 
@@ -61,26 +71,85 @@ package kinessia.levels {
 				lvlEnded.dispatch();
 			}
 		}
+		
+		private function _showText(cEvt:ContactEvent):void {
+			
+			if (cEvt.other.GetBody().GetUserData() is Declik) {
+				
+				_hud.putText(2);
+				_hud.information.visible = true;
+			}
+		}
+		
+		private function _hideText(cEvt:ContactEvent):void {
+			
+			if (cEvt.other.GetBody().GetUserData() is Declik) {
+				
+				_hud.information.visible = false;
+			}
+		}
 
 		private function _addMicrophone(cEvt:ContactEvent):void {
 
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 
-				cEvt.fixture.GetBody().GetUserData().kill = true;
-
 				_declik.gravity = _HERO_GRAVITY;
 
 				_croquis.anim = "white";
-
-				setTimeout(_addBulle, 0);
+				
+				_microphone = Microphone.getMicrophone();
+				_catchMic(true);
+				_microphone.addEventListener(SampleDataEvent.SAMPLE_DATA, _sampleData);
 			}
+		}
+		
+		private function _catchMic($value:Boolean):void {
 
+			if ($value == true) {
+
+				_timer = new Timer(50);
+
+				_micArray = [];
+
+				_timer.start();
+				_timer.addEventListener(TimerEvent.TIMER, _timeMic);
+
+			} else {
+				
+				_timer.stop();
+				_timer.removeEventListener(TimerEvent.TIMER, _timeMic);
+				
+				_timer.reset();
+				
+				_timer = null;
+			}
 		}
 
-		private function _addBulle():void {
+		private function _timeMic(tEvt:TimerEvent):void {
+
+			var max:Number = 0;
+
+			for (var i:uint = 0; i < _micArray.length; ++i) {
+				if (_micArray[i] > max)
+					max = _micArray[i];
+			}
 			
-			_bulle = new Sensor("bulle", {x:-550, y:330, view:"objects/bulle.swf"});
-			add(_bulle);
+			if (max > _MICRO_FLY_LEVEL) {
+				_declik.microFly = true;
+			} else {
+				_declik.microFly = false;
+			}
+			
+			_micArray = [];
+		}
+
+		private function _sampleData(sdEvt:SampleDataEvent):void {
+
+			var byteArray:ByteArray = sdEvt.data;
+
+			while (sdEvt.data.bytesAvailable > 0) {
+				_micArray.push(byteArray.readByte());
+			}
 		}
 
 		private function _pieceTaken(cEvt:ContactEvent):void {
@@ -93,9 +162,10 @@ package kinessia.levels {
 
 				_croquis.anim = "black";
 				
-				_bulle.kill = true;
-				
 				_declik.stopFlying();
+				
+				_catchMic(false);
+				_microphone = null;
 			}
 		}
 	}

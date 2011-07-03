@@ -23,19 +23,29 @@ package kinessia.levels {
 			super.initialize();
 
 			_addMusicalSensor();
-			
-			_ce.sound.playSound("KinessiaTheme");
 
 			_conservateur = Conservateur(getFirstObjectByType(Conservateur));
-			_conservateur.onBeginContact.addOnce(_talk);
-			_conservateur.onEndContact.addOnce(_notTalk);
+			
+			_conservateur.onBeginContact.addOnce(_playMusic);
+			_conservateur.onBeginContact.add(_talk);
+			_conservateur.onEndContact.add(_notTalk);
+			
 			_conservateur.anim = "idle";
+		}
+		
+		private function _playMusic(cEvt:ContactEvent):void {
+			
+			if (cEvt.other.GetBody().GetUserData() is Declik) {
+				_ce.sound.playSound("KinessiaTheme");
+			}
 		}
 
 		private function _talk(cEvt:ContactEvent):void {
 
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 				_conservateur.anim = "talk";
+				_hud.putText(1);
+				_hud.information.visible = true;
 			}
 		}
 		
@@ -43,11 +53,12 @@ package kinessia.levels {
 			
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 				_conservateur.anim = "idle";
+				_hud.information.visible = false;
 			}
 		}
 
 		override public function destroy():void {
-
+			
 			super.destroy();
 		}
 	}

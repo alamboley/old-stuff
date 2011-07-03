@@ -1,5 +1,7 @@
 package kinessia.objects {
 
+	import kinessia.events.KinessiaEvent;
+
 	import Box2DAS.Common.V2;
 	import Box2DAS.Dynamics.ContactEvent;
 	import Box2DAS.Dynamics.Joints.b2RevoluteJoint;
@@ -18,7 +20,7 @@ package kinessia.objects {
 	public class Catapulte extends PhysicsObject {
 
 		public var onBeginContact:Signal;
-		
+
 		private var _declik:Declik;
 
 		public function Catapulte(name:String, params:Object = null) {
@@ -26,7 +28,7 @@ package kinessia.objects {
 			super(name, params);
 			onBeginContact = new Signal(ContactEvent);
 		}
-		
+
 		public function know(declik:Declik):void {
 			_declik = declik;
 		}
@@ -64,7 +66,7 @@ package kinessia.objects {
 		}
 
 		private function _handleBeginContact(cEvt:ContactEvent):void {
-			
+
 			onBeginContact.dispatch(cEvt);
 
 			if (cEvt.other.GetBody().GetUserData() is Circle) {
@@ -73,6 +75,11 @@ package kinessia.objects {
 				cEvt.fixture.GetBody().ApplyImpulse(new V2(100, 50), new V2(width, 0));
 			}
 		}
+		
+		public function shot(kEvt:KinessiaEvent):void {
 
+			_declik.velocityCatapulte = new V2(50, -5);
+			_body.ApplyImpulse(new V2(100, 50), new V2(width, 0));
+		}
 	}
 }
