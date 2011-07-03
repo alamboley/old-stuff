@@ -39,13 +39,14 @@ package kinessia.levels {
 		public var restartLevel:Signal;
 
 		protected var _ce:CitrusEngine;
-
+		
+		protected var _hud:Hud;
+		
 		protected var _declik:Declik;
 		protected var _bullzors:Vector.<CitrusObject>;
 
 		private var _levelObjectsMC:MovieClip;
 		private var _loadScreen:LoadScreen;
-		private var _hud:Hud;
 		private var _maskBgLoading:Shape;
 
 		public function ALevel(levelObjectsMC:MovieClip) {
@@ -172,28 +173,6 @@ package kinessia.levels {
 
 		private function _attack():void {
 			_ce.sound.playSound("Kill", 1, 0);
-		}
-
-		private function _jump():void {
-			_ce.sound.playSound("Jump", 1, 0);
-		}
-
-		private function _animationChange():void {
-
-			if (_declik.animation == "walk") {
-				_ce.sound.stopSound("Skid");
-				_ce.sound.playSound("Walk", 1);
-				return;
-			} else {
-				_ce.sound.stopSound("Walk");
-			}
-
-			if (_declik.animation == "skid") {
-				_ce.sound.playSound("Skid", 1, 0);
-				return;
-			} else {
-				_ce.sound.stopSound("Skid");
-			}
 		}
 
 		override public function destroy():void {
