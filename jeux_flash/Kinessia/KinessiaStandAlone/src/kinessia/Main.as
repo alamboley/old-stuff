@@ -1,8 +1,10 @@
-﻿package kinessia {
+package kinessia {
 
 	import kinessia.levels.ALevel;
 	import kinessia.levels.LevelManager;
 	import kinessia.pacman.Pacman;
+	import kinessia.ui.Hud;
+	import kinessia.ui.HudEvent;
 
 	import com.citrusengine.core.CitrusEngine;
 
@@ -16,10 +18,13 @@
 	public class Main extends CitrusEngine {
 
 		private var _levelManager:LevelManager;
+		
+		private var _hud:Hud;
 
 		private var _pacman:Pacman;
 
 		private var _soundOn:Boolean;
+		private var _tmpLvlCoin:uint;
 
 		public function Main() {
 
@@ -48,11 +53,17 @@
 			sound.addSound("Do", "sounds/do.mp3");
 			sound.addSound("Re", "sounds/re.mp3");
 			sound.addSound("Mi", "sounds/mi.mp3");
+			
+			_hud = new Hud();
+			addChild(_hud);
+			_hud.addEventListener(HudEvent.PAUSE, _pauseGame);
+			_hud.addEventListener(HudEvent.SOUND, _soundGame);
+			_hud.addEventListener(HudEvent.FULLSCREEN, _fullscreen);
+			_hud.addEventListener(HudEvent.COIN, _addCoin);
+			_hud.visible = false;
 
 			_levelManager = new LevelManager();
 			_levelManager.onLevelChanged.add(_onLevelChanged);
-			state = _levelManager.currentLevel;
-
 		}
 
 		private function _onLevelChanged(lvl:ALevel):void {
@@ -65,15 +76,19 @@
 
 		private function _restartLevel():void {
 			
+			_hud.coin.coin_txt.text = String(uint(_hud.coin.coin_txt.text) - _tmpLvlCoin);
+			_tmpLvlCoin = 0;
+
 			state = _levelManager.currentLevel;
 		}
 
 		private function _nextLevel():void {
-
+			
+			_tmpLvlCoin = 0;
 			_levelManager.nextLevel();
 		}
-		
-		private function _goto($level:uint):void {
+
+		private function _goto($level:int):void {
 
 			_levelManager.gotoLevel($level);
 		}
@@ -95,7 +110,7 @@
 			}
 		}
 
-		private function _fullscreen():void {
+		private function _fullscreen(hEvt:HudEvent = null):void {
 
 			if (stage.displayState == "normal") {
 				stage.displayState = "fullScreen";
@@ -104,11 +119,11 @@
 			}
 		}
 
-		private function _pauseGame():void {
+		private function _pauseGame(hEvt:HudEvent = null):void {
 			this.playing = !this.playing;
 		}
 
-		private function _soundGame():void {
+		private function _soundGame(hEvt:HudEvent = null):void {
 
 			var st:SoundTransform = SoundMixer.soundTransform;
 
@@ -120,6 +135,11 @@
 
 			SoundMixer.soundTransform = st;
 			_soundOn = !_soundOn;
+		}
+		
+		private function _addCoin(hEvt:HudEvent):void {
+			_hud.coin.coin_txt.text = String(uint(_hud.coin.coin_txt.text) + 1);
+			++_tmpLvlCoin;
 		}
 	}
 }
