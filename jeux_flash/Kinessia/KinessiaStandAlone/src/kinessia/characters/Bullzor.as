@@ -75,7 +75,7 @@ package kinessia.characters {
 			updateAnimation();
 		}
 
-		public function hurt():void {
+		public function hurted():void {
 
 			_hurt = true;
 			_hurtTimeoutID = setTimeout(endHurtState, hurtDuration);
@@ -104,17 +104,17 @@ package kinessia.characters {
 
 			var colliderBody:b2Body = e.other.GetBody();
 			var enemyClassClass:Class = flash.utils.getDefinitionByName(enemyClass) as Class;
-
-			if (colliderBody.GetUserData() is enemyClassClass && colliderBody.GetLinearVelocity().y > enemyKillVelocity)
-				hurt();
-
+			
 			// Collision angle, // The normal property doesn't come through all the time. I think doesn't come through against sensors.
 			if (e.normal) {
 				var collisionAngle:Number = new MathVector(e.normal.x, e.normal.y).angle * 180 / Math.PI;
-				if (collisionAngle < 45 || collisionAngle > 135) {
+				if ((collisionAngle < 45 || collisionAngle > 135) && !_hurt) {
 					_inverted = !_inverted;
 				}
 			}
+
+			if (colliderBody.GetUserData() is enemyClassClass && colliderBody.GetLinearVelocity().y > enemyKillVelocity && !_hurt)
+				hurted();
 		}
 
 		private function updateAnimation():void {
@@ -126,7 +126,10 @@ package kinessia.characters {
 
 		private function endHurtState():void {
 			_hurt = false;
-			// kill = true;
+		}
+
+		public function get hurt():Boolean {
+			return _hurt;
 		}
 	}
 }

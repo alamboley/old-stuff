@@ -94,8 +94,8 @@ package kinessia.gesture {
 		private function _touchMove(mEvt:MouseEvent):void {
 
 			if (_record) {
-				_recordedPoints.push(new Point(mEvt.localX, mEvt.localY));
-				this.graphics.drawCircle(mEvt.localX, mEvt.localY, 1);
+				_recordedPoints.push(new Point(mEvt.stageX, mEvt.stageY));
+				this.graphics.drawCircle(mEvt.stageX, mEvt.stageY, 1);
 			}
 		}
 		
