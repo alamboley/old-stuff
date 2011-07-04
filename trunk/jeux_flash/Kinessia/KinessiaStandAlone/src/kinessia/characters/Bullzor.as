@@ -32,6 +32,9 @@ package kinessia.characters {
 
 		private var _hurtTimeoutID:Number = 0;
 		private var _hurt:Boolean = false;
+		
+		//used for Hero sounds onGiveDamage.dispatch();
+		private var _hurtedByHero:Boolean;
 
 		public function Bullzor(name:String, params:Object = null) {
 
@@ -126,10 +129,19 @@ package kinessia.characters {
 
 		private function endHurtState():void {
 			_hurt = false;
+			_hurtedByHero = false;
 		}
 
 		public function get hurt():Boolean {
 			return _hurt;
+		}
+
+		public function get hurtedByHero():Boolean {
+			return _hurtedByHero;
+		}
+
+		public function set hurtedByHero($hurtedByHero:Boolean):void {
+			_hurtedByHero = $hurtedByHero;
 		}
 	}
 }
