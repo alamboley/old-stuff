@@ -9,6 +9,7 @@ package kinessia {
 
 	import com.citrusengine.core.CitrusEngine;
 
+	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.media.SoundMixer;
 	import flash.media.SoundTransform;
@@ -37,6 +38,8 @@ package kinessia {
 		private function _init(evt:Event):void {
 
 			this.removeEventListener(Event.ADDED_TO_STAGE, _init);
+			
+			stage.scaleMode = StageScaleMode.EXACT_FIT;
 
 			this.console.addCommand("fullscreen", _fullscreen);
 			this.console.addCommand("pause", _pauseGame);
