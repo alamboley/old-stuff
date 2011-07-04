@@ -25,7 +25,7 @@ package kinessia.characters {
 			super(name, params);
 
 			enemyClass = Bullzor;
-			hurtDuration = 2000;
+			hurtDuration = 1700;
 		}
 
 		override public function destroy():void {
@@ -74,7 +74,11 @@ package kinessia.characters {
 				} else {
 
 					_springOffEnemy = colliderBody.GetPosition().y * _box2D.scale - height;
-					onGiveDamage.dispatch();
+					if (!colliderBody.GetUserData().hurtedByHero) {
+						onGiveDamage.dispatch();
+						colliderBody.GetUserData().hurtedByHero = true;
+					}
+					
 				}
 			}
 
