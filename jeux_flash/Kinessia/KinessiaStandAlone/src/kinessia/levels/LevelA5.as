@@ -14,6 +14,8 @@ package kinessia.levels {
 	import com.citrusengine.objects.platformer.Sensor;
 
 	import flash.display.MovieClip;
+	import flash.utils.clearTimeout;
+	import flash.utils.setTimeout;
 
 	/**
 	 * @author Aymeric
@@ -21,6 +23,8 @@ package kinessia.levels {
 	public class LevelA5 extends ALevel {
 		
 		private var _gesture:Gesture;
+		
+		private var _teleportTimeoutID:uint;
 		
 		private var _catapulte:Catapulte;
 		
@@ -39,6 +43,8 @@ package kinessia.levels {
 		override public function initialize():void {
 
 			super.initialize();
+			
+			_hud.panneau.panneau3.gotoAndStop("search");
 
 			_addContactRestartLevel();
 
@@ -49,7 +55,6 @@ package kinessia.levels {
 			_startCatapulte = Sensor(getObjectByName("StartCatapulte"));
 			_startCatapulte.onBeginContact.addOnce(_catapulteReady);
 			_startCatapulte.onBeginContact.add(_showText);
-			_startCatapulte.onEndContact.add(_hideText);
 			
 			_croquis1 = Croquis(getObjectByName("Croquis1"));
 			_croquis2 = Croquis(getObjectByName("Croquis2"));
@@ -65,6 +70,8 @@ package kinessia.levels {
 		
 		override public function destroy():void {
 			
+			clearTimeout(_teleportTimeoutID);
+			
 			super.destroy();
 		}
 		
@@ -74,6 +81,8 @@ package kinessia.levels {
 				//lvlEnded.dispatch();
 				
 				_ce.playing = false;
+				
+				_hud.showEndImg();
 			}
 		}
 		
@@ -83,15 +92,17 @@ package kinessia.levels {
 				
 				_hud.putText(4);
 				_hud.information.visible = true;
+				
+				_teleportTimeoutID = setTimeout(_teleport, 0);
 			}
 		}
 		
-		private function _hideText(cEvt:ContactEvent):void {
+		private function _teleport():void {
 			
-			if (cEvt.other.GetBody().GetUserData() is Declik) {
-				
-				_hud.information.visible = false;
-			}
+			_declik.controlsEnabled = false;
+			
+			_declik.x = 0;
+			_declik.y = 200;
 		}
 		
 		private function _catapulteReady(cEvt:ContactEvent):void {
@@ -109,6 +120,8 @@ package kinessia.levels {
 		private function _pieceTaken(cEvt:ContactEvent):void {
 
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
+				
+				_declik.controlsEnabled = true;
 
 				_declik.velocityCatapulte = null;
 				
@@ -118,6 +131,8 @@ package kinessia.levels {
 				_gesture.removeEventListener(KinessiaEvent.CIRCLE_IDENTIFIED, _catapulte.shot);
 				removeChild(_gesture);
 				_gesture = null;
+				
+				_hud.panneau.panneau3.gotoAndStop("found");
 			}
 		}
 		

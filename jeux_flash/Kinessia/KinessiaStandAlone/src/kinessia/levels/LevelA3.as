@@ -23,6 +23,8 @@ package kinessia.levels {
 		override public function initialize():void {
 
 			super.initialize();
+			
+			_hud.panneau.panneau2.gotoAndStop("search");
 
 			_addContactRestartLevel();
 
@@ -59,6 +61,8 @@ package kinessia.levels {
 			_declik.visible = true;
 			
 			_hud.information.visible = false;
+			
+			_hud.panneau.panneau2.gotoAndStop("found");
 		}
 	}
 }

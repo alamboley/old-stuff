@@ -10,18 +10,15 @@ package kinessia.levels {
 
 	import flash.display.MovieClip;
 	import flash.events.SampleDataEvent;
-	import flash.events.TimerEvent;
 	import flash.media.Microphone;
-	import flash.utils.ByteArray;
-	import flash.utils.Timer;
 
 	/**
 	 * @author Aymeric
 	 */
 	public class LevelA2 extends ALevel {
 
-		private const _MICRO_FLY_LEVEL:Number = 0.9;
-		private const _HERO_GRAVITY:Number = 0.6;
+		private const _MICRO_FLY_LEVEL:Number = 10;
+		private const _HERO_GRAVITY:Number = 0.5;
 
 		private var _pieceCaught:Boolean;
 
@@ -30,10 +27,8 @@ package kinessia.levels {
 		private var _microphoneSensor:Sensor;
 		private var _croquis:Croquis;
 		private var _piece:Piece;
-		
+
 		private var _microphone:Microphone;
-		private var _micArray:Array;
-		private var _timer:Timer;
 
 		public function LevelA2(levelObjectsMC:MovieClip) {
 			super(levelObjectsMC);
@@ -42,6 +37,8 @@ package kinessia.levels {
 		override public function initialize():void {
 
 			super.initialize();
+			
+			_hud.panneau.panneau1.gotoAndStop("search");
 
 			_heroInitGravity = _declik.gravity;
 
@@ -71,20 +68,20 @@ package kinessia.levels {
 				lvlEnded.dispatch();
 			}
 		}
-		
+
 		private function _showText(cEvt:ContactEvent):void {
-			
+
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
-				
+
 				_hud.putText(2);
 				_hud.information.visible = true;
 			}
 		}
-		
+
 		private function _hideText(cEvt:ContactEvent):void {
-			
+
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
-				
+
 				_hud.information.visible = false;
 			}
 		}
@@ -96,76 +93,41 @@ package kinessia.levels {
 				_declik.gravity = _HERO_GRAVITY;
 
 				_croquis.anim = "white";
-				
+
 				_microphone = Microphone.getMicrophone();
-				_catchMic(true);
 				_microphone.addEventListener(SampleDataEvent.SAMPLE_DATA, _sampleData);
 			}
-		}
-		
-		private function _catchMic($value:Boolean):void {
-
-			if ($value == true) {
-
-				_timer = new Timer(50);
-
-				_micArray = [];
-
-				_timer.start();
-				_timer.addEventListener(TimerEvent.TIMER, _timeMic);
-
-			} else {
-				
-				_timer.stop();
-				_timer.removeEventListener(TimerEvent.TIMER, _timeMic);
-				
-				_timer.reset();
-				
-				_timer = null;
-			}
-		}
-
-		private function _timeMic(tEvt:TimerEvent):void {
-
-			var max:Number = 0;
-
-			for (var i:uint = 0; i < _micArray.length; ++i) {
-				if (_micArray[i] > max)
-					max = _micArray[i];
-			}
-			
-			if (max > _MICRO_FLY_LEVEL) {
-				_declik.microFly = true;
-			} else {
-				_declik.microFly = false;
-			}
-			
-			_micArray = [];
 		}
 
 		private function _sampleData(sdEvt:SampleDataEvent):void {
 
-			var byteArray:ByteArray = sdEvt.data;
+			while (sdEvt.data.bytesAvailable) {
 
-			while (sdEvt.data.bytesAvailable > 0) {
-				_micArray.push(byteArray.readByte());
+				if (sdEvt.data.readFloat() * 50 > _MICRO_FLY_LEVEL) {
+					_declik.microFly = true;
+				} else {
+					_declik.microFly = false;
+				}
 			}
 		}
+
 
 		private function _pieceTaken(cEvt:ContactEvent):void {
 
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 
 				_declik.gravity = _heroInitGravity;
-				
+
 				_pieceCaught = true;
 
 				_croquis.anim = "black";
-				
+
 				_declik.stopFlying();
-				
-				_catchMic(false);
+
+				_microphone.removeEventListener(SampleDataEvent.SAMPLE_DATA, _sampleData);
 				_microphone = null;
+				
+				_hud.panneau.panneau1.gotoAndStop("found");
 			}
 		}
 	}

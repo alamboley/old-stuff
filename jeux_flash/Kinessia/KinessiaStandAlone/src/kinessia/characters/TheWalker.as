@@ -3,29 +3,23 @@ package kinessia.characters {
 	import Box2DAS.Collision.Shapes.b2PolygonShape;
 	import Box2DAS.Common.V2;
 	import Box2DAS.Common.b2Def;
-	import Box2DAS.Dynamics.ContactEvent;
 	import Box2DAS.Dynamics.Joints.b2RevoluteJoint;
 	import Box2DAS.Dynamics.b2Body;
 	import Box2DAS.Dynamics.b2BodyDef;
 	import Box2DAS.Dynamics.b2FixtureDef;
 
-	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.PhysicsObject;
 
-	import flash.utils.clearTimeout;
-	import flash.utils.getDefinitionByName;
-
+	/**
+	 * @author Aymeric
+	 */
 	public class TheWalker extends PhysicsObject {
 
 		public var speed:Number = 1;
-		public var enemyClass:String = "com.citrusengine.objects.platformer.Hero";
-		public var enemyKillVelocity:Number = 3;
 		public var startingDirection:String = "left";
-		public var hurtDuration:Number = 3000;
 		public var leftBound:Number = -100000;
 		public var rightBound:Number = 100000;
 
-		private var _hurtTimeoutID:Number = 0;
 		private var _hurt:Boolean = false;
 
 		private var _awake:Boolean;
@@ -47,15 +41,12 @@ package kinessia.characters {
 				_inverted = true;
 			}
 
-
 			// For the fun here is the Walker animated with code, coming from Box2D WCK !!
 			// _theWalkerWithCode();
 		}
 
 		override public function destroy():void {
 
-			_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
-			clearTimeout(_hurtTimeoutID);
 			super.destroy();
 		}
 
@@ -65,7 +56,7 @@ package kinessia.characters {
 
 			var position:V2 = _body.GetPosition();
 			var velocity:V2 = _body.GetLinearVelocity();
-			
+
 			if (_awake) {
 
 				// Turn around when they pass their left/right bounds
@@ -90,12 +81,6 @@ package kinessia.characters {
 			updateAnimation();
 		}
 
-		public function hurt():void {
-			
-			//_hurt = true;
-			//_hurtTimeoutID = setTimeout(endHurtState, hurtDuration);
-		}
-
 		override protected function createBody():void {
 
 			super.createBody();
@@ -108,30 +93,6 @@ package kinessia.characters {
 			_fixtureDef.friction = 0;
 		}
 
-		override protected function createFixture():void {
-
-			super.createFixture();
-			_fixture.m_reportBeginContact = true;
-			_fixture.addEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
-		}
-
-		private function handleBeginContact(e:ContactEvent):void {
-
-			var colliderBody:b2Body = e.other.GetBody();
-			var enemyClassClass:Class = flash.utils.getDefinitionByName(enemyClass) as Class;
-
-			if (colliderBody.GetUserData() is enemyClassClass && colliderBody.GetLinearVelocity().y > enemyKillVelocity)
-				hurt();
-
-			// Collision angle, // The normal property doesn't come through all the time. I think doesn't come through against sensors.
-			if (e.normal) {
-				var collisionAngle:Number = new MathVector(e.normal.x, e.normal.y).angle * 180 / Math.PI;
-				if (collisionAngle < 45 || collisionAngle > 135) {
-					_inverted = !_inverted;
-				}
-			}
-		}
-
 		private function updateAnimation():void {
 			if (_awake) {
 				_animation = "walk";
@@ -140,11 +101,6 @@ package kinessia.characters {
 			}
 		}
 
-		private function endHurtState():void {
-			_hurt = false;
-			// kill = true;
-		}
-		
 		public function get awake():Boolean {
 			return _awake;
 		}

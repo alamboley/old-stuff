@@ -1,13 +1,13 @@
 package kinessia.objects {
 
-	import kinessia.events.KinessiaEvent;
-
 	import Box2DAS.Common.V2;
 	import Box2DAS.Dynamics.ContactEvent;
 	import Box2DAS.Dynamics.Joints.b2RevoluteJoint;
 	import Box2DAS.Dynamics.Joints.b2RevoluteJointDef;
 
 	import kinessia.characters.Declik;
+	import kinessia.events.KinessiaEvent;
+	import kinessia.ui.Hud;
 
 	import com.citrusengine.objects.PhysicsObject;
 	import com.citrusengine.objects.platformer.Platform;
@@ -77,6 +77,8 @@ package kinessia.objects {
 		}
 		
 		public function shot(kEvt:KinessiaEvent):void {
+			
+			Hud.getInstance().information.visible = false;
 
 			_declik.velocityCatapulte = new V2(50, -5);
 			_body.ApplyImpulse(new V2(100, 50), new V2(width, 0));
