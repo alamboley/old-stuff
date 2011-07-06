@@ -5,6 +5,8 @@ package kinessia.levels {
 	import kinessia.characters.Conservateur;
 	import kinessia.characters.Declik;
 
+	import com.citrusengine.objects.CitrusSprite;
+
 	import flash.display.MovieClip;
 
 	/**
@@ -13,6 +15,7 @@ package kinessia.levels {
 	public class LevelA1 extends ALevel {
 		
 		private var _conservateur:Conservateur;
+		private var _popUp:CitrusSprite;
 
 		public function LevelA1(levelObjectsMC:MovieClip) {
 			super(levelObjectsMC);
@@ -25,6 +28,8 @@ package kinessia.levels {
 			_addMusicalSensor();
 
 			_conservateur = Conservateur(getFirstObjectByType(Conservateur));
+			
+			_popUp = CitrusSprite(getObjectByName("PopUp"));
 			
 			_conservateur.onBeginContact.addOnce(_playMusic);
 			_conservateur.onBeginContact.add(_talk);
@@ -44,8 +49,7 @@ package kinessia.levels {
 
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 				_conservateur.anim = "talk";
-				_hud.putText(1);
-				_hud.information.visible = true;
+				_popUp.visible = true;
 			}
 		}
 		
@@ -53,7 +57,7 @@ package kinessia.levels {
 			
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 				_conservateur.anim = "idle";
-				_hud.information.visible = false;
+				_popUp.visible = false;
 			}
 		}
 

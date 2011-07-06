@@ -5,6 +5,7 @@ package kinessia.levels {
 	import kinessia.characters.Declik;
 	import kinessia.events.KinessiaEvent;
 
+	import com.citrusengine.objects.CitrusSprite;
 	import com.citrusengine.objects.platformer.Sensor;
 
 	import flash.display.MovieClip;
@@ -15,6 +16,7 @@ package kinessia.levels {
 	public class LevelA3 extends ALevel {
 		
 		private var _pacmanSensor:Sensor;
+		private var _popUp:CitrusSprite;
 
 		public function LevelA3(levelObjectsMC:MovieClip) {
 			super(levelObjectsMC);
@@ -31,6 +33,8 @@ package kinessia.levels {
 			_pacmanSensor = Sensor(getObjectByName("Pacman"));
 			_pacmanSensor.onBeginContact.addOnce(_addPacman);
 			
+			_popUp = CitrusSprite(getObjectByName("PopUp"));
+			
 			stage.addEventListener(KinessiaEvent.END_PACMAN, _endPacman);
 		}
 		
@@ -43,8 +47,7 @@ package kinessia.levels {
 
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 				
-				_hud.putText(3);
-				_hud.information.visible = true;
+				_popUp.visible = true;
 
 				cEvt.fixture.GetBody().GetUserData().kill = true;
 
@@ -60,7 +63,7 @@ package kinessia.levels {
 			_declik.controlsEnabled = true;
 			_declik.visible = true;
 			
-			_hud.information.visible = false;
+			_popUp.visible = false;
 			
 			_hud.panneau.panneau2.gotoAndStop("found");
 		}

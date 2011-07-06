@@ -1,6 +1,5 @@
 package kinessia.ui {
 
-	import flash.ui.Keyboard;
 	import com.greensock.TweenMax;
 
 	import flash.display.Loader;
@@ -26,8 +25,6 @@ package kinessia.ui {
 		public var coin:MovieClip;
 		public var panneau:MovieClip;
 		
-		public var information:MovieClip;
-		
 		private var _endKinessia:Sprite;
 
 		public function Hud() {
@@ -35,8 +32,6 @@ package kinessia.ui {
 			_instance = this;
 			
 			intro.buttonMode = true;
-			
-			information.visible = false;
 
 			fullscreen.buttonMode = pause.buttonMode = sound.buttonMode = true;
 			
@@ -53,17 +48,6 @@ package kinessia.ui {
 			return _instance;
 		}
 		
-		private function _intro(mEvt:MouseEvent):void {
-			
-			intro.removeEventListener(MouseEvent.CLICK, _intro);
-			
-			intro.buttonMode = false;
-			
-			removeChild(intro);
-			
-			stage.focus = stage;
-		}
-		
 		private function _init(evt:Event):void {
 			
 			this.removeEventListener(Event.ADDED_TO_STAGE, _init);
@@ -73,6 +57,26 @@ package kinessia.ui {
 			var loader:Loader = new Loader();
 			loader.load(new URLRequest("images/kineco-end.jpg"));
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _endLoaded);
+		}
+		
+		public function showEndImg():void {
+			
+			_endKinessia.alpha = 0;
+			addChild(_endKinessia);
+			
+			TweenMax.to(_endKinessia, 0.5, {alpha:1});
+		}
+		
+		private function _intro(mEvt:MouseEvent):void {
+			
+			intro.removeEventListener(MouseEvent.CLICK, _intro);
+			
+			intro.buttonMode = false;
+			
+			removeChild(intro);
+			intro = null;
+			
+			stage.focus = stage;
 		}
 
 		private function _endLoaded(evt:Event):void {
@@ -123,36 +127,6 @@ package kinessia.ui {
 
 					break;
 			}
-		}
-		
-		public function putText($num:uint):void {
-			
-			switch ($num) {
-				
-				case 1:
-					information.texte.text = "Kinessia is the game school project of Tiffany Francony (designer) & Aymeric Lamboley (developer) at the Gobelins French School, in Annecy.\n\n This simple web version doesn't include Java Server and Smartphone controller such as the original one.\n\n Go through the levels and find 3 machine's fragments!";
-					break;
-					
-				case 2:
-					information.texte.text = "Use your microphone to fly away and gets the fragment! \n\n If you don't have one, you can jump higher.";
-					break;
-					
-				case 3:
-					information.texte.text = "Find the fragment into the maze.";
-					break;
-					
-				case 4:
-					information.texte.text = "Go into the catapult and draw a circle from left to right to be catapulted!";
-					break;
-			}
-		}
-		
-		public function showEndImg():void {
-			
-			_endKinessia.alpha = 0;
-			addChild(_endKinessia);
-			
-			TweenMax.to(_endKinessia, 0.5, {alpha:1});
 		}
 	}
 }
