@@ -120,6 +120,8 @@ package kinessia.levels {
 		private function _pieceTaken(cEvt:ContactEvent):void {
 
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
+				
+				_ce.sound.playSound("Collect", 1, 0);
 
 				_declik.gravity = _heroInitGravity;
 

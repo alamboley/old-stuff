@@ -123,6 +123,8 @@ package kinessia.levels {
 
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 				
+				_ce.sound.playSound("Collect", 1, 0);
+				
 				_declik.controlsEnabled = true;
 
 				_declik.velocityCatapulte = null;

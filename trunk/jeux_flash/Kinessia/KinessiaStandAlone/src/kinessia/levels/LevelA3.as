@@ -60,6 +60,8 @@ package kinessia.levels {
 
 		private function _endPacman(kEvt:KinessiaEvent):void {
 			
+			_ce.sound.playSound("Collect", 1, 0);
+			
 			_declik.controlsEnabled = true;
 			_declik.visible = true;
 			
