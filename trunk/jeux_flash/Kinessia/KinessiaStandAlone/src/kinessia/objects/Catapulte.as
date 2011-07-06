@@ -77,8 +77,6 @@ package kinessia.objects {
 		}
 		
 		public function shot(kEvt:KinessiaEvent):void {
-			
-			Hud.getInstance().information.visible = false;
 
 			_declik.velocityCatapulte = new V2(50, -5);
 			_body.ApplyImpulse(new V2(100, 50), new V2(width, 0));

@@ -6,6 +6,7 @@ package kinessia.levels {
 	import kinessia.objects.Croquis;
 	import kinessia.objects.Piece;
 
+	import com.citrusengine.objects.CitrusSprite;
 	import com.citrusengine.objects.platformer.Sensor;
 
 	import flash.display.MovieClip;
@@ -25,6 +26,7 @@ package kinessia.levels {
 		private var _heroInitGravity:Number;
 
 		private var _microphoneSensor:Sensor;
+		private var _popUp:CitrusSprite;
 		private var _croquis:Croquis;
 		private var _piece:Piece;
 
@@ -38,6 +40,8 @@ package kinessia.levels {
 
 			super.initialize();
 			
+			_pieceCaught = false;
+			
 			_hud.panneau.panneau1.gotoAndStop("search");
 
 			_heroInitGravity = _declik.gravity;
@@ -50,6 +54,8 @@ package kinessia.levels {
 			_microphoneSensor.onBeginContact.addOnce(_addMicrophone);
 			_microphoneSensor.onBeginContact.add(_showText);
 			_microphoneSensor.onEndContact.add(_hideText);
+			
+			_popUp = CitrusSprite(getObjectByName("PopUp"));
 
 			_croquis = Croquis(getFirstObjectByType(Croquis));
 
@@ -73,8 +79,7 @@ package kinessia.levels {
 
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 
-				_hud.putText(2);
-				_hud.information.visible = true;
+				_popUp.visible = true;
 			}
 		}
 
@@ -82,7 +87,7 @@ package kinessia.levels {
 
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 
-				_hud.information.visible = false;
+				_popUp.visible = false;
 			}
 		}
 

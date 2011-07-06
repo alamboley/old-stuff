@@ -10,6 +10,7 @@ package kinessia.levels {
 	import kinessia.objects.Croquis;
 	import kinessia.objects.Piece;
 
+	import com.citrusengine.objects.CitrusSprite;
 	import com.citrusengine.objects.platformer.Platform;
 	import com.citrusengine.objects.platformer.Sensor;
 
@@ -29,6 +30,7 @@ package kinessia.levels {
 		private var _catapulte:Catapulte;
 		
 		private var _startCatapulte:Sensor;
+		private var _popUp:CitrusSprite;
 		private var _croquis1:Croquis, _croquis2:Croquis;
 		
 		private var _piece:Piece;
@@ -55,6 +57,8 @@ package kinessia.levels {
 			_startCatapulte = Sensor(getObjectByName("StartCatapulte"));
 			_startCatapulte.onBeginContact.addOnce(_catapulteReady);
 			_startCatapulte.onBeginContact.add(_showText);
+			
+			_popUp = CitrusSprite(getObjectByName("PopUp"));
 			
 			_croquis1 = Croquis(getObjectByName("Croquis1"));
 			_croquis2 = Croquis(getObjectByName("Croquis2"));
@@ -90,8 +94,8 @@ package kinessia.levels {
 			
 			if (cEvt.other.GetBody().GetUserData() is Declik) {
 				
-				_hud.putText(4);
-				_hud.information.visible = true;
+				_declik.controlsEnabled = false;
+				_popUp.visible = true;
 				
 				_teleportTimeoutID = setTimeout(_teleport, 0);
 			}
@@ -99,9 +103,7 @@ package kinessia.levels {
 		
 		private function _teleport():void {
 			
-			_declik.controlsEnabled = false;
-			
-			_declik.x = 0;
+			_declik.x = 10;
 			_declik.y = 200;
 		}
 		
@@ -129,6 +131,9 @@ package kinessia.levels {
 				
 				_gesture.destroy();
 				_gesture.removeEventListener(KinessiaEvent.CIRCLE_IDENTIFIED, _catapulte.shot);
+				
+				_popUp.visible = false;
+				
 				removeChild(_gesture);
 				_gesture = null;
 				
