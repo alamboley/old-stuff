@@ -11,7 +11,7 @@ package defenseofaegir.levels {
 	 */
 	public class LevelManager {
 
-		private static var _instance:LevelManager;
+		static private var _instance:LevelManager;
 
 		public var onLevelChanged:Signal;
 
@@ -26,27 +26,24 @@ package defenseofaegir.levels {
 			onLevelChanged = new Signal(ALevel);
 			_currentIndex = 0;
 
-			_levels = [];
-			_levels["Level"] = [LevelA1, LevelA2];
-			_levels["SWF"] = ["levels/LevelA1.swf", "levels/LevelA2.swf"];
+			_levels = [[LevelA1, "levels/LevelA1.swf"], [LevelA2]];
 
 			gotoLevel();
 		}
 
-		public static function getInstance():LevelManager {
+		static public function getInstance():LevelManager {
 			return _instance;
 		}
 
 
 		public function destroy():void {
-			
 			onLevelChanged.removeAll();
 			_currentLevel = null;
 		}
 
 		public function nextLevel():void {
 
-			if (_currentIndex < _levels["Level"].length - 1)
+			if (_currentIndex < _levels.length - 1)
 				++_currentIndex;
 
 			gotoLevel();
@@ -60,31 +57,40 @@ package defenseofaegir.levels {
 			gotoLevel();
 		}
 
-		public function gotoLevel($index:int = -1):void {
+		public function gotoLevel(index:int = -1):void {
 
 			if (_currentLevel != null)
 				_currentLevel.lvlEnded.remove(_onLevelEnded);
 
 			var loader:Loader = new Loader();
-			
-			if ($index != -1)
-				_currentIndex = $index;
+
+			if (index != -1)
+				_currentIndex = index;
 				
-			//loader.load(new URLRequest(_levels["SWF"][_currentIndex]));
-			//loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _levelSWFLoaded);
-			_levelSWFLoaded(null);
+			// Level SWF is undefined 
+			if (_levels[_currentIndex][1] == undefined) {
+				
+				_currentLevel = ALevel(new _levels[_currentIndex][0]());
+				_currentLevel.lvlEnded.add(_onLevelEnded);
+
+				onLevelChanged.dispatch(_currentLevel);
+				
+			} else {
+				
+				loader.load(new URLRequest(_levels[_currentIndex][1]));
+				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _levelSWFLoaded);
+			}
 		}
 
 		private function _levelSWFLoaded(evt:Event):void {
 
-			//_currentLevel = ALevel(new _levels["Level"][_currentIndex](evt.target.loader.content));
-			_currentLevel = ALevel(new _levels["Level"][_currentIndex]);
+			_currentLevel = ALevel(new _levels[_currentIndex][0](evt.target.loader.content));
 			_currentLevel.lvlEnded.add(_onLevelEnded);
 
 			onLevelChanged.dispatch(_currentLevel);
 
-			//evt.target.removeEventListener(Event.COMPLETE, _levelSWFLoaded);
-			//evt.target.loader.unloadAndStop();
+			evt.target.removeEventListener(Event.COMPLETE, _levelSWFLoaded);
+			evt.target.loader.unloadAndStop();
 		}
 
 		private function _onLevelEnded():void {
@@ -93,18 +99,16 @@ package defenseofaegir.levels {
 
 
 		public function get currentLevel():ALevel {
-			
 			return _currentLevel;
 		}
 
 		public function set currentLevel(currentLevel:ALevel):void {
-			
 			_currentLevel = currentLevel;
 		}
 
 		public function get nameCurrentLevel():String {
-			
 			return _currentLevel.nameLevel;
 		}
+
 	}
 }

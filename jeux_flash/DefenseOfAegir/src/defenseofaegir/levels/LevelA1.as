@@ -1,13 +1,14 @@
 package defenseofaegir.levels {
 
+	import flash.display.MovieClip;
 	/**
 	 * @author Aymeric
 	 */
 	public class LevelA1 extends ALevel {
 
-		public function LevelA1() {
+		public function LevelA1(levelObjectsMC:MovieClip = null) {
 			
-			super();
+			super(levelObjectsMC);
 			
 			_nameLevel = "A1";
 		}

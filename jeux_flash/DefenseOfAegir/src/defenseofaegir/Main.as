@@ -20,8 +20,7 @@
 			
 			_levelManager = new LevelManager();
 			_levelManager.onLevelChanged.add(_onLevelChanged);
-			
-			state = _levelManager.currentLevel;
+			_levelManager.nextLevel();
 		}
 		
 		private function _onLevelChanged(lvl:ALevel):void {
