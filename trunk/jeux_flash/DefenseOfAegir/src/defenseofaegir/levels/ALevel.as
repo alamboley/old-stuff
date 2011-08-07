@@ -1,5 +1,6 @@
 package defenseofaegir.levels {
 
+	import flash.utils.Timer;
 	import Box2DAS.Dynamics.ContactEvent;
 
 	import defenseofaegir.utils.MathUtils;
@@ -24,6 +25,8 @@ package defenseofaegir.levels {
 		public var lvlEnded:Signal;
 		
 		protected var _nameLevel:String;
+		
+		protected var _enemyTimer:Timer;
 		
 		private var _levelObjectsMC:MovieClip;
 
@@ -61,7 +64,7 @@ package defenseofaegir.levels {
 		
 		private function _fire(mEvt:MouseEvent):void {
 			
-			var missile:Missile = new Missile("Missile", {x:stage.stageWidth * 0.5, y:650, width:20, height:20, speed:2, angle:MathUtils.angleDirection(stage.stageWidth * 0.5, stage.mouseX, 650, stage.mouseY)});
+			var missile:Missile = new Missile("Missile", {x:stage.stageWidth * 0.5, y:650, width:20, height:20, speed:10, angle:MathUtils.angleDirection(stage.stageWidth * 0.5, stage.mouseX, 650, stage.mouseY)});
 			add(missile);
 		}
 		
