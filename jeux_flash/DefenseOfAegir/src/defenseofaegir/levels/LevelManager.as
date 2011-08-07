@@ -26,7 +26,7 @@ package defenseofaegir.levels {
 			onLevelChanged = new Signal(ALevel);
 			_currentIndex = 0;
 
-			_levels = [[LevelA1, "levels/LevelA1.swf"], [LevelA2]];
+			_levels = [[LevelA1, "levels/LevelA.swf"], [LevelA2]];
 
 			gotoLevel();
 		}
