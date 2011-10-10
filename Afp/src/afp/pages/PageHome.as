@@ -8,6 +8,7 @@ package afp.pages
 	 */
 	public class PageHome extends APage
 	{
+		public static const ID : String = PagePaths.HOME;
 		private var _so : SharedObject;
 		public function PageHome()
 		{
@@ -19,6 +20,7 @@ package afp.pages
 		{
 			// in your init function
 			_so = SharedObject.getLocal("afp/login", "/");
+			
 			/*if (_so.data.highScore == undefined) _lastHighScore = _so.data.highScore;
 
 			// and later on game over:

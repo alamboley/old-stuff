@@ -9,7 +9,6 @@ package afp.pages
 	 */
 	public class APage extends MovieClip
 	{
-		protected var _id : String;
 		protected var _state : String;
 		protected var _busy : Boolean = true;
 		protected var _initedSignal : Signal;
@@ -23,7 +22,7 @@ package afp.pages
 		{
 			super();
 			_initedSignal = new Signal();
-			_gotoPage = new Signal(uint);
+			_gotoPage = new Signal(Object);
 			_showSignal = new Signal();
 			_shownSignal = new Signal();
 			_hideSignal = new Signal();
@@ -124,14 +123,5 @@ package afp.pages
 			return _hiddenSignal;
 		}
 
-		public function get id() : String
-		{
-			return _id;
-		}
-
-		public function set id(id : String) : void
-		{
-			_id = id;
-		}
 	}
 }

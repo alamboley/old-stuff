@@ -25,7 +25,7 @@ package afp.pages {
 			
 			scene.logo.removeEventListener(MouseEvent.CLICK, _goHome);
 			
-			_gotoPage.dispatch(0);
+			_gotoPage.dispatch(PagePaths.HOME);
 		}
 		
 		override public function hide():void {
