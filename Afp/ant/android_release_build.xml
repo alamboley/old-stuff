@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Afp - AIR for Android Build" basedir="." default="00. [launch on device] (release)">
+
+	<fdt.loadProjectProperties />
+
+	<!-- PROJECT SETTINGS -->
+	<property file="android.properties" />
+
+	<!-- START THE PARTY -->
+	<target name="00. [launch on device] (release)">
+		<antcall target="01. [package]">
+		</antcall>
+		<antcall target="02. [uninstall]">
+		</antcall>
+		<antcall target="03. [install]">
+		</antcall>
+		<antcall target="04. [launch]">
+		</antcall>
+	</target>
+
+	<target name="01. [package]">
+		<mkdir dir="${publish.dir}"/>
+		
+		<java jar="${FDTProjectSdkPath}/${adt}" fork="true" failonerror="true">
+			<arg value="-package" />
+
+			<arg value="-target" />
+			<arg value="apk" />
+
+			<!-- NATIVE_SIGNING_OPTIONS -->
+			<arg value="-storetype" />
+			<arg value="pkcs12" />
+			<arg value="-keystore" />
+			<arg value="${certificate}" />
+			<arg value="-storepass" />
+			<arg value="${certificate.pw}" />
+
+			<!-- Name Of File To Create-->
+			<arg value="${publish.dir}/${publish.apk}" />
+
+			<!-- App Descriptor-->
+			<arg value="${application.descriptor}" />
+
+			<!-- Files To Package -->
+			<arg value="-C" />
+			<arg value="${deploy.dir}/" />
+			<arg value="${deploy.swf}" />
+
+			<!-- add more assets here -->
+		</java>
+	</target>
+
+	<!-- private -->
+
+	<target name="02. [uninstall]">
+		<java jar="${FDTProjectSdkPath}/${adt}" fork="true" failonerror="false">
+			<arg value="-uninstallApp" />
+			<arg value="-platform" />
+			<arg value="android" />
+			<arg value="-appid" />
+			<arg value="afp" />
+		</java>
+	</target>
+
+	<target name="03. [install]">
+		<java jar="${FDTProjectSdkPath}/${adt}" fork="true">
+			<arg value="-installApp" />
+			<arg value="-platform" />
+			<arg value="android" />
+			<arg value="-package" />
+			<arg value="${publish.dir}/${publish.apk}" />
+		</java>
+	</target>
+
+	<target name="04. [launch]">
+		<java jar="${FDTProjectSdkPath}/${adt}" fork="true">
+			<arg value="-launchApp" />
+			<arg value="-platform" />
+			<arg value="android" />
+			<arg value="-appid" />
+			<arg value="afp" />
+		</java>
+	</target>
+
+</project>
