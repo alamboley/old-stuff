@@ -16,8 +16,6 @@ package afp {
 	public class Main extends Sprite {
 		
 		private var _pageManager:PageManager;
-		
-		private var _stageWidth:Number, _stageHeight:Number;
 
 		public function Main() {
 			
@@ -42,10 +40,7 @@ package afp {
 			
 			stage.removeEventListener(Event.RESIZE, _resize);
 			
-			_stageWidth = Math.min(stage.fullScreenWidth, stage.fullScreenHeight);
-			_stageHeight = Math.max(stage.fullScreenWidth, stage.fullScreenHeight);
-			
-			trace("Detected Resolution:" + _stageWidth + " x " + _stageHeight + "\nDevice type : " + Capabilities.manufacturer);
+			trace("Detected Resolution:" + stage.fullScreenWidth + " x " + stage.fullScreenHeight + "\nDevice type : " + Capabilities.manufacturer);
 		}
 	}
 }
