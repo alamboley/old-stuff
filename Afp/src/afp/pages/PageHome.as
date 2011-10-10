@@ -1,7 +1,23 @@
 package afp.pages
 {
-	import flash.net.SharedObject;
+	import flash.display.MovieClip;
+	import flash.events.MouseEvent;
+	import com.adobe.serialization.json.JSON;
+	import afp.core.Config;
+
 	import com.greensock.TweenMax;
+
+	import flash.events.AsyncErrorEvent;
+	import flash.events.ErrorEvent;
+	import flash.events.Event;
+	import flash.events.HTTPStatusEvent;
+	import flash.events.IOErrorEvent;
+	import flash.events.NetStatusEvent;
+	import flash.events.ProgressEvent;
+	import flash.events.SecurityErrorEvent;
+	import flash.net.SharedObject;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 
 	/**
 	 * @author Aymeric
@@ -10,6 +26,8 @@ package afp.pages
 	{
 		public static const ID : String = PagePaths.HOME;
 		private var _so : SharedObject;
+		private var _asset : MovieClip;
+
 		public function PageHome()
 		{
 			super();
@@ -18,17 +36,45 @@ package afp.pages
 
 		private function _initialize() : void
 		{
-			// in your init function
-			_so = SharedObject.getLocal("afp/login", "/");
-			
-			/*if (_so.data.highScore == undefined) _lastHighScore = _so.data.highScore;
+			_so = SharedObject.getLocal("afp/user", "/");
 
-			// and later on game over:
-			if (_highScore > _lastHighScore)
+			// Si l'utilisateur est enregistré
+			if (_so.data.login != undefined)
 			{
-				_so.data.highScore = _lastHighScore = _highScore;
+				var login : String = _so.data.login;
 				_so.flush();
-			}*/
+				_login(login);
+			}
+			else
+			{
+				addEventListener(MouseEvent.CLICK, _onSubmit, false, 0, true);
+			}
+		}
+
+		private function _onSubmit(event : MouseEvent) : void
+		{
+			var urlLoader : URLLoader = new URLLoader(new URLRequest(Config.SERVICES_URL + 'userservice.php?method=getuserbyid&param=23'));
+			urlLoader.addEventListener(Event.COMPLETE, _onResponse);
+
+			urlLoader.addEventListener(Event.OPEN, _onError);
+			urlLoader.addEventListener(ErrorEvent.ERROR, _onError)
+			urlLoader.addEventListener(AsyncErrorEvent.ASYNC_ERROR, _onError);
+			urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, _onError);
+			urlLoader.addEventListener(IOErrorEvent.IO_ERROR, _onError);
+		}
+
+		private function _onError(event : Event) : void
+		{
+			// TODO gérer les erreurs
+		}
+
+		private function _onResponse(event : Event) : void
+		{
+			_login(JSON.decode(event.target.data).AFPResponse.dataObject.id);
+		}
+
+		private function _login(login : String) : void
+		{
 		}
 
 		override public function hide() : void
