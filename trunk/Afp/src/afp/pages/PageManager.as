@@ -17,6 +17,11 @@ package afp.pages
 			super();
 		}
 
+		/**
+		 * Initialise le pagemanager avec un tableau de classes étendant APage
+		 * @param $pages le tableau des classes des pages
+		 * @param $startPage l'index de la page à laquelle commencer
+		 */
 		public function initialize($pages : *, $startPage : uint = 0) : void
 		{
 			_pages = [];
@@ -27,8 +32,27 @@ package afp.pages
 			_currentIdx = $startPage;
 			_currentPageView = APage(new _pages[_currentIdx]);
 			addChild(_currentPageView);
-			_currentPageView.gotoPage.add(gotoPage);
+			_currentPageView.gotoPage.add(_onGotoPage);
 			_currentPageView.show();
+		}
+
+		/**
+		 * Va à la page demandée
+		 * @param $page un entier ou une chaine de caractère
+		 */
+		private function _onGotoPage($page:Object) : void
+		{
+			switch(true){
+				case $page is String:
+					gotoPageById(String($page));
+					break;
+				case $page is uint:
+				case $page is int:
+				case $page is Number:
+					gotoPage(uint($page));
+					break;
+				default:
+			}
 		}
 
 		public function dispose() : void
@@ -57,6 +81,23 @@ package afp.pages
 				_currentIdx = $numPage;
 				_update();
 			}
+		}
+
+		public function gotoPageById($pageName : String) : void
+		{
+			var $numPage : uint = _indexOf(_pages, function(item : *, ...rest) : Boolean
+			{
+				return item.ID == $pageName;
+			});
+			gotoPage($numPage);
+		}
+
+		private function _indexOf(source : Array, filter : Function, startPos : int = 0) : int
+		{
+			var len : int = source.length;
+			for (var i : int = startPos; i < len; i++)
+				if (filter(source[i], i, source)) return i;
+			return -1;
 		}
 
 		protected function _update() : void
