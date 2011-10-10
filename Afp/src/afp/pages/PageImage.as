@@ -2,6 +2,8 @@ package afp.pages {
 
 	import com.greensock.TweenMax;
 
+	import flash.events.MouseEvent;
+
 	/**
 	 * @author Aymeric
 	 */
@@ -15,6 +17,15 @@ package afp.pages {
 			
 			 scene = new Scene();
 			 addChild(scene);
+			 
+			 scene.logo.addEventListener(MouseEvent.CLICK, _goHome);
+		}
+
+		private function _goHome(mEvt:MouseEvent):void {
+			
+			scene.logo.removeEventListener(MouseEvent.CLICK, _goHome);
+			
+			_gotoPage.dispatch(0);
 		}
 		
 		override public function hide():void {

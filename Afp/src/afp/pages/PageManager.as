@@ -27,6 +27,7 @@ package afp.pages
 			_currentIdx = $startPage;
 			_currentPageView = APage(new _pages[_currentIdx]);
 			addChild(_currentPageView);
+			_currentPageView.gotoPage.add(gotoPage);
 			_currentPageView.show();
 		}
 
@@ -60,6 +61,7 @@ package afp.pages
 
 		protected function _update() : void
 		{
+			_currentPageView.gotoPage.add(gotoPage);
 			_currentPageView.hiddenSignal.add(_onCurrentPageHidden);
 			_currentPageView.hide();
 		}

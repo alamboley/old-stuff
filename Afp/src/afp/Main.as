@@ -32,7 +32,7 @@ package afp {
 			stage.align = StageAlign.TOP_LEFT;
 			
 			_pageManager = new PageManager();
-			_pageManager.initialize([PageHome, PageImage]);
+			_pageManager.initialize([PageHome, PageImage], 1);
 			addChild(_pageManager);
 			
 			stage.addEventListener(Event.RESIZE, _resize);
