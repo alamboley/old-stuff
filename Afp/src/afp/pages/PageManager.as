@@ -80,8 +80,8 @@ package afp.pages
 		protected function _flushCurrentPage() : void
 		{
 			removeChild(_currentPageView);
-			_currentPageView = null;
 			_currentPageView.dispose();
+			_currentPageView = null;
 		}
 
 		public function get currentPageView() : APage
