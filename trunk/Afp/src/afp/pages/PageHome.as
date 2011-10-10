@@ -1,19 +1,18 @@
 package afp.pages
 {
-	import flash.display.MovieClip;
-	import flash.events.MouseEvent;
-	import com.adobe.serialization.json.JSON;
 	import afp.core.Config;
+	import afp.remoting.Service;
+	import afp.services.vo.UserVO;
 
+	import com.demonsters.debugger.MonsterDebugger;
 	import com.greensock.TweenMax;
 
+	import flash.display.MovieClip;
 	import flash.events.AsyncErrorEvent;
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
-	import flash.events.HTTPStatusEvent;
 	import flash.events.IOErrorEvent;
-	import flash.events.NetStatusEvent;
-	import flash.events.ProgressEvent;
+	import flash.events.MouseEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.net.SharedObject;
 	import flash.net.URLLoader;
@@ -31,11 +30,17 @@ package afp.pages
 		public function PageHome()
 		{
 			super();
-			_initialize();
+			var service : Service = new Service(Config.SERVICES_URL+'userservice.php');
+			service.onResult.add(_onResult);
+			service.onError.add(_onError);
+			service.getuserbyid('11');
+//			_initialize();
 		}
 
 		private function _initialize() : void
 		{
+			_asset = new HomPageAsset();
+			addChild(_asset);
 			_so = SharedObject.getLocal("afp/user", "/");
 
 			// Si l'utilisateur est enregistré
@@ -47,30 +52,45 @@ package afp.pages
 			}
 			else
 			{
-				addEventListener(MouseEvent.CLICK, _onSubmit, false, 0, true);
+				_asset.validBTN.addEventListener(MouseEvent.CLICK, _onSubmit, false, 0, true);
 			}
 		}
 
 		private function _onSubmit(event : MouseEvent) : void
 		{
-			var urlLoader : URLLoader = new URLLoader(new URLRequest(Config.SERVICES_URL + 'userservice.php?method=getuserbyid&param=23'));
-			urlLoader.addEventListener(Event.COMPLETE, _onResponse);
+			var user : UserVO = new UserVO(_asset.validBTN.text);
+			var urlLoader : URLLoader = new URLLoader(new URLRequest(Config.SERVICES_URL + 'userservice.php?method=getuserbyid&param=' + user.id));
+			urlLoader.addEventListener(Event.COMPLETE, _onResult);
 
 			urlLoader.addEventListener(Event.OPEN, _onError);
-			urlLoader.addEventListener(ErrorEvent.ERROR, _onError)
+			urlLoader.addEventListener(ErrorEvent.ERROR, _onError);
 			urlLoader.addEventListener(AsyncErrorEvent.ASYNC_ERROR, _onError);
 			urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, _onError);
 			urlLoader.addEventListener(IOErrorEvent.IO_ERROR, _onError);
 		}
 
-		private function _onError(event : Event) : void
+		private function _onError(error : Object) : void
 		{
+			/*URLLoader(event.target).removeEventListener(Event.COMPLETE, _onResponse);
+			URLLoader(event.target).removeEventListener(Event.OPEN, _onError);
+			URLLoader(event.target).removeEventListener(ErrorEvent.ERROR, _onError);
+			URLLoader(event.target).removeEventListener(AsyncErrorEvent.ASYNC_ERROR, _onError);
+			URLLoader(event.target).removeEventListener(SecurityErrorEvent.SECURITY_ERROR, _onError);
+			URLLoader(event.target).removeEventListener(IOErrorEvent.IO_ERROR, _onError);*/
 			// TODO gérer les erreurs
 		}
 
-		private function _onResponse(event : Event) : void
+		private function _onResult(result : Object) : void
 		{
-			_login(JSON.decode(event.target.data).AFPResponse.dataObject.id);
+			/*URLLoader(event.target).removeEventListener(Event.COMPLETE, _onResponse);
+			URLLoader(event.target).removeEventListener(Event.OPEN, _onError);
+			URLLoader(event.target).removeEventListener(ErrorEvent.ERROR, _onError);
+			URLLoader(event.target).removeEventListener(AsyncErrorEvent.ASYNC_ERROR, _onError);
+			URLLoader(event.target).removeEventListener(SecurityErrorEvent.SECURITY_ERROR, _onError);
+			URLLoader(event.target).removeEventListener(IOErrorEvent.IO_ERROR, _onError);*/
+			trace(this,result);
+			MonsterDebugger.trace(this,result);
+//			_login(JSON.decode(event.target.data).AFPResponse.dataObject.id);
 		}
 
 		private function _login(login : String) : void
