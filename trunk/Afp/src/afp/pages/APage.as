@@ -13,6 +13,7 @@ package afp.pages
 		protected var _state : String;
 		protected var _busy : Boolean = true;
 		protected var _initedSignal : Signal;
+		protected var _gotoPage:Signal;
 		protected var _showSignal : Signal;
 		protected var _shownSignal : Signal;
 		protected var _hideSignal : Signal;
@@ -22,6 +23,7 @@ package afp.pages
 		{
 			super();
 			_initedSignal = new Signal();
+			_gotoPage = new Signal(uint);
 			_showSignal = new Signal();
 			_shownSignal = new Signal();
 			_hideSignal = new Signal();
@@ -33,6 +35,8 @@ package afp.pages
 			_state = null;
 			_initedSignal.removeAll();
 			_initedSignal = null;
+			_gotoPage.removeAll();
+			_gotoPage = null;
 			_showSignal.removeAll();
 			_showSignal = null;
 			_shownSignal.removeAll();
@@ -94,6 +98,10 @@ package afp.pages
 		public function get initedSignal() : Signal
 		{
 			return _initedSignal;
+		}
+		
+		public function get gotoPage():Signal {
+			return _gotoPage;
 		}
 
 		public function get showSignal() : Signal
