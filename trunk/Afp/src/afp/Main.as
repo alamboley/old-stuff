@@ -6,7 +6,7 @@ package afp {
 	import flash.events.Event;
 	import flash.system.Capabilities;
 
-	public class Afp extends Sprite {
+	public class Main extends Sprite {
 		
 		private var _stageWidth:Number, _stageHeight:Number;
 		
@@ -14,7 +14,7 @@ package afp {
 		
 		private var _service:String = "http://www.prdurand.FR/AFPCRM10/";
 
-		public function Afp() {
+		public function Main() {
 			
 			addEventListener(Event.ADDED_TO_STAGE, _init);
 		}
