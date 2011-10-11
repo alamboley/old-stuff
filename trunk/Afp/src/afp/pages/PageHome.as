@@ -90,8 +90,8 @@ package afp.pages
 			addChild(_loaderAsset);
 			var user : UserVO = new UserVO({id:login});
 			var service : Service = new Service(Config.SERVICES_URL + 'userservice.php');
-			service.onResult.add(_onResult);
-			service.onError.add(_onError);
+			service.onResult.addOnce(_onResult);
+			service.onError.addOnce(_onError);
 			service.getuserbyid(user.id);
 		}
 

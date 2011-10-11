@@ -49,13 +49,18 @@ package afp.remoting
 		override flash_proxy function callProperty(methodName : *, ...params : *) : *
 		{
 			var requestVars : URLVariables = new URLVariables();
-			requestVars.method = methodName;
+			var urlRequest : URLRequest = new URLRequest(_servicePath);
+			if (methodName != 'nomethod') requestVars.method = methodName;
 			var i : uint = params.length;
-			if (i == 1)
+			if (i == 1){
+				trace('Object',params[0] is Object)
 				requestVars['param'] = params[0];
+			}
 			else
 				while (i--)
 					requestVars['param' + i] = params[i];
+			urlRequest.data = requestVars;
+			urlRequest.method = _type;
 			_connection = new URLLoader();
 			_connection.dataFormat = URLLoaderDataFormat.TEXT;
 
@@ -66,9 +71,6 @@ package afp.remoting
 			_connection.addEventListener(IOErrorEvent.IO_ERROR, _onConnexionError);
 			_connection.addEventListener(SecurityErrorEvent.SECURITY_ERROR, _onConnexionError);
 			_connection.addEventListener(AsyncErrorEvent.ASYNC_ERROR, _onConnexionError);
-			var urlRequest : URLRequest = new URLRequest(_servicePath);
-			urlRequest.data = requestVars;
-			urlRequest.method = _type;
 			_connection.load(urlRequest);
 			return _connection;
 		}
@@ -121,6 +123,11 @@ package afp.remoting
 		public function get onError() : Signal
 		{
 			return _onError;
+		}
+
+		public function get connection() : URLLoader
+		{
+			return _connection;
 		}
 	}
 }
