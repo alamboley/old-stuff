@@ -35,7 +35,7 @@ package afp.pages
 
 		private function _initialize() : void
 		{
-			_asset = new HomPageAsset();
+			//_asset = new HomPageAsset();
 			addChild(_asset);
 			_so = SharedObject.getLocal("afp/user", "/");
 

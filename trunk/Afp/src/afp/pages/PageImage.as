@@ -1,6 +1,5 @@
 package afp.pages {
 
-	import afp.events.CameraEvent;
 	import afp.utils.Camera;
 
 	import com.greensock.TweenMax;
@@ -48,7 +47,7 @@ package afp.pages {
 				
 				_cam = new Camera();
 				
-				_cam.addEventListener(CameraEvent.CAPTURED_PICTURE, _showCapturedPicture);
+				_cam.captured.add(_showCapturedPicture);
 				
 			} else {
 				trace('camera interface is not supported');
@@ -56,11 +55,9 @@ package afp.pages {
 			
 		}
 
-		private function _showCapturedPicture(cEvt:CameraEvent):void {
+		private function _showCapturedPicture(picture:Loader):void {
 			
-			_cam.removeEventListener(CameraEvent.CAPTURED_PICTURE, _showCapturedPicture);
-			
-			addChild(cEvt.picture.content);
+			addChild(picture.content);
 		}
 		
 		private function _uploadFile(mEvt:MouseEvent):void {

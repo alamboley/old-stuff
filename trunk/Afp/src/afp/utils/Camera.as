@@ -1,6 +1,7 @@
 package afp.utils {
 
-	import afp.events.CameraEvent;
+	import org.osflash.signals.Signal;
+
 	import flash.desktop.NativeApplication;
 	import flash.display.Loader;
 	import flash.events.ErrorEvent;
@@ -15,6 +16,8 @@ package afp.utils {
 	 * @author Aymeric
 	 */
 	public class Camera extends CameraUI {
+		
+		public var captured:Signal;
 
 		private var _imageLoader:Loader;
 
@@ -23,6 +26,8 @@ package afp.utils {
 			addEventListener(MediaEvent.COMPLETE, pictureCaptured);
 			addEventListener(Event.CANCEL, captureCanceled);
 			addEventListener(ErrorEvent.ERROR, cameraError);
+			
+			captured = new Signal(Loader);
 
 			launch(MediaType.IMAGE);
 		}
@@ -63,7 +68,7 @@ package afp.utils {
 
 		private function showMedia(loader:Loader):void {
 			
-			dispatchEvent(new CameraEvent(CameraEvent.CAPTURED_PICTURE, loader));
+			captured.dispatch(loader);
 		}
 
 		public function captureCanceled(evt:Event):void {
@@ -88,6 +93,8 @@ package afp.utils {
 			
 			_imageLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE, _asyncImageLoaded);
 			_imageLoader.removeEventListener(IOErrorEvent.IO_ERROR, cameraError);
+			
+			captured = null;
 		}
 	}
 }
