@@ -1,5 +1,9 @@
 package afp.remoting
 {
+	import flash.net.URLVariables;
+	import flash.net.URLRequestMethod;
+	import flash.net.URLLoaderDataFormat;
+
 	import org.osflash.signals.Signal;
 
 	import flash.events.AsyncErrorEvent;
@@ -19,13 +23,15 @@ package afp.remoting
 		private var _dispatcher : EventDispatcher;
 		private var _connection : URLLoader;
 		private var _servicePath : String;
+		private var _type : String;
 		private var _onResult : Signal;
 		private var _onError : Signal;
 
-		public function Service(service : String)
+		public function Service(service : String, type : String = 'GET')
 		{
 			_dispatcher = new EventDispatcher();
 			_servicePath = service;
+			_type = type;
 			_onResult = new Signal(Object);
 			_onError = new Signal(Object);
 		}
@@ -42,14 +48,17 @@ package afp.remoting
 
 		override flash_proxy function callProperty(methodName : *, ...params : *) : *
 		{
-			var url : String = _servicePath + '?method=' + methodName;
+			var requestVars : URLVariables = new URLVariables();
+			requestVars.method = methodName;
 			var i : uint = params.length;
 			if (i == 1)
-				url += '&param' + '=' + params[0];
+				requestVars['param'] = params[0];
 			else
 				while (i--)
-					url += '&param' + i + '=' + params[i];
+					requestVars['param' + i] = params[i];
 			_connection = new URLLoader();
+			_connection.dataFormat = URLLoaderDataFormat.TEXT;
+
 			// écoute l'événements de la connexion
 			_connection.addEventListener(Event.COMPLETE, _onSuccess);
 			// écoute les différents événements d'échec de la connexion
@@ -57,8 +66,10 @@ package afp.remoting
 			_connection.addEventListener(IOErrorEvent.IO_ERROR, _onConnexionError);
 			_connection.addEventListener(SecurityErrorEvent.SECURITY_ERROR, _onConnexionError);
 			_connection.addEventListener(AsyncErrorEvent.ASYNC_ERROR, _onConnexionError);
-			trace(url);
-			_connection.load(new URLRequest(url));
+			var urlRequest : URLRequest = new URLRequest(_servicePath);
+			urlRequest.data = requestVars;
+			urlRequest.method = _type;
+			_connection.load(urlRequest);
 			return _connection;
 		}
 
