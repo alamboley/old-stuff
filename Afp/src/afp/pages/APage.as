@@ -1,5 +1,7 @@
 package afp.pages
 {
+	import flash.events.Event;
+
 	import org.osflash.signals.Signal;
 
 	import flash.display.MovieClip;
@@ -12,7 +14,7 @@ package afp.pages
 		protected var _state : String;
 		protected var _busy : Boolean = true;
 		protected var _initedSignal : Signal;
-		protected var _gotoPage:Signal;
+		protected var _gotoPage : Signal;
 		protected var _showSignal : Signal;
 		protected var _shownSignal : Signal;
 		protected var _hideSignal : Signal;
@@ -27,10 +29,32 @@ package afp.pages
 			_shownSignal = new Signal();
 			_hideSignal = new Signal();
 			_hiddenSignal = new Signal();
+			addEventListener(Event.ADDED_TO_STAGE, _onAddedToStage);
+			addEventListener(Event.REMOVED_FROM_STAGE, _onRemoveFromStage);
+		}
+
+		private function _onRemoveFromStage(event : Event) : void
+		{
+			_onUnStaged();
+		}
+
+		protected function _onUnStaged() : void
+		{
+		}
+
+		private function _onAddedToStage(event : Event) : void
+		{
+			_onStaged();
+		}
+
+		protected function _onStaged() : void
+		{
 		}
 
 		public function dispose() : void
 		{
+			removeEventListener(Event.ADDED_TO_STAGE, _onAddedToStage);
+			removeEventListener(Event.REMOVED_FROM_STAGE, _onRemoveFromStage);
 			_state = null;
 			_initedSignal.removeAll();
 			_initedSignal = null;
@@ -98,8 +122,9 @@ package afp.pages
 		{
 			return _initedSignal;
 		}
-		
-		public function get gotoPage():Signal {
+
+		public function get gotoPage() : Signal
+		{
 			return _gotoPage;
 		}
 
@@ -122,6 +147,5 @@ package afp.pages
 		{
 			return _hiddenSignal;
 		}
-
 	}
 }

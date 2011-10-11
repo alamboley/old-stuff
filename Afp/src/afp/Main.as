@@ -1,5 +1,6 @@
 package afp
 {
+	import flash.events.MouseEvent;
 	import afp.pages.PageHome;
 	import afp.pages.PageImage;
 	import afp.pages.PageManager;
@@ -16,6 +17,7 @@ package afp
 	public class Main extends Sprite
 	{
 		private var _pageManager : PageManager;
+		private var _header : HeaderAsset;
 
 		public function Main()
 		{
@@ -32,8 +34,17 @@ package afp
 			_pageManager = new PageManager();
 			_pageManager.initialize([PageHome, PageImage], 0);
 			addChild(_pageManager);
-
+			
+			_header = new HeaderAsset();
+			_header.addEventListener(MouseEvent.CLICK, _onHeaderClicked);
+			addChild(_header);
+			
 			stage.addEventListener(Event.RESIZE, _resize);
+		}
+
+		private function _onHeaderClicked(event : MouseEvent) : void
+		{
+			_pageManager.gotoPage(0);
 		}
 
 		private function _resize(evt : Event) : void

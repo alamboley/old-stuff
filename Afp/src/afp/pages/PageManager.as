@@ -40,9 +40,10 @@ package afp.pages
 		 * Va à la page demandée
 		 * @param $page un entier ou une chaine de caractère
 		 */
-		private function _onGotoPage($page:Object) : void
+		private function _onGotoPage($page : Object) : void
 		{
-			switch(true){
+			switch(true)
+			{
 				case $page is String:
 					gotoPageById(String($page));
 					break;
@@ -113,6 +114,7 @@ package afp.pages
 			_flushCurrentPage();
 			trace(_currentIdx, _pages[_currentIdx]);
 			_currentPageView = APage(new _pages[_currentIdx]);
+			_currentPageView.gotoPage.add(_onGotoPage);
 			addChild(_currentPageView);
 			_currentPageView.show();
 			dispatchEvent(new Event(Event.CHANGE));
