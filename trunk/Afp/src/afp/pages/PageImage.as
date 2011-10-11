@@ -1,9 +1,13 @@
 package afp.pages {
 
+	import alamboley.utils.PrintR;
+	import afp.services.vo.EventVO;
 	import afp.core.Config;
+	import afp.core.User;
 	import afp.remoting.Service;
 	import afp.utils.Camera;
 
+	import com.adobe.serialization.json.JSON;
 	import com.greensock.TweenMax;
 
 	import flash.display.Loader;
@@ -35,12 +39,17 @@ package afp.pages {
 		}
 
 		override protected function _onStaged():void {
-			
+
 			super._onStaged();
-			
-			
+
 			scene = new Scene();
 			addChild(scene);
+
+			_service = new Service(Config.SERVICES_URL + 'usereventlinkservice.php');
+			_service.onResult.add(_onResult);
+			_service.onError.add(_onError);
+			_service.geteventsforuser(User.getInstance().id);
+
 
 			if (Geolocation.isSupported) {
 
@@ -48,9 +57,6 @@ package afp.pages {
 				_geoloc.setRequestedUpdateInterval(3000);
 				_geoloc.addEventListener(GeolocationEvent.UPDATE, _geolocUpdate);
 
-				_service = new Service(Config.SERVICES_URL + 'geteventsforuser');
-				_service.onResult.add(_onResult);
-				_service.onError.add(_onError);
 
 			} else {
 				trace('geolocation is not supported');
@@ -118,7 +124,19 @@ package afp.pages {
 		}
 
 		private function _onResult(result:Object):void {
-			trace(result);
+
+			var json:Object = JSON.decode(String(result)).AFPResponse;
+			if (json.success == 0) {
+				_onError(result);
+			} else if (json.success == 1) {
+
+				var eventVo:Vector.<EventVO> = new Vector.<EventVO>();
+
+				for each (var event : Object in json.dataObject) {
+					eventVo.push(new EventVO(event));
+				}
+				
+			}
 		}
 
 		private function _onError(result:Object):void {
