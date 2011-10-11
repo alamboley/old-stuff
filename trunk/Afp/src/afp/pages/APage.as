@@ -1,5 +1,7 @@
 package afp.pages
 {
+	import flash.display.Sprite;
+	import flash.display.DisplayObject;
 	import flash.events.Event;
 
 	import org.osflash.signals.Signal;
@@ -11,6 +13,7 @@ package afp.pages
 	 */
 	public class APage extends MovieClip
 	{
+		protected var _shield : Sprite;
 		protected var _state : String;
 		protected var _busy : Boolean = true;
 		protected var _initedSignal : Signal;
@@ -23,6 +26,7 @@ package afp.pages
 		public function APage()
 		{
 			super();
+			_shield = new Sprite();
 			_initedSignal = new Signal();
 			_gotoPage = new Signal(Object);
 			_showSignal = new Signal();
@@ -70,6 +74,21 @@ package afp.pages
 			_hiddenSignal = null;
 		}
 
+		public function pause() : void
+		{
+			_shield.graphics.clear();
+			_shield.graphics.beginFill(0x000000, 0);
+			_shield.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+			_shield.graphics.endFill();
+			stage.addChild(_shield);
+		}
+
+		public function resume() : void
+		{
+			_shield.graphics.clear();
+			stage.removeChild(_shield);
+		}
+		
 		public function inited() : void
 		{
 			_state = Animation.INITED;

@@ -1,9 +1,5 @@
 package afp.remoting
 {
-	import flash.net.URLVariables;
-	import flash.net.URLRequestMethod;
-	import flash.net.URLLoaderDataFormat;
-
 	import org.osflash.signals.Signal;
 
 	import flash.events.AsyncErrorEvent;
@@ -14,7 +10,9 @@ package afp.remoting
 	import flash.events.NetStatusEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
+	import flash.net.URLVariables;
 	import flash.utils.Proxy;
 	import flash.utils.flash_proxy;
 
@@ -38,11 +36,13 @@ package afp.remoting
 
 		private function _onConnexionError(event : Event) : void
 		{
+			_removeListeners();
 			_onError.dispatch(event.target.data);
 		}
 
-		private function _onSuccess(event : Object) : void
+		private function _onSuccess(event : Event) : void
 		{
+			_removeListeners();
 			_onResult.dispatch(event.target.data);
 		}
 
@@ -52,8 +52,9 @@ package afp.remoting
 			var urlRequest : URLRequest = new URLRequest(_servicePath);
 			if (methodName != 'nomethod') requestVars.method = methodName;
 			var i : uint = params.length;
-			if (i == 1){
-				trace('Object',params[0] is Object)
+			if (i == 1)
+			{
+				trace('Object', params[0] is Object)
 				requestVars['param'] = params[0];
 			}
 			else
@@ -88,6 +89,15 @@ package afp.remoting
 		public function toString() : String
 		{
 			return "[object Service]";
+		}
+
+		private function _removeListeners() : void
+		{
+			_connection.removeEventListener(Event.COMPLETE, _onSuccess);
+			_connection.removeEventListener(NetStatusEvent.NET_STATUS, _onConnexionError);
+			_connection.removeEventListener(IOErrorEvent.IO_ERROR, _onConnexionError);
+			_connection.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, _onConnexionError);
+			_connection.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, _onConnexionError);
 		}
 
 		public function addEventListener(type : String, listener : Function, useCapture : Boolean = false, priority : int = 0, useWeakReference : Boolean = false) : void
