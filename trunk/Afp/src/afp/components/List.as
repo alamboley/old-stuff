@@ -8,11 +8,11 @@ package afp.components {
 	import com.greensock.plugins.ThrowPropsPlugin;
 	import com.greensock.plugins.TweenPlugin;
 
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
-	import flash.text.TextField;
 	import flash.utils.getTimer;
 	
 	TweenPlugin.activate([ThrowPropsPlugin]);
@@ -26,8 +26,7 @@ package afp.components {
 		private var _length:uint;
 		
 		private var _mc:Sprite;
-		private var _containerText:Sprite;
-		private var _bounds:Rectangle;
+		private var _bounds:Shape;
 		private var _blitMask:BlitMask;
 
 		private var _t1:uint, _t2:uint, _y1:Number, _y2:Number;
@@ -51,26 +50,32 @@ package afp.components {
 			_mc.graphics.drawRoundRect(0, 0, 250, 20 * _length, 15, 15);
 			_mc.graphics.endFill();
 			
-			_containerText = new Sprite();
-			_mc.addChild(_containerText);
-			
+			var listeElement:ListElement;
 			for (var i:uint = 0; i < _length; ++i) {
-				var text:TextField = new TextField();
-				text.text = _elements[i].nom;
-				text.y = 20 * i;
-				_containerText.addChild(text);
+				listeElement = new ListElement(_elements[i]);
+				listeElement.y = 20 * i;
+				listeElement.addEventListener(MouseEvent.CLICK, _click);
+				_mc.addChild(listeElement);
 			}
 
-			_bounds = new Rectangle(0, 0, 250, 100);
+			_bounds = new Shape();
+			_bounds.graphics.beginFill(0xFF0000);
+			_bounds.graphics.drawRect(0, 0, 250, 100);
+			_bounds.graphics.endFill();
+			addChild(_bounds);
 			
-			_containerText.x = _bounds.x;
-			_containerText.y = _bounds.y;
+			_mc.mask = _bounds;
 
-			_blitMask = new BlitMask(_mc, _bounds.x, _bounds.y, _bounds.width, _bounds.height, false);
+			//_blitMask = new BlitMask(_mc, _bounds.x, _bounds.y, _bounds.width, _bounds.height, false);
 			
-			_blitMask.update(null, true);
+			//_blitMask.update(null, true);
 
-			_blitMask.addEventListener(MouseEvent.MOUSE_DOWN, _mouseDown);
+			_mc.addEventListener(MouseEvent.MOUSE_DOWN, _mouseDown);
+		}
+
+		private function _click(mEvt:MouseEvent):void {
+			
+			trace('ok');
 		}
 
 		private function _mouseDown(mEvt:MouseEvent):void {
@@ -92,7 +97,8 @@ package afp.components {
 			var time:Number = (getTimer() - _t2) / 1000;
 			var yVelocity:Number = (_mc.y - _y2) / time;
 			var yOverlap:Number = Math.max(0, _mc.height - _bounds.height);
-			ThrowPropsPlugin.to(_mc, {throwProps:{y:{velocity:yVelocity, max:_bounds.top, min:_bounds.top - yOverlap, resistance:300}}, onUpdate:_blitMask.update, ease:Strong.easeOut}, 10, 0.3, 1);
+			
+			ThrowPropsPlugin.to(_mc, {throwProps:{y:{velocity:yVelocity, max:_mc.height - _bounds.height, min:_bounds.height - yOverlap, resistance:300}}, ease:Strong.easeOut}, 10, 0.3, 1);
 		}
 
 		private function _ef(evt:Event):void {
@@ -101,7 +107,7 @@ package afp.components {
 			_t2 = _t1;
 			_y1 = _mc.y;
 			_t1 = getTimer();
-			_blitMask.update();
+			//_blitMask.update();
 		}
 	}
 }
