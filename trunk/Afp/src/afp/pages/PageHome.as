@@ -30,11 +30,7 @@ package afp.pages
 		public function PageHome()
 		{
 			super();
-			var service : Service = new Service(Config.SERVICES_URL+'userservice.php');
-			service.onResult.add(_onResult);
-			service.onError.add(_onError);
-			service.getuserbyid('11');
-//			_initialize();
+			_initialize();
 		}
 
 		private function _initialize() : void
@@ -88,13 +84,17 @@ package afp.pages
 			URLLoader(event.target).removeEventListener(AsyncErrorEvent.ASYNC_ERROR, _onError);
 			URLLoader(event.target).removeEventListener(SecurityErrorEvent.SECURITY_ERROR, _onError);
 			URLLoader(event.target).removeEventListener(IOErrorEvent.IO_ERROR, _onError);*/
-			trace(this,result);
-			MonsterDebugger.trace(this,result);
-//			_login(JSON.decode(event.target.data).AFPResponse.dataObject.id);
+			trace(this, result);
+			MonsterDebugger.trace(this, result);
+			// _login(JSON.decode(event.target.data).AFPResponse.dataObject.id);
 		}
 
 		private function _login(login : String) : void
 		{
+			var service : Service = new Service(Config.SERVICES_URL + 'userservice.php');
+			service.onResult.add(_onResult);
+			service.onError.add(_onError);
+			service.getuserbyid('11');
 		}
 
 		override public function hide() : void
