@@ -1,5 +1,8 @@
 package afp.pages {
 
+	import flash.utils.ByteArray;
+	import flash.display.BitmapData;
+	import by.blooddy.crypto.image.JPEGEncoder;
 	import afp.components.List;
 	import afp.core.Config;
 	import afp.core.User;
@@ -87,7 +90,6 @@ package afp.pages {
 		}
 
 		private function _showCapturedPicture(picture:Loader):void {
-
 			addChild(picture.content);
 			picture.content.scaleX = picture.content.scaleY = 0.1;
 		}
@@ -114,6 +116,9 @@ package afp.pages {
 
 			var loader:Loader = new Loader();
 			loader.loadBytes(evt.target.data);
+
+			
+			var bytes : ByteArray = JPEGEncoder.encode(new BitmapData(1000, 1000, false));
 
 			addChild(loader);
 		}

@@ -82,7 +82,7 @@ package afp.utils {
 
 			trace("Error:" + eEvt.text);
 
-			NativeApplication.nativeApplication.exit();
+			//NativeApplication.nativeApplication.exit();
 		}
 
 		public function destroy():void {
