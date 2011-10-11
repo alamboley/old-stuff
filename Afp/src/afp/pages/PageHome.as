@@ -1,22 +1,15 @@
 package afp.pages
 {
 	import afp.core.Config;
+	import afp.core.User;
 	import afp.remoting.Service;
 	import afp.services.vo.UserVO;
 
-	import com.demonsters.debugger.MonsterDebugger;
+	import com.adobe.serialization.json.JSON;
 	import com.greensock.TweenMax;
 
-	import flash.display.MovieClip;
-	import flash.events.AsyncErrorEvent;
-	import flash.events.ErrorEvent;
-	import flash.events.Event;
-	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
-	import flash.events.SecurityErrorEvent;
 	import flash.net.SharedObject;
-	import flash.net.URLLoader;
-	import flash.net.URLRequest;
 
 	/**
 	 * @author Aymeric
@@ -25,7 +18,7 @@ package afp.pages
 	{
 		public static const ID : String = PagePaths.HOME;
 		private var _so : SharedObject;
-		private var _asset : MovieClip;
+		private var _asset : HomPageAsset;
 
 		public function PageHome()
 		{
@@ -48,53 +41,36 @@ package afp.pages
 			}
 			else
 			{
-				_asset.validBTN.addEventListener(MouseEvent.CLICK, _onSubmit, false, 0, true);
+				_asset.loginBTN.addEventListener(MouseEvent.CLICK, _onSubmit, false, 0, true);
 			}
 		}
 
 		private function _onSubmit(event : MouseEvent) : void
 		{
-			var user : UserVO = new UserVO(_asset.validBTN.text);
-			var urlLoader : URLLoader = new URLLoader(new URLRequest(Config.SERVICES_URL + 'userservice.php?method=getuserbyid&param=' + user.id));
-			urlLoader.addEventListener(Event.COMPLETE, _onResult);
-
-			urlLoader.addEventListener(Event.OPEN, _onError);
-			urlLoader.addEventListener(ErrorEvent.ERROR, _onError);
-			urlLoader.addEventListener(AsyncErrorEvent.ASYNC_ERROR, _onError);
-			urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, _onError);
-			urlLoader.addEventListener(IOErrorEvent.IO_ERROR, _onError);
+			_login(_asset.loginTF.text);
 		}
 
 		private function _onError(error : Object) : void
 		{
-			/*URLLoader(event.target).removeEventListener(Event.COMPLETE, _onResponse);
-			URLLoader(event.target).removeEventListener(Event.OPEN, _onError);
-			URLLoader(event.target).removeEventListener(ErrorEvent.ERROR, _onError);
-			URLLoader(event.target).removeEventListener(AsyncErrorEvent.ASYNC_ERROR, _onError);
-			URLLoader(event.target).removeEventListener(SecurityErrorEvent.SECURITY_ERROR, _onError);
-			URLLoader(event.target).removeEventListener(IOErrorEvent.IO_ERROR, _onError);*/
 			// TODO gérer les erreurs
 		}
 
 		private function _onResult(result : Object) : void
 		{
-			/*URLLoader(event.target).removeEventListener(Event.COMPLETE, _onResponse);
-			URLLoader(event.target).removeEventListener(Event.OPEN, _onError);
-			URLLoader(event.target).removeEventListener(ErrorEvent.ERROR, _onError);
-			URLLoader(event.target).removeEventListener(AsyncErrorEvent.ASYNC_ERROR, _onError);
-			URLLoader(event.target).removeEventListener(SecurityErrorEvent.SECURITY_ERROR, _onError);
-			URLLoader(event.target).removeEventListener(IOErrorEvent.IO_ERROR, _onError);*/
-			trace(this, result);
-			MonsterDebugger.trace(this, result);
-			// _login(JSON.decode(event.target.data).AFPResponse.dataObject.id);
+			var vo : UserVO = new UserVO(JSON.decode(String(result)).AFPResponse.dataObject);
+			User.getInstance().id = vo.id;
+			User.getInstance().nom = vo.nom;
+			User.getInstance().prenom = vo.prenom;
+			_so.data.login = vo.id;
 		}
 
 		private function _login(login : String) : void
 		{
+			var user : UserVO = new UserVO({id:login});
 			var service : Service = new Service(Config.SERVICES_URL + 'userservice.php');
 			service.onResult.add(_onResult);
 			service.onError.add(_onError);
-			service.getuserbyid('11');
+			service.getuserbyid(user.id);
 		}
 
 		override public function hide() : void

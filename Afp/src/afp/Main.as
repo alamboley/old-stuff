@@ -1,5 +1,6 @@
 package afp {
 
+	import afp.pages.PagePaths;
 	import afp.pages.PageHome;
 	import afp.pages.PageImage;
 	import afp.pages.PageManager;
@@ -32,6 +33,7 @@ package afp {
 			_pageManager = new PageManager();
 			_pageManager.initialize([PageHome, PageImage], 1);
 			addChild(_pageManager);
+			_pageManager.gotoPageById(PagePaths.HOME);
 			
 			stage.addEventListener(Event.RESIZE, _resize);
 		}
