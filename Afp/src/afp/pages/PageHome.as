@@ -28,7 +28,7 @@ package afp.pages
 
 		private function _initialize() : void
 		{
-			//_asset = new HomPageAsset();
+			_asset = new HomPageAsset();
 			addChild(_asset);
 			_so = SharedObject.getLocal("afp/user", "/");
 
@@ -62,6 +62,7 @@ package afp.pages
 			User.getInstance().nom = vo.nom;
 			User.getInstance().prenom = vo.prenom;
 			_so.data.login = vo.id;
+			gotoPage.dispatch(PagePaths.IMAGE_SELECTION);
 		}
 
 		private function _login(login : String) : void
