@@ -1,8 +1,6 @@
-package afp.pages
-{
-	import com.greensock.layout.ScaleMode;
-	import flash.display.Bitmap;
-	import afp.components.List;
+package afp.pages {
+
+	import afp.components.PopUp;
 	import afp.core.Config;
 	import afp.core.User;
 	import afp.remoting.Service;
@@ -10,15 +8,15 @@ package afp.pages
 	import afp.services.vo.PhotoVO;
 	import afp.utils.Camera;
 
-	import alamboley.utils.PrintR;
-
 	import by.blooddy.crypto.image.JPEGEncoder;
 
 	import com.adobe.serialization.json.JSON;
 	import com.greensock.TweenMax;
 	import com.greensock.layout.AlignMode;
 	import com.greensock.layout.AutoFitArea;
+	import com.greensock.layout.ScaleMode;
 
+	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
@@ -187,8 +185,11 @@ package afp.pages
 					eventVo.push(new EventVO(event));
 				}
 
-				var listEvent : List = new List(eventVo);
-				addChild(listEvent);
+				var popup : PopUp = new PopUp(eventVo);
+				addChild(popup);
+				
+				popup.x = stage.stageWidth - popup.width >> 1;
+				popup.y = stage.stageHeight - popup.height >> 1;
 			}
 		}
 
