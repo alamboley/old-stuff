@@ -223,7 +223,7 @@ package com.thanksmister.touchlist.controls
 		protected function onMouseDown( e:Event ):void 
 		{
 			addEventListener( MouseEvent.MOUSE_MOVE, onMouseMove );
-			addEventListener( MouseEvent.MOUSE_UP, onMouseUp );
+			stage.addEventListener( MouseEvent.MOUSE_UP, onMouseUp );
 			removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 
 			inertiaY = 0;
@@ -269,7 +269,7 @@ package com.thanksmister.touchlist.controls
 		{
 			addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown );
 			removeEventListener( MouseEvent.MOUSE_MOVE, onMouseMove );
-			removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+			stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 				
 			if(isTouching) {
 				isTouching = false;
