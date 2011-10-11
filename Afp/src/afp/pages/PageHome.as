@@ -18,23 +18,25 @@ package afp.pages
 		public static const ID : String = PagePaths.HOME;
 		private var _so : SharedObject;
 		private var _asset : HomPageAsset;
+		private var _loaderAsset : LoaderAsset;
 
 		public function PageHome()
 		{
 			super();
 		}
 
-		
 		override protected function _onStaged() : void
 		{
 			super._onStaged();
 			_initialize();
 		}
+
 		private function _initialize() : void
 		{
-			if(User.getInstance().id != null){
+			if (User.getInstance().id != null)
+			{
 				gotoPage.dispatch(PagePaths.IMAGE_SELECTION);
-				return;				
+				return;
 			}
 			_asset = new HomPageAsset();
 			addChild(_asset);
@@ -65,6 +67,7 @@ package afp.pages
 
 		private function _onResult(result : Object) : void
 		{
+			removeChild(_loaderAsset);
 			var json : Object = JSON.decode(String(result)).AFPResponse;
 			if (json.success == 0)
 			{
@@ -83,6 +86,8 @@ package afp.pages
 
 		private function _login(login : String) : void
 		{
+			_loaderAsset = new LoaderAsset(); 
+			addChild(_loaderAsset);
 			var user : UserVO = new UserVO({id:login});
 			var service : Service = new Service(Config.SERVICES_URL + 'userservice.php');
 			service.onResult.add(_onResult);
@@ -93,7 +98,7 @@ package afp.pages
 		override public function hide() : void
 		{
 			hidden();
-//			TweenMax.to(this, 0.3, {autoAlpha:0, onComplete:hidden});
+			// TweenMax.to(this, 0.3, {autoAlpha:0, onComplete:hidden});
 		}
 	}
 }
