@@ -1,5 +1,7 @@
 package afp.components {
 
+	import flash.text.TextFieldType;
+	import flash.text.TextField;
 	import afp.services.vo.EventVO;
 
 	import com.thanksmister.touchlist.controls.TouchList;
@@ -12,15 +14,17 @@ package afp.components {
 	/**
 	 * @author Aymeric
 	 */
-	public class List extends Sprite {
+	public class PopUp extends Sprite {
 
 		private var _elements:Vector.<EventVO>;
 
 		private var _touchList:TouchList;
+		private var _description:TextField;
 
-		public function List(elements:Vector.<EventVO>) {
+		public function PopUp(elements:Vector.<EventVO>) {
 
 			_elements = elements;
+			_description = new TextField();
 
 			addEventListener(Event.ADDED_TO_STAGE, _init);
 		}
@@ -44,6 +48,14 @@ package afp.components {
 
 				_touchList.addListItem(item);
 			}
+			
+			addChild(_description);
+			_description.y = 320;
+			_description.type = TextFieldType.INPUT;
+			_description.background = true;
+			_description.backgroundColor = 0x999999;
+			_description.text = " gree";
+			_description.width = 200;
 
 		}
 
