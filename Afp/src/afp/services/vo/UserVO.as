@@ -3,7 +3,7 @@ package afp.services.vo
 	/**
 	 * @author lbineau
 	 */
-	public final class UserVO extends AbstractVo
+	public final class UserVO extends AbstractVO
 	{
 		private var _id : String;
 		private var _nom : String;
