@@ -58,6 +58,7 @@ package afp.pages {
 		private function _showCapturedPicture(picture:Loader):void {
 			
 			addChild(picture.content);
+			picture.content.scaleX = picture.content.scaleY = 0.1;
 		}
 		
 		private function _uploadFile(mEvt:MouseEvent):void {
