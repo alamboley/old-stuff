@@ -1,5 +1,7 @@
 package afp.pages
 {
+	import com.greensock.layout.ScaleMode;
+	import flash.display.Bitmap;
 	import afp.components.List;
 	import afp.core.Config;
 	import afp.core.User;
@@ -14,9 +16,12 @@ package afp.pages
 
 	import com.adobe.serialization.json.JSON;
 	import com.greensock.TweenMax;
+	import com.greensock.layout.AlignMode;
+	import com.greensock.layout.AutoFitArea;
 
 	import flash.display.BitmapData;
 	import flash.display.Loader;
+	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.GeolocationEvent;
 	import flash.events.MouseEvent;
@@ -26,7 +31,6 @@ package afp.pages
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
-	import flash.net.URLVariables;
 	import flash.sensors.Geolocation;
 	import flash.utils.ByteArray;
 
@@ -78,8 +82,10 @@ package afp.pages
 		{
 			if (CameraUI.isSupported)
 			{
+				// Ajout d'un shield de clic
+				pause();
 				_cam = new Camera();
-				_cam.captured.add(_showCapturedPicture);
+				_cam.captured.addOnce(_showPicture);
 			}
 			else
 			{
@@ -87,10 +93,19 @@ package afp.pages
 			}
 		}
 
-		private function _showCapturedPicture(picture : Loader) : void
+		private function _showPicture(picture : Loader) : void
 		{
-			addChild(picture.content);
-			picture.content.scaleX = picture.content.scaleY = 0.1;
+			var bmd : BitmapData = new BitmapData(picture.content.width, picture.content.height, false);
+			bmd.draw(picture.content);
+			var bitmap : Bitmap = new Bitmap(bmd);
+			addChild(bitmap);
+			var area : AutoFitArea = new AutoFitArea(this, 0, 0, stage.stageWidth, stage.stageHeight);
+			area.attach(bitmap, {scaleMode:ScaleMode.PROPORTIONAL_OUTSIDE,hAlign:AlignMode.LEFT, vAlign:AlignMode.TOP, crop:true});
+			var bytes : ByteArray = JPEGEncoder.encode(bmd);
+			_sendFile(bytes);
+
+			// On enlève le shield du clic
+			resume();
 		}
 
 		private function _uploadFile(mEvt : MouseEvent) : void
@@ -107,6 +122,7 @@ package afp.pages
 
 			_fileRef.addEventListener(Event.COMPLETE, _fileLoaded);
 			_fileRef.load();
+			pause();
 		}
 
 		private function _fileLoaded(evt : Event) : void
@@ -114,24 +130,29 @@ package afp.pages
 			_fileRef.removeEventListener(Event.COMPLETE, _fileLoaded);
 
 			var loader : Loader = new Loader();
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _onImageLoaded);
 			loader.loadBytes(evt.target.data);
+		}
 
-			var bytes : ByteArray = JPEGEncoder.encode(new BitmapData(1000, 1000, false));
-
-			addChild(loader);
-
-			_sendFile(evt.target.data);
+		private function _onImageLoaded(event : Event) : void
+		{
+			var loader : Loader = Loader(LoaderInfo(event.target).loader);
+			loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, _onImageLoaded);
+			var bmd : BitmapData = new BitmapData(loader.content.width, loader.content.height, false);
+			bmd.draw(loader.content);
+			var bitmap : Bitmap = new Bitmap(bmd);
+			addChild(bitmap);
+			var area : AutoFitArea = new AutoFitArea(this, 0, 0, stage.stageWidth, stage.stageHeight);
+			area.attach(bitmap, {scaleMode:ScaleMode.PROPORTIONAL_OUTSIDE,hAlign:AlignMode.LEFT, vAlign:AlignMode.TOP, crop:true});
+			var bytes : ByteArray = JPEGEncoder.encode(bmd);
+			_sendFile(bytes);
+			resume();
 		}
 
 		private function _sendFile(bytes : ByteArray) : void
 		{
-			var photo : PhotoVO = new PhotoVO({description:'desc',dateprise:'2006-04-8 5:25:78.789',idevent:'41',iduser:'11',idEvent:'41',idUser:'11'});
-			/* Marche po
-			var service : Service = new Service(Config.SERVICES_URL + 'mediaservice.php?file=test&param='+photo.toString(),'POST');
-			service.onError.addOnce(_onImageUploadError);
-			service.onResult.addOnce(_onImageUploadSucced);
-			service.nomethod({binary:bytes});*/
-			var request : URLRequest = new URLRequest(Config.SERVICES_URL + 'mediaservice.php?file=test&param='+JSON.encode(photo));
+			var photo : PhotoVO = new PhotoVO({description:'desc', dateprise:'2006-04-8 5:25:78.789', idevent:'41', iduser:'11', idEvent:'41', idUser:'11'});
+			var request : URLRequest = new URLRequest(Config.SERVICES_URL + 'mediaservice.php?file=test&param=' + JSON.encode(photo));
 			var loader : URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, _onComplete);
 			request.contentType = 'application/octet-stream';
@@ -142,19 +163,7 @@ package afp.pages
 
 		private function _onComplete(event : Event) : void
 		{
-			trace('event',event.target.data);
-		}
-
-		private function _onImageUploadSucced(result : Object) : void
-		{
-			var json : Object = JSON.decode(String(result)).AFPResponse;
-			PrintR.pr(json);
-		}
-
-		private function _onImageUploadError(error : Object) : void
-		{
-			var json : Object = JSON.decode(String(error));
-			PrintR.pr(json);
+			trace('event', event.target.data);
 		}
 
 		private function _geolocUpdate(gEvt : GeolocationEvent) : void
