@@ -1,10 +1,10 @@
 package afp.pages {
 
-	import alamboley.utils.PrintR;
-	import afp.services.vo.EventVO;
+	import afp.components.List;
 	import afp.core.Config;
 	import afp.core.User;
 	import afp.remoting.Service;
+	import afp.services.vo.EventVO;
 	import afp.utils.Camera;
 
 	import com.adobe.serialization.json.JSON;
@@ -56,7 +56,6 @@ package afp.pages {
 				_geoloc = new Geolocation();
 				_geoloc.setRequestedUpdateInterval(3000);
 				_geoloc.addEventListener(GeolocationEvent.UPDATE, _geolocUpdate);
-
 
 			} else {
 				trace('geolocation is not supported');
@@ -136,6 +135,8 @@ package afp.pages {
 					eventVo.push(new EventVO(event));
 				}
 				
+				var listEvent:List = new List(eventVo);
+				addChild(listEvent);
 			}
 		}
 
@@ -150,7 +151,8 @@ package afp.pages {
 
 		override public function dispose():void {
 
-			_geoloc.removeEventListener(GeolocationEvent.UPDATE, _geolocUpdate);
+			if (Geolocation.isSupported)
+				_geoloc.removeEventListener(GeolocationEvent.UPDATE, _geolocUpdate);
 
 			scene.logo.removeEventListener(MouseEvent.CLICK, _goHome);
 			scene.photo.removeEventListener(MouseEvent.CLICK, _takeShot);

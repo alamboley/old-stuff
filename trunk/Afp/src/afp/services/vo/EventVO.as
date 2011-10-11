@@ -8,6 +8,7 @@ package afp.services.vo {
 		private var _id:String;
 		private var _nom:String;
 		private var _description:String;
+		private var _geoloc:String;
 
 		public function EventVO(initObj:Object) {
 
@@ -36,6 +37,14 @@ package afp.services.vo {
 
 		public function set description(description:String):void {
 			_description = description;
+		}
+
+		public function get geoloc():String {
+			return _geoloc;
+		}
+
+		public function set geoloc(geoloc:String):void {
+			_geoloc = geoloc;
 		}
 	}
 }
