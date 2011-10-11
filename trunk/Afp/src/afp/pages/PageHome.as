@@ -6,7 +6,6 @@ package afp.pages
 	import afp.services.vo.UserVO;
 
 	import com.adobe.serialization.json.JSON;
-	import com.greensock.TweenMax;
 
 	import flash.events.MouseEvent;
 	import flash.net.SharedObject;
@@ -23,11 +22,20 @@ package afp.pages
 		public function PageHome()
 		{
 			super();
-			_initialize();
 		}
 
+		
+		override protected function _onStaged() : void
+		{
+			super._onStaged();
+			_initialize();
+		}
 		private function _initialize() : void
 		{
+			if(User.getInstance().id != null){
+				gotoPage.dispatch(PagePaths.IMAGE_SELECTION);
+				return;				
+			}
 			_asset = new HomPageAsset();
 			addChild(_asset);
 			_so = SharedObject.getLocal("afp/user", "/");
@@ -57,12 +65,20 @@ package afp.pages
 
 		private function _onResult(result : Object) : void
 		{
-			var vo : UserVO = new UserVO(JSON.decode(String(result)).AFPResponse.dataObject);
-			User.getInstance().id = vo.id;
-			User.getInstance().nom = vo.nom;
-			User.getInstance().prenom = vo.prenom;
-			_so.data.login = vo.id;
-			gotoPage.dispatch(PagePaths.IMAGE_SELECTION);
+			var json : Object = JSON.decode(String(result)).AFPResponse;
+			if (json.success == 0)
+			{
+				_onError(result);
+			}
+			else if (json.success == 1)
+			{
+				var vo : UserVO = new UserVO(JSON.decode(String(result)).AFPResponse.dataObject);
+				User.getInstance().id = vo.id;
+				User.getInstance().nom = vo.nom;
+				User.getInstance().prenom = vo.prenom;
+				_so.data.login = vo.id;
+				gotoPage.dispatch(PagePaths.IMAGE_SELECTION);
+			}
 		}
 
 		private function _login(login : String) : void
@@ -76,7 +92,8 @@ package afp.pages
 
 		override public function hide() : void
 		{
-			TweenMax.to(this, 0.3, {autoAlpha:0, onComplete:hidden});
+			hidden();
+//			TweenMax.to(this, 0.3, {autoAlpha:0, onComplete:hidden});
 		}
 	}
 }
