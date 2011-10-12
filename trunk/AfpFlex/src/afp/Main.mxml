@@ -28,7 +28,7 @@
 			private function _applicationComplete(evt:Event):void {
 				resizeToolTip();
 
-				// nativeWindow.maximize();
+				nativeWindow.maximize();
 				_getEvents();
 			}
 
@@ -94,6 +94,7 @@
 					for each (var image:Object in _imagesToValidate) {
 						photoVo = new PhotoVO(image);
 						photoVo.etat = "1";
+						photoVo.description = description.text;
 
 						var url:String = Config.SERVICES_URL + 'mediaservice.php?method=udpatephoto&param=' + JSON.encode(photoVo);
 						var request:URLRequest = new URLRequest(url);
@@ -105,12 +106,22 @@
 					}
 
 					_imagesToValidate.removeAll();
-
 				}
 			}
 
 			private function _imageValidated(evt:Event):void {
 
+			}
+
+			private function _afficherImage():void {
+				
+				if (containerImage.selectedItem) {
+					grandeImage.source = containerImage.selectedItem.url;
+					description.text = containerImage.selectedItem.description;
+				} else if (containerValidateImage.selectedItem) {
+					grandeImage.source = containerValidateImage.selectedItem.url;
+					description.text = containerValidateImage.selectedItem.description;
+				}
 			}
 		]]>
 	</fx:Script>
@@ -131,16 +142,20 @@
 
 				<s:HGroup>
 
-					<s:List height="200" width="200" id="containerImage"
+					<s:List toolTip="image à glisser" height="400" width="150" id="containerImage"
 						dataProvider="{_images}" itemRenderer="afp.components.ImageAFP"
 						dragMoveEnabled="true" dragEnabled="true"
-						dropEnabled="true"/>
+						dropEnabled="true" change="_afficherImage()"/>
 
-					<s:List height="200" width="200" id="containerValidateImage"
-						dataProvider="{_imagesToValidate}"
-						itemRenderer="afp.components.ImageAFP"
+					<s:VGroup>
+						<s:Image id="grandeImage" height="300" width="300"/>
+						<s:TextArea id="description" height="50" width="300" toolTip="description" />
+					</s:VGroup>
+
+					<s:List toolTip="image à déposer" height="400" width="150" id="containerValidateImage"
+						dataProvider="{_imagesToValidate}" itemRenderer="afp.components.ImageAFP"
 						dragMoveEnabled="true" dragEnabled="true"
-						dropEnabled="true"/>
+						dropEnabled="true" change="_afficherImage()"/>
 
 					<s:Button label="Valider" click="_validateImage()"/>
 

@@ -3,6 +3,6 @@
                 xmlns:s="library://ns.adobe.com/flex/spark"
                 xmlns:mx="library://ns.adobe.com/flex/mx">
 
-	<s:Image source="{data.url}" height="50" width="50" />
+	<s:Image source="{data.url}" height="100" width="100" />
 
 </s:ItemRenderer>
