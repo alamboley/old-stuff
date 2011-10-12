@@ -105,7 +105,7 @@ package com.thanksmister.touchlist.controls
 			}
 			
 			listHitArea.graphics.clear();
-			listHitArea.graphics.beginFill(0x004B8E, 1);
+			listHitArea.graphics.beginFill(0x000000, 1);
 			listHitArea.graphics.drawRect(0, 0, listWidth, listHeight);
 			listHitArea.graphics.endFill();
 			
@@ -115,7 +115,7 @@ package com.thanksmister.touchlist.controls
 			}
 			
 			list.graphics.clear();
-			list.graphics.beginFill(0x004B8E, 1);
+			list.graphics.beginFill(0x000000, 1);
 			list.graphics.drawRect(0, 0, listWidth, listHeight);
 			list.graphics.endFill();
 			list.mask = listHitArea;
