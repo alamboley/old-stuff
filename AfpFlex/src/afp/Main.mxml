@@ -21,7 +21,7 @@
 
 			[Bindable]
 			private var _images:ArrayCollection = new ArrayCollection();
-			
+
 			[Bindable]
 			private var _imagesToValidate:ArrayCollection = new ArrayCollection();
 
@@ -64,11 +64,11 @@
 				_images.removeAll();
 
 				for each (var pict:Object in JSON.decode(String(pictures)).AFPResponse.dataObject) {
-					
+
 					if (pict.etat == 0) {
-					
+
 						pict.url = Config.SERVICES_URL + pict.url;
-	
+
 						_images.addItem(pict);
 					}
 				}
@@ -87,26 +87,30 @@
 			}
 
 			private function _validateImage():void {
-				
+
 				if (_imagesToValidate.length > 0) {
-					
-					_service = new Service(Config.SERVICES_URL + "mediaservice.php");
-					
+
+					var photoVo:PhotoVO;
 					for each (var image:Object in _imagesToValidate) {
-						var photoVo:PhotoVO = new PhotoVO(image);
+						photoVo = new PhotoVO(image);
 						photoVo.etat = "1";
-						trace(photoVo.id, photoVo.etat);
-						_service.udpatephoto(photoVo);
-						_service.onResult.addOnce(ok);
+
+						var url:String = Config.SERVICES_URL + 'mediaservice.php?method=udpatephoto&param=' + JSON.encode(photoVo);
+						var request:URLRequest = new URLRequest(url);
+						var loader:URLLoader = new URLLoader();
+
+						loader.addEventListener(Event.COMPLETE, _imageValidated);
+						request.method = URLRequestMethod.GET;
+						loader.load(request);
 					}
-					
+
 					_imagesToValidate.removeAll();
-					
+
 				}
 			}
-			
-			private function ok(object:Object):void {
-				trace(object);
+
+			private function _imageValidated(evt:Event):void {
+
 			}
 		]]>
 	</fx:Script>
@@ -127,14 +131,18 @@
 
 				<s:HGroup>
 
-					<s:List height="200" width="200" id="containerImage" dataProvider="{_images}"
-						itemRenderer="afp.components.ImageAFP"
-						dragMoveEnabled="true" dragEnabled="true" dropEnabled="true" />
-						
-					<s:List height="200" width="200" id="containerValidateImage" dataProvider="{_imagesToValidate}" itemRenderer="afp.components.ImageAFP"
-						dragMoveEnabled="true" dragEnabled="true" dropEnabled="true" />
+					<s:List height="200" width="200" id="containerImage"
+						dataProvider="{_images}" itemRenderer="afp.components.ImageAFP"
+						dragMoveEnabled="true" dragEnabled="true"
+						dropEnabled="true"/>
 
-					<s:Button label="Valider" click="_validateImage()" />
+					<s:List height="200" width="200" id="containerValidateImage"
+						dataProvider="{_imagesToValidate}"
+						itemRenderer="afp.components.ImageAFP"
+						dragMoveEnabled="true" dragEnabled="true"
+						dropEnabled="true"/>
+
+					<s:Button label="Valider" click="_validateImage()"/>
 
 				</s:HGroup>
 
