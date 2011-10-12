@@ -37,6 +37,7 @@ package afp.pages
 		private function _initialize() : void
 		{
 			_asset = new EventPageAsset();
+			addChild(_asset);
 			_service = new Service(Config.SERVICES_URL + 'usereventlinkservice.php');
 			_service.onResult.add(_onResult);
 			_service.onError.add(_onError);
