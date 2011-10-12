@@ -1,6 +1,5 @@
-package afp.services.vo
+package afp.remoting.vo
 {
-	import afp.services.vo.AbstractVO;
 
 	/**
 	 * @author lbineau

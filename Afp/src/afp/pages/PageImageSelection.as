@@ -68,6 +68,7 @@ package afp.pages
 					pause();
 					_cameraRoll = new CameraRoll;
 					_cameraRoll.addEventListener(MediaEvent.SELECT, _onSelection);
+					_cameraRoll.addEventListener( Event.CANCEL, _onErrorEvent );
 					_cameraRoll.addEventListener(ErrorEvent.ERROR, _onErrorEvent);
 				}
 				else

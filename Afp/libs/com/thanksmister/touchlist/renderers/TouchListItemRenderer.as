@@ -119,7 +119,7 @@ package com.thanksmister.touchlist.renderers
 		{
 			if(!textField) {
 				var textFormat:TextFormat = new TextFormat();
-					textFormat.color = 0xEAEAEA;
+					textFormat.color = 0x000000;
 					textFormat.size = 24;
 					textFormat.font = "DroidSans"; 
 	
@@ -150,11 +150,11 @@ package com.thanksmister.touchlist.renderers
 			
 			this.graphics.clear();
 			
-			this.graphics.beginFill(0x000000, 1);
+			this.graphics.beginFill(0xEAEAEA, 1);
 			this.graphics.drawRect(0, 0, itemWidth, itemHeight);
 			this.graphics.endFill();
 			
-			this.graphics.beginFill(0xEAEAEA, .5);
+			this.graphics.beginFill(0x000000, .5);
 			this.graphics.drawRect(0, itemHeight - 1, itemWidth, .5);
 			this.graphics.endFill();
 			

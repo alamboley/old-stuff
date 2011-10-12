@@ -303,11 +303,17 @@ package afp.utils
 			myTextField.selectable = false;
 			myTextField.width = btnWidth;
 			myTextField.height = btnHeight;
-			var myTextFormat : TextFormat = new TextFormat();
-			myTextFormat.align = TextFormatAlign.CENTER;
-			myTextField.defaultTextFormat = myTextFormat;
-			Text = "<b>" + Text + "</b>";
-			myTextField.htmlText = '<font face="Verdana">' + Text + '</font>';
+			var textFormat : TextFormat = new TextFormat();
+			textFormat.font = "Droid Sans";
+			textFormat.size = 30;
+			textFormat.align = TextFormatAlign.CENTER;
+			
+			myTextField.autoSize = TextFieldAutoSize.CENTER;
+			myTextField.defaultTextFormat = textFormat;
+			myTextField.setTextFormat(textFormat);  
+			// Text = "<b>" + Text + "</b>";
+			myTextField.text = Text;
+
 			myTextField.x = (btnWidth / 2) - (myTextField.width / 2);
 			myTextField.y = (btnHeight / 2) - (myTextField.textHeight / 2);
 			return myTextField;
@@ -320,8 +326,15 @@ package afp.utils
 			myTextField.textColor = alertOptions.textColour;
 			myTextField.multiline = true;
 			myTextField.selectable = false;
+			var textFormat : TextFormat = new TextFormat();
+			textFormat.font = "Droid Sans";
+			textFormat.size = 20;
+			textFormat.align = TextFormatAlign.CENTER;
+			
 			myTextField.autoSize = TextFieldAutoSize.CENTER;
-			myTextField.htmlText = '<font face="Verdana">' + Text + '</font>';
+			myTextField.defaultTextFormat = textFormat;
+			myTextField.setTextFormat(textFormat); 
+			myTextField.text = Text;
 			myTextField.x = (btnWidth / 2) - (myTextField.width / 2);
 			return myTextField;
 		}

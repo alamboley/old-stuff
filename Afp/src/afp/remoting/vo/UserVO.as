@@ -1,4 +1,4 @@
-package afp.services.vo
+package afp.remoting.vo
 {
 	/**
 	 * @author lbineau

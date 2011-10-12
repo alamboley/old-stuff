@@ -3,13 +3,13 @@ package afp.pages
 	import afp.core.Config;
 	import afp.core.User;
 	import afp.remoting.Service;
-	import afp.services.vo.EventVO;
-
+	import afp.remoting.vo.EventVO;
 	import com.adobe.serialization.json.JSON;
 	import com.greensock.TweenMax;
 	import com.thanksmister.touchlist.controls.TouchList;
 	import com.thanksmister.touchlist.events.ListItemEvent;
 	import com.thanksmister.touchlist.renderers.TouchListItemRenderer;
+
 
 	/**
 	 * @author lbineau
@@ -20,6 +20,8 @@ package afp.pages
 		private var _elements : Vector.<EventVO>;
 		private var _touchList : TouchList;
 		private var _service : Service;
+		private var _asset : EventPageAsset;
+		
 
 		public function PageEventSelection($options : Object = null)
 		{
@@ -34,8 +36,7 @@ package afp.pages
 
 		private function _initialize() : void
 		{
-			graphics.beginFill(0x000000);
-			graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+			_asset = new EventPageAsset();
 			_service = new Service(Config.SERVICES_URL + 'usereventlinkservice.php');
 			_service.onResult.add(_onResult);
 			_service.onError.add(_onError);
@@ -58,9 +59,9 @@ package afp.pages
 					_elements.push(new EventVO(event));
 				}
 
-				_touchList = new TouchList(stage.stageWidth, stage.stageHeight);
+				_touchList = new TouchList(stage.stageWidth, stage.stageHeight - _asset.container.y);
 				_touchList.addEventListener(ListItemEvent.ITEM_SELECTED, _handlelistItemSelected);
-				addChild(_touchList);
+				_asset.container.addChild(_touchList);
 
 				var item : TouchListItemRenderer;
 
