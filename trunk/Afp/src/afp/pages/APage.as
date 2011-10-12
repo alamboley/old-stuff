@@ -1,12 +1,10 @@
 package afp.pages
 {
-	import flash.display.Sprite;
-	import flash.display.DisplayObject;
-	import flash.events.Event;
-
 	import org.osflash.signals.Signal;
 
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
+	import flash.events.Event;
 
 	/**
 	 * @author lbineau
@@ -22,13 +20,15 @@ package afp.pages
 		protected var _shownSignal : Signal;
 		protected var _hideSignal : Signal;
 		protected var _hiddenSignal : Signal;
+		protected var _options : Object;
 
-		public function APage()
+		public function APage($options:Object = null)
 		{
 			super();
+			_options = $options;
 			_shield = new Sprite();
 			_initedSignal = new Signal();
-			_gotoPage = new Signal(Object);
+			_gotoPage = new Signal(Object, Object);
 			_showSignal = new Signal();
 			_shownSignal = new Signal();
 			_hideSignal = new Signal();
@@ -59,6 +59,7 @@ package afp.pages
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, _onAddedToStage);
 			removeEventListener(Event.REMOVED_FROM_STAGE, _onRemoveFromStage);
+			_options = null;
 			_state = null;
 			_initedSignal.removeAll();
 			_initedSignal = null;
@@ -88,7 +89,7 @@ package afp.pages
 			_shield.graphics.clear();
 			stage.removeChild(_shield);
 		}
-		
+
 		public function inited() : void
 		{
 			_state = Animation.INITED;
