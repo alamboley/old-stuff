@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx" resize="_resize(event)"
+	applicationComplete="_applicationComplete(event)">
+	<fx:Script>
+		<![CDATA[
+
+			import afp.core.Config;
+			import afp.remoting.Service;
+			import afp.services.vo.PhotoVO;
+
+			import com.adobe.serialization.json.JSON;
+
+			import mx.collections.ArrayCollection;
+			import mx.controls.ToolTip;
+			import mx.core.FlexGlobals;
+
+			private var _service:Service;
+
+			private var _events:ArrayCollection = new ArrayCollection();
+
+			[Bindable]
+			private var _images:ArrayCollection = new ArrayCollection();
+			
+			[Bindable]
+			private var _imagesToValidate:ArrayCollection = new ArrayCollection();
+
+			private function _applicationComplete(evt:Event):void {
+				resizeToolTip();
+
+				// nativeWindow.maximize();
+				_getEvents();
+			}
+
+			private function _getEvents():void {
+
+				_service = new Service(Config.SERVICES_URL + "usereventlinkservice.php");
+				_service.onResult.addOnce(_addEvents);
+				_service.onError.addOnce(_onError);
+				_service.geteventsforuser("11");
+			}
+
+			private function _addEvents(events:Object):void {
+
+				var object:Object = JSON.decode(String(events)).AFPResponse.dataObject;
+
+				for each (var event:Object in object) {
+					_events.addItem(event);
+				}
+
+			}
+
+			private function _eventChange():void {
+
+				_service = new Service(Config.SERVICES_URL + "mediaservice.php");
+
+				_service.onResult.addOnce(_loadPictures);
+				_service.onError.addOnce(_onError);
+				_service.getphotosforevent(comboBoxEvents.selectedItem.id);
+			}
+
+			private function _loadPictures(pictures:Object):void {
+
+				_images.removeAll();
+
+				for each (var pict:Object in JSON.decode(String(pictures)).AFPResponse.dataObject) {
+					
+					if (pict.etat == 0) {
+					
+						pict.url = Config.SERVICES_URL + pict.url;
+	
+						_images.addItem(pict);
+					}
+				}
+			}
+
+			private function _onError(error:Object):void {
+				trace("error");
+			}
+
+			private function _resize(evt:Event):void {
+				resizeToolTip();
+			}
+
+			private function resizeToolTip():void {
+				ToolTip.maxWidth = Math.min(FlexGlobals.topLevelApplication.width, ToolTip.maxWidth);
+			}
+
+			private function _validateImage():void {
+				
+				if (_imagesToValidate.length > 0) {
+					
+					_service = new Service(Config.SERVICES_URL + "mediaservice.php");
+					
+					for each (var image:Object in _imagesToValidate) {
+						var photoVo:PhotoVO = new PhotoVO(image);
+						photoVo.etat = "1";
+						trace(photoVo.id, photoVo.etat);
+						_service.udpatephoto(photoVo);
+						_service.onResult.addOnce(ok);
+					}
+					
+					_imagesToValidate.removeAll();
+					
+				}
+			}
+			
+			private function ok(object:Object):void {
+				trace(object);
+			}
+		]]>
+	</fx:Script>
+
+
+	<fx:Declarations>
+
+	</fx:Declarations>
+
+	<mx:TabNavigator width="100%" height="100%" horizontalCenter="0">
+		<s:NavigatorContent label="Gérer les photos">
+			<s:VGroup>
+				<s:Label text="Sélectionner l'évènement : "/>
+				<s:ComboBox id="comboBoxEvents" dataProvider="{_events}"
+					selectedIndex="0" labelField="nom" change="_eventChange()"/>
+
+				<s:Label text="Drag and drop l'image et valider"/>
+
+				<s:HGroup>
+
+					<s:List height="200" width="200" id="containerImage" dataProvider="{_images}"
+						itemRenderer="afp.components.ImageAFP"
+						dragMoveEnabled="true" dragEnabled="true" dropEnabled="true" />
+						
+					<s:List height="200" width="200" id="containerValidateImage" dataProvider="{_imagesToValidate}" itemRenderer="afp.components.ImageAFP"
+						dragMoveEnabled="true" dragEnabled="true" dropEnabled="true" />
+
+					<s:Button label="Valider" click="_validateImage()" />
+
+				</s:HGroup>
+
+			</s:VGroup>
+
+		</s:NavigatorContent>
+	</mx:TabNavigator>
+
+
+</s:WindowedApplication>
