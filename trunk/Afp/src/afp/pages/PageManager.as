@@ -8,9 +8,9 @@ package afp.pages
 	 */
 	public class PageManager extends Sprite
 	{
+		private var _viewStack : Array;
 		protected var _pages : Array;
 		protected var _currentIdx : uint;
-		protected var _prevIdx : int = -1;
 		protected var _currentPageView : APage;
 		protected var _currentOptions : Object;
 
@@ -21,8 +21,10 @@ package afp.pages
 
 		public function goBack() : void
 		{
-			if(_prevIdx == -1) return;
-			gotoPage(_prevIdx, _currentOptions);
+			if (_viewStack.length <= 1) return;
+
+			_viewStack.pop();
+			gotoPage(_viewStack[_viewStack.length-1], _currentOptions);
 		}
 
 		/**
@@ -38,6 +40,7 @@ package afp.pages
 				_pages[i] = $pages[i];
 			}
 			_currentIdx = $startPage;
+			_viewStack = [_currentIdx];
 			_currentPageView = APage(new _pages[_currentIdx]);
 			addChild(_currentPageView);
 			_currentPageView.gotoPage.add(_onGotoPage);
@@ -66,9 +69,11 @@ package afp.pages
 
 		public function dispose() : void
 		{
+			_currentPageView.dispose();
 			removeChild(_currentPageView);
 			_currentPageView = null;
 			_pages = [];
+			_viewStack = [];
 		}
 
 		protected function next() : void
@@ -87,9 +92,8 @@ package afp.pages
 		{
 			if (_currentIdx != $numPage)
 			{
-				_prevIdx = _currentIdx;
+				if (_currentIdx > _viewStack[_viewStack.length - 1]) _viewStack.push(_currentIdx);
 				_currentIdx = $numPage;
-				trace('_prevIdx',_prevIdx,_currentIdx);
 				_currentOptions = $options;
 				_update();
 			}

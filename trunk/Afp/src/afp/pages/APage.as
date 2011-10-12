@@ -26,7 +26,7 @@ package afp.pages
 		public function APage($options : Object = null)
 		{
 			super();
-			_options = $options;
+			_options = $options || new Object();
 			_shield = new Sprite();
 			_loaderAsset = new LoaderAsset();
 			_shield.addChild(_loaderAsset);

@@ -1,15 +1,15 @@
 package afp.components {
 
-	import flash.text.TextFieldType;
-	import flash.text.TextField;
-	import afp.services.vo.EventVO;
-
+	import afp.remoting.vo.EventVO;
 	import com.thanksmister.touchlist.controls.TouchList;
 	import com.thanksmister.touchlist.events.ListItemEvent;
 	import com.thanksmister.touchlist.renderers.TouchListItemRenderer;
-
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.text.TextField;
+	import flash.text.TextFieldType;
+
+
 
 	/**
 	 * @author Aymeric

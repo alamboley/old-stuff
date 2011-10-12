@@ -1,24 +1,31 @@
 package afp.pages
 {
-	import afp.utils.Alert;
 	import afp.core.Config;
 	import afp.core.User;
 	import afp.remoting.Service;
-	import afp.services.vo.UserVO;
+	import afp.remoting.vo.UserVO;
+	import afp.utils.Alert;
 
 	import com.adobe.serialization.json.JSON;
 
+	import flash.events.FocusEvent;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.net.SharedObject;
+	import flash.ui.Keyboard;
+
+
+
 
 	/**
 	 * @author Aymeric
 	 */
 	public class PageHome extends APage
 	{
+		public const defaultTextTF : String = 'Identifiant';
 		public static const ID : String = PagePaths.HOME;
 		private var _so : SharedObject;
-		private var _asset : HomPageAsset;
+		private var _asset : HomePageAsset;
 
 		public function PageHome($options : Object = null)
 		{
@@ -35,10 +42,10 @@ package afp.pages
 		{
 			if (User.getInstance().id != null)
 			{
-				gotoPage.dispatch(PagePaths.IMAGE_SELECTION,null);
+				gotoPage.dispatch(PagePaths.IMAGE_SELECTION, null);
 				return;
 			}
-			_asset = new HomPageAsset();
+			_asset = new HomePageAsset();
 			addChild(_asset);
 			_so = SharedObject.getLocal("afp/user", "/");
 
@@ -51,8 +58,31 @@ package afp.pages
 			}
 			else
 			{
+				_asset.loginTF.addEventListener(FocusEvent.FOCUS_IN, textInputHandler);
+				_asset.loginTF.addEventListener(FocusEvent.FOCUS_OUT, textInputHandlerOut);
+
 				_asset.loginBTN.addEventListener(MouseEvent.CLICK, _onSubmit, false, 0, true);
-				stage.focus = _asset.loginTF;
+				_asset.loginTF.text = defaultTextTF;
+			}
+		}
+
+		private function textInputHandler(event : FocusEvent) : void
+		{
+			if(_asset.loginTF.text == defaultTextTF) _asset.loginTF.text = '';
+			_asset.loginTF.addEventListener(KeyboardEvent.KEY_DOWN, _onKeyDown, false, 0, true);
+		}
+
+		private function textInputHandlerOut(event : FocusEvent) : void
+		{
+			if(_asset.loginTF.text == '') _asset.loginTF.text = defaultTextTF;
+			_asset.loginTF.addEventListener(KeyboardEvent.KEY_DOWN, _onKeyDown, false, 0, true);
+		}
+
+		private function _onKeyDown(event : KeyboardEvent) : void
+		{
+			if (event.charCode == Keyboard.ENTER)
+			{
+				_login(_asset.loginTF.text);
 			}
 		}
 
@@ -97,6 +127,13 @@ package afp.pages
 			service.getuserbyid(user.id);
 		}
 
+		override public function dispose() : void
+		{
+			_asset.loginTF.removeEventListener(KeyboardEvent.KEY_DOWN, _onKeyDown);
+			_asset.loginBTN.removeEventListener(MouseEvent.CLICK, _onSubmit);
+			super.dispose();
+		}
+
 		override public function hide() : void
 		{
 			hidden();
@@ -108,6 +145,5 @@ package afp.pages
 			resume();
 			super.hidden();
 		}
-
 	}
 }
