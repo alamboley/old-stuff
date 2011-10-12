@@ -39,12 +39,12 @@ package afp.components {
 
 			var item:TouchListItemRenderer;
 			
-			for each (var event:EventVO in _elements) {
+			for each (var eventVO:EventVO in _elements) {
 
 				item = new TouchListItemRenderer();
-				item.index = uint(event.id);
-				item.data = event.nom;
-				item.itemHeight = 20;
+				item.index = uint(eventVO.id);
+				item.data = eventVO.nom;
+				item.itemHeight = 80;
 
 				_touchList.addListItem(item);
 			}

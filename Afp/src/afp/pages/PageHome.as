@@ -1,5 +1,6 @@
 package afp.pages
 {
+	import afp.utils.Alert;
 	import afp.core.Config;
 	import afp.core.User;
 	import afp.remoting.Service;
@@ -20,9 +21,9 @@ package afp.pages
 		private var _asset : HomPageAsset;
 		private var _loaderAsset : LoaderAsset;
 
-		public function PageHome()
+		public function PageHome($options:Object = null)
 		{
-			super();
+			super($options);
 		}
 
 		override protected function _onStaged() : void
@@ -63,6 +64,7 @@ package afp.pages
 		private function _onError(error : Object) : void
 		{
 			// TODO gérer les erreurs
+			Alert.show('Veuillez entrer à nouveau votre login', {colour:0xffffff, background:"blur"});
 		}
 
 		private function _onResult(result : Object) : void
@@ -80,13 +82,13 @@ package afp.pages
 				User.getInstance().nom = vo.nom;
 				User.getInstance().prenom = vo.prenom;
 				_so.data.login = vo.id;
-				gotoPage.dispatch(PagePaths.IMAGE_SELECTION);
+				gotoPage.dispatch(PagePaths.IMAGE_SELECTION, null);
 			}
 		}
 
 		private function _login(login : String) : void
 		{
-			_loaderAsset = new LoaderAsset(); 
+			_loaderAsset = new LoaderAsset();
 			addChild(_loaderAsset);
 			var user : UserVO = new UserVO({id:login});
 			var service : Service = new Service(Config.SERVICES_URL + 'userservice.php');

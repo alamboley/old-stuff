@@ -1,15 +1,20 @@
 package afp
 {
-	import flash.events.MouseEvent;
+	import afp.pages.PageImageUpload;
 	import afp.pages.PageHome;
-	import afp.pages.PageImage;
+	import afp.pages.PageImageSelection;
 	import afp.pages.PageManager;
+	import afp.utils.Alert;
 
+	import flash.desktop.NativeApplication;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
 	import flash.system.Capabilities;
+	import flash.ui.Keyboard;
 
 	/**
 	 * @author Aymeric
@@ -21,30 +26,57 @@ package afp
 
 		public function Main()
 		{
-			addEventListener(Event.ADDED_TO_STAGE, _init);
+			if (stage)
+				_init(null);
+			else
+				addEventListener(Event.ADDED_TO_STAGE, _init);
 		}
 
-		private function _init(evt : Event) : void
+		private function _init(e : Event = null) : void
 		{
-			removeEventListener(Event.ADDED_TO_STAGE, _init);
+			if (e) removeEventListener(Event.ADDED_TO_STAGE, _init);
 
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 
+			Alert.init(stage);
+
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, _handleKeyDown);
+
 			_pageManager = new PageManager();
-			_pageManager.initialize([PageHome, PageImage], 0);
+			_pageManager.initialize([PageHome, PageImageSelection, PageImageUpload]);
 			addChild(_pageManager);
-			
+
 			_header = new HeaderAsset();
 			_header.addEventListener(MouseEvent.CLICK, _onHeaderClicked);
 			addChild(_header);
-			
+
 			stage.addEventListener(Event.RESIZE, _resize);
 		}
 
 		private function _onHeaderClicked(event : MouseEvent) : void
 		{
 			_pageManager.gotoPage(0);
+		}
+
+		/**
+		 * Handle keyboard events for menu, back, and seach buttons.
+		 * */
+		private function _handleKeyDown(e : KeyboardEvent) : void
+		{
+			if (e.keyCode == Keyboard.BACK)
+			{
+				e.preventDefault();
+				NativeApplication.nativeApplication.exit();
+			}
+			else if (e.keyCode == Keyboard.MENU)
+			{
+				e.preventDefault();
+			}
+			else if (e.keyCode == Keyboard.SEARCH)
+			{
+				e.preventDefault();
+			}
 		}
 
 		private function _resize(evt : Event) : void

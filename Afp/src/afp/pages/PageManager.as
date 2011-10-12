@@ -11,6 +11,7 @@ package afp.pages
 		protected var _pages : Array;
 		protected var _currentIdx : uint;
 		protected var _currentPageView : APage;
+		protected var _currentOptions : Object;
 
 		public function PageManager()
 		{
@@ -40,17 +41,17 @@ package afp.pages
 		 * Va à la page demandée
 		 * @param $page un entier ou une chaine de caractère
 		 */
-		private function _onGotoPage($page : Object) : void
+		private function _onGotoPage($page : Object, $options : Object) : void
 		{
 			switch(true)
 			{
 				case $page is String:
-					gotoPageById(String($page));
+					gotoPageById(String($page), $options);
 					break;
 				case $page is uint:
 				case $page is int:
 				case $page is Number:
-					gotoPage(uint($page));
+					gotoPage(uint($page), $options);
 					break;
 				default:
 			}
@@ -75,22 +76,23 @@ package afp.pages
 			_update();
 		}
 
-		public function gotoPage($numPage : uint) : void
+		public function gotoPage($numPage : uint, $options : Object = null) : void
 		{
 			if (_currentIdx != $numPage)
 			{
 				_currentIdx = $numPage;
+				_currentOptions = $options;
 				_update();
 			}
 		}
 
-		public function gotoPageById($pageName : String) : void
+		public function gotoPageById($pageName : String, $options : Object = null) : void
 		{
 			var $numPage : uint = _indexOf(_pages, function(item : *, ...rest) : Boolean
 			{
 				return item.ID == $pageName;
 			});
-			gotoPage($numPage);
+			gotoPage($numPage, $options);
 		}
 
 		private function _indexOf(source : Array, filter : Function, startPos : int = 0) : int
@@ -113,7 +115,7 @@ package afp.pages
 			_currentPageView.hiddenSignal.remove(_onCurrentPageHidden);
 			_flushCurrentPage();
 			trace(_currentIdx, _pages[_currentIdx]);
-			_currentPageView = APage(new _pages[_currentIdx]);
+			_currentPageView = APage(new _pages[_currentIdx](_currentOptions));
 			_currentPageView.gotoPage.add(_onGotoPage);
 			addChild(_currentPageView);
 			_currentPageView.show();
