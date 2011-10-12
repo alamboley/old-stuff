@@ -95,7 +95,7 @@ package afp.pages
 		{
 			resume();
 			// TODO gérer les erreurs
-			Alert.show('Veuillez entrer à nouveau votre login', {colour:0xffffff, background:"blur"});
+			Alert.show('Veuillez entrer à nouveau votre login (ex : 11)', {colour:0xffffff, background:"blur"});
 		}
 
 		private function _onResult(result : Object) : void
