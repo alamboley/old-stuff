@@ -12,6 +12,7 @@ package afp.pages
 	public class APage extends MovieClip
 	{
 		protected var _shield : Sprite;
+		protected var _loaderAsset : Sprite;
 		protected var _state : String;
 		protected var _busy : Boolean = true;
 		protected var _initedSignal : Signal;
@@ -22,11 +23,13 @@ package afp.pages
 		protected var _hiddenSignal : Signal;
 		protected var _options : Object;
 
-		public function APage($options:Object = null)
+		public function APage($options : Object = null)
 		{
 			super();
 			_options = $options;
 			_shield = new Sprite();
+			_loaderAsset = new LoaderAsset();
+			_shield.addChild(_loaderAsset);
 			_initedSignal = new Signal();
 			_gotoPage = new Signal(Object, Object);
 			_showSignal = new Signal();
@@ -53,6 +56,8 @@ package afp.pages
 
 		protected function _onStaged() : void
 		{
+			_loaderAsset.x = uint((stage.stageWidth) / 2);
+			_loaderAsset.y = uint((stage.stageHeight) / 2);
 		}
 
 		public function dispose() : void
@@ -77,17 +82,19 @@ package afp.pages
 
 		public function pause() : void
 		{
+			_loaderAsset.visible = true;
 			_shield.graphics.clear();
-			_shield.graphics.beginFill(0x000000, 0);
+			_shield.graphics.beginFill(0xffffff, 0.5);
 			_shield.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
 			_shield.graphics.endFill();
-			stage.addChild(_shield);
+			if (stage) stage.addChild(_shield);
 		}
 
 		public function resume() : void
 		{
+			_loaderAsset.visible = false;
 			_shield.graphics.clear();
-			stage.removeChild(_shield);
+			if (stage && stage.contains(_shield)) stage.removeChild(_shield);
 		}
 
 		public function inited() : void
