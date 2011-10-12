@@ -19,9 +19,8 @@ package afp.pages
 		public static const ID : String = PagePaths.HOME;
 		private var _so : SharedObject;
 		private var _asset : HomPageAsset;
-		private var _loaderAsset : LoaderAsset;
 
-		public function PageHome($options:Object = null)
+		public function PageHome($options : Object = null)
 		{
 			super($options);
 		}
@@ -36,7 +35,7 @@ package afp.pages
 		{
 			if (User.getInstance().id != null)
 			{
-				gotoPage.dispatch(PagePaths.IMAGE_SELECTION);
+				gotoPage.dispatch(PagePaths.IMAGE_SELECTION,null);
 				return;
 			}
 			_asset = new HomPageAsset();
@@ -53,6 +52,7 @@ package afp.pages
 			else
 			{
 				_asset.loginBTN.addEventListener(MouseEvent.CLICK, _onSubmit, false, 0, true);
+				stage.focus = _asset.loginTF;
 			}
 		}
 
@@ -63,13 +63,14 @@ package afp.pages
 
 		private function _onError(error : Object) : void
 		{
+			resume();
 			// TODO gérer les erreurs
 			Alert.show('Veuillez entrer à nouveau votre login', {colour:0xffffff, background:"blur"});
 		}
 
 		private function _onResult(result : Object) : void
 		{
-			removeChild(_loaderAsset);
+			resume();
 			var json : Object = JSON.decode(String(result)).AFPResponse;
 			if (json.success == 0)
 			{
@@ -88,8 +89,7 @@ package afp.pages
 
 		private function _login(login : String) : void
 		{
-			_loaderAsset = new LoaderAsset();
-			addChild(_loaderAsset);
+			pause();
 			var user : UserVO = new UserVO({id:login});
 			var service : Service = new Service(Config.SERVICES_URL + 'userservice.php');
 			service.onResult.addOnce(_onResult);
@@ -102,5 +102,12 @@ package afp.pages
 			hidden();
 			// TweenMax.to(this, 0.3, {autoAlpha:0, onComplete:hidden});
 		}
+
+		override public function hidden() : void
+		{
+			resume();
+			super.hidden();
+		}
+
 	}
 }

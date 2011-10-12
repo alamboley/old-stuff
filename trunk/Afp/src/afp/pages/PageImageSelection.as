@@ -28,7 +28,7 @@ package afp.pages
 		private var _asset : SelectionPageAsset;
 		private var _cameraRoll : CameraRoll;
 
-		public function PageImageSelection($options:Object = null)
+		public function PageImageSelection($options : Object = null)
 		{
 			super($options);
 			visible = false;
@@ -41,7 +41,6 @@ package afp.pages
 			_asset = new SelectionPageAsset();
 			addChild(_asset);
 
-
 			_asset.photo.addEventListener(MouseEvent.CLICK, _takeShot);
 			_asset.upload.addEventListener(MouseEvent.CLICK, _uploadFile);
 		}
@@ -50,7 +49,6 @@ package afp.pages
 		{
 			if (CameraUI.isSupported)
 			{
-				// Ajout d'un shield de clic
 				pause();
 				_cam = new Camera();
 				_cam.captured.addOnce(_endPage);
@@ -66,14 +64,17 @@ package afp.pages
 			if (!_cameraRoll)
 			{
 				if (CameraRoll.supportsBrowseForImage)
+				{
+					pause();
 					_cameraRoll = new CameraRoll;
+					_cameraRoll.addEventListener(MediaEvent.SELECT, _onSelection);
+					_cameraRoll.addEventListener(ErrorEvent.ERROR, _onErrorEvent);
+				}
 				else
 				{
 					Alert.show("Fonctionnalité browseForImage non supportée...", {colour:0xffffff, background:"blur"});
 					return;
 				}
-				_cameraRoll.addEventListener(MediaEvent.SELECT, _onSelection);
-				_cameraRoll.addEventListener(ErrorEvent.ERROR, _onErrorEvent);
 			}
 			// demande de récupération d'image au système Android
 			_cameraRoll.browseForImage();
@@ -81,6 +82,7 @@ package afp.pages
 
 		private function _onErrorEvent(event : Event) : void
 		{
+			resume();
 			Alert.show("Veuillez réessayer...", {colour:0xffffff, background:"blur"});
 		}
 
@@ -110,7 +112,7 @@ package afp.pages
 			bd.draw(_image.bitmapData, matrix);
 			var bmd : BitmapData = bd;
 
-			gotoPage.dispatch(PagePaths.IMAGE_UPLOAD,{imageData:bmd});
+			gotoPage.dispatch(PagePaths.EVENT_SELECTION, {imageData:bmd});
 		}
 
 		override public function hide() : void
@@ -123,6 +125,12 @@ package afp.pages
 		{
 			super.show();
 			TweenMax.to(this, 0.5, {autoAlpha:1, onComplete:shown});
+		}
+
+		override public function hidden() : void
+		{
+			resume();
+			super.hidden();
 		}
 
 		override public function dispose() : void

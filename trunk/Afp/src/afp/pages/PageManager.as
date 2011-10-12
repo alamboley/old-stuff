@@ -10,12 +10,19 @@ package afp.pages
 	{
 		protected var _pages : Array;
 		protected var _currentIdx : uint;
+		protected var _prevIdx : int = -1;
 		protected var _currentPageView : APage;
 		protected var _currentOptions : Object;
 
 		public function PageManager()
 		{
 			super();
+		}
+
+		public function goBack() : void
+		{
+			if(_prevIdx == -1) return;
+			gotoPage(_prevIdx, _currentOptions);
 		}
 
 		/**
@@ -80,7 +87,9 @@ package afp.pages
 		{
 			if (_currentIdx != $numPage)
 			{
+				_prevIdx = _currentIdx;
 				_currentIdx = $numPage;
+				trace('_prevIdx',_prevIdx,_currentIdx);
 				_currentOptions = $options;
 				_update();
 			}
@@ -114,7 +123,6 @@ package afp.pages
 		{
 			_currentPageView.hiddenSignal.remove(_onCurrentPageHidden);
 			_flushCurrentPage();
-			trace(_currentIdx, _pages[_currentIdx]);
 			_currentPageView = APage(new _pages[_currentIdx](_currentOptions));
 			_currentPageView.gotoPage.add(_onGotoPage);
 			addChild(_currentPageView);

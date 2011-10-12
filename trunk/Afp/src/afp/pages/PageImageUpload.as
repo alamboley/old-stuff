@@ -1,12 +1,10 @@
 package afp.pages
 {
-	import afp.components.PopUp;
-	import afp.core.Config;
 	import afp.core.User;
-	import afp.remoting.Service;
-	import afp.services.vo.EventVO;
+	import afp.core.Config;
 	import afp.services.vo.PhotoVO;
 	import afp.utils.Alert;
+	import afp.utils.UDate;
 
 	import by.blooddy.crypto.image.JPEGEncoder;
 
@@ -28,23 +26,21 @@ package afp.pages
 	public class PageImageUpload extends APage
 	{
 		public static const ID : String = PagePaths.IMAGE_UPLOAD;
-		private var _service : Service;
 		private var _geoloc : Geolocation;
 
 		public function PageImageUpload($options : Object = null)
 		{
-			Alert.show(String($options));
 			super($options);
+		}
+
+		override protected function _onStaged() : void
+		{
+			super._onStaged();
 			_initialize();
 		}
 
 		private function _initialize() : void
 		{
-			_service = new Service(Config.SERVICES_URL + 'usereventlinkservice.php');
-			_service.onResult.add(_onResult);
-			_service.onError.add(_onError);
-			_service.geteventsforuser(User.getInstance().id);
-
 			if (Geolocation.isSupported)
 			{
 				_geoloc = new Geolocation();
@@ -54,7 +50,6 @@ package afp.pages
 			else
 			{
 				Alert.show("La géolocalisation n'est pas supportée", {colour:0xffffff, background:"blur"});
-				trace('geolocation is not supported');
 			}
 			_displayImage();
 		}
@@ -62,30 +57,6 @@ package afp.pages
 		private function _geolocUpdate(gEvt : GeolocationEvent) : void
 		{
 			trace(gEvt.latitude.toString() + " _ " + gEvt.longitude.toString());
-		}
-
-		private function _onResult(result : Object) : void
-		{
-			var json : Object = JSON.decode(String(result)).AFPResponse;
-			if (json.success == 0)
-			{
-				_onError(result);
-			}
-			else if (json.success == 1)
-			{
-				var eventVo : Vector.<EventVO> = new Vector.<EventVO>();
-
-				for each (var event : Object in json.dataObject)
-				{
-					eventVo.push(new EventVO(event));
-				}
-
-				var popup : PopUp = new PopUp(eventVo);
-				addChild(popup);
-
-				popup.x = stage.stageWidth - popup.width >> 1;
-				popup.y = stage.stageHeight - popup.height >> 1;
-			}
 		}
 
 		private function _onError(result : Object) : void
@@ -105,18 +76,22 @@ package afp.pages
 
 		private function _sendFile(bytes : ByteArray) : void
 		{
-			var photo : PhotoVO = new PhotoVO({description:'desc', dateprise:'2006-04-8 5:25:78.789', idevent:'40', iduser:'11', idEvent:'41', idUser:'11'});
-			var request : URLRequest = new URLRequest(Config.SERVICES_URL + 'mediaservice.php?file=test&param=' + JSON.encode(photo));
+			trace(_options.eventId);
+			var photo : PhotoVO = new PhotoVO({description:'desc', dateprise:UDate.getMySQLDate(new Date()), idevent:_options.eventId, iduser:User.getInstance().id, idEvent:_options.eventId, idUser:User.getInstance().id});
+			var url : String = Config.SERVICES_URL + 'mediaservice.php?file=' + new Date().valueOf() + '&param=' + JSON.encode(photo);
+			var request : URLRequest = new URLRequest(url);
 			var loader : URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, _onComplete);
 			request.contentType = 'application/octet-stream';
 			request.method = URLRequestMethod.POST;
 			request.data = bytes;
+			trace(url);
 			loader.load(request);
 		}
 
 		private function _onComplete(event : Event) : void
 		{
+			trace('image uploaded !', event.target);
 		}
 
 		override public function hide() : void
@@ -129,6 +104,12 @@ package afp.pages
 		{
 			super.show();
 			TweenMax.to(this, 0.5, {autoAlpha:1, onComplete:shown});
+		}
+
+		override public function hidden() : void
+		{
+			resume();
+			super.hidden();
 		}
 
 		override public function dispose() : void

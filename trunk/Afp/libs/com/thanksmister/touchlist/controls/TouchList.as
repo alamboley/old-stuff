@@ -55,13 +55,13 @@ package com.thanksmister.touchlist.controls
 		private var minY:Number = 0;
 		private var maxY:Number = 0;
 		private var totalY:Number;
-		private var scrollRatio:Number = 40; // how many pixels constitutes a touch
+		private var scrollRatio:Number = 60; // how many pixels constitutes a touch
 		
 		//------- Touch Events --------
 		
 		private var isTouching:Boolean = false;
 		private var tapDelayTime:Number = 0;
-		private var maxTapDelayTime:Number = 5; // change this to increase or descrease tap sensitivity
+		private var maxTapDelayTime:Number = .1; // change this to increase or descrease tap sensitivity
 		private var tapItem:ITouchListItemRenderer;
 		private var tapEnabled:Boolean = false;
 

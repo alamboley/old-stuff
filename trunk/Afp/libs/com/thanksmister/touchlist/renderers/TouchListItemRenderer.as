@@ -98,7 +98,7 @@ package com.thanksmister.touchlist.renderers
 			
 			this.graphics.clear();
 			
-			this.graphics.beginFill(0xCC6600, .9);
+			this.graphics.beginFill(0x004B8E, .9);
 			this.graphics.drawRect(0, 0, itemWidth, itemHeight);
 			this.graphics.endFill();
 			

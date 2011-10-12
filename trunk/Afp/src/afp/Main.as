@@ -1,5 +1,6 @@
 package afp
 {
+	import afp.pages.PageEventSelection;
 	import afp.pages.PageImageUpload;
 	import afp.pages.PageHome;
 	import afp.pages.PageImageSelection;
@@ -44,10 +45,11 @@ package afp
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, _handleKeyDown);
 
 			_pageManager = new PageManager();
-			_pageManager.initialize([PageHome, PageImageSelection, PageImageUpload]);
+			_header = new HeaderAsset();
+			_pageManager.initialize([PageHome, PageImageSelection,PageEventSelection, PageImageUpload]);
+			_pageManager.y = _header.height;
 			addChild(_pageManager);
 
-			_header = new HeaderAsset();
 			_header.addEventListener(MouseEvent.CLICK, _onHeaderClicked);
 			addChild(_header);
 
@@ -67,7 +69,8 @@ package afp
 			if (e.keyCode == Keyboard.BACK)
 			{
 				e.preventDefault();
-				NativeApplication.nativeApplication.exit();
+				_pageManager.goBack();
+				//NativeApplication.nativeApplication.exit();
 			}
 			else if (e.keyCode == Keyboard.MENU)
 			{
