@@ -45,7 +45,7 @@
 
 			private function _addEvents(events:Object):void {
 
-				var object:Object = JSON.decode(String(events)).AFPResponse.dataObject;
+				var object:Object = com.adobe.serialization.json.JSON.decode(String(events)).AFPResponse.dataObject;
 
 				for each (var event:Object in object) {
 					_events.addItem(event);
@@ -66,7 +66,7 @@
 
 				_images.removeAll();
 
-				for each (var pict:Object in JSON.decode(String(pictures)).AFPResponse.dataObject) {
+				for each (var pict:Object in com.adobe.serialization.json.JSON.decode(String(pictures)).AFPResponse.dataObject) {
 
 					if (pict.etat == 0) {
 
@@ -111,7 +111,7 @@
 						photoVo.etat = "1";
 						photoVo.description = description.text;
 
-						var url:String = Config.SERVICES_URL + 'mediaservice.php?method=udpatephoto&param=' + JSON.encode(photoVo);
+						var url:String = Config.SERVICES_URL + 'mediaservice.php?method=udpatephoto&param=' + com.adobe.serialization.json.JSON.encode(photoVo);
 						var request:URLRequest = new URLRequest(url);
 						var loader:URLLoader = new URLLoader();
 
