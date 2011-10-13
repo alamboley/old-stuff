@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx" creationComplete="_init()">
+	<fx:Declarations>
+		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple). -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.facebook.graph.FacebookDesktop;
+
+			private function _init() : void
+			{
+				FacebookDesktop.init("206351602768348", _handleLogin);
+			}
+
+			private function _handleLogin(session : Object, fail : Object) : void
+			{
+				if (session != null)
+				{
+					userImage.source = FacebookDesktop.getImageUrl(session.uid, 'large');
+					userName.text = session.user.name;
+				}
+			}
+
+			protected function facebookBTN_clickHandler(event : MouseEvent) : void
+			{
+				FacebookDesktop.login(_handleLogin, ["user_photos, publish_stream"]);
+			}
+
+			protected function onSaveToPhotoAlbumClicked(event : MouseEvent):void
+			{
+				var bitmapData : BitmapData = new BitmapData(userImage.width, userImage.height);
+				bitmapData.draw(userImage);
+				var bitmap : Bitmap = new Bitmap(bitmapData);
+
+				var params : Object = {image:bitmap, message:'Test Photo', fileName:'FILE_NAME'};
+				FacebookDesktop.api('me/photos', onSaveToPhotoAlbumComplete, params);
+			}
+			protected function onSaveToPhotoAlbumComplete(result : Object, fail : Object):void
+			{
+				trace(result);
+			}
+		]]>
+	</fx:Script>
+	<s:Button id="facebookBTN" x="10" y="67" label="Connexion à Facebook"
+		click="facebookBTN_clickHandler(event)"/>
+	<s:Button id="uploadBTN" x="200" y="179" label="Uploader la photo" click="onSaveToPhotoAlbumClicked(event)"/>
+	<s:Image id="userImage" x="10" y="179"/>
+	<s:Label id="userName" x="10" y="147" text="Label"/>
+</s:WindowedApplication>
