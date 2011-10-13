@@ -53,10 +53,7 @@ package afp.remoting {
 			if (methodName != 'nomethod') requestVars.method = methodName;
 			var i : uint = params.length;
 			if (i == 1)
-			{
-				trace('Object', params[0] is Object)
 				requestVars['param'] = params[0];
-			}
 			else
 				while (i--)
 					requestVars['param' + i] = params[i];
