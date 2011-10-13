@@ -13,8 +13,6 @@ package afp.remoting.vo
 		private var _etat : String;
 		private var _idevent : String;
 		private var _iduser : String;
-		private var _idEvent : String;
-		private var _idUser : String;
 
 		public function PhotoVO(initObj : Object)
 		{
@@ -91,24 +89,5 @@ package afp.remoting.vo
 			_iduser = iduser;
 		}
 
-		public function get idUser() : String
-		{
-			return _idUser;
-		}
-
-		public function set idUser(idUser : String) : void
-		{
-			_idUser = idUser;
-		}
-
-		public function get idEvent() : String
-		{
-			return _idEvent;
-		}
-
-		public function set idEvent(idEvent : String) : void
-		{
-			_idEvent = idEvent;
-		}
 	}
 }
