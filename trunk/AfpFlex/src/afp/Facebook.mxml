@@ -49,12 +49,12 @@
 				PrintR.pr(result);
 			}
 
-			protected function onSeeAlbumsClicked(event : MouseEvent) : void
+			protected function _createAlbums(event : MouseEvent) : void
 			{
-				FacebookDesktop.api('me/albums', onSeeAlbumsComplete, {fields:'name'});
+				FacebookDesktop.api('me/albums', _createAlbumsCalback, {fields:'name'});
 			}
 
-			protected function onSeeAlbumsComplete(result : Object, fail : Object) : void
+			protected function _createAlbumsCalback(result : Object, fail : Object) : void
 			{
 				var albumsToCreate : Array = ['Event 37', 'Event 38', 'Event 39', 'Event 40'];
 				var i : int;
@@ -88,8 +88,8 @@
 		click="facebookBTN_clickHandler(event)"/>
 	<s:Button id="uploadBTN" x="200" y="179" label="Uploader la photo"
 		click="onSaveToPhotoAlbumClicked(event)"/>
-	<s:Button id="checkAlbum" x="200" y="240" label="Visionner tous les albums"
-		click="onSeeAlbumsClicked(event)"/>
+	<s:Button id="checkAlbum" x="200" y="240" label="Créer tous les albums"
+		click="_createAlbums(event)"/>
 	<s:Image id="userImage" x="10" y="179"/>
 	<s:Label id="userName" x="10" y="147" text="Label"/>
 </s:WindowedApplication>
