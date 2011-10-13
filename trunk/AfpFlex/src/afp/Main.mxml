@@ -16,7 +16,7 @@
 			import mx.core.FlexGlobals;
 
 			private var _service:Service;
-			
+
 			[Bindable]
 			private var _events:ArrayCollection = new ArrayCollection();
 
@@ -68,9 +68,20 @@
 
 					if (pict.etat == 0) {
 
-						pict.url = Config.SERVICES_URL + pict.url;
+						var identique:Boolean = false;
+						for each (var pictAlreadyAdded:Object in _imagesToValidate) {
 
-						_images.addItem(pict);
+							if ((Config.SERVICES_URL + pict.url) == pictAlreadyAdded.url) {
+								identique = true;
+								break;
+							}
+						}
+
+						if (identique == false) {
+
+							pict.url = Config.SERVICES_URL + pict.url;
+							_images.addItem(pict);
+						}
 					}
 				}
 			}
@@ -115,7 +126,7 @@
 			}
 
 			private function _afficherImage():void {
-				
+
 				if (containerImage.selectedItem) {
 					grandeImage.source = containerImage.selectedItem.url;
 					description.text = containerImage.selectedItem.description;
@@ -147,18 +158,22 @@
 
 				<s:HGroup>
 
-					<s:List toolTip="image à glisser" height="400" width="150" id="containerImage"
-						dataProvider="{_images}" itemRenderer="afp.components.ImageAFP"
+					<s:List toolTip="image à glisser" height="400"
+						width="150" id="containerImage" dataProvider="{_images}"
+						itemRenderer="afp.components.ImageAFP"
 						dragMoveEnabled="true" dragEnabled="true"
 						dropEnabled="true" change="_afficherImage()"/>
 
 					<s:VGroup>
 						<s:Image id="grandeImage" height="300" width="300"/>
-						<s:TextArea id="description" height="50" width="300" toolTip="description" change="_updateText()" />
+						<s:TextArea id="description" height="50"
+							width="300" toolTip="description" change="_updateText()"/>
 					</s:VGroup>
 
-					<s:List toolTip="image à déposer" height="400" width="150" id="containerValidateImage"
-						dataProvider="{_imagesToValidate}" itemRenderer="afp.components.ImageAFP"
+					<s:List toolTip="image à déposer" height="400"
+						width="150" id="containerValidateImage"
+						dataProvider="{_imagesToValidate}"
+						itemRenderer="afp.components.ImageAFP"
 						dragMoveEnabled="true" dragEnabled="true"
 						dropEnabled="true" change="_afficherImage()"/>
 
