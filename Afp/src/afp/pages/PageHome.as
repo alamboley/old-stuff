@@ -101,14 +101,14 @@ package afp.pages
 		private function _onResult(result : Object) : void
 		{
 			resume();
-			var json : Object = JSON.decode(String(result)).AFPResponse;
+			var json : Object = com.adobe.serialization.json.JSON.decode(String(result)).AFPResponse;
 			if (json.success == 0)
 			{
 				_onError(result);
 			}
 			else if (json.success == 1)
 			{
-				var vo : UserVO = new UserVO(JSON.decode(String(result)).AFPResponse.dataObject);
+				var vo : UserVO = new UserVO(com.adobe.serialization.json.JSON.decode(String(result)).AFPResponse.dataObject);
 				User.getInstance().id = vo.id;
 				User.getInstance().nom = vo.nom;
 				User.getInstance().prenom = vo.prenom;
