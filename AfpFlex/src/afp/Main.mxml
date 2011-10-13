@@ -5,7 +5,6 @@
 	<fx:Script>
 		<![CDATA[
 
-			import alamboley.utils.PrintR;
 			import afp.core.Config;
 			import afp.remoting.Service;
 			import afp.services.vo.PhotoVO;
@@ -19,7 +18,7 @@
 
 			private var _service:Service;
 			private var _nbAlbumToCreate:uint;
-			private var _memoireAlbumPhotoID:Number;
+			private var _memoireAlbumPhotoID:String;
 			private var _bitmap:Bitmap;
 
 			[Bindable]
@@ -192,7 +191,7 @@
 
 			protected function facebookBTN_clickHandler(event:MouseEvent):void {
 				_init();
-				FacebookDesktop.login(_handleLogin, ["user_photos, publish_stream"]);
+				FacebookDesktop.login(_handleLogin, ["user_photos, publish_stream, photo_upload"]);
 			}
 
 			protected function onSaveToPhotoAlbumClicked(event:MouseEvent):void {
