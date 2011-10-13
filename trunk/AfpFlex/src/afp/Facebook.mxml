@@ -75,7 +75,7 @@
 			protected function onAlbumCreationComplete(result : Object, fail : Object) : void
 			{
 				_nbAlbumToCreate--;
-				if (_nbAlbumToCreate = 0) _touslesalbumsonetecrees();
+				if (_nbAlbumToCreate == 0) _touslesalbumsonetecrees();
 			}
 
 			private function _touslesalbumsonetecrees() : void
