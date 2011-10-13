@@ -119,7 +119,7 @@ package afp.pages
 		private function _sendFile(bytes : ByteArray) : void
 		{
 			var desc : String = (_asset.descriptionTF.text == _defaultText) ? '' : _asset.descriptionTF.text;
-			var photo : PhotoVO = new PhotoVO({description:desc, dateprise:UDate.getMySQLDate(new Date()), idevent:_options.eventId, iduser:User.getInstance().id, idEvent:_options.eventId, idUser:User.getInstance().id});
+			var photo : PhotoVO = new PhotoVO({description:desc, dateprise:UDate.getMySQLDate(new Date()), idevent:_options.eventId, iduser:User.getInstance().id});
 			var url : String = Config.SERVICES_URL + 'mediaservice.php?file=' + new Date().valueOf() + '&param=' + JSON.encode(photo);
 			var request : URLRequest = new URLRequest(url);
 			var loader : URLLoader = new URLLoader();
@@ -136,6 +136,7 @@ package afp.pages
 			URLLoader(event.target).removeEventListener(Event.COMPLETE, _onComplete);
 			resume();
 			Alert.show("Image envoyée avec succès", {colour:0xffffff, background:"blur"});
+			gotoPage.dispatch(PagePaths.IMAGE_SELECTION, null);
 		}
 
 		override public function hide() : void
