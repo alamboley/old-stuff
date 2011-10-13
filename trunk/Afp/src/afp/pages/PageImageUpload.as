@@ -103,7 +103,7 @@ package afp.pages
 
 		private function _geolocUpdate(gEvt : GeolocationEvent) : void
 		{
-			trace(gEvt.latitude.toString() + " _ " + gEvt.longitude.toString());
+			trace('_geolocUpdate',gEvt.latitude.toString() + " _ " + gEvt.longitude.toString());
 		}
 
 		private function _displayImage() : void
@@ -120,7 +120,7 @@ package afp.pages
 		{
 			var desc : String = (_asset.descriptionTF.text == _defaultText) ? '' : _asset.descriptionTF.text;
 			var photo : PhotoVO = new PhotoVO({description:desc, dateprise:UDate.getMySQLDate(new Date()), idevent:_options.eventId, iduser:User.getInstance().id});
-			var url : String = Config.SERVICES_URL + 'mediaservice.php?file=' + new Date().valueOf() + '&param=' + JSON.encode(photo);
+			var url : String = Config.SERVICES_URL + 'mediaservice.php?file=' + new Date().valueOf() + '&param=' + com.adobe.serialization.json.JSON.encode(photo);
 			var request : URLRequest = new URLRequest(url);
 			var loader : URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, _onComplete, false, 0, true);

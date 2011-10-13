@@ -46,7 +46,7 @@ package afp.pages
 
 		private function _onResult(result : Object) : void
 		{
-			var json : Object = JSON.decode(String(result)).AFPResponse;
+			var json : Object = com.adobe.serialization.json.JSON.decode(String(result)).AFPResponse;
 			if (json.success == 0)
 			{
 				_onError(result);
