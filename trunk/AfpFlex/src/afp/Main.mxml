@@ -35,10 +35,12 @@
 
 			private function _getEvents():void {
 
-				_service = new Service(Config.SERVICES_URL + "usereventlinkservice.php");
+				//_service = new Service(Config.SERVICES_URL + "usereventlinkservice.php");
+				_service = new Service(Config.SERVICES_URL + "eventservice.php");
 				_service.onResult.addOnce(_addEvents);
 				_service.onError.addOnce(_onError);
-				_service.geteventsforuser("11");
+				//_service.geteventsforuser("11");
+				_service.getallevents();
 			}
 
 			private function _addEvents(events:Object):void {
@@ -68,10 +70,12 @@
 
 					if (pict.etat == 0) {
 
+						pict.url = Config.SERVICES_URL + pict.url;
+
 						var identique:Boolean = false;
 						for each (var pictAlreadyAdded:Object in _imagesToValidate) {
 
-							if ((Config.SERVICES_URL + pict.url) == pictAlreadyAdded.url) {
+							if (pict.url == pictAlreadyAdded.url) {
 								identique = true;
 								break;
 							}
@@ -79,7 +83,6 @@
 
 						if (identique == false) {
 
-							pict.url = Config.SERVICES_URL + pict.url;
 							_images.addItem(pict);
 						}
 					}
@@ -137,7 +140,8 @@
 			}
 
 			private function _updateText():void {
-				containerValidateImage.selectedItem.description = description.text;
+				if (containerValidateImage.selectedItem)
+					 containerValidateImage.selectedItem.description = description.text;
 			}
 		]]>
 	</fx:Script>
@@ -164,10 +168,11 @@
 						dragMoveEnabled="true" dragEnabled="true"
 						dropEnabled="true" change="_afficherImage()"/>
 
-					<s:VGroup>
+					<s:VGroup horizontalAlign="center">
 						<s:Image id="grandeImage" height="300" width="300"/>
 						<s:TextArea id="description" height="50"
 							width="300" toolTip="description" change="_updateText()"/>
+						<s:Button toolTip="Mettre à jour les images" label="Valider" click="_validateImage()"/>
 					</s:VGroup>
 
 					<s:List toolTip="image à déposer" height="400"
@@ -176,8 +181,6 @@
 						itemRenderer="afp.components.ImageAFP"
 						dragMoveEnabled="true" dragEnabled="true"
 						dropEnabled="true" change="_afficherImage()"/>
-
-					<s:Button label="Valider" click="_validateImage()"/>
 
 				</s:HGroup>
 
