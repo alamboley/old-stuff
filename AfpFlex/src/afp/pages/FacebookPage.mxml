@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx" creationComplete="_init()">
+	<fx:Declarations>
+		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple). -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import afp.core.Config;
+			import afp.remoting.Service;
+
+			import com.adobe.serialization.json.JSON;
+			import com.facebook.graph.FacebookDesktop;
+
+			import flash.display.Bitmap;
+			import flash.display.BitmapData;
+			import flash.display.Loader;
+			import flash.events.Event;
+			import flash.events.MouseEvent;
+			import flash.net.URLRequest;
+
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+
+			[Bindable]
+			private var _imagesToValidateF : ArrayCollection = new ArrayCollection();
+			[Bindable]
+			public var eventsArray : ArrayCollection = new ArrayCollection();
+			private var _nbAlbumToCreate : uint;
+			private var _memoireAlbumPhotoID : String;
+			private var _bitmap : Bitmap;
+			private var _description : String;
+			private var _service : Service;
+			private var _connectF : Boolean = false;
+
+			private function _init() : void
+			{
+				FacebookDesktop.init("206351602768348", _handleLogin);
+			}
+
+			private function _handleLogin(session : Object, fail : Object) : void
+			{
+				if (session != null)
+				{
+					userImage.source = FacebookDesktop.getImageUrl(session.uid, 'large');
+					userName.text = session.user.name;
+					facebookBTN.label = "Connecté à facebook";
+					_connectF = true;
+				}
+			}
+
+			protected function facebookBTN_clickHandler(event : MouseEvent) : void
+			{
+				_init();
+				FacebookDesktop.login(_handleLogin, ["user_photos, publish_stream, photo_upload"]);
+			}
+
+			protected function onSaveToPhotoAlbumClicked(event : MouseEvent) : void
+			{
+				if (_connectF == true)
+				{
+					if (containerImageF.selectedItem)
+					{
+						var loader : Loader = new Loader();
+						loader.load(new URLRequest(containerImageF.selectedItem.url));
+						_description = containerImageF.selectedItem.description;
+						loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _imageFLoaed);
+						cursorManager.setBusyCursor();
+					}
+					else
+					{
+						Alert.show("Sélectionnez une image");
+					}
+				}
+				else
+				{
+					Alert.show("Connectez vous à Facebook");
+				}
+			}
+
+			private function _imageFLoaed(evt : Event) : void
+			{
+				evt.target.removeEventListener(Event.COMPLETE, _imageFLoaed);
+
+				var bitmapData : BitmapData = new BitmapData(evt.target.content.width, evt.target.content.height);
+				bitmapData.draw(evt.target.content);
+				_bitmap = new Bitmap(bitmapData);
+
+				FacebookDesktop.api('me/albums', _createAlbumsCalback, {fields:'name'});
+			}
+
+			protected function _createAlbumsCalback(result : Object, fail : Object) : void
+			{
+				// PrintR.pr(result);
+				var albumsToCreate : Array = [];
+
+				for each (var event:Object in eventsArray)
+				{
+					albumsToCreate.push(event.nom);
+				}
+
+				var i : int;
+
+				for each (var res:Object in result)
+				{
+					i = albumsToCreate.indexOf(res.name);
+
+					if (comboBoxEventsF.selectedItem.nom == res.name)
+					{
+						_memoireAlbumPhotoID = res.id;
+					}
+
+					if (i != -1)
+						albumsToCreate.splice(i, 1);
+				}
+
+				_nbAlbumToCreate = albumsToCreate.length;
+
+				if (_nbAlbumToCreate == 0) _touslesalbumsonetecrees();
+				for each (var albumName : String in albumsToCreate)
+				{
+					FacebookDesktop.api('me/albums', onAlbumCreationComplete, {name:albumName, message:'Super c\'est l\'album ' + albumName + ' !'}, "POST");
+				}
+			}
+
+			protected function onAlbumCreationComplete(result : Object, fail : Object) : void
+			{
+				_nbAlbumToCreate--;
+				if (_nbAlbumToCreate == 0) _touslesalbumsonetecrees();
+			}
+
+			private function _touslesalbumsonetecrees() : void
+			{
+				FacebookDesktop.api(_memoireAlbumPhotoID + '/photos', onSaveToPhotoAlbumComplete, {source:_bitmap, message:_description, fileName:'FILE_NAME'}, "POST");
+			}
+
+			protected function onSaveToPhotoAlbumComplete(result : Object, fail : Object) : void
+			{
+				cursorManager.removeBusyCursor();
+				if (result)
+				{
+					Alert.show("Image uploadée");
+				}
+				else
+				{
+					Alert.show("Problème, réessayez");
+				}
+			}
+
+			/*
+			 * Gestion facebook
+			 */
+			private function _loadPicturesF(pictures : Object) : void
+			{
+				_imagesToValidateF.removeAll();
+
+				for each (var pict:Object in com.adobe.serialization.json.JSON.decode(String(pictures)).AFPResponse.dataObject)
+				{
+					if (pict.etat == 1)
+					{
+						pict.url = Config.SERVICES_URL + pict.url;
+
+						_imagesToValidateF.addItem(pict);
+					}
+				}
+			}
+
+			private function _eventChangeF() : void
+			{
+				_service = new Service(Config.SERVICES_URL + "mediaservice.php");
+
+				_service.onResult.addOnce(_loadPicturesF);
+				_service.onError.addOnce(_onError);
+				_service.getphotosforevent(comboBoxEventsF.selectedItem.id);
+			}
+
+			private function _onError(error : Object) : void
+			{
+				trace("error");
+			}
+		]]>
+	</fx:Script>
+	<s:HGroup paddingLeft="20" width="100%" height="100%">
+
+		<s:VGroup width="200">
+
+			<s:Button id="facebookBTN" x="10" y="67" label="Connexion à Facebook"
+				click="facebookBTN_clickHandler(event)"/>
+			<s:Image id="userImage" x="10" y="179"/>
+			<s:Label id="userName" x="10" y="147" text=""/>
+
+		</s:VGroup>
+
+		<s:VGroup>
+			<s:Label fontSize="20" text="Sélectionner l'évènement : "/>
+			<s:HGroup>
+				<s:ComboBox id="comboBoxEventsF" dataProvider="{eventsArray}"
+					selectedIndex="0" labelField="nom" change="_eventChangeF()"/>
+				<s:Button id="uploadBTN" label="Envoyer la photo sur Facebook"
+					click="onSaveToPhotoAlbumClicked(event)"/>
+			</s:HGroup>
+
+			<s:VGroup height="400" width="300">
+				<s:Label fontSize="15" text="Photos à envoyer sur Facebook"/>
+				<s:List toolTip="image à déposer" height="100%" width="100%"
+					id="containerImageF" dataProvider="{_imagesToValidateF}"
+					itemRenderer="afp.components.ImageAFP"
+					dragMoveEnabled="true" dragEnabled="true"
+					dropEnabled="true"/>
+			</s:VGroup>
+
+		</s:VGroup>
+
+	</s:HGroup>
+</s:Group>
