@@ -13,6 +13,7 @@
 			import com.facebook.graph.FacebookDesktop;
 
 			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
 			import mx.controls.ToolTip;
 			import mx.core.FlexGlobals;
 
@@ -20,6 +21,8 @@
 			private var _nbAlbumToCreate:uint;
 			private var _memoireAlbumPhotoID:String;
 			private var _bitmap:Bitmap;
+
+			private var _connectF:Boolean = false;
 
 			[Bindable]
 			private var _events:ArrayCollection = new ArrayCollection();
@@ -161,8 +164,8 @@
 			/*
 			 * Gestion facebook
 			 */
-			 
-			 private function _loadPicturesF(pictures:Object):void {
+
+			private function _loadPicturesF(pictures:Object):void {
 
 				_imagesToValidateF.removeAll();
 
@@ -186,6 +189,7 @@
 					userImage.source = FacebookDesktop.getImageUrl(session.uid, 'large');
 					userName.text = session.user.name;
 					facebookBTN.label = "Connecté à facebook";
+					_connectF = true;
 				}
 			}
 
@@ -196,10 +200,19 @@
 
 			protected function onSaveToPhotoAlbumClicked(event:MouseEvent):void {
 
-				if (containerImageF.selectedItem) {
-					var loader:Loader = new Loader();
-					loader.load(new URLRequest(containerImageF.selectedItem.url));
-					loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _imageFLoaed);
+				if (_connectF == true) {
+
+					if (containerImageF.selectedItem) {
+						var loader:Loader = new Loader();
+						loader.load(new URLRequest(containerImageF.selectedItem.url));
+						loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _imageFLoaed);
+						cursorManager.setBusyCursor();
+					} else {
+						Alert.show("Sélectionnez une image");
+					}
+				} else {
+					
+					Alert.show("Connectez vous à Facebook");
 				}
 			}
 
@@ -210,33 +223,33 @@
 				var bitmapData:BitmapData = new BitmapData(evt.target.content.width, evt.target.content.height);
 				bitmapData.draw(evt.target.content);
 				_bitmap = new Bitmap(bitmapData);
-				
+
 				FacebookDesktop.api('me/albums', _createAlbumsCalback, {fields:'name'});
 			}
 
 			protected function _createAlbumsCalback(result:Object, fail:Object):void {
-				
+				//PrintR.pr(result);
 				var albumsToCreate:Array = [];
 
 				for each (var event:Object in _events) {
 					albumsToCreate.push(event.nom);
-				}				
+				}
 
 				var i:int;
-				
+
 				for each (var res:Object in result) {
 					i = albumsToCreate.indexOf(res.name);
-					
+
 					if (comboBoxEventsF.selectedItem.nom == res.name) {
 						_memoireAlbumPhotoID = res.id;
 					}
-					
+
 					if (i != -1)
 						albumsToCreate.splice(i, 1);
 				}
-				
+
 				_nbAlbumToCreate = albumsToCreate.length;
-				
+
 				if (_nbAlbumToCreate == 0) _touslesalbumsonetecrees();
 				for each (var albumName : String in albumsToCreate) {
 					FacebookDesktop.api('me/albums', onAlbumCreationComplete, {name:albumName, message:'Super c\'est l\'album ' + albumName + ' !'}, "POST");
@@ -249,13 +262,17 @@
 			}
 
 			private function _touslesalbumsonetecrees():void {
-				trace('touslesalbumsonetecrees !');
-				trace(_memoireAlbumPhotoID);
-				FacebookDesktop.api('me/'+_memoireAlbumPhotoID+"/photos", onSaveToPhotoAlbumComplete, {source:_bitmap}, "POST");
+
+				FacebookDesktop.api(_memoireAlbumPhotoID + '/photos', onSaveToPhotoAlbumComplete, {source:_bitmap, message:'My Example Photo', fileName:'FILE_NAME'}, "POST");
 			}
-			
+
 			protected function onSaveToPhotoAlbumComplete(result:Object, fail:Object):void {
-				trace(result, fail);
+				cursorManager.removeBusyCursor();
+				if (result) {
+					Alert.show("Image uploadée");
+				} else {
+					Alert.show("Problème, réessayez");
+				}
 			}
 		]]>
 	</fx:Script>
