@@ -21,6 +21,7 @@
 			private var _nbAlbumToCreate:uint;
 			private var _memoireAlbumPhotoID:String;
 			private var _bitmap:Bitmap;
+			private var _description:String;
 
 			private var _connectF:Boolean = false;
 
@@ -205,6 +206,7 @@
 					if (containerImageF.selectedItem) {
 						var loader:Loader = new Loader();
 						loader.load(new URLRequest(containerImageF.selectedItem.url));
+						_description = containerImageF.selectedItem.description;
 						loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _imageFLoaed);
 						cursorManager.setBusyCursor();
 					} else {
@@ -263,7 +265,7 @@
 
 			private function _touslesalbumsonetecrees():void {
 
-				FacebookDesktop.api(_memoireAlbumPhotoID + '/photos', onSaveToPhotoAlbumComplete, {source:_bitmap, message:'My Example Photo', fileName:'FILE_NAME'}, "POST");
+				FacebookDesktop.api(_memoireAlbumPhotoID + '/photos', onSaveToPhotoAlbumComplete, {source:_bitmap, message:_description, fileName:'FILE_NAME'}, "POST");
 			}
 
 			protected function onSaveToPhotoAlbumComplete(result:Object, fail:Object):void {
