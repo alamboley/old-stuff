@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="AfpFlex" basedir="." default="AIR">
+    <property name="FLEX_HOME" value="/Applications/Adobe Flash Builder 4.5/sdks/flex_sdk_4.5.1.21328" />
+    <property name="out.dir" value="../bin" />
+	<target name="AIR" description="Create the AIR package for our app">
+		<exec executable="${FLEX_HOME}/bin/adt" failonerror="true">
+			<arg line="-package" />
+			<arg line="-storetype pkcs12" />
+			<arg line="-keystore ${out.dir}/lbineau.p12" />
+			<arg line="-storepass afppwd" />
+			<arg line="${out.dir}/AfpFlex-app.air" />
+			<arg line="${out.dir}/AfpFlex-app.xml" />
+			<arg line="-C ${out.dir} AfpFlex.swf" />
+		</exec>
+	</target>
+</project>
