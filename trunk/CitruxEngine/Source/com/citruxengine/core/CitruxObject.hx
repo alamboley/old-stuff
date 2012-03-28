@@ -31,11 +31,11 @@ class CitruxObject {
 			try {
 
 				if (Reflect.field(object, param) == "true")
-					Reflect.setField(object, param, true);
+					Reflect.setField(this, param, true);
 
 				else if (Reflect.field(object, param) == "false")
-					Reflect.setField(object, param, false);
-
+					Reflect.setField(this, param, false);
+					
 				else
 					Reflect.setField(this, param, Reflect.field(object, param));
 			
