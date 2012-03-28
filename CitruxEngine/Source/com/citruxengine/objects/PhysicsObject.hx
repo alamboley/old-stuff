@@ -61,8 +61,8 @@ class PhysicsObject extends CitruxObject, implements ISpriteView {
 		_animation = "";
 		visible = true;
 		x = y = radius = rotation = offsetX = offsetY = 0;
-		width = 30;
-		height = 30;
+		width = 30 * _box2D.scale;
+		height = 30 * _box2D.scale;
 		group = 0;
 		view = MovieClip;
 		registration = "center";
@@ -121,10 +121,10 @@ class PhysicsObject extends CitruxObject, implements ISpriteView {
 
 		if (radius != 0) {
 			_shape = new B2CircleShape();
-			_shape.m_radius = radius / _box2D.scale;
+			_shape.m_radius = radius / _box2D.scale / 2;
 		} else {
 			_shape = new B2PolygonShape();
-			cast(_shape, B2PolygonShape).setAsBox(width / _box2D.scale, height / _box2D.scale);
+			cast(_shape, B2PolygonShape).setAsBox(width / _box2D.scale / 2, height / _box2D.scale / 2);
 		}
 	}
 

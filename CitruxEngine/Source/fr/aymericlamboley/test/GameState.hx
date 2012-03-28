@@ -3,6 +3,7 @@ package fr.aymericlamboley.test;
 import com.citruxengine.core.CitruxEngine;
 import com.citruxengine.core.State;
 import com.citruxengine.objects.PhysicsObject;
+import com.citruxengine.objects.platformer.Platform;
 import com.citruxengine.physics.Box2D;
 
 class GameState extends State {
@@ -23,5 +24,8 @@ class GameState extends State {
 		var citruxObject:PhysicsObject = new PhysicsObject("monCitruxObject", {x:100, y:20, width:30, height:30});
 		//var citruxObject:PhysicsObject = new PhysicsObject("monCitruxObject", {x:100, y:20});
 		add(citruxObject);
+
+		var platformBot:Platform = new Platform("platformBot", {x:260, y:450, width:500, height:30});
+		add(platformBot);
 	}
 }
