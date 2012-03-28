@@ -25,10 +25,6 @@ class Main extends CitruxEngine {
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 		Lib.current.stage.align = StageAlign.TOP_LEFT;
 
-		var citrus:CitruxEngine = new CitruxEngine();
-
-		Lib.current.addChild(citrus);
-
 		state = new GameState();
 	}
 	

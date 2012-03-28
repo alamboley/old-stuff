@@ -77,7 +77,6 @@ class CitruxEngine extends Sprite {
 	}
 	
 	public function setState(value:State):State {
-
 		return _newState = value;
 	}
 	

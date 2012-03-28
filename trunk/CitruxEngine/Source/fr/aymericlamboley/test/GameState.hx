@@ -1,5 +1,6 @@
 package fr.aymericlamboley.test;
 
+import com.citruxengine.core.CitruxEngine;
 import com.citruxengine.core.State;
 import com.citruxengine.objects.PhysicsObject;
 import com.citruxengine.physics.Box2D;
