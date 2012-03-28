@@ -28,7 +28,7 @@ class State extends Sprite {
 	}
 
 	public function initialize():Void {
-
+		
 	}
 
 	public function update(timeDelta:Float):Void {

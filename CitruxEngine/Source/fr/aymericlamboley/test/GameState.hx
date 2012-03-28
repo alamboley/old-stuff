@@ -20,9 +20,9 @@ class GameState extends State {
 		box2d.visible = true;
 		add(box2d);
 
-		var citruxObject:PhysicsObject = new PhysicsObject("monCitruxObject", {_visible:false, x:2, y:20, width:100, height:100, parallax:20});
+		var citruxObject:PhysicsObject = new PhysicsObject("monCitruxObject", {x:100, y:20, width:50, height:20, parallax:20});
 		add(citruxObject);
 
-		trace(citruxObject.x + " " + citruxObject.visible);
+		trace(citruxObject.parallax);
 	}
 }

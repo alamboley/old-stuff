@@ -12,8 +12,8 @@ import nme.display.Sprite;
 
 class Box2D extends CitruxObject, implements ISpriteView {
 
-	public var world(getWorld, never):B2World;
-	public var scale(getScale, never):Int;
+	public var world(getWorld, null):B2World;
+	public var scale(getScale, null):Int;
 
 	public var x(getX, never):Float;
 	public var y(getY, never):Float;
@@ -28,39 +28,32 @@ class Box2D extends CitruxObject, implements ISpriteView {
 	public var offsetY(getOffsetY, never):Float;
 	public var registration(getRegistration, never):String;
 
-	var _visible:Bool;
-	var _scale:Int;
-	var _world:B2World;
-	var _group:Int;
-	var _view:Dynamic;
-
-
 	private var physicsDebug:Sprite;
 
 	public function new(name:String, params:Dynamic = null) {
 
 		super(name, params);
 
-		_visible = false;
-		_scale = 30;
-		_group = 1;
+		visible = false;
+		group = 1;
+		scale = 30;
 
 		physicsDebug = new Sprite();
 		CitruxEngine.getInstance().addChild(physicsDebug);
 
-		_world = new B2World(new B2Vec2(0, 0), true);
+		world = new B2World(new B2Vec2(0, 0), true);
 
 		var debugDraw = new B2DebugDraw();
 		debugDraw.setSprite(physicsDebug);
-		debugDraw.setDrawScale(_scale);
+		debugDraw.setDrawScale(scale);
 		debugDraw.setFlags(B2DebugDraw.e_shapeBit);
 
-		_world.setDebugDraw(debugDraw);
+		world.setDebugDraw(debugDraw);
 	}
 
 	override public function destroy():Void {
 
-		//_world.destroy(); -> doesn't exist, why ??
+		//world.destroy(); -> doesn't exist, why ??
 
 		super.destroy();
 	}
@@ -69,16 +62,16 @@ class Box2D extends CitruxObject, implements ISpriteView {
 
 		super.update(timeDelta);
 
-		_world.step(1 / 20, 8, 8);
-		_world.drawDebugData();
+		world.step(1 / 20, 8, 8);
+		world.drawDebugData();
 	}
 
 	public function getWorld():B2World {
-		return _world;
+		return world;
 	}
 
 	public function getScale():Int {
-		return _scale;
+		return scale;
 	}
 
 	public function getX():Float {
@@ -98,27 +91,27 @@ class Box2D extends CitruxObject, implements ISpriteView {
 	}
 
 	public function getGroup():Int {
-		return _group;
+		return group;
 	}
 
 	public function setGroup(value:Int):Int {
-		return _group = value;
+		return group = value;
 	}
 
 	public function getVisible():Bool {
-		return _visible;
+		return visible;
 	}
 
 	public function setVisible(value:Bool):Bool {
-		return _visible = value;
+		return visible = value;
 	}
 
 	public function getView():Dynamic {
-		return _view;
+		return view;
 	}
 
 	public function setView(value:Dynamic):Dynamic {
-		return _view = value;
+		return view = value;
 	}
 
 	public function getAnimation():String {
