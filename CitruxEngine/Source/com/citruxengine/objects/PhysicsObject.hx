@@ -49,8 +49,6 @@ class PhysicsObject extends CitruxObject, implements ISpriteView {
 	var _fixture:B2Fixture;
 	var _inverted:Bool;
 	var _animation:String;
-	var _rotation :Float;
-	var _registration:String;
 
 	public function new(name:String, params:Dynamic = null) {
 
@@ -62,17 +60,12 @@ class PhysicsObject extends CitruxObject, implements ISpriteView {
 		parallax = 1;
 		_animation = "";
 		visible = true;
-		x = 0;
-		y = 0;
-		width = 1;
-		height = 1;
-		radius = 0;
-		view = MovieClip;
-		_rotation = 0;
+		x = y = radius = rotation = offsetX = offsetY = 0;
+		width = 30;
+		height = 30;
 		group = 0;
-		offsetX = 0;
-		offsetY = 0;
-		_registration = "center";
+		view = MovieClip;
+		registration = "center";
 
 		super(name, params);
 
@@ -115,7 +108,7 @@ class PhysicsObject extends CitruxObject, implements ISpriteView {
 		_bodyDef = new B2BodyDef();
 		_bodyDef.type = B2Body.b2_dynamicBody;
 		_bodyDef.position.set(x, y);
-		_bodyDef.angle = _rotation;
+		_bodyDef.angle = rotation;
 	}
 
 	private function createBody():Void {
@@ -240,17 +233,17 @@ class PhysicsObject extends CitruxObject, implements ISpriteView {
 		if (_body != null)
 			return _body.getAngle() * 180 / Math.PI;
 		else
-			return _rotation * 180 / Math.PI;
+			return rotation / 180 * Math.PI;
 	}
 
 	public function setRotation(value:Float):Float {
 
-		_rotation = value * Math.PI / 180;
+		rotation = value * Math.PI / 180;
 
 		if (_body != null)
-			_body.setTransform(new B2Transform(_body.getPosition(), B2Mat22.fromAngle(_rotation)));
+			_body.setTransform(new B2Transform(_body.getPosition(), B2Mat22.fromAngle(rotation)));
 
-		return _rotation;
+		return rotation;
 	}
 
 	public function getGroup():Int {
@@ -302,11 +295,11 @@ class PhysicsObject extends CitruxObject, implements ISpriteView {
 	}
 
 	public function getRegistration():String {
-		return _registration;
+		return registration;
 	}
 
 	public function setRegistration(value:String):String {
-		return _registration = value;
+		return registration = value;
 	}
 
 	public function getBody():B2Body {
