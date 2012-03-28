@@ -62,6 +62,7 @@ class PhysicsObject extends CitruxObject, implements ISpriteView {
 	public function new(name:String, params:Dynamic = null) {
 
 		_ce = CitruxEngine.getInstance();
+		_box2D = cast(_ce.state.getFirstObjectByType(Box2D), Box2D);
 
 		super(name, params);
 		

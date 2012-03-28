@@ -1,5 +1,6 @@
 package com.citruxengine.core;
 
+import com.citruxengine.core.CitruxEngine;
 import com.citruxengine.core.CitruxObject;
 
 import nme.display.Sprite;
@@ -9,11 +10,15 @@ import nme.display.Sprite;
  */
 class State extends Sprite {
 
-	var _objects:Array<CitruxObject>;
+	private var _ce:CitruxEngine;
+
+	private var _objects:Array<CitruxObject>;
 
 	public function new() {
 
 		super();
+
+		_ce = CitruxEngine.getInstance();
 
 		_objects = new Array<CitruxObject>();
 	}
@@ -60,5 +65,36 @@ class State extends Sprite {
 	public function remove(object:CitruxObject):Void {
 
 		object.kill = true;
+	}
+
+	public function getObjectByName(name:String):CitruxObject {
+
+		for (object in _objects) {
+			if (object.name == name)
+				return object;
+		}
+
+		return null;
+	}
+
+	public function getFirstObjectByType(type:Class<Dynamic>):CitruxObject {
+
+		for (object in _objects) {
+			if (Std.is(object, type))
+				return object;
+		}
+
+		return null;
+	}
+
+	public function getObjectsByType(type:Class<Dynamic>):Array<CitruxObject> {
+
+		var objects:Array<CitruxObject> = new Array<CitruxObject>();
+		for (object in _objects) {
+			if (Std.is(object, type))
+				objects.push(object);
+		}
+
+		return objects;
 	}
 }
