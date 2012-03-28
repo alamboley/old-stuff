@@ -48,19 +48,8 @@ class PhysicsObject extends CitruxObject, implements ISpriteView {
 	var _fixtureDef:B2FixtureDef;
 	var _fixture:B2Fixture;
 	var _inverted:Bool;
-	var _parallax:Float;
 	var _animation:String;
-	var _visible :Bool;
-	var _x:Float;
-	var _y:Float;
-	var _view:Dynamic;
 	var _rotation :Float;
-	var _width:Float;
-	var _height:Float;
-	var _radius:Float;
-	var _group:Int;
-	var _offsetX:Float;
-	var _offsetY:Float;
 	var _registration:String;
 
 	public function new(name:String, params:Dynamic = null) {
@@ -70,19 +59,19 @@ class PhysicsObject extends CitruxObject, implements ISpriteView {
 
 		gravity = 1.6;
 		_inverted = false;
-		_parallax = 1;
+		parallax = 1;
 		_animation = "";
-		_visible = true;
-		_x = 0;
-		_y = 0;
-		_view = MovieClip;
+		visible = true;
+		x = 0;
+		y = 0;
+		width = 1;
+		height = 1;
+		radius = 0;
+		view = MovieClip;
 		_rotation = 0;
-		_width = 1;
-		_height = 1;
-		_radius = 0;
-		_group = 0;
-		_offsetX = 0;
-		_offsetY = 0;
+		group = 0;
+		offsetX = 0;
+		offsetY = 0;
 		_registration = "center";
 
 		super(name, params);
@@ -125,7 +114,7 @@ class PhysicsObject extends CitruxObject, implements ISpriteView {
 
 		_bodyDef = new B2BodyDef();
 		_bodyDef.type = B2Body.b2_dynamicBody;
-		_bodyDef.position.set(_x, _y);
+		_bodyDef.position.set(x, y);
 		_bodyDef.angle = _rotation;
 	}
 
@@ -137,12 +126,12 @@ class PhysicsObject extends CitruxObject, implements ISpriteView {
 
 	private function createShape():Void {
 
-		if (_radius != 0) {
+		if (radius != 0) {
 			_shape = new B2CircleShape();
-			_shape.m_radius = _radius;
+			_shape.m_radius = radius / _box2D.scale;
 		} else {
 			_shape = new B2PolygonShape();
-			cast(_shape, B2PolygonShape).setAsBox(_width / 2, _height / 2);
+			cast(_shape, B2PolygonShape).setAsBox(width / _box2D.scale, height / _box2D.scale);
 		}
 	}
 
@@ -175,17 +164,17 @@ class PhysicsObject extends CitruxObject, implements ISpriteView {
 		if (_body != null)
 			return _body.getPosition().x * _box2D.scale;
 		else
-			return _x * _box2D.scale;
+			return x / _box2D.scale;
 	}
 
 	public function setX(value:Float):Float {
 
-		_x = value / _box2D.scale;
+		x = value / _box2D.scale;
 
 		if(_body != null) {
 
 			var pos:B2Vec2 = _body.getPosition();
-			pos.x = _x;
+			pos.x = x;
 			_body.setTransform(new B2Transform(pos, B2Mat22.fromAngle(_body.getAngle())));
 		}
 
@@ -197,29 +186,53 @@ class PhysicsObject extends CitruxObject, implements ISpriteView {
 		if (_body != null)
 			return _body.getPosition().y * _box2D.scale;
 		else
-			return _y * _box2D.scale;
+			return y / _box2D.scale;
 	}
 
 	public function setY(value:Float):Float {
 
-		_y = value / _box2D.scale;
+		y = value / _box2D.scale;
 
 		if(_body != null) {
 
 			var pos:B2Vec2 = _body.getPosition();
-			pos.y = _y;
+			pos.y = y;
 			_body.setTransform(new B2Transform(pos, B2Mat22.fromAngle(_body.getAngle())));
 		}
 
 		return value;
 	}
 
+	public function getWidth():Float {
+		return width;
+	}
+
+	public function setWidth(value:Float):Float {
+		return width = value / _box2D.scale;
+	}
+
+	public function getHeight():Float {
+		return height;
+	}
+
+	public function setHeight(value:Float):Float {
+		return height = value / _box2D.scale;
+	}
+
+	public function getRadius():Float {
+		return radius;
+	}
+
+	public function setRadius(value:Float):Float {
+		return radius = value / _box2D.scale;
+	}
+
 	public function getParallax():Float {
-		return _parallax;
+		return parallax;
 	}
 
 	public function setParallax(value:Float):Float {
-		return _parallax = value;
+		return parallax = value;
 	}
 
 	public function getRotation():Float {
@@ -241,27 +254,27 @@ class PhysicsObject extends CitruxObject, implements ISpriteView {
 	}
 
 	public function getGroup():Int {
-		return _group;
+		return group;
 	}
 
 	public function setGroup(value:Int):Int {
-		return _group = value;
+		return group = value;
 	}
 
 	public function getVisible():Bool {
-		return _visible;
+		return visible;
 	}
 
 	public function setVisible(value:Bool):Bool {
-		return _visible = value;
+		return visible = value;
 	}
 
 	public function getView():Dynamic {
-		return _view;
+		return view;
 	}
 
 	public function setView(value:Dynamic):Dynamic {
-		return _view = value;
+		return view = value;
 	}
 
 	public function getAnimation():String {
@@ -269,23 +282,23 @@ class PhysicsObject extends CitruxObject, implements ISpriteView {
 	}
 
 	public function getInverted():Bool {
-		return _inverted;
+		return inverted;
 	}
 
 	public function getOffsetX():Float {
-		return _offsetX;
+		return offsetX;
 	}
 
 	public function setOffsetX(value:Float):Float {
-		return _offsetX = value;
+		return offsetX = value;
 	}
 
 	public function getOffsetY():Float {
-		return _offsetY;
+		return offsetY;
 	}
 
 	public function setOffsetY(value:Float):Float {
-		return _offsetY = value;
+		return offsetY = value;
 	}
 
 	public function getRegistration():String {
@@ -294,30 +307,6 @@ class PhysicsObject extends CitruxObject, implements ISpriteView {
 
 	public function setRegistration(value:String):String {
 		return _registration = value;
-	}
-
-	public function getWidth():Float {
-		return _width * _box2D.scale;
-	}
-
-	public function setWidth(value:Float):Float {
-		return _width = value / _box2D.scale;
-	}
-
-	public function getHeight():Float {
-		return _height * _box2D.scale;
-	}
-
-	public function setHeight(value:Float):Float {
-		return _height = value / _box2D.scale;
-	}
-
-	public function getRadius():Float {
-		return _radius * _box2D.scale;
-	}
-
-	public function setRadius(value:Float):Float {
-		return _radius = value / _box2D.scale;
 	}
 
 	public function getBody():B2Body {
