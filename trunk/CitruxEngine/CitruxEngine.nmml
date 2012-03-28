@@ -3,8 +3,7 @@
 	
 	<app title="Citrux Engine Example" file="CitruxEngineExample" main="fr.aymericlamboley.test.Main" package="fr.aymericlamboley.test" version="1.0.0" company="Aymeric Lamboley"/>
 	
-	<window width="800" height="600" fps="30" orientation="portrait" resizable="true" if="target_flash" />
-	<window width="0" height="0" fps="30" orientation="portrait" resizable="true" unless="target_flash" />
+	<window width="800" height="600" fps="30" orientation="portrait" resizable="true"/>
  	
 	<set name="BUILD_DIR" value="Export" />
 	
