@@ -1,10 +1,14 @@
 package com.citruxengine.physics;
 
 import box2D.common.math.B2Vec2;
+import box2D.dynamics.B2DebugDraw;
 import box2D.dynamics.B2World;
 
+import com.citruxengine.core.CitruxEngine;
 import com.citruxengine.core.CitruxObject;
 import com.citruxengine.view.ISpriteView;
+
+import nme.display.Sprite;
 
 class Box2D extends CitruxObject, implements ISpriteView {
 
@@ -30,6 +34,9 @@ class Box2D extends CitruxObject, implements ISpriteView {
 	var _group:Int;
 	var _view:Dynamic;
 
+
+	private var physicsDebug:Sprite;
+
 	public function new(name:String, params:Dynamic = null) {
 
 		super(name, params);
@@ -38,7 +45,17 @@ class Box2D extends CitruxObject, implements ISpriteView {
 		_scale = 30;
 		_group = 1;
 
+		physicsDebug = new Sprite();
+		CitruxEngine.getInstance().addChild(physicsDebug);
+
 		_world = new B2World(new B2Vec2(0, 0), true);
+
+		var debugDraw = new B2DebugDraw();
+		debugDraw.setSprite(physicsDebug);
+		debugDraw.setDrawScale(_scale);
+		debugDraw.setFlags(B2DebugDraw.e_shapeBit);
+
+		_world.setDebugDraw(debugDraw);
 	}
 
 	override public function destroy():Void {
@@ -48,19 +65,20 @@ class Box2D extends CitruxObject, implements ISpriteView {
 		super.destroy();
 	}
 
+	override public function update(timeDelta:Float):Void {
+
+		super.update(timeDelta);
+
+		_world.step(1 / 20, 8, 8);
+		_world.drawDebugData();
+	}
+
 	public function getWorld():B2World {
 		return _world;
 	}
 
 	public function getScale():Int {
 		return _scale;
-	}
-
-	override public function update(timeDelta:Float):Void {
-
-		super.update(timeDelta);
-
-		_world.step(1 / 20, 8, 8);
 	}
 
 	public function getX():Float {
