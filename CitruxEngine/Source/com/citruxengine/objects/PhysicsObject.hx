@@ -1,5 +1,7 @@
 package com.citruxengine.objects;
 
+import box2D.collision.shapes.B2CircleShape;
+import box2D.collision.shapes.B2PolygonShape;
 import box2D.collision.shapes.B2Shape;
 import box2D.common.math.B2Mat22;
 import box2D.common.math.B2Transform;
@@ -13,6 +15,8 @@ import com.citruxengine.core.CitruxEngine;
 import com.citruxengine.core.CitruxObject;
 import com.citruxengine.physics.Box2D;
 import com.citruxengine.view.ISpriteView;
+
+import nme.display.MovieClip;
 
 class PhysicsObject extends CitruxObject, implements ISpriteView {
 
@@ -64,9 +68,37 @@ class PhysicsObject extends CitruxObject, implements ISpriteView {
 		_ce = CitruxEngine.getInstance();
 		_box2D = cast(_ce.state.getFirstObjectByType(Box2D), Box2D);
 
-		super(name, params);
-		
 		gravity = 1.6;
+		_inverted = false;
+		_parallax = 1;
+		_animation = "";
+		_visible = true;
+		_x = 0;
+		_y = 0;
+		_view = MovieClip;
+		_rotation = 0;
+		_width = 1;
+		_height = 1;
+		_radius = 0;
+		_group = 0;
+		_offsetX = 0;
+		_offsetY = 0;
+		_registration = "center";
+
+		super(name, params);
+
+		if (_box2D == null) {
+			trace("Cannot create PhysicsObject when a Box2D object has not been added to the state.");
+			return ;
+		}
+
+		defineBody();
+		createBody();
+		createShape();
+		defineFixture();
+		createFixture();
+		defineJoint();
+		createJoint();
 	}
 
 	override public function destroy():Void {
@@ -77,6 +109,65 @@ class PhysicsObject extends CitruxObject, implements ISpriteView {
 		//_bodyDef.destroy(); -> doesn't exist, why ??
 
 		super.destroy();
+	}
+
+	override public function update(timeDelta:Float):Void {
+
+		if (_bodyDef.type == B2Body.b2_dynamicBody) {
+
+			var velocity:B2Vec2 = _body.getLinearVelocity();
+			velocity.y += gravity;
+			_body.setLinearVelocity(velocity);
+		}
+	}
+
+	private function defineBody():Void {
+
+		_bodyDef = new B2BodyDef();
+		_bodyDef.type = B2Body.b2_dynamicBody;
+		_bodyDef.position.set(_x, _y);
+		_bodyDef.angle = _rotation;
+	}
+
+	private function createBody():Void {
+
+		_body = _box2D.world.createBody(_bodyDef);
+		_body.setUserData(this);
+	}
+
+	private function createShape():Void {
+
+		if (_radius != 0) {
+			_shape = new B2CircleShape();
+			_shape.m_radius = _radius;
+		} else {
+			_shape = new B2PolygonShape();
+			cast(_shape, B2PolygonShape).setAsBox(_width / 2, _height / 2);
+		}
+	}
+
+	private function defineFixture():Void {
+
+		_fixtureDef = new B2FixtureDef();
+		_fixtureDef.shape = _shape;
+		_fixtureDef.density = 1;
+		_fixtureDef.friction = 0.6;
+		_fixtureDef.restitution = 0.3;
+		//_fixtureDef.filter.categoryBits -> à faire
+		//_fixtureDef.filter.maskBits -> à faire
+	}
+
+	private function createFixture():Void {
+
+		_fixture = _body.createFixture(_fixtureDef);
+	}
+
+	private function defineJoint():Void {
+
+	}
+
+	private function createJoint():Void {
+
 	}
 
 	public function getX():Float {
@@ -128,8 +219,7 @@ class PhysicsObject extends CitruxObject, implements ISpriteView {
 	}
 
 	public function setParallax(value:Float):Float {
-		_parallax = value;
-		return _parallax;
+		return _parallax = value;
 	}
 
 	public function getRotation():Float {

@@ -17,10 +17,10 @@ class GameState extends State {
 		super.initialize();
 
 		var box2d:Box2D = new Box2D("Box2D");
-		//box2d.visible = true;
+		box2d.visible = true;
 		add(box2d);
 
-		var citruxObject:PhysicsObject = new PhysicsObject("monCitruxObject", {x:20});
+		var citruxObject:PhysicsObject = new PhysicsObject("monCitruxObject", {x:200, y:20, width:100, height:100, parallax:20});
 		add(citruxObject);
 	}
 }
