@@ -1,5 +1,6 @@
 package levels {
 
+	import objects.Bulle;
 	import citrus.core.CitrusEngine;
 	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
@@ -13,9 +14,13 @@ package levels {
 
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.text.BitmapFont;
+	import starling.text.TextField;
+	import starling.textures.Texture;
 
 	import utils.SpotlightFilter;
 
+	import flash.display.Bitmap;
 	import flash.geom.Rectangle;
 
 	/**
@@ -30,7 +35,11 @@ package levels {
 		
 		private var _hillsTexture:HillsTexture;
 		
-		private var imageFilter:Image;
+		[Embed(source="/../embed/ArialFont.fnt", mimeType="application/octet-stream")]
+		private var _fontConfig:Class;
+		
+		[Embed(source="/../embed/ArialFont.png")]
+		private var _fontPng:Class;
 		
 		[Embed(source="/../embed/Horror.jpg")]
 		private var _horrorPNG:Class;		
@@ -44,6 +53,11 @@ package levels {
 
 		override public function initialize():void {
 			super.initialize();
+			
+			var bitmap:Bitmap = new _fontPng();
+			var ftTexture:Texture = Texture.fromBitmap(bitmap);
+			var ftXML:XML = XML(new _fontConfig());
+			TextField.registerBitmapFont(new BitmapFont(ftTexture, ftXML));
 
 			_physics = new Nape("physics");
 			_physics.visible = true;
@@ -51,9 +65,13 @@ package levels {
 			add(_physics);			
 
 			add(new Platform("border left", {y:stage.stageHeight / 2, height:stage.stageHeight}));
+			//add(new Platform("border left", {x:stage.stageWidth / 2, width:stage.stageWidth, y:250}));
 			
 			_hero = new Hero("hero", {x:150});
 			add(_hero);
+			
+			/*var bulle:Bulle = new Bulle("gre", {x:250, y:230});
+			add(bulle);*/
 			
 			_hillsTexture = new HillsTexture();
 			var hills:Hills = new Hills("hills", {currentYPoint:600, sliceWidth:128, widthHills:stage.stageWidth * 2, view:_hillsTexture});
@@ -72,6 +90,13 @@ package levels {
 			
 			(_containerGroupBgLight.filter as SpotlightFilter).centerX = _hero.x;
 			(_containerGroupBgLight.filter as SpotlightFilter).centerY = _hero.y;
+		}
+
+		override public function destroy():void {
+			
+			TextField.unregisterBitmapFont("ArialMT");
+			
+			super.destroy();
 		}
 
 	}
