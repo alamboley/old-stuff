@@ -1,6 +1,5 @@
 package levels {
 
-	import objects.Bulle;
 	import citrus.core.CitrusEngine;
 	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
@@ -9,6 +8,7 @@ package levels {
 	import citrus.objects.platformer.nape.Platform;
 	import citrus.physics.nape.Nape;
 
+	import objects.Bulle;
 	import objects.Hills;
 	import objects.HillsTexture;
 
