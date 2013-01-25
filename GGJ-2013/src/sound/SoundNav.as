@@ -23,15 +23,14 @@ package sound
 		private var _easeTimer:uint = 0;
 		private var _easeDuration:uint = 2048*1500;
 
-		public function SoundNav(sound:Sound,ts:TimeShifter)
+		public function SoundNav(s:Sound)
 		{
 			_easeFunc = Tween_easeOut;
-			_mp3 = sound;
-			_timeshifter = ts;
+			_mp3 = s;
 			
 			var bytes:ByteArray = new ByteArray();
-			sound.extract(bytes, int(sound.length * 44.1));
-			sound = null;
+			s.extract(bytes, int(s.length * 44.1));
+			s = null;
 			play(bytes);
 		}
 		
@@ -69,13 +68,12 @@ package sound
 			var newpos:int;
 			var alpha:Number = _phase - int(_phase);
 			
-			while (outputLength < 2048) { 
+			while (outputLength < 2050) { 
 				
-				//loop both ways to prevent EOF errors
-				if (int(_phase) < 0)
+				if (int(_phase) < 1)
 					_phase += _numSamples;
-				else if (int(_phase+_playbackSpeed) >= _numSamples)
-					_phase -= _numSamples; 
+				else if (int(_phase+_playbackSpeed) > _numSamples)
+					_phase -= _numSamples;
 				
 				//speed easing
 				if (_easeTimer < _easeDuration)
@@ -89,10 +87,16 @@ package sound
 				newpos = int(_phase) * 8;
 				_Samples.position = newpos;
 				
-				l0 = _Samples.readFloat();
-				r0 = _Samples.readFloat();
-				l1 = _Samples.readFloat();
-				r1 = _Samples.readFloat();
+				//fix (write only if we have enough samples...
+				if (_Samples.bytesAvailable >= 4*8)
+				{
+					l0 = _Samples.readFloat();
+					r0 = _Samples.readFloat();
+					l1 = _Samples.readFloat();
+					r1 = _Samples.readFloat();
+				}
+				else
+					l0 = r0 = l1 = r1 = 0;
 
 				//Write interpolated values
 				event.data.writeFloat((l0 + alpha * ( l1 - l0 ))* volume);
