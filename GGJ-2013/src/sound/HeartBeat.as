@@ -6,7 +6,7 @@ package sound
 	import flash.utils.ByteArray;
 	import org.osflash.signals.Signal;
 
-	public class SoundNav 
+	public class HeartBeat 
 	{
 
 		private var _playbackSpeed:Number = 1;	
@@ -24,6 +24,12 @@ package sound
 		private var _easeTimer:uint = 0;
 		private var _easeDuration:uint = 2048 * 1500;
 		
+		/*
+		 * Base clock - 3/4 time signature, 66bpm
+		 */
+		[Embed(source="/../bin/0909ms.mp3")]
+		private var _66bpm34:Class;
+		
 		[Embed(source="/../bin/Heartbeat1.mp3")]
 		private var _heartbeat1:Class;
 		
@@ -36,10 +42,10 @@ package sound
 		
 		private var _beat:uint = 0;
 
-		public function SoundNav(s:Sound)
+		public function HeartBeat()
 		{
 			_easeFunc = Tween_easeOut;
-			_mp3 = s;
+			_mp3 = new _66bpm34();
 			
 			_hb1 = new _heartbeat1();
 			_hb2 = new _heartbeat2();
