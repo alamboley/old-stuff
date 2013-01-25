@@ -4,11 +4,12 @@ package sound
 	import flash.events.SampleDataEvent;
 	import flash.media.Sound;
 	import flash.utils.ByteArray;
+	import org.osflash.signals.Signal;
 
 	public class SoundNav 
 	{
 
-		private var _playbackSpeed:Number = 0;	
+		private var _playbackSpeed:Number = 1;	
 		private var _targetSpeed:Number = 1;	
 
 		private var _mp3:Sound;
@@ -21,12 +22,27 @@ package sound
 		
 		private var _easeFunc:Function;
 		private var _easeTimer:uint = 0;
-		private var _easeDuration:uint = 2048*1500;
+		private var _easeDuration:uint = 2048 * 1500;
+		
+		[Embed(source="/../bin/Heartbeat1.mp3")]
+		private var _heartbeat1:Class;
+		
+		[Embed(source="/../bin/Heartbeat2.mp3")]
+		private var _heartbeat2:Class;
+		
+		
+		private var _hb1:Sound;
+		private var _hb2:Sound;
+		
+		private var _beat:uint = 0;
 
 		public function SoundNav(s:Sound)
 		{
 			_easeFunc = Tween_easeOut;
 			_mp3 = s;
+			
+			_hb1 = new _heartbeat1();
+			_hb2 = new _heartbeat2();
 			
 			var bytes:ByteArray = new ByteArray();
 			s.extract(bytes, int(s.length * 44.1));
@@ -53,6 +69,8 @@ package sound
 			
 			_phase = 0;
 			_dynamicSound.play();
+			
+			onLoopStart.dispatch();
 		}
 
 		private function onSampleData( event:SampleDataEvent ):void
@@ -71,11 +89,23 @@ package sound
 			while (outputLength < 2050) { 
 				
 				if (int(_phase) < 1)
+				{
 					_phase += _numSamples;
-				else if (int(_phase+_playbackSpeed) > _numSamples)
+				}
+				else if (int(_phase + _playbackSpeed) > _numSamples)
+				{
 					_phase -= _numSamples;
+					
+					// 3/4 time signature.
+					
+					if (_beat == 0)
+						_hb1.play();
+					else if (_beat == 1)
+						_hb2.play();
+					
+					(_beat >= 2)? _beat = 0 : _beat++; 
+				}
 				
-				//speed easing
 				if (_easeTimer < _easeDuration)
 				{
 					_easeTimer++;
@@ -83,22 +113,11 @@ package sound
 				}else
 					_playbackSpeed = _targetSpeed;
 				
-				//read ByteArray
 				newpos = int(_phase) * 8;
 				_Samples.position = newpos;
 				
-				//fix (write only if we have enough samples...
-				if (_Samples.bytesAvailable >= 4*8)
-				{
-					l0 = _Samples.readFloat();
-					r0 = _Samples.readFloat();
-					l1 = _Samples.readFloat();
-					r1 = _Samples.readFloat();
-				}
-				else
-					l0 = r0 = l1 = r1 = 0;
+				l0 = r0 = l1 = r1 = 0;
 
-				//Write interpolated values
 				event.data.writeFloat((l0 + alpha * ( l1 - l0 ))* volume);
 				event.data.writeFloat((r0 + alpha * ( r1 - r0 ))* volume);
 				
@@ -110,7 +129,7 @@ package sound
 				while ( alpha >= 1.0 ) --alpha;
 
 			}
-	
+			
 		}
 		
 		public function get currentSpeed():Number
