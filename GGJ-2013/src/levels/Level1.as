@@ -1,16 +1,21 @@
 package levels {
 
-	import citrus.objects.platformer.nape.Hills;
-	import flash.geom.Rectangle;
-	import citrus.math.MathVector;
-	import citrus.objects.platformer.nape.Hero;
 	import citrus.core.CitrusEngine;
-	import utils.SpotlightFilter;
+	import citrus.core.starling.StarlingState;
+	import citrus.math.MathVector;
 	import citrus.objects.CitrusSprite;
-	import starling.display.Image;
+	import citrus.objects.platformer.nape.Hero;
 	import citrus.objects.platformer.nape.Platform;
 	import citrus.physics.nape.Nape;
-	import citrus.core.starling.StarlingState;
+
+	import objects.Hills;
+	import objects.HillsTexture;
+
+	import starling.display.Image;
+
+	import utils.SpotlightFilter;
+
+	import flash.geom.Rectangle;
 
 	/**
 	 * @author Aymeric
@@ -21,6 +26,8 @@ package levels {
 		protected var _physics:Nape;
 		
 		protected var _hero:Hero;
+		
+		private var _hillsTexture:HillsTexture;
 		
 		private var imageFilter:Image;
 		
@@ -38,14 +45,16 @@ package levels {
 
 			_physics = new Nape("physics");
 			_physics.visible = true;
-			add(_physics);
+			_physics.timeStep = 1 / 30;
+			add(_physics);			
 
 			add(new Platform("border left", {y:stage.stageWidth / 2, height:stage.stageWidth}));
 			
 			_hero = new Hero("hero", {x:150});
 			add(_hero);
 			
-			var hills:Hills = new Hills("hills", {currentYPoint:600, sliceWidth:128, widthHills:stage.stageWidth * 2});
+			_hillsTexture = new HillsTexture();
+			var hills:Hills = new Hills("hills", {currentYPoint:600, sliceWidth:128, widthHills:stage.stageWidth * 2, view:_hillsTexture});
 			add(hills);
 			
 			view.camera.setUp(_hero, new MathVector(_ce.stage.stageWidth / 2, _ce.stage.stageHeight / 2), new Rectangle(0, 0, 5000, 6000), new MathVector(0.25, 0.15));
