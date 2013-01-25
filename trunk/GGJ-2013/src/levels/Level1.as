@@ -12,6 +12,7 @@ package levels {
 	import objects.HillsTexture;
 
 	import starling.display.Image;
+	import starling.display.Sprite;
 
 	import utils.SpotlightFilter;
 
@@ -33,6 +34,7 @@ package levels {
 		
 		[Embed(source="/../embed/Horror.jpg")]
 		private var _horrorPNG:Class;		
+		private var _containerGroupBgLight:Sprite;
 
 		public function Level1() {
 			super();
@@ -48,7 +50,7 @@ package levels {
 			_physics.timeStep = 1 / 30;
 			add(_physics);			
 
-			add(new Platform("border left", {y:stage.stageWidth / 2, height:stage.stageWidth}));
+			add(new Platform("border left", {y:stage.stageHeight / 2, height:stage.stageHeight}));
 			
 			_hero = new Hero("hero", {x:150});
 			add(_hero);
@@ -59,16 +61,17 @@ package levels {
 			
 			view.camera.setUp(_hero, new MathVector(_ce.stage.stageWidth / 2, _ce.stage.stageHeight / 2), new Rectangle(0, 0, 5000, 6000), new MathVector(0.25, 0.15));
 			
-			imageFilter = Image.fromBitmap(new _horrorPNG());
-			imageFilter.filter = new SpotlightFilter(100, 400);
-			add(new CitrusSprite("test", {view:imageFilter}));
+			var bg:CitrusSprite = add(new CitrusSprite("test", {view:Image.fromBitmap(new _horrorPNG())})) as CitrusSprite;
+			
+			_containerGroupBgLight = view.getArt(bg).parent;
+			_containerGroupBgLight.filter = new SpotlightFilter(100, 400);
 		}
 			
 		override public function update(timeDelta:Number):void {
 			super.update(timeDelta);
 			
-			(imageFilter.filter as SpotlightFilter).centerX = _ce.stage.mouseX;
-			(imageFilter.filter as SpotlightFilter).centerY = _ce.stage.mouseY;
+			(_containerGroupBgLight.filter as SpotlightFilter).centerX = _hero.x;
+			(_containerGroupBgLight.filter as SpotlightFilter).centerY = _hero.y;
 		}
 
 	}
