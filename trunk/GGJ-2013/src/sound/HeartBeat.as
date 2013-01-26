@@ -10,7 +10,10 @@ package sound
 	{
 
 		private var _playbackSpeed:Number = 1;	
-		private var _targetSpeed:Number = 1;	
+		
+		private var _baseSpeed:Number = 3;
+		
+		private var _targetSpeed:Number = _baseSpeed;	
 
 		private var _mp3:Sound;
 		private var _Samples:ByteArray;
@@ -23,6 +26,8 @@ package sound
 		private var _easeFunc:Function;
 		private var _easeTimer:uint = 0;
 		private var _easeDuration:uint = 2048 * 1500;
+		
+		public var onHeartBeat:Signal;
 		
 		/*
 		 * Base clock - 3/4 time signature, 66bpm
@@ -45,7 +50,9 @@ package sound
 		public function HeartBeat()
 		{
 			_easeFunc = Tween_easeOut;
-			_mp3 = new _66bpm34();
+			var s:Sound = new _66bpm34();
+			
+			onHeartBeat = new Signal();
 			
 			_hb1 = new _heartbeat1();
 			_hb2 = new _heartbeat2();
@@ -76,21 +83,14 @@ package sound
 			_phase = 0;
 			_dynamicSound.play();
 			
-			onLoopStart.dispatch();
 		}
 
 		private function onSampleData( event:SampleDataEvent ):void
 		{
 			_Samples.position = 0;
 			
-			var l0:Number;
-			var r0:Number;
-			var l1:Number;
-			var r1:Number;
-			
 			var outputLength:int = 0;
 			var newpos:int;
-			var alpha:Number = _phase - int(_phase);
 			
 			while (outputLength < 2050) { 
 				
@@ -105,9 +105,15 @@ package sound
 					// 3/4 time signature.
 					
 					if (_beat == 0)
+					{
+						onHeartBeat.dispatch(0);
 						_hb1.play();
+					}
 					else if (_beat == 1)
+					{
+						onHeartBeat.dispatch(1);
 						_hb2.play();
+					}
 					
 					(_beat >= 2)? _beat = 0 : _beat++; 
 				}
@@ -121,18 +127,13 @@ package sound
 				
 				newpos = int(_phase) * 8;
 				_Samples.position = newpos;
-				
-				l0 = r0 = l1 = r1 = 0;
 
-				event.data.writeFloat((l0 + alpha * ( l1 - l0 ))* volume);
-				event.data.writeFloat((r0 + alpha * ( r1 - r0 ))* volume);
+				event.data.writeFloat(0);
+				event.data.writeFloat(0);
 				
 				outputLength++;
 
 				_phase += _playbackSpeed;
-				
-				alpha += (_playbackSpeed >= 0) ? _playbackSpeed : -_playbackSpeed;
-				while ( alpha >= 1.0 ) --alpha;
 
 			}
 			
@@ -151,7 +152,7 @@ package sound
 		public function set targetSpeed(value:Number):void
 		{
 			_easeTimer = 0;
-			_targetSpeed = value;
+			_targetSpeed = _baseSpeed + value;
 		}
 		
 		protected function Tween_easeOut(t:Number, b:Number, c:Number, d:Number):Number { t /= d; return -c * t*(t-2) + b; }
