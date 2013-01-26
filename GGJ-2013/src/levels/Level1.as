@@ -156,6 +156,8 @@ package levels {
 			
 			 view.camera.setUp(_hero, new MathVector((stage.stageWidth / 2) ,(stage.stageHeight / 1.5)), new Rectangle(0, 0, 25000, 6000), new MathVector(0.10, 0.15));
 			 _camera = (view.camera as StarlingCamera);
+			 _camera.allowZoom = true;
+			 _camera.zoomEasing = 0.01;
 
 			//_containerGroupBgLight = view.getArt(bg).parent;
 			//_containerGroupBgLight.filter = new SpotlightFilter(100, 400);
@@ -254,6 +256,13 @@ package levels {
 			super.update(timeDelta);
 			
 			trace(_hero.x, _hero.y);
+			
+			// un peu degeu...
+			if (_hero.velocity[0] > 1 || _hero.velocity[1] > 1)
+				_camera.setZoom(0.5);
+			else
+				_camera.setZoom(1);
+			
 			
 			_scrollBackground.tilesOffsetX = -_hero.x / 50;
 			
