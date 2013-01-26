@@ -9,11 +9,9 @@ package sound
 	public class HeartBeat 
 	{
 
-		private var _playbackSpeed:Number = 1;	
+		private var _playbackSpeed:Number = 3;	
 		
-		private var _baseSpeed:Number = 3;
-		
-		private var _targetSpeed:Number = _baseSpeed;	
+		private var _targetSpeed:Number = 3;	
 
 		private var _mp3:Sound;
 		private var _Samples:ByteArray;
@@ -137,7 +135,7 @@ package sound
 		public function set targetSpeed(value:Number):void
 		{
 			_easeTimer = 0;
-			_targetSpeed = _baseSpeed + value;
+			_targetSpeed = value;
 		}
 		
 		protected function Tween_easeOut(t:Number, b:Number, c:Number, d:Number):Number { t /= d; return -c * t*(t-2) + b; }
