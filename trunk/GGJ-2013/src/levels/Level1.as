@@ -120,6 +120,7 @@ package levels {
 			
 			_torche = new CitrusSprite("torche", {view:_particleTorche, offsetY:-40});
 			add(_torche),
+			_ce.sound.playSound("Feu", 0.4);
 
 			_hero = new Hero("hero", {x:14000, radius:30});
 			_hero.maxVelocity = 180;
@@ -151,9 +152,6 @@ package levels {
 			
 			_HeartBeat = new HeartBeat();
 			_HeartBeat.targetSpeed = 1;
-			
-			_ce.sound.addSound("HB1", "HeartBeat1.mp3");
-			_ce.sound.addSound("HB2", "HeartBeat2.mp3");
 			_HeartBeat.onHeartBeat.add(handleHeartBeat);
 			
 			_ce.sound.addSound("background music", "Intro80.mp3");
