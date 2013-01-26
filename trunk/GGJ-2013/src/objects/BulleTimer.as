@@ -58,13 +58,17 @@ package objects {
 					(Collider as Hero).velocity = [0, 0];
 					_ce.input.startRouting(666);
 					
-					a.animation.gotoAndPlay("lever");
+					//a.animation.gotoAndPlay("lever");
 					
 					setTimeout(function():void {
 						_ce.input.stopRouting();
-						a.animation.gotoAndPlay("baisser");
 					}, 500);
-					setTimeout(killObject, 5000);
+					
+					setTimeout(function():void 
+					{
+						//a.animation.gotoAndPlay("baisser");
+						killObject();
+					}, 5000);
 				}
 			}
 
