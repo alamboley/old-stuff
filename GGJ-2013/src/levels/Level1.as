@@ -301,7 +301,7 @@ package levels
 			//trace(_hero.x, _hero.y);
 			
 			
-			//test
+			//test - a l'approche de l'ours.
 			if (_hero.x < 2880)
 			{
 				_camera.target = {x:2450,y:_hero.y };
