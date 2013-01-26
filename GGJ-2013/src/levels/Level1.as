@@ -302,10 +302,16 @@ package levels
 			
 			
 			//test
-			if (_hero.x < 2900)
+			if (_hero.x < 2880)
+			{
+				_camera.target = {x:2450,y:_hero.y };
 				_HeartBeat.targetSpeed = 7;
+			}
 			else
+			{
+				_camera.target = _hero;
 				_HeartBeat.targetSpeed = 3;
+			}
 				
 			
 			_particleTorche.emitterX = _hero.inverted ? _hero.x - 18 : _hero.x + 18;
