@@ -1,5 +1,6 @@
 package objects {
 
+	import citrus.objects.NapePhysicsObject;
 	import flash.utils.setTimeout;
 	import citrus.objects.platformer.nape.Coin;
 	import citrus.objects.CitrusSprite;
@@ -29,13 +30,9 @@ package objects {
 		protected var _tf:TextField;
 		
 		protected var _readed:Boolean = false;
-		
-		public var onBeginContactWithHero:Signal;
 
 		public function BulleTimer(name:String, params:Object = null) {
 			super(name, params);
-			
-			onBeginContactWithHero = new Signal();
 			
 			_tf = new TextField(400, 200, text, "ArialMT");
 			_tf.alpha = 0;
@@ -52,11 +49,14 @@ package objects {
 			super.handleBeginContact(interactionCallback);
 			
 			if (!_readed) {
-
-				if (NapeUtils.CollisionGetOther(this, interactionCallback) is Hero) {
+					var Collider:NapePhysicsObject = NapeUtils.CollisionGetOther(this, interactionCallback);
+				if (Collider is Hero) {
 					TweenNano.to(_tf, 0.4, {alpha:1});
 					_readed = _readed;
-					onBeginContactWithHero.dispatch();
+					
+					(Collider as Hero).velocity = [0, 0];
+					_ce.input.startRouting(666);
+					
 					setTimeout(killObject, 5000);
 				}
 			}
@@ -64,7 +64,7 @@ package objects {
 		}
 
 		private function killObject():void {
-			
+			_ce.input.stopRouting();
 			kill = true;
 		}
 
