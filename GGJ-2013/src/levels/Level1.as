@@ -41,6 +41,8 @@ package levels
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 	
+	import starling.display.BlendMode;
+	
 	/**
 	 * @author Aymeric
 	 */
@@ -195,6 +197,9 @@ package levels
 			lightSpot.view.scaleX = lightSpot.view.scaleY = 0.7;
 			
 			TweenLite.to(lightSpot.view, 0.7, {alpha: 0.8, repeat: -1, yoyo: true});
+			
+			//- a tester sur mobile.
+			(lightSpot.view as Image).blendMode = BlendMode.SCREEN;
 			
 			add(lightSpot);
 			
