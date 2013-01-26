@@ -1,17 +1,19 @@
-package objects {
+package objects
+{ 
 
 	import citrus.objects.NapePhysicsObject;
 	import citrus.objects.platformer.nape.Hero;
+	import nape.callbacks.CbType;
+	import nape.phys.Material;
 
 	import nape.geom.Vec2;
 	import nape.phys.Body;
 	import nape.phys.BodyType;
-	import nape.phys.Material;
 	import nape.shape.Polygon;
 
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
-
+	 
 	/**
 	 * This class creates perpetual hills like games Tiny Wings, Ski Safari...
 	 * Write a class to manage graphics, and extends this one to call graphics function.
@@ -82,62 +84,11 @@ package objects {
 
 		public function Hills(name:String, params:Object = null) {
 			
-			_timer = new Timer(2000);
-			_timer.start();
-			
-			_timer.addEventListener(TimerEvent.TIMER, _onTick);
+		
 			
 			super(name, params);
 		}
 
-		private function _onTick (tEvt:TimerEvent):void {
-			
-			//timer + body position
-			
-			//if (rider.x < 10000) {
-			
-				_modifiedTimerCount = Math.random() > 0.5 ? 90 : -60;
-				
-				//_modifiedTimerCount = _timer.currentCount*10;
-				_slicesInCurrentHill = 10;
-				
-			/*} else if (rider.x < 20000) {
-				
-				_modifiedTimerCount = -_timer.currentCount +10;
-				
-			} else if (rider.x < 30000) {
-				
-				_modifiedTimerCount = _modifiedTimerCount < 10 ? 10 : ++_modifiedTimerCount;
-				_slicesInCurrentHill = 50;
-				
-			} else {
-				
-				_modifiedTimerCount = Math.random() > 0.5 ? 10 : -10;
-				_slicesInCurrentHill = Math.random() * 20;
-			}*/
-			
-			//timer only			
-			/*if (_timer.currentCount < 10) {
-				
-				_modifiedTimerCount = _timer.currentCount;
-				_slicesInCurrentHill = 20;
-				
-			} else if (_timer.currentCount < 20) {
-				
-				_modifiedTimerCount = -_timer.currentCount +10;
-				
-			} else if (_timer.currentCount < 30) {
-				
-				_modifiedTimerCount = _modifiedTimerCount < 10 ? 10 : ++_modifiedTimerCount;
-				_slicesInCurrentHill = 50;
-				
-			} else {
-				
-				_modifiedTimerCount = Math.random() > 0.5 ? 10 : -10;
-				_slicesInCurrentHill = Math.random() * 20;
-			}*/
-						
-		}
 			
 		override public function initialize(poolObjectParams:Object = null):void {
 			
@@ -148,9 +99,7 @@ package objects {
 			
 		override public function destroy ():void {
 			
-			_timer.stop();
-			_timer.removeEventListener(TimerEvent.TIMER, _onTick);
-			
+			 
 			super.destroy();
 		}
 		
@@ -316,7 +265,7 @@ package objects {
 				if (_back)
 					_prevBack = true; 
 				
-				_deleteHill(_back ? _slices.length - 1 : 0);
+				// _deleteHill(_back ? _slices.length - 1 : 0);
 				_createSlice();
 			}
 		}
@@ -335,7 +284,7 @@ package objects {
 			
 			super.update(timeDelta);
 			
-			_checkHills();
+			//_checkHills();
 		}
 		
 		/**

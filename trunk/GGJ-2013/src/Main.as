@@ -4,10 +4,14 @@ package {
 
 	import levels.Level1;
 
+	import objects.Hills;
+
 	import starling.events.Event;
 	import starling.utils.AssetManager;
 
 	import flash.filesystem.File;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 
 	[SWF(backgroundColor="#000000", frameRate="60", width="1024", height="768")]
 
@@ -41,7 +45,28 @@ package {
 					state = new GameState();
 				}
 			});*/
-
+			
+			 loadXMLFile("level.xml");
+		}
+		
+		private function loadXMLFile(level:String):void
+		{
+			
+			var loader:URLLoader = new URLLoader(new URLRequest(level));
+			loader.addEventListener(Event.COMPLETE, levelLOADED);
+		}
+				
+		private function levelLOADED(e:Object):void
+		{
+			var _xml:XML;
+			e.target.removeEventListener(Event.COMPLETE, levelLOADED);
+			_xml = XML(e.currentTarget.data);
+			
+			var base:String = _xml.base.path;
+			Hills._pointsY = base.split(',');
+			
+			//GameVARS.LevelWidth = Hills._pointsY.length;
+			
 			state = new Level1();
 		}
 
