@@ -6,6 +6,7 @@ package objects {
 	import citrus.objects.platformer.nape.Hero;
 	import citrus.objects.platformer.nape.Sensor;
 	import citrus.physics.nape.NapeUtils;
+	import org.osflash.signals.Signal;
 
 	import nape.callbacks.InteractionCallback;
 
@@ -28,9 +29,13 @@ package objects {
 		protected var _tf:TextField;
 		
 		protected var _readed:Boolean = false;
+		
+		public var onBeginContactWithHero:Signal;
 
 		public function BulleTimer(name:String, params:Object = null) {
 			super(name, params);
+			
+			onBeginContactWithHero = new Signal();
 			
 			_tf = new TextField(400, 200, text, "ArialMT");
 			_tf.alpha = 0;
@@ -51,7 +56,7 @@ package objects {
 				if (NapeUtils.CollisionGetOther(this, interactionCallback) is Hero) {
 					TweenNano.to(_tf, 0.4, {alpha:1});
 					_readed = _readed;
-					
+					onBeginContactWithHero.dispatch();
 					setTimeout(killObject, 5000);
 				}
 			}
