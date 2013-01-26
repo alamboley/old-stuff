@@ -200,22 +200,22 @@
   </items>
   <items>
     <posx>11658</posx>
-    <posy>435</posy>
-    <obj>1</obj>
+    <posy>465</posy>
+    <obj>2</obj>
   </items>
   <items>
     <posx>9961</posx>
     <posy>1255</posy>
-    <obj>1</obj>
+    <obj>3</obj>
   </items>
   <items>
     <posx>7205</posx>
     <posy>1308</posy>
-    <obj>1</obj>
+    <obj>4</obj>
   </items>
   <items>
     <posx>3334</posx>
     <posy>1689</posy>
-    <obj>1</obj>
+    <obj>5</obj>
   </items>
 </xml>

@@ -1,6 +1,5 @@
 package levels {
 
-	import starling.display.BlendMode;
 	import citrus.core.CitrusEngine;
 	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
@@ -12,6 +11,7 @@ package levels {
 	import dragonBones.Armature;
 	import dragonBones.factorys.StarlingFactory;
 
+	import objects.BulleTimer;
 	import objects.Hills;
 	import objects.HillsTexture;
 
@@ -22,6 +22,7 @@ package levels {
 	import starling.display.Sprite;
 	import starling.extensions.krecha.ScrollImage;
 	import starling.extensions.krecha.ScrollTile;
+	import starling.extensions.particles.PDParticleSystem;
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
 	import starling.textures.Texture;
@@ -56,8 +57,14 @@ package levels {
 
 		private var _containerGroupBgLight:Sprite;
 
-		[Embed(source="/../embed/filette.png",mimeType="application/octet-stream")]
+		[Embed(source="/../embed/fillette.png",mimeType="application/octet-stream")]
 		private const _ResourcesData:Class;
+		
+		[Embed(source="/../embed/torche.pex", mimeType="application/octet-stream")]
+		private var _torchePex:Class;
+
+		[Embed(source="/../embed/texture.png")]
+		private var _particlePng:Class;
 
 		private var _armature:Armature;
 		private var _factory:StarlingFactory;
@@ -71,6 +78,9 @@ package levels {
 		private var lightSpot:CitrusSprite;
 		
 		private var _HeartBeat:HeartBeat;
+		
+		private var _particleTorche:PDParticleSystem;
+		private var _torche:CitrusSprite;
 
 		public function Level1() {
 			super();
@@ -99,6 +109,15 @@ package levels {
 			//_physics.visible = true;
 			_physics.timeStep = 1 / 30;
 			add(_physics);
+			
+			var psconfig:XML = new XML(new _torchePex());
+			var psTexture:Texture = Texture.fromBitmap(new _particlePng());
+
+			_particleTorche = new PDParticleSystem(psconfig, psTexture);
+			_particleTorche.start();
+			
+			_torche = new CitrusSprite("torche", {view:_particleTorche, offsetY:-40});
+			add(_torche),
 
 			_hero = new Hero("hero", {x:14000, radius:30});
 			_hero.maxVelocity = 180;
@@ -135,6 +154,9 @@ package levels {
 			_ce.sound.addSound("HB2", "HeartBeat2.mp3");
 			_HeartBeat.onHeartBeat.add(handleHeartBeat);
 			
+			_ce.sound.addSound("background music", "Intro80.mp3");
+			_ce.sound.playSound("background music");
+			
 			createDECOR();
 			
 			var decor:CitrusSprite = new CitrusSprite("Decor", {parallax: 1, view: ImageDECOR,group:1});
@@ -146,8 +168,6 @@ package levels {
 			lightSpot.offsetY = -256;
 			
 			add(lightSpot);
-			
-			//view.getArt(lightSpot).blendMode = BlendMode.ADD;
 		}
 		
 		private function createDECOR():void
@@ -161,15 +181,34 @@ package levels {
 			
 			for (var j:int = 0; j < levelItemps.length; j++)
 			{
-				trace("je creer un item "  + levelItemps[j][2]);
-			//	createITEMS(levelItemps[j][0], levelItemps[j][1], levelItemps[j][2]);
+				createITEMS(levelItemps[j][0], levelItemps[j][1], levelItemps[j][2]);
 			}
 			
+		}
+
+		private function createITEMS(x:Number, y:Number, ty:String):void {
+			
+			ty = ty.substr(5);
+			
+			var textBulle:String;
+			
+			if (ty == "1")
+				textBulle = "Je ne pourrai pas aller plus loin.";
+			else if (ty == "2")
+				textBulle = "Je n'ai pas le choix, je dois y aller.";
+			else if (ty == "3")
+				textBulle = "Qu'est ce que je fais ici ?";
+			else if (ty == "4")
+				textBulle = "Je dois rentrer.";
+			else if (ty == "5")
+				textBulle = "Il y a quelque chose là-bas";
+			
+			var coin:BulleTimer = new BulleTimer("coin", {x:x, y:y, width:150, height:150, text:textBulle});
+			add(coin);
 		}
 		
 		private function createPROPS(x:Number, y:Number, ty:String):void
 		{
-			
 			var tm:Image = new Image(AtlasSimple.getAtlas().getTexture(ty));
 			tm.x = x;
 			tm.y = y;
@@ -206,6 +245,9 @@ package levels {
 			//(_containerGroupBgLight.filter as SpotlightFilter).centerY = _hero.y;
 
 			_hillsTexture.update();
+			
+			_torche.x = _hero.inverted ? _hero.x - 25 : _hero.x + 25;
+			_torche.y = _hero.y;
 		}
 
 		override public function destroy():void {
