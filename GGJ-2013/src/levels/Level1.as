@@ -1,5 +1,6 @@
 package levels {
 
+	import starling.display.BlendMode;
 	import citrus.core.CitrusEngine;
 	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
@@ -99,7 +100,7 @@ package levels {
 			_physics.timeStep = 1 / 30;
 			add(_physics);
 
-			_hero = new Hero("hero", {x:1500, radius:30});
+			_hero = new Hero("hero", {x:14000, radius:30});
 			_hero.maxVelocity = 180;
 			_hero.acceleration = 40;
 			_hero.jumpHeight = 460;
@@ -110,7 +111,7 @@ package levels {
 			add(bulle);*/
 
 			_hillsTexture = new HillsTexture();
-			var hills:Hills = new Hills("hills", {currentYPoint:1581, sliceWidth:128, widthHills:stage.stageWidth * 12, registration:"topLeft", view:_hillsTexture});
+			var hills:Hills = new Hills("hills", {currentYPoint:1581, sliceWidth:128, widthHills:stage.stageWidth * 20, registration:"topLeft", view:_hillsTexture});
 			add(hills);
 			
 			_scrollBackground = new ScrollImage(1600, 800);
@@ -140,11 +141,13 @@ package levels {
 			add(decor);
 			decor.x = 128;
 			
-			lightSpot= new CitrusSprite("light", {parallax: 1, view: new Image(AtlasSimple.getAtlas().getTexture("light")),group:1});
+			lightSpot= new CitrusSprite("light", {view: new Image(AtlasSimple.getAtlas().getTexture("light")),group:1});
 			lightSpot.offsetX = -256;
 			lightSpot.offsetY = -256;
 			
 			add(lightSpot);
+			
+			//view.getArt(lightSpot).blendMode = BlendMode.ADD;
 		}
 		
 		private function createDECOR():void
