@@ -125,7 +125,7 @@ package levels {
 			
 			_torche = new CitrusSprite("torche", {view:_particleTorche/*, offsetY:-40*/});
 			add(_torche),
-			_ce.sound.playSound("Feu", 0.4);
+			_ce.sound.playSound("Feu", 0.2);
 
 			_hero = new Hero("hero", {x:14000, radius:30});
 			_hero.maxVelocity = 180;
@@ -177,7 +177,7 @@ package levels {
 			_HeartBeat.onHeartBeat.add(handleHeartBeat);
 			
 			_ce.sound.addSound("background music", "Intro80.mp3");
-			_ce.sound.playSound("background music");
+			_ce.sound.playSound("background music",0.6);
 			
 			createDECOR();
 			
@@ -193,6 +193,11 @@ package levels {
 			TweenLite.to(lightSpot.view, 0.7, {alpha:0.8, repeat:-1, yoyo:true});
 			
 			add(lightSpot);
+			
+			
+			_ce.sound.addSound("HB1", "Heartbeat1.mp3");
+			_ce.sound.addSound("HB2", "Heartbeat2.mp3");
+			_HeartBeat.targetSpeed = 2.5;
 		}
 		
 		private function createDECOR():void
@@ -243,9 +248,14 @@ package levels {
 		private function handleHeartBeat(n:uint):void
 		{
 			if (n)
-				_ce.sound.playSound("HB2",_HeartBeat.volume,0);
+			{
+				_camera.setZoom(1.6);
+				_ce.sound.playSound("HB2", _HeartBeat.volume, 0);
+			}
 			else
+			{
 				_ce.sound.playSound("HB1", _HeartBeat.volume, 0);
+			}
 		}
 
 		private function _textureCompleteHandler(evt:Event):void {
@@ -278,8 +288,9 @@ package levels {
 
 			_hillsTexture.update();
 			
-			_particleTorche.emitterX = _hero.inverted ? _hero.x - 20 : _hero.x + 20;
-			_particleTorche.emitterY = _hero.y - 30;
+			
+			_particleTorche.emitterX = _hero.inverted ? _hero.x - 18 : _hero.x + 18;
+			_particleTorche.emitterY = _hero.y - 35;
 		}
 
 		override public function destroy():void {
