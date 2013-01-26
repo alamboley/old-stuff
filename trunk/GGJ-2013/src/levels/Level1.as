@@ -1,5 +1,6 @@
-package levels {
-
+package levels
+{
+	
 	import citrus.core.CitrusEngine;
 	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
@@ -7,16 +8,16 @@ package levels {
 	import citrus.objects.platformer.nape.Hero;
 	import citrus.physics.nape.Nape;
 	import citrus.view.starlingview.StarlingCamera;
-
+	
 	import dragonBones.Armature;
 	import dragonBones.factorys.StarlingFactory;
-
+	
 	import objects.BulleTimer;
 	import objects.Hills;
 	import objects.HillsTexture;
-
+	
 	import sound.HeartBeat;
-
+	
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -26,53 +27,54 @@ package levels {
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
 	import starling.textures.Texture;
-
+	
 	import ui.Hud;
-
+	
 	import utils.SpotlightFilter;
-
+	
 	import com.greensock.TweenLite;
-
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
-
+	
 	/**
 	 * @author Aymeric
 	 */
-	public class Level1 extends StarlingState {
-
+	public class Level1 extends StarlingState
+	{
+		
 		protected var _ce:CitrusEngine;
 		protected var _physics:Nape;
 		
 		protected var _hud:Hud;
-
+		
 		protected var _hero:Hero;
-
+		
 		private var _hillsTexture:HillsTexture;
-
-		[Embed(source="/../embed/ArialFont.fnt", mimeType="application/octet-stream")]
+		
+		[Embed(source="/../embed/ArialFont.fnt",mimeType="application/octet-stream")]
 		private var _fontConfig:Class;
-
+		
 		[Embed(source="/../embed/ArialFont.png")]
 		private var _fontPng:Class;
-
+		
 		private var _containerGroupBgLight:Sprite;
-
+		
 		[Embed(source="/../embed/fillette.png",mimeType="application/octet-stream")]
 		private const _ResourcesData:Class;
 		
-		[Embed(source="/../embed/torche.pex", mimeType="application/octet-stream")]
+		[Embed(source="/../embed/torche.pex",mimeType="application/octet-stream")]
 		private var _torchePex:Class;
-
+		
 		[Embed(source="/../embed/texture.png")]
 		private var _particlePng:Class;
 		
 		[Embed(source="/../embed/ours.png")]
 		private var _oursPng:Class;
-
+		
 		private var _armature:Armature;
 		private var _factory:StarlingFactory;
 		
@@ -88,15 +90,17 @@ package levels {
 		
 		private var _particleTorche:PDParticleSystem;
 		private var _torche:CitrusSprite;
-
-		public function Level1() {
+		
+		public function Level1()
+		{
 			super();
-
+			
 			_ce = CitrusEngine.getInstance();
 			_ce.stage.focus = _ce.stage;
 		}
-
-		override public function initialize():void {
+		
+		override public function initialize():void
+		{
 			super.initialize();
 			
 			scaleX = GameVars.GameScale;
@@ -106,50 +110,49 @@ package levels {
 			addChild(_hud);
 			_hud.scaleX = GameVars.UpScale;
 			_hud.scaleY = GameVars.UpScale;
-
+			
 			var bitmap:Bitmap = new _fontPng();
 			var ftTexture:Texture = Texture.fromBitmap(bitmap);
 			var ftXML:XML = XML(new _fontConfig());
 			TextField.registerBitmapFont(new BitmapFont(ftTexture, ftXML));
-
+			
 			_physics = new Nape("physics");
-			//_physics.visible = true;
+			_physics.visible = true;
 			_physics.timeStep = 1 / 30;
 			add(_physics);
 			
 			var psconfig:XML = new XML(new _torchePex());
 			var psTexture:Texture = Texture.fromBitmap(new _particlePng());
-
+			
 			_particleTorche = new PDParticleSystem(psconfig, psTexture);
 			_particleTorche.start();
 			
-			_torche = new CitrusSprite("torche", {view:_particleTorche/*, offsetY:-40*/});
-			add(_torche),
-			_ce.sound.playSound("Feu", 0.2);
-
-			_hero = new Hero("hero", {x:14000, radius:30});
+			_torche = new CitrusSprite("torche", {view: _particleTorche /*, offsetY:-40*/});
+			add(_torche), _ce.sound.playSound("Feu", 0.2);
+			
+			_hero = new Hero("hero", {x: 14000, radius: 30});
 			_hero.maxVelocity = 180;
 			_hero.acceleration = 40;
 			_hero.jumpHeight = 460;
 			_hero.jumpAcceleration = 2;
-			add(_hero);			
+			add(_hero);
 			
 			var oursImage:Image = Image.fromBitmap(new _oursPng());
 			oursImage.scaleX = -1;
-			var ours:CitrusSprite = new CitrusSprite("ours", {x:2450, y:1685, view:oursImage});
+			var ours:CitrusSprite = new CitrusSprite("ours", {x: 2450, y: 1685, view: oursImage});
 			add(ours);
-
+			
 			/*var bulle:Bulle = new Bulle("une bulle", {x:250, y:230});
-			add(bulle);*/
-
+			 add(bulle);*/
+			
 			_hillsTexture = new HillsTexture();
-			var hills:Hills = new Hills("hills", {currentYPoint:1581, sliceWidth:128, widthHills:stage.stageWidth * 20, registration:"topLeft", view:_hillsTexture});
+			var hills:Hills = new Hills("hills", {currentYPoint: 1581, sliceWidth: 128, widthHills: stage.stageWidth * 20, registration: "topLeft", view: _hillsTexture});
 			add(hills);
 			
 			_scrollBackground = new ScrollImage(1600, 800);
 			_scrollBackground.addLayer(new ScrollTile(AtlasSimple.getAtlas().getTexture("bg"), true));
 			Starling.current.stage.addChildAt(_scrollBackground, 0);
-						
+			
 			var circle:Shape = new Shape();
 			circle.graphics.beginFill(0xFFFFFF);
 			circle.graphics.drawCircle(5, 5, 5);
@@ -158,16 +161,16 @@ package levels {
 			bmpd.draw(circle, null);
 			
 			//for (var i:uint = 0; i < 30; ++i)
-				//add(new Etoile("gre", {parallax:0, x:Math.random() * 160000, y:Math.random() * 400, view:Image.fromBitmap(new Bitmap(bmpd))}));
+			//add(new Etoile("gre", {parallax:0, x:Math.random() * 160000, y:Math.random() * 400, view:Image.fromBitmap(new Bitmap(bmpd))}));
 			
-			 view.camera.setUp(_hero, new MathVector((stage.stageWidth / 2) ,(stage.stageHeight / 1.5)), new Rectangle(0, 0, 25000, 6000), new MathVector(0.10, 0.15));
-			 _camera = (view.camera as StarlingCamera);
-			 _camera.allowZoom = true;
-			 _camera.zoomEasing = 0.01;
-
+			view.camera.setUp(_hero, new MathVector((stage.stageWidth / 2), (stage.stageHeight / 1.5)), new Rectangle(0, 0, 25000, 6000), new MathVector(0.10, 0.15));
+			_camera = (view.camera as StarlingCamera);
+			_camera.allowZoom = true;
+			_camera.zoomEasing = 0.01;
+			
 			//_containerGroupBgLight = view.getArt(bg).parent;
 			//_containerGroupBgLight.filter = new SpotlightFilter(100, 400);
-
+			
 			_factory = new StarlingFactory();
 			_factory.addEventListener(Event.COMPLETE, _textureCompleteHandler);
 			_factory.parseData(new _ResourcesData());
@@ -177,23 +180,22 @@ package levels {
 			_HeartBeat.onHeartBeat.add(handleHeartBeat);
 			
 			_ce.sound.addSound("background music", "Intro80.mp3");
-			_ce.sound.playSound("background music",0.6);
+			_ce.sound.playSound("background music", 0.6);
 			
 			createDECOR();
 			
-			var decor:CitrusSprite = new CitrusSprite("Decor", {parallax: 1, view: ImageDECOR,group:1});
+			var decor:CitrusSprite = new CitrusSprite("Decor", {parallax: 1, view: ImageDECOR, group: 1});
 			add(decor);
 			decor.x = 128;
 			
-			lightSpot = new CitrusSprite("light", {view: new Image(AtlasSimple.getAtlas().getTexture("light")),group:1});
+			lightSpot = new CitrusSprite("light", {view: new Image(AtlasSimple.getAtlas().getTexture("light")), group: 1});
 			lightSpot.offsetX = -206;
 			lightSpot.offsetY = -216;
-			lightSpot.view.scaleX = lightSpot.view.scaleY = 0.7; 
+			lightSpot.view.scaleX = lightSpot.view.scaleY = 0.7;
 			
-			TweenLite.to(lightSpot.view, 0.7, {alpha:0.8, repeat:-1, yoyo:true});
+			TweenLite.to(lightSpot.view, 0.7, {alpha: 0.8, repeat: -1, yoyo: true});
 			
 			add(lightSpot);
-			
 			
 			_ce.sound.addSound("HB1", "Heartbeat1.mp3");
 			_ce.sound.addSound("HB2", "Heartbeat2.mp3");
@@ -213,10 +215,11 @@ package levels {
 			{
 				createITEMS(levelItemps[j][0], levelItemps[j][1], levelItemps[j][2]);
 			}
-			
+		
 		}
-
-		private function createITEMS(x:Number, y:Number, ty:String):void {
+		
+		private function createITEMS(x:Number, y:Number, ty:String):void
+		{
 			
 			ty = ty.substr(5);
 			
@@ -233,7 +236,7 @@ package levels {
 			else if (ty == "5")
 				textBulle = "Il y a quelque chose là-bas";
 			
-			var coin:BulleTimer = new BulleTimer("coin", {x:x, y:y, width:150, height:150, text:textBulle});
+			var coin:BulleTimer = new BulleTimer("coin", {x: x, y: y, width: 150, height: 150, text: textBulle});
 			add(coin);
 		}
 		
@@ -244,7 +247,7 @@ package levels {
 			tm.y = y;
 			ImageDECOR.addChild(tm);
 		}
-
+		
 		private function handleHeartBeat(n:uint):void
 		{
 			if (n)
@@ -257,18 +260,20 @@ package levels {
 				_ce.sound.playSound("HB1", _HeartBeat.volume, 0);
 			}
 		}
-
-		private function _textureCompleteHandler(evt:Event):void {
+		
+		private function _textureCompleteHandler(evt:Event):void
+		{
 			_factory.removeEventListener(Event.COMPLETE, _textureCompleteHandler);
-
+			
 			_armature = _factory.buildArmature("fillette");
 			(_armature.display as Sprite).scaleX = 0.55;
 			(_armature.display as Sprite).scaleY = 0.55;
-
+			
 			_hero.view = _armature;
 		}
-
-		override public function update(timeDelta:Number):void {
+		
+		override public function update(timeDelta:Number):void
+		{
 			super.update(timeDelta);
 			
 			// un peu degeu...
@@ -277,28 +282,29 @@ package levels {
 			else
 				_camera.setZoom(1);
 			
-			
 			_scrollBackground.tilesOffsetX = -_hero.x / 50;
 			
 			lightSpot.x = _hero.x;
 			lightSpot.y = _hero.y;
-
+			
 			//(_containerGroupBgLight.filter as SpotlightFilter).centerX = _hero.x;
 			//(_containerGroupBgLight.filter as SpotlightFilter).centerY = _hero.y;
-
+			
 			_hillsTexture.update();
 			
+			//trace(_hero.x, _hero.y);
 			
 			_particleTorche.emitterX = _hero.inverted ? _hero.x - 18 : _hero.x + 18;
 			_particleTorche.emitterY = _hero.y - 35;
 		}
-
-		override public function destroy():void {
-
+		
+		override public function destroy():void
+		{
+			
 			TextField.unregisterBitmapFont("ArialMT");
-
+			
 			super.destroy();
 		}
-
+	
 	}
 }
