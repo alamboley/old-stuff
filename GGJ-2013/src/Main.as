@@ -10,7 +10,7 @@ package {
 	import starling.events.Event;
 	import starling.utils.AssetManager;
 
-	import flash.filesystem.File;
+	//import flash.filesystem.File;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 
@@ -36,7 +36,7 @@ package {
 
 			assets = new AssetManager();
 
-			var appDir:File = File.applicationDirectory;
+			//var appDir:File = File.applicationDirectory;
 
 			// appDir.resolvePath(formatString("textures/{0}x", scaleFactor))
 			/*assets.enqueue(appDir.resolvePath("assets/1x"));

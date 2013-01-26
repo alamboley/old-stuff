@@ -6,6 +6,7 @@ package levels {
 	import citrus.objects.CitrusSprite;
 	import citrus.objects.platformer.nape.Hero;
 	import citrus.physics.nape.Nape;
+	import sound.HeartBeat;
 
 	import dragonBones.Armature;
 	import dragonBones.factorys.StarlingFactory;
@@ -54,6 +55,8 @@ package levels {
 
 		private var _armature:Armature;
 		private var _factory:StarlingFactory;
+		
+		private var _HeartBeat:HeartBeat;
 
 		public function Level1() {
 			super();
@@ -99,6 +102,20 @@ package levels {
 			_factory = new StarlingFactory();
 			_factory.addEventListener(Event.COMPLETE, _textureCompleteHandler);
 			_factory.parseData(new _ResourcesData());
+			
+			
+			_HeartBeat = new HeartBeat();
+			_ce.sound.addSound("HB1", "HeartBeat1.mp3");
+			_ce.sound.addSound("HB2", "HeartBeat2.mp3");
+			_HeartBeat.onHeartBeat.add(handleHeartBeat);
+		}
+
+		private function handleHeartBeat(n:uint):void
+		{
+			if (n)
+				_ce.sound.playSound("HB2",_HeartBeat.volume,0);
+			else
+				_ce.sound.playSound("HB1", _HeartBeat.volume, 0);
 		}
 
 		private function _textureCompleteHandler(evt:Event):void {
