@@ -6,6 +6,7 @@ package {
 
 	import objects.Hills;
 
+	import starling.core.Starling;
 	import starling.events.Event;
 	import starling.utils.AssetManager;
 
@@ -24,7 +25,9 @@ package {
 
 		public function Main() {
 			super();
-
+			
+			Starling.multitouchEnabled = true;
+			
 			setUpStarling(true);
 		}
 
