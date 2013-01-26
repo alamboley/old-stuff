@@ -16,7 +16,7 @@ package {
 
 	// import flash.filesystem.File;
 
-	[SWF(backgroundColor="#000000", frameRate="60", width="1024", height="768")]
+	[SWF(backgroundColor="#000000", frameRate="60")]
 
 	/**
 	 * @author Aymeric
