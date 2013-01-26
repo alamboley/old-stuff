@@ -104,6 +104,7 @@ package levels {
 			_hero.acceleration = 40;
 			_hero.jumpHeight = 460;
 			_hero.jumpAcceleration = 2;
+			add(_hero);
 
 			/*var bulle:Bulle = new Bulle("une bulle", {x:250, y:230});
 			add(bulle);*/
@@ -188,8 +189,6 @@ package levels {
 			(_armature.display as Sprite).scaleY = 0.55;
 
 			_hero.view = _armature;
-
-			add(_hero);
 		}
 
 		override public function update(timeDelta:Number):void {
