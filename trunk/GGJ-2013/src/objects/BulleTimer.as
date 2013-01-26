@@ -56,7 +56,7 @@ package objects {
 					
 					(Collider as Hero).velocity = [0, 0];
 					_ce.input.startRouting(666);
-					
+					setTimeout(_ce.input.stopRouting, 500);
 					setTimeout(killObject, 2000);
 				}
 			}
@@ -64,7 +64,6 @@ package objects {
 		}
 
 		private function killObject():void {
-			_ce.input.stopRouting();
 			kill = true;
 		}
 
