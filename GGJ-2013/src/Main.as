@@ -28,6 +28,10 @@ package {
 		public function Main() {
 			super();
 			
+			sound.addSound("HB1", "HeartBeat1.mp3");
+			sound.addSound("HB2", "HeartBeat2.mp3");
+			sound.addSound("Feu", "Feu.mp3");
+			
 			Starling.multitouchEnabled = true;
 			Starling.handleLostContext = true;
 			
