@@ -23,7 +23,7 @@ package sound
 		
 		private var _easeFunc:Function;
 		private var _easeTimer:uint = 0;
-		private var _easeDuration:uint = 2048 * 1500;
+		private var _easeDuration:uint = 2048 * 1500 * 2;
 		
 		public var onHeartBeat:Signal;
 		
