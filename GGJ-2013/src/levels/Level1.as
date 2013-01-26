@@ -9,6 +9,7 @@ package levels
 	import citrus.objects.platformer.nape.Platform;
 	import citrus.physics.nape.Nape;
 	import citrus.view.starlingview.StarlingCamera;
+	import nape.geom.Vec2;
 	
 	import dragonBones.Armature;
 	import dragonBones.factorys.StarlingFactory;
@@ -122,6 +123,7 @@ package levels
 			_physics = new Nape("physics");
 			//_physics.visible = true;
 			_physics.timeStep = 1 / 30;
+			_physics.gravity = new Vec2(0, 150);
 			add(_physics);
 			
 			var psconfig:XML = new XML(new _torchePex());
@@ -134,9 +136,9 @@ package levels
 			add(_torche), _ce.sound.playSound("Feu", 0.05);
 			
 			_hero = new Hero("hero", {x: 14000, radius: 30});
-			_hero.maxVelocity = 180;
-			_hero.acceleration = 40;
-			_hero.jumpHeight = 460;
+			_hero.maxVelocity = 85;
+			_hero.acceleration = 25;
+			_hero.jumpHeight = 220;
 			_hero.jumpAcceleration = 2;
 			add(_hero);
 			
