@@ -1,5 +1,9 @@
 package levels {
 
+	import objects.Etoile;
+	import flash.display.Shape;
+	import flash.display.BitmapData;
+	import flash.display.Graphics;
 	import citrus.core.CitrusEngine;
 	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
@@ -139,7 +143,17 @@ package levels {
 			_scrollBackground = new ScrollImage(1600, 800);
 			_scrollBackground.addLayer(new ScrollTile(AtlasSimple.getAtlas().getTexture("bg"), true));
 			Starling.current.stage.addChildAt(_scrollBackground, 0);
-
+						
+			var circle:Shape = new Shape();
+			circle.graphics.beginFill(0xFFFFFF);
+			circle.graphics.drawCircle(5, 5, 5);
+			
+			var bmpd:BitmapData = new BitmapData(10, 10, true, 0x000000);
+			bmpd.draw(circle, null);
+			
+			//for (var i:uint = 0; i < 30; ++i)
+				//add(new Etoile("gre", {parallax:0, x:Math.random() * 160000, y:Math.random() * 400, view:Image.fromBitmap(new Bitmap(bmpd))}));
+			
 			 view.camera.setUp(_hero, new MathVector((stage.stageWidth / 2) ,(stage.stageHeight / 1.5)), new Rectangle(0, 0, 25000, 6000), new MathVector(0.10, 0.15));
 			 _camera = (view.camera as StarlingCamera);
 
@@ -238,6 +252,8 @@ package levels {
 
 		override public function update(timeDelta:Number):void {
 			super.update(timeDelta);
+			
+			trace(_hero.x, _hero.y);
 			
 			_scrollBackground.tilesOffsetX = -_hero.x / 50;
 			

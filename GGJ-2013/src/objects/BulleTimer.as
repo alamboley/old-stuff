@@ -52,7 +52,7 @@ package objects {
 					TweenNano.to(_tf, 0.4, {alpha:1});
 					_readed = _readed;
 					
-					setTimeout(killObject, 5000)
+					setTimeout(killObject, 5000);
 				}
 			}
 
