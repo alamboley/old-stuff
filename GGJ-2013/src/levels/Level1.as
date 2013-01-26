@@ -246,12 +246,6 @@ package levels
 				textBulle = "Il y a quelque chose là-bas";
 			
 			var CoinObject:BulleTimer = new BulleTimer("coin", {x: x, y: y, width: 150, height: 150, text: textBulle});
-			
-			//arreter le hero pour lire le text.
-			CoinObject.onBeginContactWithHero.add(function():void { 
-				_hero.velocity = [0, 0];  
-				_ce.input.resetActions();
-				} );
 				
 			add(CoinObject);
 		}
