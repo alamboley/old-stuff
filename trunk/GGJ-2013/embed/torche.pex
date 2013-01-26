@@ -3,7 +3,7 @@
   <sourcePosition x="300.00" y="300.00"/>
   <sourcePositionVariance x="0" y="0"/>
   <speed value="130"/>
-  <speedVariance value="30"/>
+  <speedVariance value="0"/>
   <particleLifeSpan value="0.33"/>
   <particleLifespanVariance value="0"/>
   <angle value="270"/>
@@ -15,13 +15,13 @@
   <tangentialAccelVariance value="0.00"/>
   <startColor red="1" green="0.31" blue="0" alpha="0.62"/>
   <startColorVariance red="0" green="0" blue="0" alpha="0"/>
-  <finishColor red="0.67" green="0" blue="0" alpha="0.14"/>
+  <finishColor red="1" green="0" blue="0" alpha="0.24"/>
   <finishColorVariance red="0" green="0" blue="0" alpha="0"/>
   <maxParticles value="118.53"/>
   <startParticleSize value="52.2"/>
   <startParticleSizeVariance value="0.65"/>
-  <finishParticleSize value="0"/>
-  <FinishParticleSizeVariance value="46.67"/>
+  <finishParticleSize value="40.12"/>
+  <FinishParticleSizeVariance value="3.33"/>
   <duration value="-1.00"/>
   <emitterType value="0"/>
   <maxRadius value="0"/>
