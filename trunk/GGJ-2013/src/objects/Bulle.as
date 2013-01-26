@@ -27,24 +27,23 @@ package objects {
 
 		public function Bulle(name:String, params:Object = null) {
 			super(name, params);
+			
+			_tf = new TextField(400, 200, text, "ArialMT");
+			_tf.alpha = 0;
+			_tf.fontSize = BitmapFont.NATIVE_SIZE;
+			_tf.color = Color.WHITE;
+			_tf.autoScale = true;
+			_tf.hAlign = HAlign.LEFT;
+			
+			_bulle = new CitrusSprite("bulle", {group:1, x:_x + 30, y:_y - 130, view:_tf});
+			_ce.state.add(_bulle);
 		}
 
 		override public function handleBeginContact(interactionCallback:InteractionCallback):void {
 			super.handleBeginContact(interactionCallback);
 
 			if (NapeUtils.CollisionGetOther(this, interactionCallback) is Hero) {
-
-				_tf = new TextField(400, 200, text, "ArialMT");
-				_tf.alpha = 0;
-				_tf.fontSize = BitmapFont.NATIVE_SIZE;
-				_tf.color = Color.WHITE;
-				_tf.autoScale = true;
-				_tf.hAlign = HAlign.LEFT;
-				
-				_bulle = new CitrusSprite("bulle", {group:1, x:_x + 30, y:_y - 130, view:_tf});
-				_ce.state.add(_bulle);
-
-				 TweenNano.to(_tf, 0.4, {alpha:1});
+				TweenNano.to(_tf, 0.4, {alpha:1});
 			}
 
 		}
