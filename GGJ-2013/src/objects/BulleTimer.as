@@ -57,7 +57,7 @@ package objects {
 					(Collider as Hero).velocity = [0, 0];
 					_ce.input.startRouting(666);
 					
-					setTimeout(killObject, 5000);
+					setTimeout(killObject, 2000);
 				}
 			}
 
