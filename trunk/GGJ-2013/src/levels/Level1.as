@@ -132,7 +132,7 @@ package levels
 			_particleTorche.start();
 			
 			_torche = new CitrusSprite("torche", {view: _particleTorche /*, offsetY:-40*/});
-			add(_torche), _ce.sound.playSound("Feu", 0.2);
+			add(_torche), _ce.sound.playSound("Feu", 0.05);
 			
 			_hero = new Hero("hero", {x: 14000, radius: 30});
 			_hero.maxVelocity = 180;
@@ -263,10 +263,10 @@ package levels
 			if (n)
 			{
 				_camera.setZoom(0.6*_HeartBeat.currentSpeed);
-				_ce.sound.playSound("HB2", _HeartBeat.volume, 0);
+				_ce.sound.playSound("HB2", _HeartBeat.volume, 0, -0.9);
 			}
 			else
-				_ce.sound.playSound("HB1", _HeartBeat.volume, 0);
+				_ce.sound.playSound("HB1", _HeartBeat.volume, 0, 1.1);
 		}
 		
 		private function _textureCompleteHandler(evt:Event):void
