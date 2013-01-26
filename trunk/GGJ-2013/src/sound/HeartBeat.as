@@ -19,7 +19,7 @@ package sound
 		private var _phase:Number;
 		private var _numSamples:int;
 		
-		public var volume:Number = 0.7;
+		public var volume:Number = 1;
 		
 		private var _easeFunc:Function;
 		private var _easeTimer:uint = 0;
