@@ -26,10 +26,10 @@ com.powerflasher.fdt.core.mobile.Android.ICON.PATH.36x36=
 com.powerflasher.fdt.core.mobile.Android.ICON.PATH.48x48=
 com.powerflasher.fdt.core.mobile.Android.ICON.PATH.72x72=
 com.powerflasher.fdt.core.mobile.Android.MOBILE.DESCRIPTOR=bin/GGJ-2013-app.xml
-com.powerflasher.fdt.core.mobile.Android.PACKAGE.CONTENT=bin/GGJ-2013-app.xml > GGJ-2013-app.xml;bin/GGJ-2013.swf > GGJ-2013.swf;
-com.powerflasher.fdt.core.mobile.Android.SIGNATURE.CERTIFICATE=
-com.powerflasher.fdt.core.mobile.Android.SIGNATURE.PWD=HZsdm2UDN/4\=
-com.powerflasher.fdt.core.mobile.Android.SIGNATURE.REMEMBER.PWD=false
+com.powerflasher.fdt.core.mobile.Android.PACKAGE.CONTENT=bin/GGJ-2013-app.xml > GGJ-2013-app.xml;bin/GGJ-2013.swf > GGJ-2013.swf;bin/level.xml > level.xml;
+com.powerflasher.fdt.core.mobile.Android.SIGNATURE.CERTIFICATE=../../../../Dropbox/Personnel/clefs/Android/certificat.p12
+com.powerflasher.fdt.core.mobile.Android.SIGNATURE.PWD=r/XYcCk+0ErBV25oLjMG8w\=\=
+com.powerflasher.fdt.core.mobile.Android.SIGNATURE.REMEMBER.PWD=true
 com.powerflasher.fdt.core.mobile.Android.SWFPATH=
 com.powerflasher.fdt.core.mobile.iOS.ACTIVE=true
 com.powerflasher.fdt.core.mobile.iOS.AVAILABLE.EXTENSIONS=

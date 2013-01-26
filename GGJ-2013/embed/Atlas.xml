@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:c507850dca9a4e1c00e488c8f5519912$ -->
+<TextureAtlas imagePath="Atlas.png">
+    <SubTexture name="bg" x="1" y="902" width="803" height="800"/>
+    <SubTexture name="btACTION" x="430" y="1854" width="148" height="150" frameX="-1" frameY="0" frameWidth="150" frameHeight="150"/>
+    <SubTexture name="btJUMP" x="430" y="1703" width="148" height="150" frameX="-1" frameY="0" frameWidth="150" frameHeight="150"/>
+    <SubTexture name="btLEFT" x="281" y="1854" width="148" height="150" frameX="-1" frameY="0" frameWidth="150" frameHeight="150"/>
+    <SubTexture name="btRIGHT" x="281" y="1703" width="148" height="150" frameX="-1" frameY="0" frameWidth="150" frameHeight="150"/>
+    <SubTexture name="light" x="579" y="1" width="512" height="512"/>
+    <SubTexture name="props1" x="579" y="1824" width="147" height="81" frameX="-5" frameY="-4" frameWidth="155" frameHeight="85"/>
+    <SubTexture name="props2" x="130" y="1" width="448" height="518" frameX="0" frameY="-34" frameWidth="452" frameHeight="552"/>
+    <SubTexture name="props3" x="1479" y="1" width="322" height="480" frameX="-13" frameY="-72" frameWidth="340" frameHeight="552"/>
+    <SubTexture name="props4" x="1092" y="1" width="386" height="446" frameX="-1" frameY="-106" frameWidth="388" frameHeight="552"/>
+    <SubTexture name="props5" x="579" y="1703" width="366" height="120" frameX="0" frameY="-432" frameWidth="366" frameHeight="552"/>
+    <SubTexture name="props6" x="1" y="1703" width="279" height="316" frameX="-2" frameY="-30" frameWidth="283" frameHeight="346"/>
+    <SubTexture name="troncon" x="1" y="1" width="128" height="900"/>
+</TextureAtlas>

@@ -207,5 +207,8 @@
     <requestedDisplayResolution>high</requestedDisplayResolution>
   </iPhone>
   <supportedProfiles>desktop extendedDesktop mobileDevice extendedMobileDevice</supportedProfiles>
+  <android>
+    <manifestAdditions><![CDATA[<manifest />]]></manifestAdditions>
+  </android>
 </application>
 
