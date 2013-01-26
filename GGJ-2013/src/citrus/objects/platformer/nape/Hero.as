@@ -249,14 +249,14 @@ package citrus.objects.platformer.nape {
 				
 				_ducking = (_ce.input.isDoing("duck", inputChannel) && _onGround && canDuck);
 				
-				if (_ce.input.isDoing("right", inputChannel)  && !_ducking || _hud.rightTouched)
+				if (( _ce.input.isDoing("right", inputChannel) || _hud.rightTouched) && !_ducking)
 				{
 					//velocity.addeq(getSlopeBasedMoveAngle());
 					velocity.x += acceleration;
 					moveKeyPressed = true;
 				}
 				
-				if (_ce.input.isDoing("left", inputChannel) && !_ducking || _hud.leftTouched)
+				if ((_ce.input.isDoing("left", inputChannel) || _hud.leftTouched) && !_ducking || _hud.leftTouched)
 				{
 					//velocity.subeq(getSlopeBasedMoveAngle());
 					velocity.x -= acceleration;

@@ -99,7 +99,7 @@ package levels {
 			_physics.timeStep = 1 / 30;
 			add(_physics);
 
-			_hero = new Hero("hero", {x:1500, radius:50});
+			_hero = new Hero("hero", {x:1500, radius:30});
 			_hero.maxVelocity = 180;
 			_hero.acceleration = 40;
 			_hero.jumpHeight = 460;
