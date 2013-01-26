@@ -65,12 +65,12 @@ package levels {
 			add(_physics);			
 
 			add(new Platform("border left", {y:stage.stageHeight / 2, height:stage.stageHeight}));
-			//add(new Platform("border left", {x:stage.stageWidth / 2, width:stage.stageWidth, y:250}));
+			//add(new Platform("border middle de test", {x:stage.stageWidth / 2, width:stage.stageWidth, y:250}));
 			
 			_hero = new Hero("hero", {x:150});
 			add(_hero);
 			
-			/*var bulle:Bulle = new Bulle("gre", {x:250, y:230});
+			/*var bulle:Bulle = new Bulle("une bulle", {x:250, y:230});
 			add(bulle);*/
 			
 			_hillsTexture = new HillsTexture();
