@@ -117,7 +117,7 @@ package levels
 			TextField.registerBitmapFont(new BitmapFont(ftTexture, ftXML));
 			
 			_physics = new Nape("physics");
-			_physics.visible = true;
+			//_physics.visible = true;
 			_physics.timeStep = 1 / 30;
 			add(_physics);
 			
@@ -179,7 +179,7 @@ package levels
 			_HeartBeat.targetSpeed = 1;
 			_HeartBeat.onHeartBeat.add(handleHeartBeat);
 			
-			_ce.sound.addSound("background music", "Intro80.mp3");
+			_ce.sound.addSound("background music", "Introtest.mp3");
 			_ce.sound.playSound("background music", 0.6);
 			
 			createDECOR();
@@ -294,13 +294,16 @@ package levels
 			
 			
 			//test
-			if (_hero.x < 2954)
+			if (_hero.x < 2700)
 			{
 				_camera.target = { x:2308, y:1808 };
-				_HeartBeat.targetSpeed = 6;
+				_HeartBeat.targetSpeed = 7;
 			}
 			else
+			{
 				_camera.target = _hero;
+				_HeartBeat.targetSpeed = 3;
+			}
 				
 			
 			_particleTorche.emitterX = _hero.inverted ? _hero.x - 18 : _hero.x + 18;
