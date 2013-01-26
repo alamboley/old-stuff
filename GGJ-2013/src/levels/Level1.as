@@ -6,6 +6,7 @@ package levels
 	import citrus.math.MathVector;
 	import citrus.objects.CitrusSprite;
 	import citrus.objects.platformer.nape.Hero;
+	import citrus.objects.platformer.nape.Platform;
 	import citrus.physics.nape.Nape;
 	import citrus.view.starlingview.StarlingCamera;
 	
@@ -117,7 +118,7 @@ package levels
 			TextField.registerBitmapFont(new BitmapFont(ftTexture, ftXML));
 			
 			_physics = new Nape("physics");
-			//_physics.visible = true;
+			_physics.visible = true;
 			_physics.timeStep = 1 / 30;
 			add(_physics);
 			
@@ -200,6 +201,8 @@ package levels
 			_ce.sound.addSound("HB1", "Heartbeat1.mp3");
 			_ce.sound.addSound("HB2", "Heartbeat2.mp3");
 			_HeartBeat.targetSpeed = 2.5;
+			
+			add(new Platform("murOurs", { x:2600, y:1600, width:30, height:600 } ));
 		}
 		
 		private function createDECOR():void
