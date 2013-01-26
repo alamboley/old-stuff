@@ -31,6 +31,8 @@ package levels {
 
 	import utils.SpotlightFilter;
 
+	import com.greensock.TweenLite;
+
 	import flash.display.Bitmap;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
@@ -163,9 +165,12 @@ package levels {
 			add(decor);
 			decor.x = 128;
 			
-			lightSpot= new CitrusSprite("light", {view: new Image(AtlasSimple.getAtlas().getTexture("light")),group:1});
-			lightSpot.offsetX = -256;
-			lightSpot.offsetY = -256;
+			lightSpot = new CitrusSprite("light", {view: new Image(AtlasSimple.getAtlas().getTexture("light")),group:1});
+			lightSpot.offsetX = -206;
+			lightSpot.offsetY = -216;
+			lightSpot.view.scaleX = lightSpot.view.scaleY = 0.7; 
+			
+			TweenLite.to(lightSpot.view, 0.7, {alpha:0.8, repeat:-1, yoyo:true});
 			
 			add(lightSpot);
 		}
