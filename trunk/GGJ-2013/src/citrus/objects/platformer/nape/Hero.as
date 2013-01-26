@@ -9,6 +9,8 @@ package citrus.objects.platformer.nape {
 	import nape.dynamics.InteractionFilter;
 	import nape.geom.Vec2;
 
+	import ui.Hud;
+
 	import org.osflash.signals.Signal;
 
 	import flash.utils.clearTimeout;
@@ -134,6 +136,8 @@ package citrus.objects.platformer.nape {
 		protected var _controlsEnabled:Boolean = true;
 		protected var _ducking:Boolean = false;
 		protected var _combinedGroundAngle:Number = 0;
+		
+		private var _hud:Hud;
 
 		public function Hero(name:String, params:Object = null) {
 
@@ -143,6 +147,8 @@ package citrus.objects.platformer.nape {
 			onGiveDamage = new Signal();
 			onTakeDamage = new Signal();
 			onAnimationChange = new Signal();
+			
+			_hud = Hud.getInstance();
 		}
 		
 		override protected function createConstraint():void {
@@ -243,14 +249,14 @@ package citrus.objects.platformer.nape {
 				
 				_ducking = (_ce.input.isDoing("duck", inputChannel) && _onGround && canDuck);
 				
-				if (_ce.input.isDoing("right", inputChannel)  && !_ducking)
+				if (_ce.input.isDoing("right", inputChannel)  && !_ducking || _hud.rightTouched)
 				{
 					//velocity.addeq(getSlopeBasedMoveAngle());
 					velocity.x += acceleration;
 					moveKeyPressed = true;
 				}
 				
-				if (_ce.input.isDoing("left", inputChannel) && !_ducking)
+				if (_ce.input.isDoing("left", inputChannel) && !_ducking || _hud.leftTouched)
 				{
 					//velocity.subeq(getSlopeBasedMoveAngle());
 					velocity.x -= acceleration;
@@ -272,14 +278,14 @@ package citrus.objects.platformer.nape {
 					_material.staticFriction = _staticFriction;
 				}
 				
-				if (_onGround && _ce.input.justDid("jump", inputChannel) && !_ducking)
+				if (_onGround && ( _ce.input.justDid("jump", inputChannel) || _hud.upTouched) && !_ducking)
 				{
 					velocity.y = -jumpHeight;
 					onJump.dispatch();
 					_onGround = false;
 				}
 				
-				if (_ce.input.isDoing("jump", inputChannel) && !_onGround && velocity.y < 0)
+				if ((_ce.input.isDoing("jump", inputChannel) || _hud.upTouched) && !_onGround && velocity.y < 0)
 				{
 					velocity.y -= jumpAcceleration;
 				}

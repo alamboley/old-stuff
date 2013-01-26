@@ -5,7 +5,6 @@ package levels {
 	import citrus.math.MathVector;
 	import citrus.objects.CitrusSprite;
 	import citrus.objects.platformer.nape.Hero;
-	import citrus.objects.platformer.nape.Platform;
 	import citrus.physics.nape.Nape;
 
 	import dragonBones.Armature;
@@ -20,7 +19,7 @@ package levels {
 	import starling.text.TextField;
 	import starling.textures.Texture;
 
-	import utils.SpotlightFilter;
+	import ui.Hud;
 
 	import flash.display.Bitmap;
 	import flash.events.Event;
@@ -33,6 +32,8 @@ package levels {
 
 		protected var _ce:CitrusEngine;
 		protected var _physics:Nape;
+		
+		protected var _hud:Hud;
 
 		protected var _hero:Hero;
 
@@ -58,10 +59,14 @@ package levels {
 			super();
 
 			_ce = CitrusEngine.getInstance();
+			_ce.stage.focus = _ce.stage;
 		}
 
 		override public function initialize():void {
 			super.initialize();
+			
+			_hud = new Hud();
+			addChild(_hud);
 
 			var bitmap:Bitmap = new _fontPng();
 			var ftTexture:Texture = Texture.fromBitmap(bitmap);
