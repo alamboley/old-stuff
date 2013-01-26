@@ -9,7 +9,6 @@ package levels
 	import citrus.objects.platformer.nape.Platform;
 	import citrus.physics.nape.Nape;
 	import citrus.view.starlingview.StarlingCamera;
-	import nape.callbacks.InteractionCallback;
 	
 	import dragonBones.Armature;
 	import dragonBones.factorys.StarlingFactory;
@@ -245,9 +244,8 @@ package levels
 			else if (ty == "5")
 				textBulle = "Il y a quelque chose là-bas";
 			
-			var CoinObject:BulleTimer = new BulleTimer("coin", {x: x, y: y, width: 150, height: 150, text: textBulle});
-				
-			add(CoinObject);
+			var coin:BulleTimer = new BulleTimer("coin", {x: x, y: y, width: 150, height: 150, text: textBulle});
+			add(coin);
 		}
 		
 		private function createPROPS(x:Number, y:Number, ty:String):void
@@ -255,7 +253,7 @@ package levels
 			var tm:Image = new Image(AtlasSimple.getAtlas().getTexture(ty));
 			tm.x = x;
 			tm.y = y;
-			ImageDECOR.addChild(tm); 
+			ImageDECOR.addChild(tm);
 		}
 		
 		private function handleHeartBeat(n:uint):void
@@ -303,17 +301,11 @@ package levels
 			//trace(_hero.x, _hero.y);
 			
 			
-			//test - a l'approche de l'ours.
-			if (_hero.x < 2880)
-			{
-				_camera.target = {x:2450,y:_hero.y };
+			//test
+			if (_hero.x < 2900)
 				_HeartBeat.targetSpeed = 7;
-			}
 			else
-			{
-				_camera.target = _hero;
 				_HeartBeat.targetSpeed = 3;
-			}
 				
 			
 			_particleTorche.emitterX = _hero.inverted ? _hero.x - 18 : _hero.x + 18;
