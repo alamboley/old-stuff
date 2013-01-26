@@ -252,13 +252,11 @@ package levels
 		{
 			if (n)
 			{
-				_camera.setZoom(1.6);
+				_camera.setZoom(0.6*_HeartBeat.currentSpeed);
 				_ce.sound.playSound("HB2", _HeartBeat.volume, 0);
 			}
 			else
-			{
 				_ce.sound.playSound("HB1", _HeartBeat.volume, 0);
-			}
 		}
 		
 		private function _textureCompleteHandler(evt:Event):void
@@ -293,6 +291,17 @@ package levels
 			_hillsTexture.update();
 			
 			//trace(_hero.x, _hero.y);
+			
+			
+			//test
+			if (_hero.x < 2954)
+			{
+				_camera.target = { x:2308, y:1808 };
+				_HeartBeat.targetSpeed = 6;
+			}
+			else
+				_camera.target = _hero;
+				
 			
 			_particleTorche.emitterX = _hero.inverted ? _hero.x - 18 : _hero.x + 18;
 			_particleTorche.emitterY = _hero.y - 35;
