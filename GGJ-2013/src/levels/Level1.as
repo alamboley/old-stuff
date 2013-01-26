@@ -123,7 +123,7 @@ package levels {
 			_particleTorche = new PDParticleSystem(psconfig, psTexture);
 			_particleTorche.start();
 			
-			_torche = new CitrusSprite("torche", {view:_particleTorche, offsetY:-40});
+			_torche = new CitrusSprite("torche", {view:_particleTorche/*, offsetY:-40*/});
 			add(_torche),
 			_ce.sound.playSound("Feu", 0.4);
 
@@ -278,8 +278,8 @@ package levels {
 
 			_hillsTexture.update();
 			
-			_torche.x = _hero.inverted ? _hero.x - 25 : _hero.x + 25;
-			_torche.y = _hero.y;
+			_particleTorche.emitterX = _hero.inverted ? _hero.x - 20 : _hero.x + 20;
+			_particleTorche.emitterY = _hero.y - 30;
 		}
 
 		override public function destroy():void {
