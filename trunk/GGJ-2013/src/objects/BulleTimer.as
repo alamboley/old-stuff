@@ -1,6 +1,7 @@
 package objects {
 
 	import citrus.objects.NapePhysicsObject;
+	import dragonBones.Armature;
 	import flash.utils.setTimeout;
 	import citrus.objects.platformer.nape.Coin;
 	import citrus.objects.CitrusSprite;
@@ -53,10 +54,16 @@ package objects {
 				if (Collider is Hero) {
 					TweenNano.to(_tf, 0.4, {alpha:1});
 					_readed = _readed;
-					
+					var a:Armature = ((Collider as Hero).view as Armature);
 					(Collider as Hero).velocity = [0, 0];
 					_ce.input.startRouting(666);
-					setTimeout(_ce.input.stopRouting, 500);
+					
+					a.animation.gotoAndPlay("lever");
+					
+					setTimeout(function():void {
+						_ce.input.stopRouting();
+						a.animation.gotoAndPlay("baisser");
+					}, 500);
 					setTimeout(killObject, 5000);
 				}
 			}
