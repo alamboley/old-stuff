@@ -107,7 +107,7 @@ package utils {
 			mCenter[0] = cx;
 			mCenter[1] = cy;
  
-			var radius:Number = mUseFlicker ? mRadius * Math.random() : mRadius;
+			var radius:Number = mUseFlicker ? mRadius *(Math.random()*0.1 + 0.9) : mRadius;
  
 			mVars[0] = mAmount;
 			mVars[1] = radius;
