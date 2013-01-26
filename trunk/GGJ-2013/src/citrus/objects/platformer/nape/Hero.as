@@ -28,7 +28,7 @@ package citrus.objects.platformer.nape {
 	 */
 	public class Hero extends NapePhysicsObject {
 		
-		public static const HERO:CbType = new CbType();		
+		public static const HERO:CbType = new CbType();
 		
 		//properties
 		/**

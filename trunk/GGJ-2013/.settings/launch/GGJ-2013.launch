@@ -10,6 +10,7 @@
 <intAttribute key="DEBUG_VIA" value="0"/>
 <booleanAttribute key="DEINSTALL_TARGET" value="true"/>
 <booleanAttribute key="DISABLE_COMPILE_PROCESS" value="false"/>
+<booleanAttribute key="INSTALL_APPLICATION" value="true"/>
 <stringAttribute key="INSTALL_TARGET" value="installManually"/>
 <stringAttribute key="LAUNCHER_DEPENDENCIES" value="[Self]"/>
 <intAttribute key="LAUNCH_METHOD" value="0"/>

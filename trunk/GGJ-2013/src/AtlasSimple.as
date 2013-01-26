@@ -38,10 +38,10 @@ package
 		private static const BitmapFontXML:Class;
 	
 		
-		[Embed(source = "../embed/sol.png")] public static const TheTexture:Class;
+		[Embed(source = "../embed/Atlas.png")] public static const TheTexture:Class;
 			
 			
-		[Embed(source = "../embed/sol.xml", mimeType = "application/octet-stream")] public static const AtlasXml:Class;
+		[Embed(source = "../embed/Atlas.xml", mimeType = "application/octet-stream")] public static const AtlasXml:Class;
 	
 	//	[Embed(source = "../embed/bg-bleu.jpg")] public static const BgPIC:Class;
 	

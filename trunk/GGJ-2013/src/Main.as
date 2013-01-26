@@ -10,9 +10,11 @@ package {
 	import starling.events.Event;
 	import starling.utils.AssetManager;
 
-	//import flash.filesystem.File;
+	import flash.geom.Rectangle;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+
+	// import flash.filesystem.File;
 
 	[SWF(backgroundColor="#000000", frameRate="60", width="1024", height="768")]
 
@@ -27,8 +29,9 @@ package {
 			super();
 			
 			Starling.multitouchEnabled = true;
+			Starling.handleLostContext = true;
 			
-			setUpStarling(true);
+			setUpStarling(true, 0, new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight));
 		}
 
 		override protected function _context3DCreated(evt:Event):void {
@@ -54,7 +57,6 @@ package {
 		
 		private function loadXMLFile(level:String):void
 		{
-			
 			var loader:URLLoader = new URLLoader(new URLRequest(level));
 			loader.addEventListener(Event.COMPLETE, levelLOADED);
 		}
@@ -68,7 +70,24 @@ package {
 			var base:String = _xml.base.path;
 			Hills._pointsY = base.split(',');
 			
-			//GameVARS.LevelWidth = Hills._pointsY.length;
+			
+			GameVars.LevelWidth = Hills._pointsY.length;
+			 
+			var lastY:Number = Hills._pointsY[Hills._pointsY.length-1];
+			
+			
+			for (var i:int = 0; i < 120; i++) {
+				Hills._pointsY.push(lastY);
+			}
+			
+			for each (var obj:XML in _xml.objects)
+			{
+				var px:Number = obj.posx;
+				var py:Number = obj.posy;
+				var pt:String = obj.obj;
+				//	trace("Je vais creer un " + pt);
+				GameVars.Props.push(new Array(px,py,"props"+pt));
+			}
 			
 			state = new Level1();
 		}
