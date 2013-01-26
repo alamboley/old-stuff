@@ -33,6 +33,7 @@ package utils {
 	{
 		private var mCenter:Vector.<Number> = new <Number>[1, 1, 1, 1];
 		private var mVars:Vector.<Number> = new <Number>[.50, .50, .50, .50];
+		private var mVars2:Vector.<Number> = new <Number>[0.5, 1, 1, 1];
 		private var mPixelSize:int;
 		private var mShaderProgram:Program3D;
  
@@ -83,11 +84,15 @@ package utils {
 				"mul ft5.z, fc1.x, ft5.y \n" +
 				"sat ft5.z, ft5.z \n" +
 				"min ft5.z, ft5.z, fc0.z \n" +
-				"sub ft6, fc0.z, ft5.z \n" +
+				//"sub ft6, fc0.z, ft5.z \n" +
 				"tex ft1, v0, fs0<2d, clamp, linear, nomip> \n" +
-				"mul ft6, ft6, ft1 \n" +
-				"mov ft6.w, ft1.w \n" +
-				"mov oc, ft6"
+
+				//alpha mask
+				"mov ft5.w, ft5.xyz \n" +
+				//color from texture sample
+				"mov ft5.xyz, ft1.xyz \n" +
+				
+				"mov oc, ft5";
  
 			mShaderProgram = assembleAgal(fragmentProgramCode);
         }
@@ -115,6 +120,7 @@ package utils {
  
 			context.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 0, mCenter, 1);
 			context.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 1, mVars,   1);
+		context.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 2, mVars2,   1);
 			context.setProgram(mShaderProgram);
         }
  
