@@ -9,6 +9,7 @@ package levels
 	import citrus.objects.platformer.nape.Platform;
 	import citrus.physics.nape.Nape;
 	import citrus.view.starlingview.StarlingCamera;
+	import nape.callbacks.InteractionCallback;
 	
 	import dragonBones.Armature;
 	import dragonBones.factorys.StarlingFactory;
@@ -244,8 +245,15 @@ package levels
 			else if (ty == "5")
 				textBulle = "Il y a quelque chose là-bas";
 			
-			var coin:BulleTimer = new BulleTimer("coin", {x: x, y: y, width: 150, height: 150, text: textBulle});
-			add(coin);
+			var CoinObject:BulleTimer = new BulleTimer("coin", {x: x, y: y, width: 150, height: 150, text: textBulle});
+			
+			//arreter le hero pour lire le text.
+			CoinObject.onBeginContactWithHero.add(function():void { 
+				_hero.velocity = [0, 0];  
+				_ce.input.resetActions();
+				} );
+				
+			add(CoinObject);
 		}
 		
 		private function createPROPS(x:Number, y:Number, ty:String):void
@@ -253,7 +261,7 @@ package levels
 			var tm:Image = new Image(AtlasSimple.getAtlas().getTexture(ty));
 			tm.x = x;
 			tm.y = y;
-			ImageDECOR.addChild(tm);
+			ImageDECOR.addChild(tm); 
 		}
 		
 		private function handleHeartBeat(n:uint):void
