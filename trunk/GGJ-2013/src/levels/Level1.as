@@ -1,9 +1,5 @@
 package levels {
 
-	import objects.Etoile;
-	import flash.display.Shape;
-	import flash.display.BitmapData;
-	import flash.display.Graphics;
 	import citrus.core.CitrusEngine;
 	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
@@ -38,6 +34,8 @@ package levels {
 	import com.greensock.TweenLite;
 
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 
@@ -71,6 +69,9 @@ package levels {
 
 		[Embed(source="/../embed/texture.png")]
 		private var _particlePng:Class;
+		
+		[Embed(source="/../embed/ours.png")]
+		private var _oursPng:Class;
 
 		private var _armature:Armature;
 		private var _factory:StarlingFactory;
@@ -131,7 +132,12 @@ package levels {
 			_hero.acceleration = 40;
 			_hero.jumpHeight = 460;
 			_hero.jumpAcceleration = 2;
-			add(_hero);
+			add(_hero);			
+			
+			var oursImage:Image = Image.fromBitmap(new _oursPng());
+			oursImage.scaleX = -1;
+			var ours:CitrusSprite = new CitrusSprite("ours", {x:2450, y:1685, view:oursImage});
+			add(ours);
 
 			/*var bulle:Bulle = new Bulle("une bulle", {x:250, y:230});
 			add(bulle);*/
@@ -254,8 +260,6 @@ package levels {
 
 		override public function update(timeDelta:Number):void {
 			super.update(timeDelta);
-			
-			trace(_hero.x, _hero.y);
 			
 			// un peu degeu...
 			if (_hero.velocity[0] > 1 || _hero.velocity[1] > 1)
