@@ -35,12 +35,6 @@ package sound
 		[Embed(source="/../bin/0909ms.mp3")]
 		private var _66bpm34:Class;
 		
-		[Embed(source="/../bin/Heartbeat1.mp3")]
-		private var _heartbeat1:Class;
-		
-		[Embed(source="/../bin/Heartbeat2.mp3")]
-		private var _heartbeat2:Class;
-		
 		
 		private var _hb1:Sound;
 		private var _hb2:Sound;
@@ -53,9 +47,6 @@ package sound
 			var s:Sound = new _66bpm34();
 			
 			onHeartBeat = new Signal();
-			
-			_hb1 = new _heartbeat1();
-			_hb2 = new _heartbeat2();
 			
 			var bytes:ByteArray = new ByteArray();
 			s.extract(bytes, int(s.length * 44.1));
@@ -105,15 +96,9 @@ package sound
 					// 3/4 time signature.
 					
 					if (_beat == 0)
-					{
 						onHeartBeat.dispatch(0);
-						_hb1.play();
-					}
 					else if (_beat == 1)
-					{
 						onHeartBeat.dispatch(1);
-						_hb2.play();
-					}
 					
 					(_beat >= 2)? _beat = 0 : _beat++; 
 				}
