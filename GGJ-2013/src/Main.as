@@ -89,6 +89,15 @@ package {
 				GameVars.Props.push(new Array(px,py,"props"+pt));
 			}
 			
+			for each (obj in _xml.items)
+			{
+				px = obj.posx;
+				py = obj.posy;
+				pt = obj.obj;
+				//	trace("Je vais creer un " + pt);
+				GameVars.levelItems.push(new Array(px,py,"items"+pt));
+			}
+			
 			state = new Level1();
 		}
 
