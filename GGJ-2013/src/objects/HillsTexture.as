@@ -38,9 +38,10 @@ package objects {
 			_sliceWidth = sliceWidth;
 			_sliceHeight = sliceHeight;
 			
-			//_tronconTexture = AtlasSimple.getAtlas().getTexture("troncon");
-			//_crateTexture = AtlasSimple.getAtlas().getTexture("troncon");
-			//_defaultTexture = AtlasSimple.getAtlas().getTexture("troncon");
+			_tronconTexture = AtlasSimple.getAtlas().getTexture("troncon");
+			_crateTexture = AtlasSimple.getAtlas().getTexture("troncon");
+			
+			_defaultTexture = AtlasSimple.getAtlas().getTexture("troncon");
 			
 			//_groundTexture = Texture.fromBitmapData(new BitmapData(_sliceWidth, _sliceHeight, false, 0xffaa33));
 			
@@ -65,7 +66,7 @@ package objects {
 		
 		public function createSlice(rider:Body, nextYPoint:uint, currentYPoint:uint, back:Boolean, texture:String):void {
 			
-			/*if (texture) {
+			if (texture) {
 				
 				if (texture == "troncon")
 					_defaultTexture = _tronconTexture;
@@ -90,13 +91,13 @@ package objects {
 			else
             	matrix.b = (nextYPoint - currentYPoint) / _sliceWidth;
 				
-            image.transformationMatrix.copyFrom(matrix);*/
+            image.transformationMatrix.copyFrom(matrix); 
 		}
 		
 		public function deleteHill(index:uint):void {
 			
-			//removeChild(_images[index], true);
-			//_images.splice(index, 1);
+			removeChild(_images[index], true);
+			_images.splice(index, 1);
 		}
 	}
 }

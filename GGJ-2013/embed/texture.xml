@@ -1,0 +1,18 @@
+<TextureAtlas name="fillette" width="256" height="512">
+ <SubTexture name="pied-avant-shoes" pX="16.15" pY="0" width="33" height="20" x="217" y="179"/>
+ <SubTexture name="pied-arr-shoes" pX="13.55" pY="0" width="28" height="14" x="217" y="221"/>
+ <SubTexture name="hair" pX="63.5" pY="74.55" width="128" height="150" x="0" y="0"/>
+ <SubTexture name="face" pX="37.9" pY="64.9" width="86" height="130" x="130" y="0"/>
+ <SubTexture name="main-avant" pX="0" pY="0" width="21" height="27" x="101" y="187"/>
+ <SubTexture name="bras-avant" pX="0" pY="0" width="31" height="39" x="218" y="53"/>
+ <SubTexture name="epaule-avant" pX="9.65" pY="0" width="20" height="51" x="218" y="0"/>
+ <SubTexture name="robe" pX="42.25" pY="0" width="85" height="126" x="130" y="132"/>
+ <SubTexture name="hair-arr" pX="39.7" pY="47.65" width="80" height="96" x="0" y="152"/>
+ <SubTexture name="pied-avant" pX="15.5" pY="0" width="31" height="18" x="217" y="201"/>
+ <SubTexture name="jambe-avant" pX="8.05" pY="0" width="17" height="47" x="82" y="152"/>
+ <SubTexture name="pied-arr" pX="12.95" pY="0" width="26" height="13" x="217" y="237"/>
+ <SubTexture name="jambe-arr" pX="8.3" pY="0" width="18" height="33" x="101" y="152"/>
+ <SubTexture name="main-arr" pX="0" pY="0" width="21" height="25" x="82" y="216"/>
+ <SubTexture name="bras-arr" pX="0" pY="0" width="30" height="35" x="218" y="94"/>
+ <SubTexture name="epaule-arr" pX="9.25" pY="0" width="19" height="46" x="218" y="131"/>
+</TextureAtlas>

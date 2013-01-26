@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:b0fdddc78c212fb20dd4c43f2d77b629$ -->
+<TextureAtlas imagePath="sol.png">
+    <SubTexture name="Gas" x="1780" y="943" width="232" height="230" frameX="-5" frameY="-10" frameWidth="250" frameHeight="250"/>
+    <SubTexture name="bg-bleu" x="243" y="1" width="800" height="800"/>
+    <SubTexture name="bthome" x="130" y="434" width="80" height="80"/>
+    <SubTexture name="can" x="404" y="1910" width="126" height="126" frameX="-8" frameY="-1" frameWidth="140" frameHeight="130"/>
+    <SubTexture name="charriotCompletNoel" x="243" y="1932" width="160" height="114" frameX="-17" frameY="-27" frameWidth="194" frameHeight="194"/>
+    <SubTexture name="coin" x="130" y="515" width="62" height="87" frameX="-9" frameY="-4" frameWidth="80" frameHeight="93"/>
+    <SubTexture name="explosion" x="211" y="345" width="30" height="28" frameX="0" frameY="0" frameWidth="30" frameHeight="30"/>
+    <SubTexture name="gauge" x="122" y="1990" width="120" height="40"/>
+    <SubTexture name="gaugeOverlay" x="1" y="1990" width="120" height="40"/>
+    <SubTexture name="gift" x="211" y="395" width="20" height="20"/>
+    <SubTexture name="giftb" x="211" y="374" width="20" height="20"/>
+    <SubTexture name="gifts" x="193" y="556" width="38" height="28" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="head" x="130" y="345" width="80" height="88"/>
+    <SubTexture name="props1" x="1803" y="1" width="236" height="175"/>
+    <SubTexture name="props10" x="401" y="1611" width="178" height="298"/>
+    <SubTexture name="props11" x="1780" y="527" width="250" height="415"/>
+    <SubTexture name="props12" x="580" y="1780" width="154" height="83" frameX="0" frameY="-8" frameWidth="156" frameHeight="91"/>
+    <SubTexture name="props13" x="243" y="802" width="539" height="419"/>
+    <SubTexture name="props14" x="454" y="1222" width="226" height="231"/>
+    <SubTexture name="props15" x="783" y="802" width="232" height="174"/>
+    <SubTexture name="props16" x="580" y="1605" width="229" height="174"/>
+    <SubTexture name="props17" x="735" y="1780" width="145" height="80"/>
+    <SubTexture name="props18" x="1044" y="446" width="735" height="633"/>
+    <SubTexture name="props19" x="1044" y="1" width="758" height="444"/>
+    <SubTexture name="props2" x="1803" y="177" width="233" height="220"/>
+    <SubTexture name="props20" x="130" y="1222" width="323" height="388"/>
+    <SubTexture name="props3" x="1803" y="398" width="233" height="128"/>
+    <SubTexture name="props4" x="783" y="977" width="230" height="121"/>
+    <SubTexture name="props5" x="580" y="1864" width="225" height="34"/>
+    <SubTexture name="props6" x="714" y="1899" width="144" height="74"/>
+    <SubTexture name="props7" x="531" y="1910" width="182" height="116" frameX="0" frameY="0" frameWidth="184" frameHeight="116"/>
+    <SubTexture name="props8" x="130" y="1611" width="270" height="320"/>
+    <SubTexture name="props9" x="130" y="1" width="100" height="343"/>
+    <SubTexture name="timerPIC" x="193" y="515" width="40" height="40"/>
+    <SubTexture name="troncon" x="1" y="1" width="128" height="1988"/>
+    <SubTexture name="turnLEFT" x="605" y="1454" width="150" height="150"/>
+    <SubTexture name="turnRIGHT" x="454" y="1454" width="150" height="150"/>
+    <SubTexture name="wheel" x="130" y="603" width="60" height="60"/>
+</TextureAtlas>
