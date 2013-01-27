@@ -6,6 +6,8 @@ package levels {
 	import citrus.objects.platformer.nape.Platform;
 	import citrus.objects.platformer.nape.Sensor;
 	import citrus.view.starlingview.StarlingCamera;
+	import starling.core.Starling;
+	import starling.display.Quad;
 
 	import dragonBones.factorys.StarlingFactory;
 
@@ -39,6 +41,8 @@ package levels {
 		
 		private var _buttonAnim:Boolean = false;
 		private var _ours:CitrusSprite;
+		
+		private var _overlayQuad:Quad;
 		
 		public function Hopital()
 		{
@@ -81,6 +85,27 @@ package levels {
 			add(_sensorOurs);
 			_sensorOurs.onBeginContact.add(_clignoterBouton);
 			_sensorOurs.onEndContact.add(_clignoterBoutonStop);
+			
+			_overlayQuad = new Quad(stage.stageWidth, stage.stageHeight, 0);
+			_overlayQuad.touchable = false;
+			_overlayQuad.alpha = 1;
+			Starling.current.stage.addChild(_overlayQuad);
+			
+			//INTRO
+			TweenLite.to(_overlayQuad, 5, { alpha:0 } );
+			introCam();
+
+		}
+		
+		private function introCam():void
+		{
+			_camera.zoomEasing = 0;
+			_camera.zoomFit(5000, 5000);
+			TweenLite.delayedCall(2, function():void 
+			{
+				_camera.zoomEasing = 0.05;
+				_camera.zoomFit(500, 500);
+			});
 		}
 
 		private function _clignoterBouton(callback:InteractionCallback):void {
@@ -131,6 +156,11 @@ package levels {
 				previousLevel.dispatch();
 			}
 			
+		}
+		
+		override public function destroy():void
+		{
+			Starling.current.stage.removeChildren();
 		}
 
 	}
