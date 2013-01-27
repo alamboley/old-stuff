@@ -1,14 +1,12 @@
 package objects {
 
-	import citrus.objects.NapePhysicsObject;
-	import dragonBones.Armature;
-	import flash.utils.setTimeout;
-	import citrus.objects.platformer.nape.Coin;
 	import citrus.objects.CitrusSprite;
+	import citrus.objects.NapePhysicsObject;
 	import citrus.objects.platformer.nape.Hero;
 	import citrus.objects.platformer.nape.Sensor;
 	import citrus.physics.nape.NapeUtils;
-	import org.osflash.signals.Signal;
+
+	import dragonBones.Armature;
 
 	import nape.callbacks.InteractionCallback;
 
@@ -18,6 +16,8 @@ package objects {
 	import starling.utils.HAlign;
 
 	import com.greensock.TweenNano;
+
+	import flash.utils.setTimeout;
 
 	/**
 	 * @author Aymeric
@@ -42,16 +42,18 @@ package objects {
 			_tf.autoScale = true;
 			_tf.hAlign = HAlign.LEFT;
 			
-			_bulle = new CitrusSprite("bulle", {group:2, x:_x + 30, y:_y - 130, view:_tf});
+			_bulle = new CitrusSprite("bulle", {group:12, x:_x + 30, y:_y, view:_tf});
 			_ce.state.add(_bulle);
 		}
 
 		override public function handleBeginContact(interactionCallback:InteractionCallback):void {
 			super.handleBeginContact(interactionCallback);
-			
+
 			if (!_readed) {
 					var Collider:NapePhysicsObject = NapeUtils.CollisionGetOther(this, interactionCallback);
+					
 				if (Collider is Hero) {
+					
 					TweenNano.to(_tf, 0.4, {alpha:1});
 					_readed = _readed;
 					

@@ -1,6 +1,5 @@
-package levels
-{
-	import citrus.core.starling.StarlingState;
+package levels {
+
 	import citrus.core.CitrusEngine;
 	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
@@ -9,40 +8,21 @@ package levels
 	import citrus.objects.platformer.nape.Platform;
 	import citrus.physics.nape.Nape;
 	import citrus.view.starlingview.StarlingCamera;
-	import nape.geom.Vec2;
-	
+
 	import dragonBones.Armature;
 	import dragonBones.factorys.StarlingFactory;
-	
+
+	import nape.geom.Vec2;
+
 	import objects.BulleTimer;
-	import objects.Hills;
-	import objects.HillsTexture;
-	
-	import sound.HeartBeat;
-	
-	import starling.core.Starling;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
-	import starling.extensions.krecha.ScrollImage;
-	import starling.extensions.krecha.ScrollTile;
-	import starling.extensions.particles.PDParticleSystem;
-	import starling.text.BitmapFont;
-	import starling.text.TextField;
-	import starling.textures.Texture;
-	
+
 	import ui.Hud;
-	
-	import utils.SpotlightFilter;
-	
-	import com.greensock.TweenLite;
-	
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.Shape;
+
 	import flash.events.Event;
 	import flash.geom.Rectangle;
-	
-	import starling.display.BlendMode;
 	
 	/**
 	 * ...
@@ -55,9 +35,8 @@ package levels
 		private var _armature:Armature;
 		private var _factory:StarlingFactory;
 		private var _camera:StarlingCamera;
-		private var ImageDECOR:Sprite;
 	 
-				protected var _hud:Hud;
+		protected var _hud:Hud;
 		protected var _ce:CitrusEngine;
 		protected var _physics:Nape;
 		
@@ -119,15 +98,10 @@ package levels
 			var decor:CitrusSprite = new CitrusSprite("Decor", { view: ImageDECOR, group: 0});
 			add(decor);
 			
-			
-			
 			createSpots();
-			
-		
 		}
 		
 		private function createSpots():void {
-			
 			
 			for (var i:int = 0; i < GameVars.SpeechHopital.length; i++) {
 				
@@ -136,9 +110,7 @@ package levels
 				
 			}
 			
-			
 		}
-		
 		
 		private function _textureCompleteHandler(evt:Event):void
 		{
@@ -147,20 +119,15 @@ package levels
 			_armature = _factory.buildArmature("fillette");
 			(_armature.display as Sprite).scaleX = 0.55;
 			(_armature.display as Sprite).scaleY = 0.55;
-			trace(_armature.animation.movementList);
+			
 			_hero.view = _armature;
 			
 			add(_hero);
 		}
 		
-		
 		override public function update(timeDelta:Number):void
-		{
-			
-			trace(_hero.x, _hero.y);
-			
+		{			
 			super.update(timeDelta);
-			
 		}
 	
 	}
