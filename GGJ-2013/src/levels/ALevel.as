@@ -72,7 +72,6 @@ package levels {
 			addChild(_hud);
 			_hud.scaleX = GameVars.UpScale;
 			_hud.scaleY = GameVars.UpScale;
-			_hud.mode = true;
 
 			var bitmap:Bitmap = new _fontPng();
 			var ftTexture:Texture = Texture.fromBitmap(bitmap);
