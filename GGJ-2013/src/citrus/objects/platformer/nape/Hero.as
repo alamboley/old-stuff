@@ -383,8 +383,8 @@ package citrus.objects.platformer.nape {
 			if (callback.arbiters.length > 0 && callback.arbiters.at(0).collisionArbiter) {
 				
 				var collisionAngle:Number = callback.arbiters.at(0).collisionArbiter.normal.angle * 180 / Math.PI;
-				
-				if ((collisionAngle > 45 && collisionAngle < 135) || (collisionAngle > -30 && collisionAngle < 10) || collisionAngle == -90)
+				trace(collisionAngle);
+				if ((collisionAngle > 30 && collisionAngle < 160) || (collisionAngle > -30 && collisionAngle < 10) || collisionAngle == -90)
 				{
 					if (collisionAngle > 1 || collisionAngle < -1) {
 						//we don't want the Hero to be set up as onGround if it touches a cloud.
