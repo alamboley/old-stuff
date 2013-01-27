@@ -78,7 +78,7 @@ package levels {
 			TextField.registerBitmapFont(new BitmapFont(ftTexture, ftXML));
 
 			_physics = new Nape("physics");
-			// _physics.visible = true;
+			_physics.visible = true;
 			_physics.timeStep = 1 / 30;
 			_physics.gravity = new Vec2(0, 250);
 			add(_physics);

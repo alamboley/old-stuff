@@ -4,13 +4,18 @@ package levels {
 	import citrus.objects.CitrusSprite;
 	import citrus.objects.platformer.nape.HeroB;
 	import citrus.objects.platformer.nape.Platform;
+	import citrus.objects.platformer.nape.Sensor;
 	import citrus.view.starlingview.StarlingCamera;
 
 	import dragonBones.factorys.StarlingFactory;
 
+	import nape.callbacks.InteractionCallback;
+
 	import objects.BulleTimer;
 
 	import starling.display.Image;
+
+	import com.greensock.TweenLite;
 
 	import flash.events.Event;
 	import flash.geom.Rectangle;
@@ -25,6 +30,10 @@ package levels {
 		
 		[Embed(source="/../embed/hopital.png")]
 		private var _bgHopital:Class;
+		
+		private var _sensorOurs:Sensor;
+		
+		private var _buttonAnim:Boolean = false;
 		
 		public function Hopital()
 		{
@@ -61,6 +70,33 @@ package levels {
 			_factory.parseData(new _ResourcesData());
 			
 			createSpots();
+			
+			_sensorOurs = new Sensor("sensor ours", {x:630, y:610, width:50, height:50});
+			add(_sensorOurs);
+			_sensorOurs.onBeginContact.add(_clignoterBouton);
+			_sensorOurs.onEndContact.add(_clignoterBoutonStop);
+		}
+
+		private function _clignoterBouton(callback:InteractionCallback):void {
+			
+			_buttonAnim = true;
+			alphaTween1();
+		}
+		
+		private function alphaTween1():void {
+			
+			if (_hud.up && _buttonAnim)
+				TweenLite.to(_hud.up, 0.4, {alpha:0.7, onComplete:alphaTween0});
+		}
+		
+		private function alphaTween0():void {
+			
+			if (_hud.up && _buttonAnim)
+				TweenLite.to(_hud.up, 0.4, {alpha:0.4, onComplete:alphaTween1});
+		}
+		
+		private function _clignoterBoutonStop(callback:InteractionCallback):void {
+			_buttonAnim = false;
 		}
 		
 		private function createSpots():void {
@@ -72,7 +108,6 @@ package levels {
 			}
 			
 		}
-	
 	}
 
 }
