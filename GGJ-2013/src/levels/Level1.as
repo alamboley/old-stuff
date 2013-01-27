@@ -100,7 +100,7 @@ package levels
 		private var volumeZik:Number = 0;
 		private var volumeHeart:Number = 1;
 		private var oursPosX:Number = 3500;
-		private var startPosX:Number = 14500;
+		private var startPosX:Number = 10000;
 		private var distStartOurs:Number = oursPosX - startPosX;
 		private var distHeroOurs:Number = 0;
 		
@@ -148,8 +148,8 @@ package levels
 			_torche = new CitrusSprite("torche", {view: _particleTorche /*, offsetY:-40*/});
 			add(_torche), _ce.sound.playSound("Feu", 0.02);
 			
-			//_hero = new Hero("hero", {x: 11256, y: 1250, radius: 30});
-			_hero = new Hero("hero", {x: 4500, y: 1250, radius: 30});
+			_hero = new Hero("hero", {x: 11256, y: 1250, radius: 30});
+			//_hero = new Hero("hero", {x: 4500, y: 1250, radius: 30});
 			_hero.maxVelocity = 85;
 			_hero.acceleration = 25;
 			_hero.jumpHeight = 280;
@@ -197,13 +197,11 @@ package levels
 			_factory.parseData(new _ResourcesData());
 			
 			_HeartBeat = new HeartBeat();
-			_HeartBeat.targetSpeed = 1;
 			_HeartBeat.onHeartBeat.add(handleHeartBeat);
-			
-			_HeartBeat.targetSpeed = 8;
+
 			
 			_ce.sound.addSound("background music", "introTest2.mp3");
-			_ce.sound.playSound("background music", 0.1);
+			_ce.sound.playSound("background music", 1);
 			
 			createDECOR();
 			
@@ -225,10 +223,10 @@ package levels
 			
 			_ce.sound.addSound("HB1", "Heartbeat1.mp3");
 			_ce.sound.addSound("HB2", "Heartbeat2.mp3");
-			//_HeartBeat.targetSpeed = 2.5;
+			_HeartBeat.targetSpeed = 2.5;
+			_HeartBeat.volume = 0;
 			
 			add(new Platform("murOurs", {x: 2600, y: 1600, width: 30, height: 600}));
-		
 			
 			_ce.sound.addSound("roar", "ours.mp3");
 			
@@ -242,8 +240,6 @@ package levels
 			_overlayQuad.touchable = false;
 			_overlayQuad.alpha = 0;
 			Starling.current.stage.addChild(_overlayQuad);
-			
-			
 			}
 		
 		
@@ -346,14 +342,16 @@ package levels
 			
 	
 			
-			if (_hero.x < startPosX && !_ended)
+			if (_hero.x < startPosX)
 			{
 				distHeroOurs = oursPosX - _hero.x;
 				volumeZik = distHeroOurs / distStartOurs;
 				volumeHeart = 1 - distHeroOurs / distStartOurs;
 				volumeHeart = (volumeHeart < 0) ? -volumeHeart : volumeHeart;
 				volumeZik = (volumeZik < 0) ? -volumeZik : volumeZik;
-				//trace(volumeHeart, volumeZik);
+				_HeartBeat.volume = volumeHeart;
+				_ce.sound.setVolume("background music", volumeZik*0.8);
+			
 			}
 			
 			if (_hero.x < oursPosX && !_ended)
@@ -366,16 +364,14 @@ package levels
 				_camera.zoomEasing = 0.025;
 				_camera.target = { x:oursPosX - 300, y:_hero.y };
 				_camera.zoomFit(400, 400);
-				
+				_HeartBeat.targetSpeed = 8;
 				// EN FACE DE L'OURS
-				TweenLite.to(_HeartBeat, 1, { volume:1 } );
+				TweenLite.to(_HeartBeat, 1, { volume:1} );
 				TweenLite.delayedCall(2, preEndLevel);
 				_ended = true;
 			}
 			
-			
-			_HeartBeat.volume = volumeHeart;
-			_ce.sound.setVolume("background music", volumeZik*0.8);
+			trace(_ended);
 
 			
 			_particleTorche.emitterX = _hero.inverted ? _hero.x - 18 : _hero.x + 18;
@@ -387,7 +383,6 @@ package levels
 			//ours et vignette
 			_ce.sound.playSound("roar", 1, 0);
 			var vpos:Point = _camera.pointFromLocal(new Point(_camera.offset.x,_camera.offset.y));
-			//vpos.x -= 200;
 			vpos.y -= 200;
 			add(new CitrusSprite("ours1", {x:vpos.x, y:vpos.y, view: new Image(AtlasSimple.getAtlas().getTexture("ours1")), group: 1}));
 			TweenLite.delayedCall(5, postPreEndLevel);
