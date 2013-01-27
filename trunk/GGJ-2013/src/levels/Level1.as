@@ -148,7 +148,6 @@ package levels {
 			_ce.sound.playSound("background music", 1);
 			
 			caption = new Caption();
-			Starling.current.stage.addChild(caption);
 			
 			createDECOR();
 
@@ -187,6 +186,8 @@ package levels {
 			_overlayQuad.touchable = false;
 			_overlayQuad.alpha = 0;
 			Starling.current.stage.addChild(_overlayQuad);
+			
+			Starling.current.stage.addChild(caption);
 		}
 
 		private function createDECOR():void {
@@ -276,9 +277,13 @@ package levels {
 				volumeHeart = (volumeHeart < 0) ? -volumeHeart : volumeHeart;
 				volumeZik = (volumeZik < 0) ? -volumeZik : volumeZik;
 				_HeartBeat.volume = volumeHeart;
+				_HeartBeat.targetSpeed = volumeHeart * 7 + 2;
 				_ce.sound.setVolume("background music", volumeZik * 0.8);
 
 			}
+			
+			if (_hero.x < oursPosX + 300 && !_ended)
+				_HeartBeat.targetSpeed = 6;
 
 			if (_hero.x < oursPosX && !_ended) {
 				_hud.touchable = false;
@@ -306,7 +311,10 @@ package levels {
 			var vpos:Point = _camera.pointFromLocal(new Point(_camera.offset.x-200, _camera.offset.y-88));
 			vpos.y -= 200;
 			if (GameVars.level1Fini)
+			{
+				_HeartBeat.targetSpeed = 1.5;
 				add(new CitrusSprite("ours2", {x:vpos.x, y:vpos.y, view:new Image(AtlasSimple.getAtlas().getTexture("ours2")), group:1}));
+			}
 			else
 				add(new CitrusSprite("ours1", {x:vpos.x, y:vpos.y, view:new Image(AtlasSimple.getAtlas().getTexture("ours1")), group:1}));
 			TweenLite.delayedCall(5, postPreEndLevel);
@@ -330,7 +338,10 @@ package levels {
 			// ...
 			
 			if (!GameVars.level1Fini)
+			{
 				lvlEnded.dispatch();
+				caption.fadeDuration = 3;
+			}
 		}
 
 		override public function destroy():void {
