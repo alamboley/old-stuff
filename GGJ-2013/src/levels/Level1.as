@@ -306,10 +306,12 @@ package levels {
 			_HeartBeat.volume = 0;
 			_ce.input.stopRouting();
 			_HeartBeat.stop();
-			_ce.sound.stopSound("background music");
+			_ce.sound.removeSound("background music");
 			_ce.sound.removeSound("HB1");
 			_ce.sound.removeSound("HB2");
+			_ce.sound.removeSound("roar");
 			// ...
+						
 			lvlEnded.dispatch();
 		}
 

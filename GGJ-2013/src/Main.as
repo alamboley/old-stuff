@@ -106,7 +106,7 @@ package {
 				GameVars.levelItems.push(new Array(px, py, "items" + pt));
 			}
 
-			levelManager.gotoLevel(2);
+			levelManager.gotoLevel();
 		}
 
 		private function _onLevelChanged(lvl:ALevel):void {
@@ -115,6 +115,7 @@ package {
 
 			lvl.lvlEnded.add(_nextLevel);
 			lvl.restartLevel.add(_restartLevel);
+			lvl.previousLevel.add(_previousLevel);
 		}
 
 		private function _nextLevel():void {
@@ -125,6 +126,11 @@ package {
 		private function _restartLevel():void {
 
 			state = levelManager.currentLevel as IState;
+		}
+		
+		private function _previousLevel():void {
+			
+			levelManager.prevLevel();
 		}
 
 	}

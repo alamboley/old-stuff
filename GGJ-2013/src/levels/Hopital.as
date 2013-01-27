@@ -44,6 +44,8 @@ package levels {
 		{
 			super.initialize();
 			
+			_hud.mode = true;
+			
 			var ImageDECOR:Image = Image.fromBitmap(new _bgHopital());
 			
 			var decor:CitrusSprite = new CitrusSprite("Decor", { view: ImageDECOR, group: 0});
@@ -108,6 +110,17 @@ package levels {
 			}
 			
 		}
+
+		override public function update(timeDelta:Number):void {
+			super.update(timeDelta);
+			
+			if (_buttonAnim && _hud.upTouched) {
+				
+				previousLevel.dispatch();
+			}
+			
+		}
+
 	}
 
 }

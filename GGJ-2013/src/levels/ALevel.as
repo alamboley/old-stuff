@@ -29,6 +29,7 @@ package levels {
 		
 		public var lvlEnded:Signal;
 		public var restartLevel:Signal;
+		public var previousLevel:Signal;
 
 		protected var _ce:CitrusEngine;
 		protected var _hud:Hud;
@@ -52,6 +53,7 @@ package levels {
 			
 			lvlEnded = new Signal();
 			restartLevel = new Signal();
+			previousLevel = new Signal();
 			
 			_ce = CitrusEngine.getInstance();
 			_ce.stage.focus = _ce.stage;
@@ -78,7 +80,7 @@ package levels {
 			TextField.registerBitmapFont(new BitmapFont(ftTexture, ftXML));
 
 			_physics = new Nape("physics");
-			_physics.visible = true;
+			//_physics.visible = true;
 			_physics.timeStep = 1 / 30;
 			_physics.gravity = new Vec2(0, 250);
 			add(_physics);
