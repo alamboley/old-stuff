@@ -17,7 +17,7 @@ package ui
 		
 		private var _endLast:Boolean = true;
 		
-		private var _fadeDuration:Number = 1;
+		public var fadeDuration:Number = 0.3;
 		
 		private var _displayTime:Number;
 		
@@ -53,7 +53,7 @@ package ui
 		private function playStuff(o:Object):void
 		{
 			this.text =  o.str;
-			_displayTime = o.d - 2 * (_fadeDuration);
+			_displayTime = o.d - 2 * (fadeDuration);
 			
 			alpha = 0;
 			_endLast = false;
@@ -66,10 +66,10 @@ package ui
 		
 		private function fadeIN():void
 		{
-			TweenLite.to(this, _fadeDuration , { alpha:1 } );
+			TweenLite.to(this, fadeDuration , { alpha:1 } );
 			
 			//next
-			TweenLite.delayedCall(_fadeDuration, displayText);
+			TweenLite.delayedCall(fadeDuration, displayText);
 		}
 		
 		private function displayText():void
@@ -82,12 +82,14 @@ package ui
 		{
 			
 			//next
-			TweenLite.to(this, _fadeDuration , { alpha:0 } );
-			TweenLite.delayedCall(_fadeDuration, end);
+			TweenLite.to(this, fadeDuration , { alpha:0 } );
+			TweenLite.delayedCall(fadeDuration, end);
 		}
 		
 		private function end():void
 		{
+			alpha = 1;
+			text = "";
 			 _endLast = true;
 		}
 		
