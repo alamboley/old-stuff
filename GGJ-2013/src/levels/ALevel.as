@@ -38,10 +38,10 @@ package levels {
 		protected var _armature:Armature;
 		protected var _factory:StarlingFactory;
 
-		[Embed(source="/../embed/ArialFont.fnt",mimeType="application/octet-stream")]
+		[Embed(source="/../embed/font.fnt",mimeType="application/octet-stream")]
 		private var _fontConfig:Class;
 
-		[Embed(source="/../embed/ArialFont.png")]
+		[Embed(source="/../embed/font_0.png")]
 		private var _fontPng:Class;
 
 		[Embed(source="/../embed/fillette.png",mimeType="application/octet-stream")]
@@ -82,7 +82,6 @@ package levels {
 			_physics.timeStep = 1 / 30;
 			_physics.gravity = new Vec2(0, 250);
 			add(_physics);
-
 		}
 		
 		protected function _textureCompleteHandler(evt:Event):void
