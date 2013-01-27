@@ -44,8 +44,6 @@ package levels {
 		{
 			super.initialize();
 			
-			_hud.mode = true;
-			
 			var ImageDECOR:Image = Image.fromBitmap(new _bgHopital());
 			
 			var decor:CitrusSprite = new CitrusSprite("Decor", { view: ImageDECOR, group: 0});
@@ -83,6 +81,7 @@ package levels {
 			
 			_buttonAnim = true;
 			alphaTween1();
+			_hud.mode = true;
 		}
 		
 		private function alphaTween1():void {
@@ -99,6 +98,8 @@ package levels {
 		
 		private function _clignoterBoutonStop(callback:InteractionCallback):void {
 			_buttonAnim = false;
+			_hud.mode = false;
+			TweenLite.to(_hud.up, 0.4, {alpha:0.4, onComplete:alphaTween1});
 		}
 		
 		private function createSpots():void {
@@ -115,6 +116,8 @@ package levels {
 			super.update(timeDelta);
 			
 			if (_buttonAnim && _hud.upTouched) {
+				
+				GameVars.level1Fini = true;
 				
 				previousLevel.dispatch();
 			}

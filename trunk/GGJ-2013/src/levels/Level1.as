@@ -33,7 +33,6 @@ package levels {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-
 	/**
 	 * @author Aymeric
 	 */
@@ -78,7 +77,7 @@ package levels {
 
 		override public function initialize():void {
 			super.initialize();
-
+			
 			var psconfig:XML = new XML(new _torchePex());
 			var psTexture:Texture = Texture.fromBitmap(new _particlePng());
 
@@ -88,9 +87,11 @@ package levels {
 			_torche = new CitrusSprite("torche", {view:_particleTorche/*, offsetY:-40*/});
 			add(_torche);
 			_ce.sound.playSound("Feu", 0.02);
-
-			_hero = new Hero("hero", {x:11256, y:1250, radius:30});
-			// _hero = new Hero("hero", {x: 4500, y: 1250, radius: 30});
+			
+			if (GameVars.level1Fini)
+				_hero = new Hero("hero", {x:3400, y:2025, radius:30});
+			else
+			 _hero = new Hero("hero", {x: 11256, y: 1250, radius: 30});
 			_hero.maxVelocity = 85;
 			_hero.acceleration = 25;
 			_hero.jumpHeight = 280;
@@ -292,6 +293,7 @@ package levels {
 			_ce.sound.playSound("roar", 1, 0);
 			var vpos:Point = _camera.pointFromLocal(new Point(_camera.offset.x, _camera.offset.y));
 			vpos.y -= 200;
+			trace(vpos.x, vpos.y);
 			add(new CitrusSprite("ours1", {x:vpos.x, y:vpos.y, view:new Image(AtlasSimple.getAtlas().getTexture("ours1")), group:1}));
 			TweenLite.delayedCall(5, postPreEndLevel);
 		}
@@ -311,7 +313,7 @@ package levels {
 			_ce.sound.removeSound("HB2");
 			_ce.sound.removeSound("roar");
 			// ...
-						
+			
 			lvlEnded.dispatch();
 		}
 

@@ -44,6 +44,8 @@ package
 		
 		public static var LevelWidth:int = new int(0);
 		
+		public static var level1Fini:Boolean = false;
+		
 	}
 
 }

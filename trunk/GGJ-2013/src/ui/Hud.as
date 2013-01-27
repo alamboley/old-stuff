@@ -29,7 +29,7 @@ package ui {
 		private const _WIDTH:uint = 150;
 		private const _HEIGHT:uint = 150;
 
-		public  var mode:Boolean = new Boolean(false);
+		public var mode:Boolean = false;
 
 
 		public function Hud() {
@@ -105,7 +105,7 @@ package ui {
 					}
 
 
-					if (buttonName == "up") {
+					if (buttonName == "up" && mode) {
 						upTouched = true;
 						_up.alpha = 0.55;
 					}
@@ -124,7 +124,7 @@ package ui {
 						_right.alpha = 0.25;
 					}
 
-					if (buttonName == "up") {
+					if (buttonName == "up" && mode) {
 						upTouched = false;
 						_up.alpha = 0.25;
 					}
