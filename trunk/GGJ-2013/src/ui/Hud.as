@@ -30,8 +30,8 @@ package ui {
 		private const _HEIGHT:uint = 150;
 
 		public  var mode:Boolean = new Boolean(false);
-		
-		
+
+
 		public function Hud() {
 
 			_instance = this;
@@ -65,10 +65,10 @@ package ui {
 			_up.name = "up";
 			_up.x = Starling.current.viewPort.width - _WIDTH * 1.5;
 			_up.y = Starling.current.viewPort.height - _HEIGHT * 1.5;
-			
-			
+
+
 			_down = new Image(AtlasSimple.getAtlas().getTexture("btACTION"))
-			//addChild(_down);
+			// addChild(_down);
 			_down.name = "down";
 			_down.x = _up.x;
 			_down.y = Starling.current.viewPort.height - _HEIGHT * 1.5;
@@ -106,15 +106,8 @@ package ui {
 
 
 					if (buttonName == "up") {
-						if (!mode) {
-							
-							upTouched = true;
+						upTouched = true;
 						_up.alpha = 0.55;
-						}else {
-							
-							trace("BOUTON ACTION");
-						}
-						
 					}
 
 				}
@@ -132,18 +125,8 @@ package ui {
 					}
 
 					if (buttonName == "up") {
-
-						
-						if (!mode) {
 						upTouched = false;
 						_up.alpha = 0.25;
-							
-						}else {
-							
-						trace("Bouton Action ended");	
-						}
-						
-
 					}
 				}
 
