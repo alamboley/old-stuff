@@ -61,10 +61,13 @@ package ui {
 			_right.y = _left.y;
 
 			_up = new Image(AtlasSimple.getAtlas().getTexture("btACTION"))
+			_up.pivotX += _up.width / 2;
+			_up.pivotY += _up.height / 2;
+			
 			addChild(_up);
 			_up.name = "up";
-			_up.x = Starling.current.viewPort.width - _WIDTH * 1.5;
-			_up.y = Starling.current.viewPort.height - _HEIGHT * 1.5;
+			_up.x = Starling.current.viewPort.width - _WIDTH * 1.5 + _up.width / 2;
+			_up.y = Starling.current.viewPort.height - _HEIGHT * 1.5 + _up.height / 2;
 
 
 			_down = new Image(AtlasSimple.getAtlas().getTexture("btACTION"))
