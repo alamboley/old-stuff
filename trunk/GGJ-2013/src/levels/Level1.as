@@ -89,9 +89,9 @@ package levels {
 			_ce.sound.playSound("Feu", 0.02);
 			
 			if (GameVars.level1Fini)
-				_hero = new Hero("hero", {x:3400, y:2025, radius:30});
+				_hero = new Hero("hero", {x:4200, y:2025, radius:30});
 			else
-			 _hero = new Hero("hero", {x: 11256, y: 1250, radius: 30});
+			 	_hero = new Hero("hero", {x: 11256, y: 1250, radius: 30});
 			_hero.maxVelocity = 85;
 			_hero.acceleration = 25;
 			_hero.jumpHeight = 280;
@@ -293,8 +293,10 @@ package levels {
 			_ce.sound.playSound("roar", 1, 0);
 			var vpos:Point = _camera.pointFromLocal(new Point(_camera.offset.x, _camera.offset.y));
 			vpos.y -= 200;
-			trace(vpos.x, vpos.y);
-			add(new CitrusSprite("ours1", {x:vpos.x, y:vpos.y, view:new Image(AtlasSimple.getAtlas().getTexture("ours1")), group:1}));
+			if (GameVars.level1Fini)
+				add(new CitrusSprite("ours2", {x:vpos.x, y:vpos.y, view:new Image(AtlasSimple.getAtlas().getTexture("ours2")), group:1}));
+			else
+				add(new CitrusSprite("ours1", {x:vpos.x, y:vpos.y, view:new Image(AtlasSimple.getAtlas().getTexture("ours1")), group:1}));
 			TweenLite.delayedCall(5, postPreEndLevel);
 		}
 
@@ -314,7 +316,8 @@ package levels {
 			_ce.sound.removeSound("roar");
 			// ...
 			
-			lvlEnded.dispatch();
+			if (!GameVars.level1Fini)
+				lvlEnded.dispatch();
 		}
 
 		override public function destroy():void {

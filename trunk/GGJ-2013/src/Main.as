@@ -80,11 +80,9 @@ package {
 			var base:String = _xml.base.path;
 			Hills._pointsY = base.split(',');
 
-
 			GameVars.LevelWidth = Hills._pointsY.length;
 
 			var lastY:Number = Hills._pointsY[Hills._pointsY.length - 1];
-
 
 			for (var i:int = 0; i < 120; i++) {
 				Hills._pointsY.push(lastY);
@@ -110,9 +108,9 @@ package {
 		}
 
 		private function _onLevelChanged(lvl:ALevel):void {
-
+			
 			state = lvl;
-
+			
 			lvl.lvlEnded.add(_nextLevel);
 			lvl.restartLevel.add(_restartLevel);
 			lvl.previousLevel.add(_previousLevel);
