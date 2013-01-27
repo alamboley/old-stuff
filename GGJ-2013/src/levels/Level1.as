@@ -390,12 +390,18 @@ package levels
 			//vpos.x -= 200;
 			vpos.y -= 200;
 			add(new CitrusSprite("ours1", {x:vpos.x, y:vpos.y, view: new Image(AtlasSimple.getAtlas().getTexture("ours1")), group: 1}));
+			TweenLite.delayedCall(5, postPreEndLevel);
+		}
+		
+		private function postPreEndLevel():void
+		{
+			TweenLite.to(_overlayQuad, 5, { alpha:1 } );
 			TweenLite.delayedCall(5, endLevel);
 		}
 		
 		private function endLevel():void
 		{
-			TweenLite.to(_overlayQuad, 5, { alpha:1 } );
+			//TweenLite.to(_overlayQuad, 5, { alpha:1 } );
 			_HeartBeat.volume = 0;
 			_ce.input.stopRouting();
 			_HeartBeat.stop();
