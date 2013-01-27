@@ -14,6 +14,7 @@ package levels {
 	import objects.BulleTimer;
 
 	import starling.display.Image;
+	import starling.filters.BlurFilter;
 
 	import com.greensock.TweenLite;
 
@@ -31,9 +32,13 @@ package levels {
 		[Embed(source="/../embed/hopital.png")]
 		private var _bgHopital:Class;
 		
+		[Embed(source="/../embed/oursHopital.png")]
+		private var _oursHopital:Class;
+		
 		private var _sensorOurs:Sensor;
 		
 		private var _buttonAnim:Boolean = false;
+		private var _ours:CitrusSprite;
 		
 		public function Hopital()
 		{
@@ -48,6 +53,9 @@ package levels {
 			
 			var decor:CitrusSprite = new CitrusSprite("Decor", { view: ImageDECOR, group: 0});
 			add(decor);
+			
+			_ours = new CitrusSprite("ours", {view:Image.fromBitmap(new _oursHopital()), x:610, y:515});
+			add(_ours);
 			
 			_hero = new HeroB("hero", {x: 980, y: 605, radius: 50});
 			_hero.maxVelocity = 65;
@@ -82,6 +90,8 @@ package levels {
 			_buttonAnim = true;
 			alphaTween1();
 			_hud.mode = true;
+			
+			_ours.view.filter = BlurFilter.createGlow(0xFF0000);
 		}
 		
 		private function alphaTween1():void {
@@ -97,6 +107,7 @@ package levels {
 		}
 		
 		private function _clignoterBoutonStop(callback:InteractionCallback):void {
+			_ours.view.filter = null;
 			_buttonAnim = false;
 			_hud.mode = false;
 			TweenLite.to(_hud.up, 0.4, {alpha:0.4, onComplete:alphaTween1});
