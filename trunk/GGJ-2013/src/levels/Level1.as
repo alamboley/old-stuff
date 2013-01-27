@@ -287,7 +287,7 @@ package levels {
 				TweenLite.to(_hud, 1, {alpha:0});
 
 				_camera.zoomEasing = 0.025;
-				_camera.target = {x:oursPosX - 300, y:_hero.y};
+				_camera.target = {x:oursPosX - 300, y:2225};
 				_camera.zoomFit(400, 400);
 				_HeartBeat.targetSpeed = 8;
 				// EN FACE DE L'OURS
@@ -314,6 +314,7 @@ package levels {
 
 		private function postPreEndLevel():void {
 			TweenLite.to(_overlayQuad, 5, {alpha:1});
+			TweenLite.to(_HeartBeat, 3, {volume:0});
 			TweenLite.delayedCall(5, endLevel);
 		}
 
