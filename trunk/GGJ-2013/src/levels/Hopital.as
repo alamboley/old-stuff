@@ -100,10 +100,10 @@ package levels {
 		private function introCam():void
 		{
 			_camera.zoomEasing = 0;
-			_camera.zoomFit(5000, 5000);
+			_camera.zoomFit(50000, 50000);
 			TweenLite.delayedCall(2, function():void 
 			{
-				_camera.zoomEasing = 0.05;
+				_camera.zoomEasing = 0.01;
 				_camera.zoomFit(500, 500);
 			});
 		}
