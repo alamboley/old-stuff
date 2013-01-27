@@ -35,7 +35,7 @@ package objects {
 		public function BulleTimer(name:String, params:Object = null) {
 			super(name, params);
 			
-			_tf = new TextField(400, 200, text, "ArialMT");
+			_tf = new TextField(400, 300, text, "ArialMT");
 			_tf.alpha = 0;
 			_tf.fontSize = BitmapFont.NATIVE_SIZE;
 			_tf.color = Color.WHITE;
@@ -54,15 +54,16 @@ package objects {
 				if (Collider is Hero) {
 					TweenNano.to(_tf, 0.4, {alpha:1});
 					_readed = _readed;
+					
+					
 					var a:Armature = ((Collider as Hero).view as Armature);
 					(Collider as Hero).velocity = [0, 0];
-					_ce.input.startRouting(666);
+					//_ce.input.startRouting(666);
 					
-					//a.animation.gotoAndPlay("lever");
 					
-					setTimeout(function():void {
-						_ce.input.stopRouting();
-					}, 500);
+				//	setTimeout(function():void { // _ce.input.stopRouting(); }, 500);
+					
+					
 					
 					setTimeout(function():void 
 					{

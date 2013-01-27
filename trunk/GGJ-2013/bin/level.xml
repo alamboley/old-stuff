@@ -1,221 +1,251 @@
 <xml>
   <base>
-    <path>99,109,119,124,132,131,133,134,146,162,202,259,314,386,1112,1653,1798,1838,1844,1825,1811,1802,1804,1806,1806,1808,1801,1797,1796,1791,1796,1805,1819,1819,1817,1794,1787,1788,1777,1764,1749,1688,1602,1581,1575,1601,1668,1718,1742,1725,1670,1545,1423,1401,1383,1388,1394,1389,1382,1350,1294,1289,1272,1276,1295,1335,1339,1324,1316,1314,1309,1301,1280,1266,1265,1272,1297,1321,1339,1387,1393,1361,1331,1340,1389,1421,1394,1311,1195,1209,669,564,525,472,460,485,521,536,536,545,541,524,490,391,294,261,247,243,253,266,302,384,447,476,491,505,543,560,564,599,619,627,627,619,585,547,529,552,563,556,685,785,823,935,962,1009,1044,1074,1115,1145,1169,1174,1141,1058,327,210,171,153,157,163,159,159,161,152,158,163,161,161,161,163,160,165,167,170,169,163</path>
+    <path>-27,-19,-3,20,62,85,82,74,98,159,270,582,1113,1215,1269,1494,1622,2131,2258,2301,2310,2308,2306,2270,2262,2267,2256,2254,2254,2250,2245,2237,2242,2255,2281,2298,2321,2300,2273,2255,2236,2213,2209,2193,2180,2165,2128,2091,2063,2059,1982,1950,1932,1938,1963,1999,2063,2129,2215,2284,2331,2353,2353,2352,2325,2279,2218,2198,2187,2183,2166,2117,2048,1956,1817,1741,1800,1241,1299,1331,1346,1321,1316,1306,1304,1315,1332,1341,1359,1408,1416,1426,1482,1605,1753,1830,1861,1885,1908,1893,1895,1889,1858,1845,1814,1670,1675,1621,951,589,499,485,503,532,566,581,588,589,576,550,541,513,509,519,543,536,529,528,548,561,572</path>
     <nomlevel>LevelBy3wg</nomlevel>
   </base>
   <objects>
-    <posx>12532</posx>
-    <posy>12</posy>
+    <posx>10082</posx>
+    <posy>1228</posy>
+    <obj>11</obj>
+  </objects>
+  <objects>
+    <posx>9750</posx>
+    <posy>1117</posy>
+    <obj>7</obj>
+  </objects>
+  <objects>
+    <posx>11343</posx>
+    <posy>1005</posy>
+    <obj>13</obj>
+  </objects>
+  <objects>
+    <posx>10777</posx>
+    <posy>808</posy>
     <obj>4</obj>
   </objects>
   <objects>
-    <posx>11869</posx>
-    <posy>160</posy>
-    <obj>6</obj>
-  </objects>
-  <objects>
-    <posx>13533</posx>
-    <posy>-274</posy>
-    <obj>5</obj>
-  </objects>
-  <objects>
-    <posx>15169</posx>
-    <posy>214</posy>
+    <posx>10547</posx>
+    <posy>810</posy>
     <obj>4</obj>
   </objects>
   <objects>
-    <posx>15391</posx>
-    <posy>97</posy>
+    <posx>10321</posx>
+    <posy>915</posy>
     <obj>4</obj>
   </objects>
   <objects>
-    <posx>14913</posx>
-    <posy>59</posy>
-    <obj>4</obj>
-  </objects>
-  <objects>
-    <posx>15655</posx>
-    <posy>558</posy>
-    <obj>1</obj>
-  </objects>
-  <objects>
-    <posx>16196</posx>
-    <posy>29</posy>
-    <obj>3</obj>
-  </objects>
-  <objects>
-    <posx>17684</posx>
-    <posy>636</posy>
-    <obj>5</obj>
-  </objects>
-  <objects>
-    <posx>17794</posx>
-    <posy>642</posy>
-    <obj>4</obj>
-  </objects>
-  <objects>
-    <posx>17559</posx>
-    <posy>819</posy>
-    <obj>6</obj>
-  </objects>
-  <objects>
-    <posx>18010</posx>
-    <posy>631</posy>
-    <obj>3</obj>
-  </objects>
-  <objects>
-    <posx>16894</posx>
-    <posy>449</posy>
-    <obj>5</obj>
-  </objects>
-  <objects>
-    <posx>14533</posx>
-    <posy>132</posy>
+    <posx>10045</posx>
+    <posy>852</posy>
     <obj>2</obj>
   </objects>
   <objects>
-    <posx>14130</posx>
-    <posy>-56</posy>
-    <obj>4</obj>
-  </objects>
-  <objects>
-    <posx>13860</posx>
-    <posy>-17</posy>
-    <obj>6</obj>
-  </objects>
-  <objects>
-    <posx>12875</posx>
-    <posy>468</posy>
-    <obj>1</obj>
-  </objects>
-  <objects>
-    <posx>10740</posx>
-    <posy>1104</posy>
-    <obj>6</obj>
-  </objects>
-  <objects>
-    <posx>11106</posx>
-    <posy>675</posy>
-    <obj>4</obj>
-  </objects>
-  <objects>
-    <posx>10412</posx>
-    <posy>808</posy>
-    <obj>3</obj>
-  </objects>
-  <objects>
-    <posx>9978</posx>
-    <posy>866</posy>
-    <obj>4</obj>
-  </objects>
-  <objects>
-    <posx>10154</posx>
-    <posy>1115</posy>
-    <obj>4</obj>
-  </objects>
-  <objects>
-    <posx>9622</posx>
-    <posy>797</posy>
-    <obj>4</obj>
-  </objects>
-  <objects>
-    <posx>9250</posx>
-    <posy>744</posy>
+    <posx>10194</posx>
+    <posy>818</posy>
     <obj>5</obj>
   </objects>
   <objects>
-    <posx>8285</posx>
-    <posy>1020</posy>
-    <obj>6</obj>
+    <posx>10695</posx>
+    <posy>813</posy>
+    <obj>5</obj>
   </objects>
   <objects>
-    <posx>8682</posx>
+    <posx>10440</posx>
     <posy>809</posy>
     <obj>5</obj>
   </objects>
   <objects>
-    <posx>8415</posx>
-    <posy>824</posy>
-    <obj>5</obj>
+    <posx>12610</posx>
+    <posy>1775</posy>
+    <obj>9</obj>
   </objects>
   <objects>
-    <posx>8918</posx>
-    <posy>768</posy>
-    <obj>4</obj>
+    <posx>13433</posx>
+    <posy>1552</posy>
+    <obj>11</obj>
   </objects>
   <objects>
-    <posx>7496</posx>
-    <posy>767</posy>
-    <obj>2</obj>
-  </objects>
-  <objects>
-    <posx>6866</posx>
-    <posy>1075</posy>
+    <posx>8579</posx>
+    <posy>1880</posy>
     <obj>6</obj>
   </objects>
   <objects>
-    <posx>6451</posx>
-    <posy>1331</posy>
-    <obj>4</obj>
-  </objects>
-  <objects>
-    <posx>5985</posx>
-    <posy>1544</posy>
-    <obj>4</obj>
-  </objects>
-  <objects>
-    <posx>6226</posx>
-    <posy>1435</posy>
-    <obj>4</obj>
-  </objects>
-  <objects>
-    <posx>5466</posx>
-    <posy>1064</posy>
+    <posx>7825</posx>
+    <posy>1835</posy>
     <obj>3</obj>
   </objects>
   <objects>
-    <posx>3976</posx>
-    <posy>1294</posy>
+    <posx>7514</posx>
+    <posy>1834</posy>
     <obj>2</obj>
   </objects>
   <objects>
-    <posx>3466</posx>
-    <posy>1276</posy>
+    <posx>6522</posx>
+    <posy>1439</posy>
+    <obj>5</obj>
+  </objects>
+  <objects>
+    <posx>6070</posx>
+    <posy>1763</posy>
+    <obj>6</obj>
+  </objects>
+  <objects>
+    <posx>4430</posx>
+    <posy>2119</posy>
+    <obj>8</obj>
+  </objects>
+  <objects>
+    <posx>8619</posx>
+    <posy>1987</posy>
+    <obj>8</obj>
+  </objects>
+  <objects>
+    <posx>12860</posx>
+    <posy>1348</posy>
+    <obj>4</obj>
+  </objects>
+  <objects>
+    <posx>12361</posx>
+    <posy>1388</posy>
     <obj>3</obj>
   </objects>
   <objects>
-    <posx>14768</posx>
-    <posy>54</posy>
+    <posx>12676</posx>
+    <posy>1581</posy>
+    <obj>6</obj>
+  </objects>
+  <objects>
+    <posx>12887</posx>
+    <posy>1769</posy>
+    <obj>10</obj>
+  </objects>
+  <objects>
+    <posx>12273</posx>
+    <posy>1771</posy>
+    <obj>9</obj>
+  </objects>
+  <objects>
+    <posx>12392</posx>
+    <posy>1396</posy>
     <obj>5</obj>
   </objects>
   <objects>
-    <posx>12630</posx>
-    <posy>21</posy>
+    <posx>5195</posx>
+    <posy>2084</posy>
+    <obj>12</obj>
+  </objects>
+  <objects>
+    <posx>4736</posx>
+    <posy>1773</posy>
+    <obj>4</obj>
+  </objects>
+  <objects>
+    <posx>3554</posx>
+    <posy>1930</posy>
+    <obj>6</obj>
+  </objects>
+  <objects>
+    <posx>2319</posx>
+    <posy>1592</posy>
+    <obj>17</obj>
+  </objects>
+  <objects>
+    <posx>2493</posx>
+    <posy>2058</posy>
+    <obj>14</obj>
+  </objects>
+  <objects>
+    <posx>2063</posx>
+    <posy>1635</posy>
+    <obj>16</obj>
+  </objects>
+  <objects>
+    <posx>1990</posx>
+    <posy>1881</posy>
+    <obj>15</obj>
+  </objects>
+  <objects>
+    <posx>2100</posx>
+    <posy>1844</posy>
+    <obj>16</obj>
+  </objects>
+  <objects>
+    <posx>12083</posx>
+    <posy>1674</posy>
+    <obj>8</obj>
+  </objects>
+  <objects>
+    <posx>11044</posx>
+    <posy>888</posy>
     <obj>5</obj>
   </objects>
+  <objects>
+    <posx>9379</posx>
+    <posy>1243</posy>
+    <obj>4</obj>
+  </objects>
+  <objects>
+    <posx>9086</posx>
+    <posy>1472</posy>
+    <obj>2</obj>
+  </objects>
+  <objects>
+    <posx>8955</posx>
+    <posy>1602</posy>
+    <obj>3</obj>
+  </objects>
+  <objects>
+    <posx>8737</posx>
+    <posy>1643</posy>
+    <obj>4</obj>
+  </objects>
+  <objects>
+    <posx>6904</posx>
+    <posy>1859</posy>
+    <obj>8</obj>
+  </objects>
+  <objects>
+    <posx>7956</posx>
+    <posy>1833</posy>
+    <obj>5</obj>
+  </objects>
+  <objects>
+    <posx>8455</posx>
+    <posy>2085</posy>
+    <obj>9</obj>
+  </objects>
+  <objects>
+    <posx>5518</posx>
+    <posy>1881</posy>
+    <obj>6</obj>
+  </objects>
   <items>
-    <posx>18047</posx>
-    <posy>1058</posy>
+    <posx>13561</posx>
+    <posy>1625</posy>
     <obj>1</obj>
   </items>
   <items>
-    <posx>11658</posx>
-    <posy>465</posy>
-    <obj>2</obj>
+    <posx>10026</posx>
+    <posy>1223</posy>
+    <obj>1</obj>
   </items>
   <items>
-    <posx>9961</posx>
-    <posy>1255</posy>
-    <obj>3</obj>
+    <posx>8928</posx>
+    <posy>2124</posy>
+    <obj>1</obj>
   </items>
   <items>
-    <posx>7205</posx>
-    <posy>1308</posy>
-    <obj>4</obj>
+    <posx>7867</posx>
+    <posy>2261</posy>
+    <obj>1</obj>
   </items>
   <items>
-    <posx>3334</posx>
-    <posy>1689</posy>
-    <obj>5</obj>
+    <posx>6633</posx>
+    <posy>1848</posy>
+    <obj>1</obj>
+  </items>
+  <items>
+    <posx>3446</posx>
+    <posy>2164</posy>
+    <obj>1</obj>
   </items>
 </xml>

@@ -1,6 +1,7 @@
 package {
 
 	import citrus.core.starling.StarlingCitrusEngine;
+	import levels.Hopital;
 
 	import levels.Level1;
 
@@ -16,7 +17,7 @@ package {
 
 	// import flash.filesystem.File;
 
-	[SWF(backgroundColor="#000000", frameRate="60")]
+	[SWF(backgroundColor="#000000", frameRate="60",width="1280",height="768")]
 
 	/**
 	 * @author Aymeric
@@ -27,7 +28,7 @@ package {
 
 		public function Main() {
 			super();
-			
+		 
 			sound.addSound("HB1", "HeartBeat1.mp3");
 			sound.addSound("HB2", "HeartBeat2.mp3");
 			sound.addSound("Feu", "Feu.mp3");
@@ -102,7 +103,7 @@ package {
 				GameVars.levelItems.push(new Array(px,py,"items"+pt));
 			}
 			
-			state = new Level1();
+			state = new Hopital();
 		}
 
 	}
