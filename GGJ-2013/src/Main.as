@@ -106,7 +106,7 @@ package {
 				GameVars.levelItems.push(new Array(px, py, "items" + pt));
 			}
 
-			levelManager.gotoLevel();
+			levelManager.gotoLevel(2);
 		}
 
 		private function _onLevelChanged(lvl:ALevel):void {

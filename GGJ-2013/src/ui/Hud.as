@@ -73,8 +73,6 @@ package ui {
 			_down.x = _up.x;
 			_down.y = Starling.current.viewPort.height - _HEIGHT * 1.5;
 
-			
-			
 			_left.addEventListener(TouchEvent.TOUCH, _touchHandler);
 			_right.addEventListener(TouchEvent.TOUCH, _touchHandler);
 
@@ -151,6 +149,10 @@ package ui {
 
 			}
 
+		}
+
+		public function get up():Quad {
+			return _up;
 		}
 	}
 }

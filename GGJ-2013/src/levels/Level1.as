@@ -283,8 +283,6 @@ package levels {
 				_ended = true;
 			}
 
-			trace(_ended);
-
 			_particleTorche.emitterX = _hero.inverted ? _hero.x - 18 : _hero.x + 18;
 			_particleTorche.emitterY = _hero.y - 35;
 		}
