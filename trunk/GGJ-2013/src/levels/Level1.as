@@ -5,6 +5,7 @@ package levels {
 	import citrus.objects.platformer.nape.Hero;
 	import citrus.objects.platformer.nape.Platform;
 	import citrus.view.starlingview.StarlingCamera;
+	import ui.Caption;
 
 	import dragonBones.factorys.StarlingFactory;
 
@@ -70,6 +71,8 @@ package levels {
 		private var _ended:Boolean = false;
 
 		private var _overlayQuad:Quad;
+		
+		public var caption:Caption;
 
 		public function Level1() {
 			super();
@@ -143,7 +146,10 @@ package levels {
 
 			_ce.sound.addSound("background music", "introTest2.mp3");
 			_ce.sound.playSound("background music", 1);
-
+			
+			caption = new Caption();
+			Starling.current.stage.addChild(caption);
+			
 			createDECOR();
 
 			var decor:CitrusSprite = new CitrusSprite("Decor", {parallax:1, view:ImageDECOR, group:1});
@@ -197,7 +203,10 @@ package levels {
 		}
 
 		private function createITEMS(x:Number, y:Number, ty:String):void {
-
+			
+			if (GameVars.level1Fini)
+			return;
+			
 			ty = ty.substr(5);
 
 			var textBulle:String;
@@ -208,7 +217,8 @@ package levels {
 				quelleBulle++;
 			}
 
-			var coin:BulleTimer = new BulleTimer("coin", {x:x, y:y, width:150, height:150, text:textBulle});
+			var coin:BulleTimer = new BulleTimer("coin", { x:x, y:y, width:150, height:150, text:textBulle } );
+			coin.captionRef = caption;
 			add(coin);
 		}
 
@@ -232,6 +242,8 @@ package levels {
 
 		override public function update(timeDelta:Number):void {
 			super.update(timeDelta);
+			
+			caption.update();
 
 			// un peu degeu...
 			if ((Math.abs(_hero.velocity[0]) > 0.5 || Math.abs(_hero.velocity[1]) > 0.5) && !_ended)
