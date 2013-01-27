@@ -291,7 +291,7 @@ package levels {
 		private function preEndLevel():void {
 			// ours et vignette
 			_ce.sound.playSound("roar", 1, 0);
-			var vpos:Point = _camera.pointFromLocal(new Point(_camera.offset.x, _camera.offset.y));
+			var vpos:Point = _camera.pointFromLocal(new Point(_camera.offset.x-200, _camera.offset.y-88));
 			vpos.y -= 200;
 			if (GameVars.level1Fini)
 				add(new CitrusSprite("ours2", {x:vpos.x, y:vpos.y, view:new Image(AtlasSimple.getAtlas().getTexture("ours2")), group:1}));
