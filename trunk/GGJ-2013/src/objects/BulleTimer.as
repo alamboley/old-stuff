@@ -6,8 +6,6 @@ package objects {
 	import citrus.objects.platformer.nape.Sensor;
 	import citrus.physics.nape.NapeUtils;
 
-	import dragonBones.Armature;
-
 	import nape.callbacks.InteractionCallback;
 
 	import starling.text.BitmapFont;
@@ -42,7 +40,7 @@ package objects {
 			_tf.autoScale = true;
 			_tf.hAlign = HAlign.LEFT;
 			
-			_bulle = new CitrusSprite("bulle", {group:12, x:_x + 30, y:_y, view:_tf});
+			_bulle = new CitrusSprite("bulle", {group:2, x:_x + 30, y:_y - 130, view:_tf});
 			_ce.state.add(_bulle);
 		}
 
@@ -57,15 +55,8 @@ package objects {
 					TweenNano.to(_tf, 0.4, {alpha:1});
 					_readed = _readed;
 					
-					
-					var a:Armature = ((Collider as Hero).view as Armature);
 					(Collider as Hero).velocity = [0, 0];
 					//_ce.input.startRouting(666);
-					
-					
-				//	setTimeout(function():void { // _ce.input.stopRouting(); }, 500);
-					
-					
 					
 					setTimeout(function():void 
 					{

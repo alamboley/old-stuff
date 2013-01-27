@@ -18,9 +18,13 @@ package levels {
 
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.text.BitmapFont;
+	import starling.text.TextField;
+	import starling.textures.Texture;
 
 	import ui.Hud;
 
+	import flash.display.Bitmap;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 	
@@ -39,6 +43,12 @@ package levels {
 		protected var _hud:Hud;
 		protected var _ce:CitrusEngine;
 		protected var _physics:Nape;
+		
+		[Embed(source="/../embed/ArialFont.fnt",mimeType="application/octet-stream")]
+		private var _fontConfig:Class;
+		
+		[Embed(source="/../embed/ArialFont.png")]
+		private var _fontPng:Class;
 		
 		[Embed(source="/../embed/hopital.png")]
 		private var _bgHopital:Class;
@@ -66,6 +76,11 @@ package levels {
 			_hud.scaleX = GameVars.UpScale;
 			_hud.scaleY = GameVars.UpScale;
 			_hud.mode = true;
+			
+			var bitmap:Bitmap = new _fontPng();
+			var ftTexture:Texture = Texture.fromBitmap(bitmap);
+			var ftXML:XML = XML(new _fontConfig());
+			TextField.registerBitmapFont(new BitmapFont(ftTexture, ftXML));
 			
 			_physics = new Nape("physics");
 			_physics.timeStep = 1 / 30;
@@ -105,9 +120,8 @@ package levels {
 			
 			for (var i:int = 0; i < GameVars.SpeechHopital.length; i++) {
 				
-			var coin:BulleTimer = new BulleTimer("coin", {x: GameVars.SpeechDots[i], y: 600, width: 30, height: 30, text: GameVars.SpeechHopital[i]});
-			add(coin);	
-				
+				var coin:BulleTimer = new BulleTimer("coin", {x: GameVars.SpeechDots[i], y: 600, width: 30, height: 30, text: GameVars.SpeechHopital[i]});
+				add(coin);	
 			}
 			
 		}
@@ -128,6 +142,13 @@ package levels {
 		override public function update(timeDelta:Number):void
 		{			
 			super.update(timeDelta);
+		}
+			
+		override public function destroy():void {
+			
+			TextField.unregisterBitmapFont("ArialMT");
+			
+			super.destroy();
 		}
 	
 	}
