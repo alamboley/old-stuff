@@ -1,29 +1,29 @@
-package levels
-{
-	
+package levels {
+
 	import citrus.core.CitrusEngine;
-	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
 	import citrus.objects.CitrusSprite;
 	import citrus.objects.platformer.nape.Hero;
 	import citrus.objects.platformer.nape.Platform;
 	import citrus.physics.nape.Nape;
 	import citrus.view.starlingview.StarlingCamera;
-	import flash.geom.Point;
-	import nape.geom.Vec2;
-	import starling.display.Quad;
-	
+
 	import dragonBones.Armature;
 	import dragonBones.factorys.StarlingFactory;
-	
+
+	import nape.geom.Vec2;
+
 	import objects.BulleTimer;
 	import objects.Hills;
 	import objects.HillsTexture;
-	
+	import objects.Lucioles;
+
 	import sound.HeartBeat;
-	
+
 	import starling.core.Starling;
+	import starling.display.BlendMode;
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.extensions.krecha.ScrollImage;
 	import starling.extensions.krecha.ScrollTile;
@@ -31,42 +31,28 @@ package levels
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
 	import starling.textures.Texture;
-	import objects.Lucioles;
-	
+
 	import ui.Hud;
-	
+
 	import utils.SpotlightFilter;
-	
+
 	import com.greensock.TweenLite;
-	
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Shape;
 	import flash.events.Event;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	import starling.display.BlendMode;
 	
 	/**
 	 * @author Aymeric
 	 */
-	public class Level1 extends StarlingState
+	public class Level1 extends ALevel
 	{
 		
-		protected var _ce:CitrusEngine;
-		protected var _physics:Nape;
-		
-		protected var _hud:Hud;
-		
-		protected var _hero:Hero;
-		
 		private var _hillsTexture:HillsTexture;
-		
-		[Embed(source="/../embed/ArialFont.fnt",mimeType="application/octet-stream")]
-		private var _fontConfig:Class;
-		
-		[Embed(source="/../embed/ArialFont.png")]
-		private var _fontPng:Class;
 		
 		private var _containerGroupBgLight:Sprite;
 		
@@ -78,9 +64,6 @@ package levels
 		
 		[Embed(source="/../embed/texture.png")]
 		private var _particlePng:Class;
-		
-		private var _armature:Armature;
-		private var _factory:StarlingFactory;
 		
 		private var _scrollBackground:ScrollImage;
 		private var _camera:StarlingCamera;
@@ -111,33 +94,11 @@ package levels
 		public function Level1()
 		{
 			super();
-			
-			_ce = CitrusEngine.getInstance();
-			_ce.stage.focus = _ce.stage;
 		}
 		
 		override public function initialize():void
 		{
 			super.initialize();
-			
-			scaleX = GameVars.GameScale;
-			scaleY = GameVars.GameScale;
-			
-			_hud = new Hud();
-			addChild(_hud);
-			_hud.scaleX = GameVars.UpScale;
-			_hud.scaleY = GameVars.UpScale;
-			
-			var bitmap:Bitmap = new _fontPng();
-			var ftTexture:Texture = Texture.fromBitmap(bitmap);
-			var ftXML:XML = XML(new _fontConfig());
-			TextField.registerBitmapFont(new BitmapFont(ftTexture, ftXML));
-			
-			_physics = new Nape("physics");
-			//_physics.visible = true;
-			_physics.timeStep = 1 / 30;
-			_physics.gravity = new Vec2(0, 250);
-			add(_physics);
 			
 			var psconfig:XML = new XML(new _torchePex());
 			var psTexture:Texture = Texture.fromBitmap(new _particlePng());
@@ -298,17 +259,6 @@ package levels
 			}
 			else
 				_ce.sound.playSound("HB1", _HeartBeat.volume, 0, 1.1);
-		}
-		
-		private function _textureCompleteHandler(evt:Event):void
-		{
-			_factory.removeEventListener(Event.COMPLETE, _textureCompleteHandler);
-			
-			_armature = _factory.buildArmature("fillette");
-			(_armature.display as Sprite).scaleX = 0.55;
-			(_armature.display as Sprite).scaleY = 0.55;
-			
-			_hero.view = _armature;
 		}
 		
 		override public function update(timeDelta:Number):void

@@ -1,30 +1,17 @@
 package levels {
 
-	import citrus.core.CitrusEngine;
-	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
 	import citrus.objects.CitrusSprite;
 	import citrus.objects.platformer.nape.HeroB;
 	import citrus.objects.platformer.nape.Platform;
-	import citrus.physics.nape.Nape;
 	import citrus.view.starlingview.StarlingCamera;
 
-	import dragonBones.Armature;
 	import dragonBones.factorys.StarlingFactory;
-
-	import nape.geom.Vec2;
 
 	import objects.BulleTimer;
 
 	import starling.display.Image;
-	import starling.display.Sprite;
-	import starling.text.BitmapFont;
-	import starling.text.TextField;
-	import starling.textures.Texture;
 
-	import ui.Hud;
-
-	import flash.display.Bitmap;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 	
@@ -32,23 +19,9 @@ package levels {
 	 * ...
 	 * @author 3wg
 	 */
-	public class Hopital extends StarlingState
+	public class Hopital extends ALevel
 	{
-		
-		protected var _hero:HeroB;
-		private var _armature:Armature;
-		private var _factory:StarlingFactory;
 		private var _camera:StarlingCamera;
-	 
-		protected var _hud:Hud;
-		protected var _ce:CitrusEngine;
-		protected var _physics:Nape;
-		
-		[Embed(source="/../embed/ArialFont.fnt",mimeType="application/octet-stream")]
-		private var _fontConfig:Class;
-		
-		[Embed(source="/../embed/ArialFont.png")]
-		private var _fontPng:Class;
 		
 		[Embed(source="/../embed/hopital.png")]
 		private var _bgHopital:Class;
@@ -59,34 +32,16 @@ package levels {
 		public function Hopital()
 		{
 			super();
-			
-			_ce = CitrusEngine.getInstance();
-			_ce.stage.focus = _ce.stage;
 		}
 		
 		override public function initialize():void
 		{
 			super.initialize();
 			
-			scaleX = GameVars.GameScale;
-			scaleY = GameVars.GameScale;
+			var ImageDECOR:Image = Image.fromBitmap(new _bgHopital());
 			
-			_hud = new Hud();
-			addChild(_hud);
-			_hud.scaleX = GameVars.UpScale;
-			_hud.scaleY = GameVars.UpScale;
-			_hud.mode = true;
-			
-			var bitmap:Bitmap = new _fontPng();
-			var ftTexture:Texture = Texture.fromBitmap(bitmap);
-			var ftXML:XML = XML(new _fontConfig());
-			TextField.registerBitmapFont(new BitmapFont(ftTexture, ftXML));
-			
-			_physics = new Nape("physics");
-			_physics.timeStep = 1 / 30;
-			_physics.visible = true;
-			_physics.gravity = new Vec2(0, 250);
-			add(_physics);
+			var decor:CitrusSprite = new CitrusSprite("Decor", { view: ImageDECOR, group: 0});
+			add(decor);
 			
 			_hero = new HeroB("hero", {x: 980, y: 605, radius: 50});
 			_hero.maxVelocity = 65;
@@ -108,11 +63,6 @@ package levels {
 			_factory.addEventListener(Event.COMPLETE, _textureCompleteHandler);
 			_factory.parseData(new _ResourcesData());
 			
-			var ImageDECOR:Image = Image.fromBitmap(new _bgHopital());
-			
-			var decor:CitrusSprite = new CitrusSprite("Decor", { view: ImageDECOR, group: 0});
-			add(decor);
-			
 			createSpots();
 		}
 		
@@ -126,28 +76,12 @@ package levels {
 			
 		}
 		
-		private function _textureCompleteHandler(evt:Event):void
-		{
-			_factory.removeEventListener(Event.COMPLETE, _textureCompleteHandler);
-			
-			_armature = _factory.buildArmature("fillette");
-			(_armature.display as Sprite).scaleX = 0.55;
-			(_armature.display as Sprite).scaleY = 0.55;
-			
-			_hero.view = _armature;
-			
-			add(_hero);
-		}
-		
 		override public function update(timeDelta:Number):void
 		{			
 			super.update(timeDelta);
 		}
 			
 		override public function destroy():void {
-			
-			TextField.unregisterBitmapFont("ArialMT");
-			
 			super.destroy();
 		}
 	
