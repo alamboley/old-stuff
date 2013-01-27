@@ -83,7 +83,12 @@ package ui
 			
 			//next
 			TweenLite.to(this, _fadeDuration , { alpha:0 } );
-			TweenLite.delayedCall(_fadeDuration, function():void { _endLast = true; } );
+			TweenLite.delayedCall(_fadeDuration, end);
+		}
+		
+		private function end():void
+		{
+			 _endLast = true;
 		}
 		
 	}
