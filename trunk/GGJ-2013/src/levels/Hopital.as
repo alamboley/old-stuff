@@ -49,9 +49,7 @@ package levels {
 		{
 			super.initialize();
 			
-			var ImageDECOR:Image = Image.fromBitmap(new _bgHopital());
-			
-			var decor:CitrusSprite = new CitrusSprite("Decor", { view: ImageDECOR, group: 0});
+			var decor:CitrusSprite = new CitrusSprite("Decor", { view:Image.fromBitmap(new _bgHopital()), group: 0});
 			add(decor);
 			
 			_ours = new CitrusSprite("ours", {view:Image.fromBitmap(new _oursHopital()), x:610, y:515});
