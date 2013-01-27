@@ -312,7 +312,7 @@ package levels {
 			_ce.sound.removeSound("HB1");
 			_ce.sound.removeSound("HB2");
 			// ...
-			_ce.state = new Hopital();
+			lvlEnded.dispatch();
 		}
 
 		override public function destroy():void {

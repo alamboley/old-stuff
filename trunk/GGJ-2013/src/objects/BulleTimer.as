@@ -1,5 +1,6 @@
 package objects {
 
+	import citrus.core.starling.StarlingState;
 	import citrus.objects.CitrusSprite;
 	import citrus.objects.NapePhysicsObject;
 	import citrus.objects.platformer.nape.Hero;
@@ -36,12 +37,15 @@ package objects {
 			_tf = new TextField(400, 300, text, "ArialMT");
 			_tf.alpha = 0;
 			_tf.fontSize = BitmapFont.NATIVE_SIZE;
+			_tf.width = _ce.stage.stageWidth;
 			_tf.color = Color.WHITE;
 			_tf.autoScale = true;
-			_tf.hAlign = HAlign.LEFT;
+			_tf.hAlign = HAlign.CENTER;
 			
-			_bulle = new CitrusSprite("bulle", {group:2, x:_x + 30, y:_y - 130, view:_tf});
-			_ce.state.add(_bulle);
+			//_bulle = new CitrusSprite("bulle", {parallax:0, group:2, x:-200, y:-600, view:_tf});
+			//_ce.state.add(_bulle);
+			
+			(_ce.state as StarlingState).addChild(_tf);
 		}
 
 		override public function handleBeginContact(interactionCallback:InteractionCallback):void {
@@ -62,7 +66,7 @@ package objects {
 					{
 						//a.animation.gotoAndPlay("baisser");
 						killObject();
-					}, 5000);
+					}, 3000);
 				}
 			}
 
@@ -74,7 +78,7 @@ package objects {
 
 		override public function destroy():void {
 
-			_ce.state.remove(_bulle);
+			(_ce.state as StarlingState).removeChild(_tf);
 
 			super.destroy();
 		}
