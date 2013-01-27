@@ -9,7 +9,9 @@ package levels
 	import citrus.objects.platformer.nape.Platform;
 	import citrus.physics.nape.Nape;
 	import citrus.view.starlingview.StarlingCamera;
+	import flash.geom.Point;
 	import nape.geom.Vec2;
+	import starling.display.Quad;
 	
 	import dragonBones.Armature;
 	import dragonBones.factorys.StarlingFactory;
@@ -29,6 +31,7 @@ package levels
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
 	import starling.textures.Texture;
+	import objects.Lucioles;
 	
 	import ui.Hud;
 	
@@ -76,9 +79,6 @@ package levels
 		[Embed(source="/../embed/texture.png")]
 		private var _particlePng:Class;
 		
-		[Embed(source="/../embed/ours.png")]
-		private var _oursPng:Class;
-		
 		private var _armature:Armature;
 		private var _factory:StarlingFactory;
 		
@@ -94,6 +94,19 @@ package levels
 		
 		private var _particleTorche:PDParticleSystem;
 		private var _torche:CitrusSprite;
+		private var quelleBulle:int = new int(0);
+		private var heartrythme:Number = Number(3);
+		
+		private var volumeZik:Number = 0;
+		private var volumeHeart:Number = 1;
+		private var oursPosX:Number = 3500;
+		private var startPosX:Number = 14500;
+		private var distStartOurs:Number = oursPosX - startPosX;
+		private var distHeroOurs:Number = 0;
+		
+		private var _ended:Boolean = false;
+		
+		private var _overlayQuad:Quad;
 		
 		public function Level1()
 		{
@@ -123,7 +136,7 @@ package levels
 			_physics = new Nape("physics");
 			//_physics.visible = true;
 			_physics.timeStep = 1 / 30;
-			_physics.gravity = new Vec2(0, 150);
+			_physics.gravity = new Vec2(0, 250);
 			add(_physics);
 			
 			var psconfig:XML = new XML(new _torchePex());
@@ -133,19 +146,22 @@ package levels
 			_particleTorche.start();
 			
 			_torche = new CitrusSprite("torche", {view: _particleTorche /*, offsetY:-40*/});
-			add(_torche), _ce.sound.playSound("Feu", 0.05);
+			add(_torche), _ce.sound.playSound("Feu", 0.02);
 			
-			_hero = new Hero("hero", {x: 14000, radius: 30});
+			//_hero = new Hero("hero", {x: 11256, y: 1250, radius: 30});
+			_hero = new Hero("hero", {x: 4500, y: 1250, radius: 30});
 			_hero.maxVelocity = 85;
 			_hero.acceleration = 25;
-			_hero.jumpHeight = 220;
+			_hero.jumpHeight = 280;
 			_hero.jumpAcceleration = 2;
 			add(_hero);
 			
-			var oursImage:Image = Image.fromBitmap(new _oursPng());
-			oursImage.scaleX = -1;
-			var ours:CitrusSprite = new CitrusSprite("ours", {x: 2450, y: 1685, view: oursImage});
-			add(ours);
+			/*
+			   var oursImage:Image = Image.fromBitmap(new _oursPng());
+			   oursImage.scaleX = -1;
+			   var ours:CitrusSprite = new CitrusSprite("ours", {x: 2287, y: 1685, view: oursImage});
+			   add(ours);
+			 */
 			
 			/*var bulle:Bulle = new Bulle("une bulle", {x:250, y:230});
 			 add(bulle);*/
@@ -168,10 +184,10 @@ package levels
 			//for (var i:uint = 0; i < 30; ++i)
 			//add(new Etoile("gre", {parallax:0, x:Math.random() * 160000, y:Math.random() * 400, view:Image.fromBitmap(new Bitmap(bmpd))}));
 			
-			view.camera.setUp(_hero, new MathVector((stage.stageWidth / 2), (stage.stageHeight / 1.5)), new Rectangle(0, 0, 25000, 6000), new MathVector(0.10, 0.15));
+			view.camera.setUp(_hero, new MathVector((stage.stageWidth / 2), (stage.stageHeight / 1.5)), new Rectangle(0, 0, 50000, 6800), new MathVector(0.10, 0.15));
 			_camera = (view.camera as StarlingCamera);
 			_camera.allowZoom = true;
-			_camera.zoomEasing = 0.01;
+			_camera.zoomEasing = 0.008;
 			
 			//_containerGroupBgLight = view.getArt(bg).parent;
 			//_containerGroupBgLight.filter = new SpotlightFilter(100, 400);
@@ -184,8 +200,10 @@ package levels
 			_HeartBeat.targetSpeed = 1;
 			_HeartBeat.onHeartBeat.add(handleHeartBeat);
 			
-			_ce.sound.addSound("background music", "Introtest.mp3");
-			_ce.sound.playSound("background music", 0.6);
+			_HeartBeat.targetSpeed = 8;
+			
+			_ce.sound.addSound("background music", "introTest2.mp3");
+			_ce.sound.playSound("background music", 0.1);
 			
 			createDECOR();
 			
@@ -207,10 +225,28 @@ package levels
 			
 			_ce.sound.addSound("HB1", "Heartbeat1.mp3");
 			_ce.sound.addSound("HB2", "Heartbeat2.mp3");
-			_HeartBeat.targetSpeed = 2.5;
+			//_HeartBeat.targetSpeed = 2.5;
 			
-			add(new Platform("murOurs", { x:2600, y:1600, width:30, height:600 } ));
-		}
+			add(new Platform("murOurs", {x: 2600, y: 1600, width: 30, height: 600}));
+		
+			
+			_ce.sound.addSound("roar", "ours.mp3");
+			
+			var lucioles:Lucioles = new Lucioles();
+			Starling.juggler.add(lucioles);
+			var luciolesCS:CitrusSprite = new CitrusSprite("lucioles", { x:_hero.x+128, y:_hero.y, view:lucioles } );
+			add(luciolesCS);
+			
+			//TODO: changer les dimensions
+			_overlayQuad = new Quad(stage.stageWidth, stage.stageHeight, 0);
+			_overlayQuad.touchable = false;
+			_overlayQuad.alpha = 0;
+			Starling.current.stage.addChild(_overlayQuad);
+			
+			
+			}
+		
+		
 		
 		private function createDECOR():void
 		{
@@ -236,15 +272,11 @@ package levels
 			var textBulle:String;
 			
 			if (ty == "1")
-				textBulle = "Je ne pourrai pas aller plus loin.";
-			else if (ty == "2")
-				textBulle = "Je n'ai pas le choix, je dois y aller.";
-			else if (ty == "3")
-				textBulle = "Qu'est ce que je fais ici ?";
-			else if (ty == "4")
-				textBulle = "Je dois rentrer.";
-			else if (ty == "5")
-				textBulle = "Il y a quelque chose là-bas";
+			{
+				trace("je creer la bulle dont le texte est " + GameVars.SpeechNightMare[quelleBulle]);
+				textBulle = GameVars.SpeechNightMare[quelleBulle];
+				quelleBulle++;
+			}
 			
 			var coin:BulleTimer = new BulleTimer("coin", {x: x, y: y, width: 150, height: 150, text: textBulle});
 			add(coin);
@@ -252,6 +284,9 @@ package levels
 		
 		private function createPROPS(x:Number, y:Number, ty:String):void
 		{
+			
+			trace("BLAH " + ty);
+			
 			var tm:Image = new Image(AtlasSimple.getAtlas().getTexture(ty));
 			tm.x = x;
 			tm.y = y;
@@ -262,7 +297,7 @@ package levels
 		{
 			if (n)
 			{
-				_camera.setZoom(0.6*_HeartBeat.currentSpeed);
+				//	_camera.setZoom(0.6*_HeartBeat.currentSpeed);
 				_ce.sound.playSound("HB2", _HeartBeat.volume, 0, -0.9);
 			}
 			else
@@ -285,33 +320,90 @@ package levels
 			super.update(timeDelta);
 			
 			// un peu degeu...
-			if (_hero.velocity[0] > 1 || _hero.velocity[1] > 1)
-				_camera.setZoom(0.5);
+			if ((Math.abs(_hero.velocity[0]) > 0.5 || Math.abs(_hero.velocity[1])> 0.5) && !_ended)
+				_camera.zoomFit(1500, 1500);
 			else
-				_camera.setZoom(1);
+				_camera.zoomFit(700, 700);
 			
 			_scrollBackground.tilesOffsetX = -_hero.x / 50;
 			
 			lightSpot.x = _hero.x;
 			lightSpot.y = _hero.y;
 			
-			//(_containerGroupBgLight.filter as SpotlightFilter).centerX = _hero.x;
+			//(_containerGroupBgLight.filter as SepotlightFilter).centerX = _hero.x;
 			//(_containerGroupBgLight.filter as SpotlightFilter).centerY = _hero.y;
 			
 			_hillsTexture.update();
 			
 			//trace(_hero.x, _hero.y);
 			
-			
 			//test
-			if (_hero.x < 2900)
-				_HeartBeat.targetSpeed = 7;
-			else
-				_HeartBeat.targetSpeed = 3;
+			
+			//heartrythme = (_hero.x / 100) 
+			
+			
+			// gestion SON 
+			
+	
+			
+			if (_hero.x < startPosX && !_ended)
+			{
+				distHeroOurs = oursPosX - _hero.x;
+				volumeZik = distHeroOurs / distStartOurs;
+				volumeHeart = 1 - distHeroOurs / distStartOurs;
+				volumeHeart = (volumeHeart < 0) ? -volumeHeart : volumeHeart;
+				volumeZik = (volumeZik < 0) ? -volumeZik : volumeZik;
+				//trace(volumeHeart, volumeZik);
+			}
+			
+			if (_hero.x < oursPosX && !_ended)
+			{
+				_hud.touchable = false;
+				_ce.input.resetActions();
+				_ce.input.startRouting(666);
+				TweenLite.to(_hud, 1, { alpha:0 } );
 				
+				_camera.zoomEasing = 0.025;
+				_camera.target = { x:oursPosX - 300, y:_hero.y };
+				_camera.zoomFit(400, 400);
+				
+				// EN FACE DE L'OURS
+				TweenLite.to(_HeartBeat, 1, { volume:1 } );
+				TweenLite.delayedCall(2, preEndLevel);
+				_ended = true;
+			}
+			
+			
+			_HeartBeat.volume = volumeHeart;
+			_ce.sound.setVolume("background music", volumeZik*0.8);
+
 			
 			_particleTorche.emitterX = _hero.inverted ? _hero.x - 18 : _hero.x + 18;
 			_particleTorche.emitterY = _hero.y - 35;
+		}
+		
+		private function preEndLevel():void
+		{
+			//ours et vignette
+			_ce.sound.playSound("roar", 1, 0);
+			var vpos:Point = _camera.pointFromLocal(new Point(_camera.offset.x,_camera.offset.y));
+			//vpos.x -= 200;
+			vpos.y -= 200;
+			add(new CitrusSprite("ours1", {x:vpos.x, y:vpos.y, view: new Image(AtlasSimple.getAtlas().getTexture("ours1")), group: 1}));
+			TweenLite.delayedCall(5, endLevel);
+		}
+		
+		private function endLevel():void
+		{
+			TweenLite.to(_overlayQuad, 5, { alpha:1 } );
+			_HeartBeat.volume = 0;
+			_ce.input.stopRouting();
+			_HeartBeat.stop();
+			_ce.sound.stopSound("background music");
+			_ce.sound.removeSound("HB1");
+			_ce.sound.removeSound("HB2");
+			//...
+			_ce.state = new Hopital();
 		}
 		
 		override public function destroy():void
@@ -320,6 +412,8 @@ package levels
 			TextField.unregisterBitmapFont("ArialMT");
 			
 			super.destroy();
+			
+			Starling.current.stage.removeChildren();
 		}
 	
 	}

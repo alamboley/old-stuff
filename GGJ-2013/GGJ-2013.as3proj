@@ -5,9 +5,9 @@
     <movie outputType="Application" />
     <movie input="" />
     <movie path="bin\GGJ2013.swf" />
-    <movie fps="30" />
-    <movie width="480" />
-    <movie height="762" />
+    <movie fps="60" />
+    <movie width="1024" />
+    <movie height="768" />
     <movie version="3" />
     <movie minorVersion="5" />
     <movie platform="AIR Mobile" />
@@ -16,6 +16,7 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="src" />
+    <class path="..\..\..\AS3 Libraries\Citrus-Engine\src" />
   </classpaths>
   <!-- Build options -->
   <build>

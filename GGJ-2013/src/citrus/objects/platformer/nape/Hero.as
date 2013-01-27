@@ -446,12 +446,12 @@ package citrus.objects.platformer.nape {
 				
 				if (walkingSpeed < -acceleration) {
 					_inverted = true;
-					_animation = "walk";
+					_animation = "run";
 					
 				} else if (walkingSpeed > acceleration) {
 					
 					_inverted = false;
-					_animation = "walk";
+					_animation = "run";
 					
 				} else
 					_animation = "idle";
