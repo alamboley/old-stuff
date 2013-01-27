@@ -8,6 +8,7 @@ package levels {
 	import citrus.view.starlingview.StarlingCamera;
 	import starling.core.Starling;
 	import starling.display.Quad;
+	import ui.Caption;
 
 	import dragonBones.factorys.StarlingFactory;
 
@@ -44,6 +45,8 @@ package levels {
 		
 		private var _overlayQuad:Quad;
 		
+		public var caption:Caption;
+		
 		public function Hopital()
 		{
 			super();
@@ -78,6 +81,9 @@ package levels {
 			_factory = new StarlingFactory();
 			_factory.addEventListener(Event.COMPLETE, _textureCompleteHandler);
 			_factory.parseData(new _ResourcesData());
+			
+			caption = new Caption();
+			Starling.current.stage.addChild(caption);
 			
 			createSpots();
 			
@@ -141,6 +147,7 @@ package levels {
 			for (var i:int = 0; i < GameVars.SpeechHopital.length; i++) {
 				
 				var coin:BulleTimer = new BulleTimer("coin", {x: GameVars.SpeechDots[i], y: 600, width: 30, height: 30, text: GameVars.SpeechHopital[i]});
+				coin.captionRef = caption;
 				add(coin);	
 			}
 			
@@ -148,6 +155,8 @@ package levels {
 
 		override public function update(timeDelta:Number):void {
 			super.update(timeDelta);
+			
+			caption.update();
 			
 			if (_buttonAnim && _hud.upTouched) {
 				
