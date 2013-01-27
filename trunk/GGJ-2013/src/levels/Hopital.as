@@ -120,13 +120,13 @@ package levels {
 		private function alphaTween1():void {
 			
 			if (_hud.up && _buttonAnim)
-				TweenLite.to(_hud.up, 0.4, {alpha:0.7, onComplete:alphaTween0});
+				TweenLite.to(_hud.up, 0.4, {alpha:0.7,scaleX:1.2,scaleY:1.2, onComplete:alphaTween0});
 		}
 		
 		private function alphaTween0():void {
 			
 			if (_hud.up && _buttonAnim)
-				TweenLite.to(_hud.up, 0.4, {alpha:0.4, onComplete:alphaTween1});
+				TweenLite.to(_hud.up, 0.4, {alpha:0.4,scaleX:1,scaleY:1, onComplete:alphaTween1});
 		}
 		
 		private function _clignoterBoutonStop(callback:InteractionCallback):void {
