@@ -26,9 +26,6 @@ package levels {
 		[Embed(source="/../embed/hopital.png")]
 		private var _bgHopital:Class;
 		
-		[Embed(source="/../embed/fillette.png",mimeType="application/octet-stream")]
-		private const _ResourcesData:Class;
-		
 		public function Hopital()
 		{
 			super();
@@ -74,15 +71,6 @@ package levels {
 				add(coin);	
 			}
 			
-		}
-		
-		override public function update(timeDelta:Number):void
-		{			
-			super.update(timeDelta);
-		}
-			
-		override public function destroy():void {
-			super.destroy();
 		}
 	
 	}
